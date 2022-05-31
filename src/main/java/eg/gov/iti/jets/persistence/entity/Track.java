@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,32 +27,18 @@ public class Track {
     private String trackName;
 
 
-    // many-to-many relationship with training program
     @ManyToMany(mappedBy = "tracks")
     private List<TrainingProgram> trainingPrograms = new ArrayList<>();
 
 
-    // many-to-many relationship with intake
-    @ManyToMany
-    @JoinTable(name = "track_intake" ,
-            joinColumns = @JoinColumn(name = "track_id") ,
-            inverseJoinColumns = @JoinColumn(name = "intake_id"))
-    private List<Intake> intakes = new ArrayList<>();
-
+    @OneToMany(mappedBy = "track")
+    List<UserTrackIntake> userTrackIntakes = new ArrayList<>();
 
 
     /*** TODO ***/
     //Track supervisor
     //Students
     //TA
-
-
-
-
-
-
-
-
 
 
 }

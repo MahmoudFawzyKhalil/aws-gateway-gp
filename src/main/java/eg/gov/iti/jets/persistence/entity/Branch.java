@@ -47,11 +47,6 @@ public class Branch {
     // branch manager
 
 
-    @ManyToMany
-    @JoinTable(name = "branch_track",
-    joinColumns = @JoinColumn(name = "branch_id"),
-            inverseJoinColumns = @JoinColumn(name="track_id"))
-    private List<Track> trackList = new ArrayList<>();
 
 
 

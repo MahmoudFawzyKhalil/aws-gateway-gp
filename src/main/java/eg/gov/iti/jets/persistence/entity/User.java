@@ -6,6 +6,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Setter
@@ -23,6 +25,12 @@ public class User {
     @Column(name = "user_name")
     private String userName;
     private String email;
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    private Role role;
+
+    @OneToMany(mappedBy = "user")
+    List<UserTrackIntake> userTrackIntakes=new ArrayList<>();
 
 
 

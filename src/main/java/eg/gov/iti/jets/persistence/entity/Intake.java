@@ -26,8 +26,8 @@ public class Intake {
     @Column(name = "intake_number")
     private Integer intakeNumber;
 
-    @ManyToMany(mappedBy = "intakes")
-    private List<Track> tracks = new ArrayList<>();
+    @OneToMany(mappedBy = "intake")
+    List<UserTrackIntake>userTrackIntakes=new ArrayList<>();
 
 
 }
