@@ -22,6 +22,7 @@ import java.util.List;
 public class TrainingProgram {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotNull
@@ -31,20 +32,15 @@ public class TrainingProgram {
     @Column(nullable = false)
     private Double duration;
 
-    // many-to-many relationship with branch
-    @ManyToMany(mappedBy = "trainingPrograms")
-    private List<Branch> branches = new ArrayList<>();
+
+    // many-to-one relationship with branch
+    @ManyToOne
+    @JoinColumn(name = "branch_id",nullable = false)
+    private  Branch branch;
 
 
-    // many-to-many relationship with track
-    @ManyToMany
-    @JoinTable(name = "training_program_track" ,
-            joinColumns = @JoinColumn(name = "training_program_id") ,
-            inverseJoinColumns = @JoinColumn(name = "track_id"))
-    private List<Track> tracks = new ArrayList<>();
-
-
-
-
+    //one-to-many relationship with intakes
+    @OneToMany(mappedBy = "trainingProgram")
+    private List<Intake> intakes = new ArrayList<>();
 
 }

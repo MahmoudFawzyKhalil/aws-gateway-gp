@@ -22,15 +22,22 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
     @Column(name = "user_name")
     private String userName;
+
     private String email;
+
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @OneToMany(mappedBy = "user")
-    List<UserTrackIntake> userTrackIntakes=new ArrayList<>();
+
+    //many-to-one relationship with track
+    @ManyToOne
+    @JoinColumn(name = "track_id",nullable = false)
+    private Track track;
 
 
 
