@@ -20,7 +20,6 @@ public class TemplateConfiguration {
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     @Column(name = "image_ami" ,nullable = false)
     private String amiId;
     @Column(name = "sequrity_croup")

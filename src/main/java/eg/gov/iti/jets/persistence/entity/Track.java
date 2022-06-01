@@ -18,7 +18,6 @@ import java.util.List;
 @Entity
 @Table(name = "track")
 public class Track {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

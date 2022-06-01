@@ -22,10 +22,11 @@ public class Intake {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(nullable = false)
     private Integer id;
 
-    @Column(name = "intake_number")
-    private Integer intakeNumber;
+    @Column(name = "intake_name")
+    private String name;
 
 
     // many-to-one relationship with branch
@@ -39,7 +40,7 @@ public class Intake {
     @OneToMany(mappedBy = "intake")
     private List<Track> tracks = new ArrayList<>();
 
-
-
+    @Column(name = "intake_description")
+    private String description;
 
 }

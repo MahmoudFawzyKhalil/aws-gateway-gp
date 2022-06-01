@@ -22,6 +22,7 @@ import java.util.List;
 public class Privilege {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @NotNull

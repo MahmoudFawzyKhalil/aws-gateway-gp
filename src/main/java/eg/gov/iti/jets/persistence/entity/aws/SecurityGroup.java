@@ -6,7 +6,6 @@ import java.util.List;
 @Entity
 @Table(name = "security_groups")
 public class SecurityGroup {
-
     @Id
     @GeneratedValue(strategy =GenerationType.IDENTITY)
     @Column(nullable = false)

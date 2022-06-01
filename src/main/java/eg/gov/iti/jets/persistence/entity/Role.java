@@ -19,18 +19,14 @@ import java.util.List;
 @Entity
 @Table(name = "role")
 public class Role {
-
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-
     private String name;
-
     @ManyToMany
     @JoinTable(name = "role_privileges",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "privilege_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"role_id", "privilege_id"}))
     private List<Privilege> privileges = new ArrayList<>();
-
-
 }
