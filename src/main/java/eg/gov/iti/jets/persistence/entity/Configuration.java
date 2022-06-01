@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.List;
 
 @Setter
 @Getter
@@ -24,8 +25,10 @@ public class Configuration {
     private Long id;
 
     @Column(name = "image_ami")
-    private String imageAMI;
-
-
+    private String amiId;
+    @Column(name = "instance_type")
+    private String instanceType;
+    @Column(name = "sequrity_croup")
+    private String securityGroups;
 
 }
