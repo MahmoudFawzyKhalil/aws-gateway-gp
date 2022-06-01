@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.persistence.entity;
+package eg.gov.iti.jets.persistence.entity.aws;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -20,6 +20,7 @@ import javax.persistence.Table;
 public class Instance {
 
     @Id
+    @Column(nullable = false)
     private Integer id;
     @Column(name = "instance_name")
     private String name;
@@ -33,7 +34,4 @@ public class Instance {
     private String decryptedPassword;
     @Column(name = "instance_username")
     private String username;
-
-
-
 }

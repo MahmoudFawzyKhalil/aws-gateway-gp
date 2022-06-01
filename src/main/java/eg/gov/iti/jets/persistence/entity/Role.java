@@ -29,7 +29,7 @@ public class Role {
     @JoinTable(name = "role_privileges",
             joinColumns = @JoinColumn(name = "role_id"),
             inverseJoinColumns = @JoinColumn(name = "privilege_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"role_id", "role_id"}))
+            uniqueConstraints = @UniqueConstraint(columnNames = {"role_id", "privilege_id"}))
     private List<Privilege> privileges = new ArrayList<>();
 
 
