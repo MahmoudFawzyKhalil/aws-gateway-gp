@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.persistence.entity;
 
+import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -14,9 +15,8 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
-@Table(name="user")
+@Table(name = "user")
 public class User {
 
     @Id
@@ -35,11 +35,24 @@ public class User {
 
 
     //many-to-one relationship with track
+    //todo can join multiple tracks or not
     @ManyToOne
-    @JoinColumn(name = "track_id",nullable = false)
+    @JoinColumn(name = "track_id", nullable = false)
     private Track track;
 
 
+    @OneToMany(mappedBy = "creator")
+    private List<Instance> createdInstances = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "user_instances",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "instance_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "instance_id"}))
+    private List<Instance> instances = new ArrayList<>();
+
+    @OneToOne(mappedBy = "manger")
+    private Branch mangedBranch;
 
 
 }

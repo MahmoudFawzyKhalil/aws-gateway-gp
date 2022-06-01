@@ -16,7 +16,4 @@ public class SecurityGroup {
     private String description;
     @Column(name = "vpc")
     private String vpc;
-    @Column(name = "template_Configuration")
-    @ManyToMany(mappedBy = "securityGroups")
-    private List<TemplateConfiguration> templateConfiguration;
 }

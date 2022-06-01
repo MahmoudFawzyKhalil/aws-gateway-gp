@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
@@ -16,7 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 
 @Entity
-@Table(name="branch")
+@Table(name = "branch")
 public class Branch {
 
     @Id
@@ -29,16 +30,13 @@ public class Branch {
     private String name;
 
     private String address;
+    @OneToOne
+    @JoinColumn(name = "manger_id")
+    private User manger;
 
     //one-to-many relationship with training programs
     @OneToMany(mappedBy = "branch")
     private List<TrainingProgram> trainingPrograms = new ArrayList<>();
-
-
-
-
-
-
 
 
 }

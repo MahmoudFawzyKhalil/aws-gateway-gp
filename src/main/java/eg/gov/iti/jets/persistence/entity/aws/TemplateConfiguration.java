@@ -22,16 +22,14 @@ public class TemplateConfiguration {
     private Long id;
     @Column(name = "image_ami" ,nullable = false)
     private String amiId;
-    @Column(name = "sequrity_croup")
     @ManyToMany
     @JoinTable(name = "template_security_groups" ,joinColumns = @JoinColumn(name = "template_id")
-            ,inverseJoinColumns = @JoinColumn(name = "sequrity_group_id")
-            ,uniqueConstraints = @UniqueConstraint(columnNames = {"template_id","sequrity_group_id"}))
+            ,inverseJoinColumns = @JoinColumn(name = "security_group_id")
+            ,uniqueConstraints = @UniqueConstraint(columnNames = {"template_id","security_group_id"}))
     private List<SecurityGroup> securityGroups;
     @Column(name = "instance_type" ,nullable = false)
     private String instanceType;
-    @Column(name = "instance_keypair")
-    private String keyPair;
-    @Column(name = "number_of_instance")
-    private Integer numberOfInstance=1;
+    //todo why we need this
+    /*@Column(name = "number_of_instance")
+    private Integer numberOfInstances=1;*/
 }
