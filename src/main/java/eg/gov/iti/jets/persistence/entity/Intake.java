@@ -21,13 +21,25 @@ public class Intake {
 
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     @Column(name = "intake_number")
     private Integer intakeNumber;
 
+
+    // many-to-one relationship with branch
+    @ManyToOne
+    @JoinColumn(name = "training_program_id",nullable = false)
+    private TrainingProgram trainingProgram;
+
+
+
+    //one-to-many relationship with track
     @OneToMany(mappedBy = "intake")
-    List<UserTrackIntake>userTrackIntakes=new ArrayList<>();
+    private List<Track> tracks = new ArrayList<>();
+
+
 
 
 }

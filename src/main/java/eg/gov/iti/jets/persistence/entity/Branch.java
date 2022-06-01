@@ -29,22 +29,12 @@ public class Branch {
 
     private String address;
 
-
-    //Joining Many Branches with many Training Programs
-    //many-to-many relationship
-
-    @ManyToMany
-    @JoinTable(name = "branch_training_program" ,
-            joinColumns = @JoinColumn(name = "branch_id") ,
-            inverseJoinColumns = @JoinColumn(name = "training_program_id"))
+    //one-to-many relationship with training programs
+    @OneToMany(mappedBy = "branch")
     private List<TrainingProgram> trainingPrograms = new ArrayList<>();
 
 
 
-
-
-    /*** TODO ***/
-    // branch manager
 
 
 

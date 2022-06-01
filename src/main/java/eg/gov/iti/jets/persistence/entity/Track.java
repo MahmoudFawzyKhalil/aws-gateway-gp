@@ -27,18 +27,15 @@ public class Track {
     private String trackName;
 
 
-    @ManyToMany(mappedBy = "tracks")
-    private List<TrainingProgram> trainingPrograms = new ArrayList<>();
+    // many-to-one relationship with intake
+    @ManyToOne
+    @JoinColumn(name = "intake_id",nullable = false)
+    private Intake intake;
 
 
+    //one-to-many relationship with user
     @OneToMany(mappedBy = "track")
-    List<UserTrackIntake> userTrackIntakes = new ArrayList<>();
-
-
-    /*** TODO ***/
-    //Track supervisor
-    //Students
-    //TA
+    private List<User> users = new ArrayList<>();
 
 
 }
