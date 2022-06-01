@@ -18,8 +18,6 @@ import java.util.List;
 @Entity
 @Table(name = "intake")
 public class Intake {
-
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
@@ -28,15 +26,10 @@ public class Intake {
     @Column(name = "intake_name")
     private String name;
 
-
-    // many-to-one relationship with branch
     @ManyToOne
     @JoinColumn(name = "training_program_id",nullable = false)
     private TrainingProgram trainingProgram;
 
-
-
-    //one-to-many relationship with track
     @OneToMany(mappedBy = "intake")
     private List<Track> tracks = new ArrayList<>();
 

@@ -22,17 +22,13 @@ public class Track {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "track_name")
-    private String trackName;
+    @Column
+    private String name;
 
-
-    // many-to-one relationship with intake
     @ManyToOne
     @JoinColumn(name = "intake_id",nullable = false)
     private Intake intake;
 
-
-    //one-to-many relationship with user
     @OneToMany(mappedBy = "track")
     private List<User> users = new ArrayList<>();
 

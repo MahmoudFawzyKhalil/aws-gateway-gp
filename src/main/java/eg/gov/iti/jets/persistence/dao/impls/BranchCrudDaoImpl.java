@@ -1,16 +1,16 @@
 package eg.gov.iti.jets.persistence.dao.impls;
 
-import eg.gov.iti.jets.persistence.dao.BranchDao;
+import eg.gov.iti.jets.persistence.dao.BranchCrudDao;
 import eg.gov.iti.jets.persistence.entity.Branch;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
 @Repository
-public class BranchDaoImpl implements BranchDao {
+public class BranchCrudDaoImpl implements BranchCrudDao {
     private final BranchRepo branchRepo;
 
-    public BranchDaoImpl(BranchRepo branchRepo) {
+    public BranchCrudDaoImpl(BranchRepo branchRepo) {
         this.branchRepo = branchRepo;
     }
 

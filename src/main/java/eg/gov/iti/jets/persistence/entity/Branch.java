@@ -22,7 +22,6 @@ public class Branch {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false)
     private Integer id;
 
     @NotNull
@@ -31,10 +30,9 @@ public class Branch {
 
     private String address;
     @OneToOne
-    @JoinColumn(name = "manger_id")
-    private User manger;
+    @JoinColumn(name = "training_manager_id")
+    private User trainingManager;
 
-    //one-to-many relationship with training programs
     @OneToMany(mappedBy = "branch")
     private List<TrainingProgram> trainingPrograms = new ArrayList<>();
 

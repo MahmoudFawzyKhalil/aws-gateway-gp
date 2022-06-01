@@ -23,9 +23,9 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
-    @Column(name = "user_name")
-    private String userName;
-
+    @Column(unique = true)
+    private String username;
+    @Column(unique = true)
     private String email;
 
 
@@ -33,8 +33,6 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-
-    //many-to-one relationship with track
     //todo can join multiple tracks or not
     @ManyToOne
     @JoinColumn(name = "track_id", nullable = false)
@@ -45,14 +43,10 @@ public class User {
     private List<Instance> createdInstances = new ArrayList<>();
 
     @ManyToMany
-    @JoinTable(name = "user_instances",
+    @JoinTable(name = "user_granted_instances",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "instance_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "instance_id"}))
-    private List<Instance> instances = new ArrayList<>();
-
-    @OneToOne(mappedBy = "manger")
-    private Branch mangedBranch;
-
+    private List<Instance> grantedInstances = new ArrayList<>();
 
 }

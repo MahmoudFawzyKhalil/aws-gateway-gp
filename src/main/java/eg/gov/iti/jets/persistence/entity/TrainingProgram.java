@@ -29,17 +29,11 @@ public class TrainingProgram {
     @Column(unique = true,nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private Double duration;
-
-
-    // many-to-one relationship with branch
     @ManyToOne
     @JoinColumn(name = "branch_id",nullable = false)
     private  Branch branch;
 
 
-    //one-to-many relationship with intakes
     @OneToMany(mappedBy = "trainingProgram")
     private List<Intake> intakes = new ArrayList<>();
 

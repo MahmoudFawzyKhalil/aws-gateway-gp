@@ -2,7 +2,7 @@ package eg.gov.iti.jets.persistence.dao;
 
 import java.util.Optional;
 
-interface GenericDaoCRUD<T, Id> {
+interface GenericCrudDao<T, Id> {
     T save(T entity);
 
     T update(T entity);
