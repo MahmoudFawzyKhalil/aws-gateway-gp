@@ -3,6 +3,7 @@ package eg.gov.iti.jets.persistence.dao.impls;
 import eg.gov.iti.jets.persistence.dao.PrivilegeDao;
 import eg.gov.iti.jets.persistence.entity.Privilege;
 
+import java.util.List;
 import java.util.Optional;
 
 public class PrivilegeDaoImpl implements PrivilegeDao {
@@ -25,5 +26,10 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
     @Override
     public Optional<Privilege> findById(Integer id) {
         return privilegeRepo.findById(id);
+    }
+
+    @Override
+    public List<Privilege> findAll() {
+        return privilegeRepo.findAll();
     }
 }
