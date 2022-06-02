@@ -2,6 +2,8 @@ package eg.gov.iti.jets.persistence.dao.impls;
 
 import eg.gov.iti.jets.persistence.dao.PrivilegeDao;
 import eg.gov.iti.jets.persistence.entity.Privilege;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +37,8 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
 
     @Override
     public List<Privilege> findAll(int pageNumber, int pageSize) {
-        return null;
+        Page<Privilege> privilegePage = privilegeRepo.findAll(PageRequest.of(pageNumber, pageSize));
+        return privilegePage.getContent();
     }
 
     @Override
