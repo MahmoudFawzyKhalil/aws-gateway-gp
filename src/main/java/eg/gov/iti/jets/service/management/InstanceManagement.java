@@ -17,11 +17,15 @@ public class InstanceManagement {
     public void getAllTrackInstances(String Track){}
 
 
+    public void assignInstance(){}
 
+    public void createInstanceUsingTemplate(){}
 
+    public void startInstance(String id){}
 
+    public void stopInstance(String id){}
 
-
+    public void getInstance(String id){}
 
 
 
