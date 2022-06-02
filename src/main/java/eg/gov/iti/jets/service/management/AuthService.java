@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.service.management;
 
+import eg.gov.iti.jets.service.util.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,6 +16,7 @@ import java.util.ArrayList;
 @RequiredArgsConstructor
 public class AuthService implements UserDetailsService {
     private AuthenticationManager authenticationManager;
+    private JwtUtil jwtUtil;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -29,12 +31,7 @@ public class AuthService implements UserDetailsService {
         }catch (BadCredentialsException e){
             throw new RuntimeException("incorrect username or password", e);
         }
-
         UserDetails userDetails = loadUserByUsername(username);
-
-        /**
-         * return token Util
-         */
-        return null;
+        return jwtUtil.generateToken(userDetails);
     }
 }
