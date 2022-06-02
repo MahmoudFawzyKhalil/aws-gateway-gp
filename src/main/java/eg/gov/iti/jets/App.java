@@ -1,6 +1,6 @@
 package eg.gov.iti.jets;
 
-import eg.gov.iti.jets.persistence.dao.BranchCrudDao;
+import eg.gov.iti.jets.persistence.dao.BranchDao;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,7 +13,7 @@ public class App {
         SpringApplication.run(App.class, args);
     }
     @Bean
-    CommandLineRunner commandLineRunner(BranchCrudDao branchDao){
+    CommandLineRunner commandLineRunner(BranchDao branchDao){
         return ars->{
         };
     }
