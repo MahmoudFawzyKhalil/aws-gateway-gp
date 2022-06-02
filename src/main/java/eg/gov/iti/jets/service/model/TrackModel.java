@@ -1,6 +1,9 @@
+//HASHEM COMMENTED THIS FILE
+/*
 package eg.gov.iti.jets.service.model;
 
 import lombok.Data;
+
 
 import javax.persistence.*;
 @Data
@@ -13,3 +16,4 @@ public class TrackModel {
     private String trackName;
 
 }
+*/
