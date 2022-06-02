@@ -1,10 +1,12 @@
-package eg.gov.iti.jets.service.util;
+package eg.gov.iti.jets.api.util;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Component;
+
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,6 +19,9 @@ public class JwtUtil {
 
     @Value("${auth.jwt.expiration}")
     private Long TOKEN_VALIDITY;
+
+    private final String TOKEN_PRIVILEGES = "privileges";
+    private final String TOKEN_ID = "id";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -40,6 +45,8 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
+        claims.put(TOKEN_PRIVILEGES, userDetails.getAuthorities());
+        claims.put(TOKEN_ID, "dumb id");
         return createToken(claims, userDetails.getUsername());
     }
 
