@@ -2,6 +2,7 @@ package eg.gov.iti.jets.persistence.dao.impls;
 
 import eg.gov.iti.jets.persistence.dao.PrivilegeDao;
 import eg.gov.iti.jets.persistence.entity.Privilege;
+import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
@@ -43,6 +44,6 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
 
     @Override
     public List<Privilege> findAllByExample(Privilege example) {
-        return null;
+        return privilegeRepo.findAll(Example.of(example));
     }
 }
