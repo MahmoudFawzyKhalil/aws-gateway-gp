@@ -1,4 +1,6 @@
 package eg.gov.iti.jets.persistence.dao;
 
-public interface UserDao extends GenericCrudDao<UserDao,Integer> {
+import eg.gov.iti.jets.persistence.entity.User;
+
+public interface UserDao extends GenericCrudDao<User,Integer> {
 }

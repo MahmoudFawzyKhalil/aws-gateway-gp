@@ -1,8 +1,10 @@
 package eg.gov.iti.jets.persistence.dao.impls;
 
 import eg.gov.iti.jets.persistence.dao.UserDao;
+import eg.gov.iti.jets.persistence.entity.User;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -14,17 +16,25 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public UserDao save(UserDao entity) {
-        return null;
+    public User save(User entity) {
+        return userRepo.save(entity);
     }
 
     @Override
-    public UserDao update(UserDao entity) {
-        return null;
+    public User update(User entity) {
+        return userRepo.save(entity);
     }
 
     @Override
-    public Optional<UserDao> findById(Integer integer) {
-        return Optional.empty();
+    public Optional<User> findById(Integer integer) {
+        return userRepo.findById(integer);
     }
+
+    @Override
+    public List<User> findAll() {
+        return userRepo.findAll();
+    }
+
+
+
 }
