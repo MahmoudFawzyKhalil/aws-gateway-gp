@@ -43,6 +43,6 @@ public class Instance {
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User creator;
-    @ManyToMany(mappedBy = "instances")
+    @ManyToMany(mappedBy = "grantedInstances")
     private List<User> instanceUsers;
 }
