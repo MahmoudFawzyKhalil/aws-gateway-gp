@@ -32,4 +32,14 @@ public class RoleDaoImpl implements RoleDao {
     public List<Role> findAll() {
         return roleRepo.findAll();
     }
+
+    @Override
+    public List<Role> findAll(int pageNumber, int pageSize) {
+        return null;
+    }
+
+    @Override
+    public List<Role> findAllByExample(Role example) {
+        return null;
+    }
 }

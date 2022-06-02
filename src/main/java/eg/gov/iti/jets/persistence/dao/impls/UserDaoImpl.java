@@ -35,6 +35,15 @@ public class UserDaoImpl implements UserDao {
         return userRepo.findAll();
     }
 
+    @Override
+    public List<User> findAll(int pageNumber, int pageSize) {
+        return null;
+    }
+
+    @Override
+    public List<User> findAllByExample(User example) {
+        return null;
+    }
 
 
 }

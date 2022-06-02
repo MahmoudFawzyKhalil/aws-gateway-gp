@@ -36,5 +36,15 @@ public class TrainingProgramDaoImpl implements TrainingProgramDao {
         return trainingProgramRepo.findAll();
     }
 
+    @Override
+    public List<TrainingProgram> findAll(int pageNumber, int pageSize) {
+        return null;
+    }
+
+    @Override
+    public List<TrainingProgram> findAllByExample(TrainingProgram example) {
+        return null;
+    }
+
 
 }

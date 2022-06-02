@@ -12,5 +12,9 @@ interface GenericCrudDao<T, Id> {
 
     List<T> findAll();
 
+    List<T> findAll(int pageNumber,int pageSize);
+
+    List<T> findAllByExample(T example);
+
 
 }

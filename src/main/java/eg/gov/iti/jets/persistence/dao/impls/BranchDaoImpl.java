@@ -35,7 +35,15 @@ public class BranchDaoImpl implements BranchDao {
         return branchRepo.findAll();
     }
 
+    @Override
+    public List<Branch> findAll(int pageNumber, int pageSize) {
+        return null;
+    }
 
+    @Override
+    public List<Branch> findAllByExample(Branch example) {
+        return null;
+    }
 
 
 }

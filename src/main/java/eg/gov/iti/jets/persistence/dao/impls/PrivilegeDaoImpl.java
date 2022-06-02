@@ -32,4 +32,14 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
     public List<Privilege> findAll() {
         return privilegeRepo.findAll();
     }
+
+    @Override
+    public List<Privilege> findAll(int pageNumber, int pageSize) {
+        return null;
+    }
+
+    @Override
+    public List<Privilege> findAllByExample(Privilege example) {
+        return null;
+    }
 }
