@@ -42,4 +42,11 @@ public class TemplateConfiguration {
             ,inverseJoinColumns = @JoinColumn(name = "security_group_id")
             ,uniqueConstraints = @UniqueConstraint(columnNames = {"template_id","security_group_id"}))
     private List<SecurityGroup> securityGroups;
+
+    @ManyToMany
+    @JoinTable(name = "template_configuration_instructors"
+            ,joinColumns = @JoinColumn(name = "template_configuration_id")
+            ,inverseJoinColumns = @JoinColumn(name = "instructor_id")
+            ,uniqueConstraints = @UniqueConstraint(columnNames = {"template_configuration_id","instructor_id"}))
+    private List<User> instructors;
 }
