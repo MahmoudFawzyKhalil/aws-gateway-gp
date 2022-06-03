@@ -14,14 +14,14 @@ import javax.persistence.*;
 public class KeyPair {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
+    private Integer id;
     @Column(name = "key_pair_id")
-    String keyPairId;
+    private String keyPairId;
 
     @Column(name = "key_name")
-    String keyName;
+    private String keyName;
 
     @Column(name = "key__material")
-    String keyMaterial;
+    private String keyMaterial;
 
 }

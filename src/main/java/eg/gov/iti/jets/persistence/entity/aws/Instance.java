@@ -63,5 +63,5 @@ public class Instance {
             joinColumns = @JoinColumn(name = "instance_id"),
             inverseJoinColumns = @JoinColumn(name = "security_group_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"instance_id", "security_group_id"}))
-    List<SecurityGroup> securityGroups;
+    private List<SecurityGroup> securityGroups;
 }

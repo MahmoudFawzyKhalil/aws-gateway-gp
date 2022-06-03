@@ -10,11 +10,11 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Subnet {
-    String subnetId;
-    String vpcId;
-    String availabilityZone;
-    String availabilityZoneId;
-    Integer availableIpAddressCount;
-    String cidrBlock;
-    Boolean mapPublicIpOnLaunch;
+    private String subnetId;
+    private String vpcId;
+    private String availabilityZone;
+    private String availabilityZoneId;
+    private Integer availableIpAddressCount;
+    private String cidrBlock;
+    private Boolean mapPublicIpOnLaunch;
 }

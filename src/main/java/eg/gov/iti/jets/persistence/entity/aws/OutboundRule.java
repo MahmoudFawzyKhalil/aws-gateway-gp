@@ -19,7 +19,7 @@ public class OutboundRule {
     @Column(nullable = false)
     private Integer id;
 
-    String ipProtocol;
-    String ipRangeAllowedOut ;// mapped from IpRange
-    String groupId;
+    private String ipProtocol;
+    private String ipRangeAllowedOut ;// mapped from IpRange
+    private String groupId;
 }

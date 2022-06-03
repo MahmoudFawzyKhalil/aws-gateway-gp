@@ -16,11 +16,11 @@ import javax.persistence.*;
 public class Ami {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Integer id;
-    String imageId;
-    String imageOwnerAlias;
-    String architecture;
-    String imageName;
-    String description;
-    String platform;
+    private Integer id;
+    private String imageId;
+    private String imageOwnerAlias;
+    private String architecture;
+    private String imageName;
+    private String description;
+    private String platform;
 }

@@ -10,7 +10,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Vpc {
-    String state;
-    String vpcId;
-    String cidrBlock;
+    private String state;
+    private String vpcId;
+    private String cidrBlock;
 }

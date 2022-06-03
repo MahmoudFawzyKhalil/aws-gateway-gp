@@ -28,8 +28,8 @@ public class SecurityGroup {
 
     @OneToMany
     @JoinColumn(name = "security_group_id")
-    List<InboundRule> inboundRules;
+    private List<InboundRule> inboundRules;
     @OneToMany
     @JoinColumn(name = "security_group_id")
-    List<OutboundRule> outboundRules;
+    private List<OutboundRule> outboundRules;
 }

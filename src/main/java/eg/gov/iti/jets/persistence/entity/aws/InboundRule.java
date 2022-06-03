@@ -18,9 +18,9 @@ public class InboundRule {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Integer id;
-    Integer fromPort;
-    Integer toPort;
-    String ipProtocol;
-    String ipRangeAllowedIn; // mapped from IpRange
-    String groupId;
+    private Integer fromPort;
+    private Integer toPort;
+    private String ipProtocol;
+    private String ipRangeAllowedIn; // mapped from IpRange
+    private String groupId;
 }
