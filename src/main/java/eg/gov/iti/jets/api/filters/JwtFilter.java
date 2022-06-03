@@ -1,7 +1,7 @@
 package eg.gov.iti.jets.api.filters;
 
 import eg.gov.iti.jets.api.util.JwtUtil;
-import eg.gov.iti.jets.service.management.UserService;
+import eg.gov.iti.jets.service.management.UserManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -20,7 +20,7 @@ import java.io.IOException;
 @Component
 public class JwtFilter extends OncePerRequestFilter {
     @Autowired
-    private UserService userService;
+    private UserManagement userService;
 
     @Autowired
     private JwtUtil jwtUtil;

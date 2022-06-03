@@ -1,7 +1,8 @@
 package eg.gov.iti.jets.api.config;
 
 import eg.gov.iti.jets.api.filters.JwtFilter;
-import eg.gov.iti.jets.service.management.UserService;
+import eg.gov.iti.jets.service.management.UserManagement;
+import eg.gov.iti.jets.service.management.impl.UserManagementImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -16,10 +17,13 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private JwtFilter jwtFilter;
+    private final UserManagement userService;
+    private final JwtFilter jwtFilter;
+
+    public SecurityConfigurer( UserManagement userService, JwtFilter jwtFilter ) {
+        this.userService = userService;
+        this.jwtFilter = jwtFilter;
+    }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

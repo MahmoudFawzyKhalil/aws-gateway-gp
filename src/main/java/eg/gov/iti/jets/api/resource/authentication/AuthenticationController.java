@@ -1,8 +1,7 @@
 package eg.gov.iti.jets.api.resource.authentication;
 
 import eg.gov.iti.jets.api.util.JwtUtil;
-import eg.gov.iti.jets.service.management.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import eg.gov.iti.jets.service.management.UserManagement;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -12,12 +11,15 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("api/")
 public class AuthenticationController {
-    @Autowired
-    private UserService userService;
-    @Autowired
-    private AuthenticationManager authenticationManager;
-    @Autowired
-    private JwtUtil jwtUtil;
+    private final UserManagement userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
+
+    public AuthenticationController( UserManagement userService, AuthenticationManager authenticationManager, JwtUtil jwtUtil ) {
+        this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
 
     @PostMapping("/authenticate")
     public AuthenticationResponse authenticateUser(@RequestBody AuthenticationRequest authReq) {

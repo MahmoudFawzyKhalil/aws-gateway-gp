@@ -1,11 +1,7 @@
 package eg.gov.iti.jets.api.resource.trainingProgram;
 
-import eg.gov.iti.jets.api.resource.branch.BranchRequest;
-import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.service.management.BranchManagement;
-import eg.gov.iti.jets.service.management.TrainingProgramManagement;
-import eg.gov.iti.jets.service.model.Branch;
+import eg.gov.iti.jets.service.management.impl.TrainingProgramManagement;
 import eg.gov.iti.jets.service.model.TrainingProgram;
 import org.springframework.web.bind.annotation.*;
 

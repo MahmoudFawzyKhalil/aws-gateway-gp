@@ -12,38 +12,38 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/branches")
 public class BranchController {
-    final BranchManagement branchManagement;
+    final BranchManagement branchManagementImpl;
     final Mapper mapper;
 
-    public BranchController( BranchManagement branchManagement , Mapper mapper){
-        this.branchManagement = branchManagement;
+    public BranchController( BranchManagement branchManagementImpl, Mapper mapper){
+        this.branchManagementImpl = branchManagementImpl;
         this.mapper = mapper;
     }
 
     @PostMapping
     public Boolean createBranch( @RequestBody BranchRequest branchRequest){
-        return branchManagement.createBranch( mapper.mapFromBranchRequestToBranch( branchRequest )  );
+        return branchManagementImpl.createBranch( mapper.mapFromBranchRequestToBranch( branchRequest )  );
     }
 
     @PutMapping
     public BranchResponse updateBranch (@RequestBody BranchRequest branchRequest){
-        Branch branch = branchManagement.updateBranch( mapper.mapFromBranchRequestToBranch( branchRequest ) );
+        Branch branch = branchManagementImpl.updateBranch( mapper.mapFromBranchRequestToBranch( branchRequest ) );
         return mapper.mapFromBranchToBranchResponse( branch );
     }
 
     @DeleteMapping("/{id}")
     public Boolean deleteBranch( @PathVariable int id){
-        return branchManagement.deleteBranch( id );
+        return branchManagementImpl.deleteBranch( id );
     }
 
     @GetMapping("/{id}")
     public BranchResponse getBranchById(@PathVariable int id){
-        return mapper.mapFromBranchToBranchResponse( branchManagement.getBranchById( id ) );
+        return mapper.mapFromBranchToBranchResponse( branchManagementImpl.getBranchById( id ) );
     }
 
     @GetMapping
     public List<BranchResponse> getBranches(){
-        return branchManagement.getAllBranches()
+        return branchManagementImpl.getAllBranches()
                 .stream().map( mapper::mapFromBranchToBranchResponse )
                 .collect( Collectors.toList() );
     }

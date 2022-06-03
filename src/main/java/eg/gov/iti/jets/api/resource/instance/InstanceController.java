@@ -1,7 +1,7 @@
 package eg.gov.iti.jets.api.resource.instance;
 
 
-import eg.gov.iti.jets.service.management.InstanceManagement;
+import eg.gov.iti.jets.service.management.impl.InstanceManagement;
 import org.springframework.web.bind.annotation.*;
 
 @RestController

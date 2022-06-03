@@ -1,7 +1,7 @@
 package eg.gov.iti.jets.api.resource.template;
 
 import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.service.management.TemplateManagement;
+import eg.gov.iti.jets.service.management.impl.TemplateManagement;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

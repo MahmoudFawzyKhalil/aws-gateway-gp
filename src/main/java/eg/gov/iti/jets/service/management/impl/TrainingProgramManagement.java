@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.service.management;
+package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.service.model.Branch;
 import eg.gov.iti.jets.service.model.TrainingProgram;
