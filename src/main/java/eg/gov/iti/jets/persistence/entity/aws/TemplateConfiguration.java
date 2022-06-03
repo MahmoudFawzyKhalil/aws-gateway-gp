@@ -33,12 +33,9 @@ public class TemplateConfiguration {
     @Column(name = "instance_type" ,nullable = false)
     private String instanceType;
 
-    @ManyToMany
-    @JoinTable(name = "template_configuration_creators"
-            ,joinColumns = @JoinColumn(name = "template_configuration_id")
-            ,inverseJoinColumns = @JoinColumn(name = "user_id")
-            ,uniqueConstraints = @UniqueConstraint(columnNames = {"template_configuration_id","user_id"}))
-    private List<User> creators; // track supervisor
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private User creator; // track supervisor
 
     @ManyToMany
     @JoinTable(name = "template_security_groups" ,joinColumns = @JoinColumn(name = "template_id")
