@@ -12,7 +12,7 @@ import java.util.Optional;
 
 
 @Repository
-public class TemplateConfigurationImpl implements TemplateConfigurationDao {
+public class TemplateConfigurationDaoImpl implements TemplateConfigurationDao {
 
     private TemplateConfigurationRepo templateConfigurationRepo;
 
