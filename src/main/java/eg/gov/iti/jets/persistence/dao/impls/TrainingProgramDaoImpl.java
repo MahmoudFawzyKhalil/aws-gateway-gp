@@ -2,6 +2,10 @@ package eg.gov.iti.jets.persistence.dao.impls;
 
 import eg.gov.iti.jets.persistence.dao.TrainingProgramDao;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
+import eg.gov.iti.jets.persistence.entity.aws.Instance;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -36,14 +40,16 @@ public class TrainingProgramDaoImpl implements TrainingProgramDao {
         return trainingProgramRepo.findAll();
     }
 
+
     @Override
     public List<TrainingProgram> findAll(int pageNumber, int pageSize) {
-        return null;
+        Page<TrainingProgram> instancePage = trainingProgramRepo.findAll(PageRequest.of(pageNumber,pageSize));
+        return instancePage.toList();
     }
 
     @Override
     public List<TrainingProgram> findAllByExample(TrainingProgram example) {
-        return null;
+        return trainingProgramRepo.findAll(Example.of(example));
     }
 
 
