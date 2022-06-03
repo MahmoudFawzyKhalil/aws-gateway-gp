@@ -11,6 +11,6 @@ public class CreateInstanceCommand {
     private String amiId;
     private String instanceType;
     private String subnetId;
-    private String tagName;
+    private String instanceName;
 
 }
