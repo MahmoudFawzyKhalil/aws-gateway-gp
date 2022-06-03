@@ -3,6 +3,7 @@ package eg.gov.iti.jets.persistence.dao.impls;
 import eg.gov.iti.jets.persistence.dao.RoleDao;
 import eg.gov.iti.jets.persistence.entity.Role;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
@@ -39,11 +40,12 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public List<Role> findAll(int pageNumber, int pageSize) {
-        return (List<Role>) roleRepo.findAll(PageRequest.of(pageNumber,pageSize));
+        Page<Role> rolePage = roleRepo.findAll(PageRequest.of(pageNumber, pageSize));
+        return rolePage.getContent();
     }
 
     @Override
     public List<Role> findAllByExample(Role example) {
-        return (List<Role>) roleRepo.findAll(Example.of(example));
+        return roleRepo.findAll(Example.of(example));
     }
 }
