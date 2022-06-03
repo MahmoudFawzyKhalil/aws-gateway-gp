@@ -2,8 +2,6 @@ package eg.gov.iti.jets.persistence.dao.impls;
 
 import eg.gov.iti.jets.persistence.dao.IntakeDao;
 import eg.gov.iti.jets.persistence.entity.Intake;
-import eg.gov.iti.jets.persistence.entity.Role;
-import eg.gov.iti.jets.persistence.entity.Track;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
