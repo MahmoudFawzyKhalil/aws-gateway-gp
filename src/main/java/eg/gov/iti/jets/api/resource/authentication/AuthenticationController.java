@@ -27,7 +27,7 @@ public class AuthenticationController {
 
     @GetMapping("/users")
     public String test() {
-        return "test";
+        return "test users read and write authorities";
     }
 
     private String authenticate(String username, String password){
@@ -40,5 +40,13 @@ public class AuthenticationController {
         UserDetails userDetails = userService.loadUserByUsername(username);
         return jwtUtil.generateToken(userDetails);
     }
-
+    @GetMapping("/admin")
+//    @Secured("WRITE")          //security worked only after using this annotation not using authorities in security configurer
+    public String testWrite() {
+        return "test write";
+    }
+    @GetMapping("/hello")
+    public String hello() {
+        return "test hello";
+    }
 }
