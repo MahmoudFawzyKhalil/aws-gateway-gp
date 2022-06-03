@@ -11,6 +11,19 @@ import java.util.ArrayList;
 public class UserService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new User("hesham", "1234", new ArrayList<>());
+        switch (username){
+            case "hesham":
+                var user = User.withUsername("hesham")
+                        .password("1234")
+                        .authorities("WRITE")
+                        .build();
+                return user;
+            default:
+                user = User.withUsername("ashrf")
+                        .password("1234")
+                        .authorities("READ")
+                        .build();
+                return user;
+        }
     }
 }
