@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 public class AwsGatewayImpl implements AwsGateway {
 
 
-    private Ec2Client ec2Client;
+    private final Ec2Client ec2Client;
 
     public AwsGatewayImpl(Ec2Client ec2Client) {
         this.ec2Client = ec2Client;
@@ -36,7 +36,13 @@ public class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public KeyPair createKeyPair(CreateKeyPairCommand command) {
-        return null;
+        var createKeyPairRequest = CreateKeyPairRequest.builder().keyName(command.getName()).build();
+        var keyPairResponse = ec2Client.createKeyPair(createKeyPairRequest);
+        KeyPair keyPair = new KeyPair();
+        keyPair.setKeyPairId(keyPairResponse.keyPairId());
+        keyPair.setKeyName(keyPairResponse.keyName());
+        keyPair.setKeyMaterial(keyPairResponse.keyMaterial());
+        return keyPair;
     }
 
     @Override
@@ -61,22 +67,21 @@ public class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public Optional<Instance> createInstance(CreateInstanceCommand command) {
-        CreateKeyPairResponse keyPairResponse = getCreateKeyPairResponse(command.getKeyPair().getKeyName());
-        KeyPair keyPair = createKeyPair(keyPairResponse);
-
-        RunInstancesRequest runInstancesRequest = RunInstancesRequest.builder().keyName(keyPairResponse.keyName()).imageId(command.getAmiId()).instanceType(command.getInstanceType()).subnetId(command.getSubnetId()).maxCount(1).minCount(1).build();
-
-        RunInstancesResponse runInstancesResponse = ec2Client.runInstances(runInstancesRequest);
+        KeyPair keyPair = command.getKeyPair();
+        var runInstancesRequest = RunInstancesRequest
+                .builder()
+                .keyName(keyPair.getKeyName())
+                .imageId(command.getAmiId())
+                .instanceType(command.getInstanceType())
+                .subnetId(command.getSubnetId())
+                .maxCount(1).minCount(1).build();
+        var runInstancesResponse = ec2Client.runInstances(runInstancesRequest);
         Tag tag = createTag(command.getTagName(), ec2Client, runInstancesResponse.instances().get(0).instanceId());
         var instance = mapCreateInstanceProperties(runInstancesResponse, keyPair, tag);
         return Optional.of(instance);
 
     }
 
-    private CreateKeyPairResponse getCreateKeyPairResponse(String name) {
-        CreateKeyPairRequest createKeyPairRequest = CreateKeyPairRequest.builder().keyName(name).build();
-        return ec2Client.createKeyPair(createKeyPairRequest);
-    }
 
     private Instance mapCreateInstanceProperties(RunInstancesResponse runInstancesResponse, KeyPair keyPair, Tag tag) {
         Instance instance = new Instance();
@@ -90,28 +95,24 @@ public class AwsGatewayImpl implements AwsGateway {
         return instance;
     }
 
-    private KeyPair createKeyPair(CreateKeyPairResponse keyPairResponse) {
-        KeyPair keyPair = new KeyPair();
-        keyPair.setKeyPairId(keyPairResponse.keyPairId());
-        keyPair.setKeyName(keyPairResponse.keyName());
-        keyPair.setKeyMaterial(keyPairResponse.keyMaterial());
-        return keyPair;
-    }
-
     private Tag createTag(String name, Ec2Client ec2Client, String instanceId) {
         Tag tag = Tag.builder().key("Name").value(name).build();
-
-        CreateTagsRequest tagRequest = CreateTagsRequest.builder().resources(instanceId).tags(tag).build();
-
+        var tagRequest = CreateTagsRequest.builder().resources(instanceId).tags(tag).build();
         ec2Client.createTags(tagRequest);
         return tag;
     }
 
     @Override
     public Optional<Instance> createInstance(TemplateConfiguration template, String instanceName) {
-        var runInstancesRequest = RunInstancesRequest.builder().imageId(template.getAmiId()).keyName(template.getKeyPair().getKeyName()).instanceType(template.getInstanceType()).subnetId(template.getSubnetId()).maxCount(1).minCount(1).build();
+        var runInstancesRequest = RunInstancesRequest
+                .builder()
+                .imageId(template.getAmiId())
+                .keyName(template.getKeyPair().getKeyName())
+                .instanceType(template.getInstanceType())
+                .subnetId(template.getSubnetId())
+                .maxCount(1).minCount(1).build();
 
-        RunInstancesResponse runInstancesResponse = ec2Client.runInstances(runInstancesRequest);
+        var runInstancesResponse = ec2Client.runInstances(runInstancesRequest);
         Tag tag = createTag(instanceName, ec2Client, runInstancesResponse.instances().get(0).instanceId());
         Instance instance = mapCreateInstanceProperties(runInstancesResponse, template.getKeyPair(), tag);
 
@@ -121,8 +122,8 @@ public class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public Optional<Instance> describeInstance(String instanceId) {
-        DescribeInstancesRequest request = DescribeInstancesRequest.builder().instanceIds(instanceId).build();
-        DescribeInstancesResponse response = ec2Client.describeInstances(request);
+        var request = DescribeInstancesRequest.builder().instanceIds(instanceId).build();
+        var response = ec2Client.describeInstances(request);
         if (response.hasReservations() && response.reservations().get(0).hasInstances()) {
 
             software.amazon.awssdk.services.ec2.model.Instance awsInstance = response.reservations().get(0).instances().get(0);
@@ -145,7 +146,9 @@ public class AwsGatewayImpl implements AwsGateway {
     public List<Instance> describeInstances(List<String> instanceIds) {
         var describeInstancesRequest = DescribeInstancesRequest.builder().instanceIds(instanceIds).build();
         var describeInstancesResponse = this.ec2Client.describeInstances(describeInstancesRequest);
-        return describeInstancesResponse.hasReservations() && describeInstancesResponse.reservations().get(0).hasInstances() ? getMappedInstances(describeInstancesResponse) : new ArrayList<>();
+        return describeInstancesResponse.hasReservations() && describeInstancesResponse.reservations().get(0).hasInstances()
+                ? getMappedInstances(describeInstancesResponse)
+                : new ArrayList<>();
     }
 
     private List<Instance> getMappedInstances(DescribeInstancesResponse describeInstancesResponse) {
