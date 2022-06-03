@@ -4,6 +4,7 @@ import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.service.model.*;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface AwsGateway {
 
@@ -25,6 +26,6 @@ public interface AwsGateway {
     Instance createInstance(CreateInstanceCommand command);
     Instance createInstance(TemplateConfiguration template);
 
-    Instance describeInstance(String instanceId);
+    Optional<Instance> describeInstance( String instanceId);
     List<Instance> describeInstances(DescribeInstancesCommand command);
 }
