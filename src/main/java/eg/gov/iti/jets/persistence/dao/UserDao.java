@@ -2,5 +2,8 @@ package eg.gov.iti.jets.persistence.dao;
 
 import eg.gov.iti.jets.persistence.entity.User;
 
-public interface UserDao extends GenericCrudDao<User,Integer> {
+import java.util.Optional;
+
+public interface UserDao extends GenericCrudDao<User, Integer> {
+    Optional<User> findByUsernameAndPassword(String userName, String password);
 }
