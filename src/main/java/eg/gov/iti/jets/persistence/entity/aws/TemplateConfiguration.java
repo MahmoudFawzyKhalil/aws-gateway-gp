@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.persistence.entity.aws;
 
 
+import eg.gov.iti.jets.persistence.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,11 +32,21 @@ public class TemplateConfiguration {
     private String vpcId;
     @Column(name = "instance_type" ,nullable = false)
     private String instanceType;
+
+    @ManyToOne
+    @JoinColumn(name = "creator_id")
+    private User creator; // track supervisor
+
     @ManyToMany
     @JoinTable(name = "template_security_groups" ,joinColumns = @JoinColumn(name = "template_id")
             ,inverseJoinColumns = @JoinColumn(name = "security_group_id")
             ,uniqueConstraints = @UniqueConstraint(columnNames = {"template_id","security_group_id"}))
     private List<SecurityGroup> securityGroups;
 
-    // TODO template configurations should be visible only across a certain track because they are created by a supervisor - make a reference to the Track and/or Supervisor here
+    @ManyToMany
+    @JoinTable(name = "template_configuration_instructors"
+            ,joinColumns = @JoinColumn(name = "template_configuration_id")
+            ,inverseJoinColumns = @JoinColumn(name = "instructor_id")
+            ,uniqueConstraints = @UniqueConstraint(columnNames = {"template_configuration_id","instructor_id"}))
+    private List<User> instructors;
 }
