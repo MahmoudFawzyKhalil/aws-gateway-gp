@@ -18,7 +18,9 @@ public class JwtUtil {
     private String SECRET_KEY;
 
     @Value("${auth.jwt.expiration}")
-    private Long TOKEN_VALIDITY;
+    private Long TOKEN_VALIDITY_IN_DAYS;
+
+    private final Long DAY_TO_MILLISECONDS = 86_400_000L;
 
     private final String TOKEN_PRIVILEGES = "privileges";
     private final String TOKEN_ID = "id";
@@ -55,7 +57,7 @@ public class JwtUtil {
                 .setClaims(claims)
                 .setSubject(subject)
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY * 1000))
+                .setExpiration(new Date(System.currentTimeMillis() + TOKEN_VALIDITY_IN_DAYS * DAY_TO_MILLISECONDS))
                 .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                 .compact();
     }
