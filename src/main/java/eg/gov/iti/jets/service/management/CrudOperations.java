@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.api.util;
+package eg.gov.iti.jets.service.management;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import java.util.List;
  * Basic crud operations
  * @param <T>
  */
-public interface Crud<T> {
+public interface CrudOperations<T> {
     Boolean create( T type);
 
     T update( T type);

@@ -1,13 +1,13 @@
-package eg.gov.iti.jets.service.management;
+package eg.gov.iti.jets.service.management.impl;
 
-import eg.gov.iti.jets.api.util.Crud;
+import eg.gov.iti.jets.service.management.CrudOperations;
 import eg.gov.iti.jets.service.model.Track;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TrackManagement implements Crud<Track> {
+public class TrackManagement implements CrudOperations<Track> {
     @Override
     public Boolean create(Track type) {
         return null;

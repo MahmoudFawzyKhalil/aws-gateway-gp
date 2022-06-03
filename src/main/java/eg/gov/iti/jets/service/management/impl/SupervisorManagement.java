@@ -1,13 +1,13 @@
-package eg.gov.iti.jets.service.management;
+package eg.gov.iti.jets.service.management.impl;
 
-import eg.gov.iti.jets.api.util.Crud;
+import eg.gov.iti.jets.service.management.CrudOperations;
 import eg.gov.iti.jets.service.model.Supervisor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SupervisorManagement implements Crud<Supervisor> {
+public class SupervisorManagement implements CrudOperations<Supervisor> {
 
     @Override
     public Boolean create(Supervisor type) {
