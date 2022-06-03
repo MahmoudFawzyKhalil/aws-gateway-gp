@@ -30,8 +30,6 @@ public class KeyPair {
     @Column(name = "key_material_type")
     private String KeyMaterialType;
 
-    // TODO people should be able to the keys they created, add a User creator field and relationship
-
     @ManyToMany
     @JoinTable(name = "user_keypair",
             joinColumns = @JoinColumn(name = "keypair_id"),
