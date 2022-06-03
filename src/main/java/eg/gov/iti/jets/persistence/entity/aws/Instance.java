@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -47,7 +46,6 @@ public class Instance {
     private String username;
     @Column(name = "creation_date_time")
     private LocalDateTime creationDateTime;
-
     @OneToOne
     @JoinColumn(name = "key_pair_id")
     private KeyPair keyPair;
