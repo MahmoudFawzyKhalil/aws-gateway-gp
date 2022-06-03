@@ -26,13 +26,42 @@ class AwsGatewayImpl implements AwsGateway {
     }
 
     @Override
-    public List<Vpc> describeVpcs( DescribeVpcsCommand command ) {
-        return null;
+    public List<Vpc> describeVpcs( ) {
+
+        List<Vpc> vpcs=new ArrayList<>();
+        DescribeVpcsResponse describeVpcsResponse = ec2Client.describeVpcs();
+        List<software.amazon.awssdk.services.ec2.model.Vpc> awsVpcs = describeVpcsResponse.vpcs();
+        for(software.amazon.awssdk.services.ec2.model.Vpc vpc:awsVpcs){
+            var vpcmodel=new Vpc();
+            vpcmodel.setState(vpc.state().toString());
+            vpcmodel.setVpcId(vpc.vpcId());
+            vpcmodel.setCidrBlock(vpc.cidrBlock());
+            vpcs.add(vpcmodel);
+        }
+
+        return vpcs;
     }
 
     @Override
     public List<Subnet> describeSubnets( DescribeSubnetsCommand command ) {
-        return null;
+
+        List<Subnet> subnets=new ArrayList<>();
+        DescribeSubnetsRequest describeSubnetsRequest = DescribeSubnetsRequest.builder()
+                .subnetIds(command.getSubnetIds())
+                .build();
+        DescribeSubnetsResponse describeSubnetsResponse = ec2Client.describeSubnets(describeSubnetsRequest);
+        List<software.amazon.awssdk.services.ec2.model.Subnet> subnetList = describeSubnetsResponse.subnets();
+        for(software.amazon.awssdk.services.ec2.model.Subnet subnet:subnetList){
+            Subnet subnetModel=new Subnet();
+            subnetModel.setSubnetId(subnet.subnetId());
+            subnetModel.setCidrBlock(subnet.cidrBlock());
+            subnetModel.setVpcId(subnet.vpcId());
+            subnetModel.setAvailabilityZone(subnet.availabilityZone());
+            subnetModel.setAvailabilityZoneId(subnet.availabilityZoneId());
+            subnetModel.setMapPublicIpOnLaunch(subnet.mapPublicIpOnLaunch());
+            subnets.add(subnetModel);
+        }
+        return subnets;
     }
 
 
@@ -49,22 +78,70 @@ class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public List<SecurityGroup> describeSecurityGroups( DescribeSecurityGroupsCommand command ) {
-        return null;
+
+        List<SecurityGroup> securityGroups=new ArrayList<>();
+        List<InboundRule> inboundRules=new ArrayList<>();
+        DescribeSecurityGroupsRequest describeSecurityGroupsRequest = DescribeSecurityGroupsRequest.builder()
+                .groupIds(command.getSecurityGroupIds())
+                .build();
+
+        DescribeSecurityGroupsResponse describeSecurityGroupsResponse = ec2Client.describeSecurityGroups(describeSecurityGroupsRequest);
+        List<software.amazon.awssdk.services.ec2.model.SecurityGroup> securityGroupList = describeSecurityGroupsResponse.securityGroups();
+        for(software.amazon.awssdk.services.ec2.model.SecurityGroup securityGroup:securityGroupList){
+            SecurityGroup securityGroupModel=new SecurityGroup();
+            securityGroupModel.setDescription(securityGroup.description());
+            securityGroupModel.setSecurityGroupId(securityGroup.groupId());
+            securityGroupModel.setVpcId(securityGroup.vpcId());
+            securityGroupModel.setName(securityGroup.groupName());
+            List<IpPermission> ipPermissionList = securityGroup.ipPermissions();
+            for(IpPermission ipPermission:ipPermissionList){
+                InboundRule inboundRule=new InboundRule();
+                inboundRule.setSecurityGroupId(securityGroup.groupId());
+                inboundRule.setFromPort(ipPermission.fromPort());
+                inboundRule.setToPort(ipPermission.toPort());
+                inboundRule.setIpProtocol(ipPermission.ipProtocol());
+                inboundRule.setIpRangeAllowedIn(ipPermission.ipRanges().get(0).cidrIp());
+                inboundRules.add(inboundRule);
+
+            }
+            securityGroupModel.setInboundRules(inboundRules);
+
+            securityGroups.add(securityGroupModel);
+        }
+
+
+        return securityGroups;
     }
 
     @Override
     public String startInstance( String instanceId ) {
-        return null;
+
+        StartInstancesRequest request = StartInstancesRequest.builder()
+                .instanceIds(instanceId)
+                .build();
+        StartInstancesResponse startInstancesResponse = ec2Client.startInstances(request);
+
+        return   startInstancesResponse.startingInstances().get(0).currentState().toString();
     }
 
     @Override
     public String stopInstance( String instanceId ) {
-        return null;
+
+        StopInstancesRequest stopInstancesRequest=  StopInstancesRequest.builder()
+                .instanceIds(instanceId)
+                .build();
+        StopInstancesResponse stopInstancesResponse = ec2Client.stopInstances(stopInstancesRequest);
+        return stopInstancesResponse.stoppingInstances().get(0).currentState().toString();
     }
 
     @Override
     public String terminateInstance( String instanceId ) {
-        return null;
+
+        TerminateInstancesRequest terminateInstancesRequest = TerminateInstancesRequest.builder()
+                .instanceIds(instanceId)
+                .build();
+        TerminateInstancesResponse terminateInstancesResponse = ec2Client.terminateInstances(terminateInstancesRequest);
+        return terminateInstancesResponse.terminatingInstances().get(0).currentState().toString();
     }
 
     @Override
