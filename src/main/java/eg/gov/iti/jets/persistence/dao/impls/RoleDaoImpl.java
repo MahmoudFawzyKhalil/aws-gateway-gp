@@ -4,10 +4,12 @@ import eg.gov.iti.jets.persistence.dao.RoleDao;
 import eg.gov.iti.jets.persistence.entity.Role;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class RoleDaoImpl implements RoleDao {
     private final RoleRepo roleRepo;
 
