@@ -5,10 +5,12 @@ import eg.gov.iti.jets.persistence.entity.Intake;
 import eg.gov.iti.jets.persistence.entity.Role;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class IntakeDaoImpl implements IntakeDao {
     private final IntakeRepo intakeRepo;
 
