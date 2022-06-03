@@ -3,7 +3,10 @@ package eg.gov.iti.jets.api.util;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
@@ -11,9 +14,12 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Component
 public class JwtUtil {
+    private final Log logger = LogFactory.getLog(getClass());
+
     @Value("${auth.jwt.secretKey}")
     private String SECRET_KEY;
 
@@ -47,7 +53,7 @@ public class JwtUtil {
 
     public String generateToken(UserDetails userDetails) {
         Map<String, Object> claims = new HashMap<>();
-        claims.put(TOKEN_PRIVILEGES, userDetails.getAuthorities());
+        claims.put(TOKEN_PRIVILEGES, userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
         claims.put(TOKEN_ID, "dumb id");
         return createToken(claims, userDetails.getUsername());
     }
