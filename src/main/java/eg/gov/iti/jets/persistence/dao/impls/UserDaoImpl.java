@@ -46,4 +46,8 @@ public class UserDaoImpl implements UserDao {
     }
 
 
+    @Override
+    public Optional<User> findByUserNameAndPassword(String userName, String password) {
+        return userRepo.findByUserNameAndPassword(userName, password);
+    }
 }
