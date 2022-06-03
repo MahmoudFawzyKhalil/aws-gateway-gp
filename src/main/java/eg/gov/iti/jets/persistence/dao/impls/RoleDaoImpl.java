@@ -40,8 +40,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public List<Role> findAll(int pageNumber, int pageSize) {
-        Page<Role> rolePage = roleRepo.findAll(PageRequest.of(pageNumber, pageSize));
-        return rolePage.getContent();
+        return roleRepo.findAll(PageRequest.of(pageNumber, pageSize)).getContent();
     }
 
     @Override
