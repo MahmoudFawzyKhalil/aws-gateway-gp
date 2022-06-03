@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class SecurityGroupImpl implements SecurityGroupDao {
+public class SecurityGroupDaoImpl implements SecurityGroupDao {
 
     private SecurityGroupRepo securityGroupRepo;
 
