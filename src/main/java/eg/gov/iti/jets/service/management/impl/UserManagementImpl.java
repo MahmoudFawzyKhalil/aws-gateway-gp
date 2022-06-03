@@ -2,6 +2,7 @@ package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.service.management.UserManagement;
 import eg.gov.iti.jets.service.model.User;
+//import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -13,7 +14,20 @@ import java.util.List;
 public class UserManagementImpl implements UserDetailsService, UserManagement {
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return new org.springframework.security.core.userdetails.User("hesham", "1234", new ArrayList<>());
+        switch (username){
+            case "hesham":
+                var user = org.springframework.security.core.userdetails.User.withUsername("hesham")
+                        .password("1234")
+                        .authorities("WRITE")
+                        .build();
+                return user;
+            default:
+                user = org.springframework.security.core.userdetails.User.withUsername("ashrf")
+                        .password("1234")
+                        .authorities("READ")
+                        .build();
+                return user;
+        }
     }
 
     @Override
