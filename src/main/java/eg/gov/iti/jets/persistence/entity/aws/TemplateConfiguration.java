@@ -19,17 +19,22 @@ public class TemplateConfiguration {
     @Id
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
+    @OneToOne
+    @JoinColumn(name = "key_pair_id")
+    private KeyPair keyPair;
     @Column(name = "image_ami" ,nullable = false)
     private String amiId;
+    @Column(name = "subnet_id")
+    private String subnetId;
+    @Column(name = "vpc_id")
+    private String vpcId;
+    @Column(name = "instance_type" ,nullable = false)
+    private String instanceType;
+
     @ManyToMany
     @JoinTable(name = "template_security_groups" ,joinColumns = @JoinColumn(name = "template_id")
             ,inverseJoinColumns = @JoinColumn(name = "security_group_id")
             ,uniqueConstraints = @UniqueConstraint(columnNames = {"template_id","security_group_id"}))
     private List<SecurityGroup> securityGroups;
-    @Column(name = "instance_type" ,nullable = false)
-    private String instanceType;
-    //todo why we need this
-    /*@Column(name = "number_of_instance")
-    private Integer numberOfInstances=1;*/
 }
