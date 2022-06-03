@@ -31,7 +31,6 @@ public class TemplateConfiguration {
     private String vpcId;
     @Column(name = "instance_type" ,nullable = false)
     private String instanceType;
-
     @ManyToMany
     @JoinTable(name = "template_security_groups" ,joinColumns = @JoinColumn(name = "template_id")
             ,inverseJoinColumns = @JoinColumn(name = "security_group_id")
