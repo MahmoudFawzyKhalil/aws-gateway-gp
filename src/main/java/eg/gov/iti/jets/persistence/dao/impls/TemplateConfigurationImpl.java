@@ -3,6 +3,7 @@ package eg.gov.iti.jets.persistence.dao.impls;
 import eg.gov.iti.jets.persistence.dao.TemplateConfigurationDao;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
@@ -34,7 +35,8 @@ public class TemplateConfigurationImpl implements TemplateConfigurationDao {
 
     @Override
     public List<TemplateConfiguration> findAll(int pageNumber, int pageSize) {
-        return (List<TemplateConfiguration>) templateConfigurationRepo.findAll(PageRequest.of(pageNumber,pageSize));
+        Page<TemplateConfiguration> templateConfigurationPage = templateConfigurationRepo.findAll(PageRequest.of(pageNumber,pageSize));
+        return templateConfigurationPage.toList();
     }
 
     @Override

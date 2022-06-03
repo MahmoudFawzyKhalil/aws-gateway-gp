@@ -3,6 +3,7 @@ package eg.gov.iti.jets.persistence.dao.impls;
 import eg.gov.iti.jets.persistence.dao.InstanceDao;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
 import java.util.List;
@@ -34,7 +35,8 @@ public class InstanceDaoImpl implements InstanceDao {
 
     @Override
     public List<Instance> findAll(int pageNumber, int pageSize) {
-        return (List<Instance>) instanceRepo.findAll(PageRequest.of(pageNumber,pageSize));
+        Page<Instance> instancePage = instanceRepo.findAll(PageRequest.of(pageNumber,pageSize));
+        return instancePage.toList();
     }
 
     @Override
