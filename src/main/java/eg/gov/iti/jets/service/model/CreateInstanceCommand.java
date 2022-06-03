@@ -10,7 +10,7 @@ public class CreateInstanceCommand {
     private KeyPair keyPair;
     private String amiId;
     private String instanceType;
-    private String vpcId;
+    private String subnetId;
     private String tagName;
 
 }
