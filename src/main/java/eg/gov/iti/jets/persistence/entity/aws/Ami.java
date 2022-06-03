@@ -8,20 +8,19 @@ import lombok.Setter;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "key_pair")
-@Getter @Setter
-@AllArgsConstructor @NoArgsConstructor
-public class KeyPair {
+@Table(name = "ami")
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+public class Ami {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Integer id;
-    @Column(name = "key_pair_id")
-    String keyPairId;
-
-    @Column(name = "key_name")
-    String keyName;
-
-    @Column(name = "key__material")
-    String keyMaterial;
-
+    String imageId;
+    String imageOwnerAlias;
+    String architecture;
+    String imageName;
+    String description;
+    String platform;
 }
