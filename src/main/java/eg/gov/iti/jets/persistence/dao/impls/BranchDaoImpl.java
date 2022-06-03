@@ -2,6 +2,10 @@ package eg.gov.iti.jets.persistence.dao.impls;
 
 import eg.gov.iti.jets.persistence.dao.BranchDao;
 import eg.gov.iti.jets.persistence.entity.Branch;
+import eg.gov.iti.jets.persistence.entity.Privilege;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,7 +26,7 @@ public class BranchDaoImpl implements BranchDao {
 
     @Override
     public Branch update(Branch entity) {
-       return branchRepo.save(entity);
+        return branchRepo.save(entity);
     }
 
     @Override
@@ -37,12 +41,13 @@ public class BranchDaoImpl implements BranchDao {
 
     @Override
     public List<Branch> findAll(int pageNumber, int pageSize) {
-        return null;
+        Page<Branch> branchPage = branchRepo.findAll(PageRequest.of(pageNumber, pageSize));
+        return branchPage.getContent();
     }
 
     @Override
     public List<Branch> findAllByExample(Branch example) {
-        return null;
+        return branchRepo.findAll(Example.of(example));
     }
 
 
