@@ -37,10 +37,12 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    //todo can join multiple tracks or not
-    @ManyToOne
-    @JoinColumn(name = "track_id", nullable = false)
-    private Track track;
+    @ManyToMany
+    @JoinTable(name = "user_tracks",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "track_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "track_id"}))
+    private List<Track> tracks;
 
 
     @OneToMany(mappedBy = "creator")
