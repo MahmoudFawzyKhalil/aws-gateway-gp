@@ -19,6 +19,8 @@ public class SecurityGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Integer id;
+    @Column(name = "security_group_id")
+    private String securityGroupId;
     @Column(name = "name")
     private String name;
     @Column(name = "description")

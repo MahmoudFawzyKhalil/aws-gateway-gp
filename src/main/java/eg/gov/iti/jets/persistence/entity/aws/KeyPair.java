@@ -21,7 +21,9 @@ public class KeyPair {
     @Column(name = "key_name")
     private String keyName;
 
-    @Column(name = "key__material")
+    @Column(name = "key_material")
     private String keyMaterial;
 
+
+    // TODO people should be able to the keys they created, add a User creator field and relationship
 }

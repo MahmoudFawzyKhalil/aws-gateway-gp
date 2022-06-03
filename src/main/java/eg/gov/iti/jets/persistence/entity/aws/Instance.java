@@ -1,7 +1,6 @@
 package eg.gov.iti.jets.persistence.entity.aws;
 
 import eg.gov.iti.jets.persistence.entity.User;
-import eg.gov.iti.jets.persistence.entity.enums.EnumState;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -28,9 +27,8 @@ public class Instance {
     String amiId;
     @Column(name = "aws_instance_id", unique = true)
     private String instanceId;
-    private String platform;
-    @Enumerated(EnumType.STRING)
-    private EnumState state;
+    @Column(name = "state")
+    private String state; // TODO this has been changed from Enum to String -- this todo is just to let you know ♥
     @Column(name = "instance_keymaterial")
     private String keyMaterial;
     @Column(name = "instance_publicip")

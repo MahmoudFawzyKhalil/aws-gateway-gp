@@ -22,5 +22,5 @@ public class InboundRule {
     private Integer toPort;
     private String ipProtocol;
     private String ipRangeAllowedIn; // mapped from IpRange
-    private String groupId;
+    private String securityGroupId;
 }

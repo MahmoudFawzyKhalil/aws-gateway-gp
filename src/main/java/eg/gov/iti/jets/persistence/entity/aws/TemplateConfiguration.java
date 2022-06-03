@@ -37,4 +37,6 @@ public class TemplateConfiguration {
             ,inverseJoinColumns = @JoinColumn(name = "security_group_id")
             ,uniqueConstraints = @UniqueConstraint(columnNames = {"template_id","security_group_id"}))
     private List<SecurityGroup> securityGroups;
+
+    // TODO template configurations should be visible only across a certain track because they are created by a supervisor - make a reference to the Track and/or Supervisor here
 }

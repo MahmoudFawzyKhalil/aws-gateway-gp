@@ -20,6 +20,6 @@ public class OutboundRule {
     private Integer id;
 
     private String ipProtocol;
-    private String ipRangeAllowedOut ;// mapped from IpRange
-    private String groupId;
+    private String ipRangeAllowedOut ;
+    private String securityGroupId;
 }
