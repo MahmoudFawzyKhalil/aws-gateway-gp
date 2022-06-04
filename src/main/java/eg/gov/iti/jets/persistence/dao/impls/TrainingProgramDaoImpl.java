@@ -4,6 +4,7 @@ import eg.gov.iti.jets.persistence.dao.TrainingProgramDao;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -49,7 +50,8 @@ public class TrainingProgramDaoImpl implements TrainingProgramDao {
 
     @Override
     public List<TrainingProgram> findAllByExample(TrainingProgram example) {
-        return trainingProgramRepo.findAll(Example.of(example));
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return trainingProgramRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
     }
 
 

@@ -3,6 +3,7 @@ package eg.gov.iti.jets.persistence.dao.impls;
 import eg.gov.iti.jets.persistence.dao.InstanceDao;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,10 @@ import java.util.Optional;
 public class InstanceDaoImpl implements InstanceDao {
 
     private InstanceRepo instanceRepo;
+
+    public InstanceDaoImpl(InstanceRepo instanceRepo) {
+        this.instanceRepo = instanceRepo;
+    }
 
     @Override
     public Instance save(Instance instance) {
@@ -43,6 +48,7 @@ public class InstanceDaoImpl implements InstanceDao {
 
     @Override
     public List<Instance> findAllByExample(Instance example) {
-        return instanceRepo.findAll(Example.of(example));
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return instanceRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
     }
 }

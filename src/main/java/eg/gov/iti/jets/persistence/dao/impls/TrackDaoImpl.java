@@ -3,6 +3,7 @@ package eg.gov.iti.jets.persistence.dao.impls;
 import eg.gov.iti.jets.persistence.dao.TrackDao;
 import eg.gov.iti.jets.persistence.entity.Track;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -46,6 +47,7 @@ public class TrackDaoImpl implements TrackDao {
 
     @Override
     public List<Track> findAllByExample(Track example) {
-        return trackRepo.findAll(Example.of(example));
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return trackRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
     }
 }

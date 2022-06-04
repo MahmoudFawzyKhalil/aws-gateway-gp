@@ -3,6 +3,7 @@ package eg.gov.iti.jets.persistence.dao.impls;
 import eg.gov.iti.jets.persistence.dao.BranchDao;
 import eg.gov.iti.jets.persistence.entity.Branch;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -46,7 +47,8 @@ public class BranchDaoImpl implements BranchDao {
 
     @Override
     public List<Branch> findAllByExample(Branch example) {
-        return branchRepo.findAll(Example.of(example));
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return branchRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
     }
 
 

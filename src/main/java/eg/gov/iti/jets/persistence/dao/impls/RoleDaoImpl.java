@@ -3,6 +3,7 @@ package eg.gov.iti.jets.persistence.dao.impls;
 import eg.gov.iti.jets.persistence.dao.RoleDao;
 import eg.gov.iti.jets.persistence.entity.Role;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -46,6 +47,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public List<Role> findAllByExample(Role example) {
-        return roleRepo.findAll(Example.of(example));
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return roleRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
     }
 }

@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class KeyPairImpl implements KeyPairDao {
+public class KeyPairDaoImpl implements KeyPairDao {
 
     private final KeyPairRepo keyPairRepo;
 
-    public KeyPairImpl(KeyPairRepo keyPairRepo) {
+    public KeyPairDaoImpl(KeyPairRepo keyPairRepo) {
         this.keyPairRepo = keyPairRepo;
     }
 

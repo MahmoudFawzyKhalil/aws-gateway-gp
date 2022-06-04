@@ -3,6 +3,7 @@ package eg.gov.iti.jets.persistence.dao.impls;
 import eg.gov.iti.jets.persistence.dao.SecurityGroupDao;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -14,6 +15,10 @@ import java.util.Optional;
 public class SecurityGroupDaoImpl implements SecurityGroupDao {
 
     private SecurityGroupRepo securityGroupRepo;
+
+    public SecurityGroupDaoImpl(SecurityGroupRepo securityGroupRepo) {
+        this.securityGroupRepo = securityGroupRepo;
+    }
 
     @Override
     public SecurityGroup save(SecurityGroup securityGroup) {
@@ -43,6 +48,7 @@ public class SecurityGroupDaoImpl implements SecurityGroupDao {
 
     @Override
     public List<SecurityGroup> findAllByExample(SecurityGroup example) {
-        return securityGroupRepo.findAll(Example.of(example));
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return securityGroupRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
     }
 }

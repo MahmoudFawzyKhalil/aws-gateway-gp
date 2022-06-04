@@ -3,6 +3,7 @@ package eg.gov.iti.jets.persistence.dao.impls;
 import eg.gov.iti.jets.persistence.dao.IntakeDao;
 import eg.gov.iti.jets.persistence.entity.Intake;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
@@ -45,6 +46,7 @@ public class IntakeDaoImpl implements IntakeDao {
 
     @Override
     public List<Intake> findAllByExample(Intake example) {
-        return intakeRepo.findAll(Example.of(example));
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return intakeRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
     }
 }
