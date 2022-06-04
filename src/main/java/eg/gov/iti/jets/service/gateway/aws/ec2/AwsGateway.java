@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AwsGateway {
+
     /**
      * @return Lists available VPCs for the account
      */
@@ -87,15 +88,33 @@ public interface AwsGateway {
      */
     List<Instance> describeInstances(List<String> instanceIds);
 
-    // TODO javadoc
+    /**
+     * Gets available instance types
+     *
+     * @return List of instance types as a {@code String}
+     */
     List<String> getInstanceTypes();
 
-    // TODO implement + javadoc + unit test
-    Ami describeAmi(String amiId);
+    /**
+     * Describes aws ec2 image
+     *
+     * @param amiId The id of the image to be described
+     * @return an Optional describes the image
+     */
+    Optional<Ami> describeAmi(String amiId);
 
-    // TODO implement
-    Instance updateInstanceInfo(Instance instance);
 
-    // TODO implement
-    List<Instance> updateInstancesInfo(List<Instance> instance);
+    /**
+     * Updates instance info from aws, NOTICE: only instance public ip, DNS name and state are updated
+     *
+     * @param instance The instance to be updated
+     */
+    void updateInstanceInfoFromAws(Instance instance);
+
+    /**
+     * Updates instances info from aws, NOTICE: only instances public ips, DNS names and states are updated
+     *
+     * @param instances The instances to be updated
+     */
+    void updateInstancesInfoFromAws(List<Instance> instances);
 }
