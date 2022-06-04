@@ -291,6 +291,21 @@ class AwsGatewayImpl implements AwsGateway {
         return Arrays.stream( InstanceType.values() ).map( InstanceType::toString ).collect( toList() );
     }
 
+    @Override
+    public Ami describeAmi(String amiId) {
+        return null;
+    }
+
+    @Override
+    public Instance updateInstanceInfo(Instance instance) {
+        return null;
+    }
+
+    @Override
+    public List<Instance> updateInstancesInfo(List<Instance> instance) {
+        return null;
+    }
+
     private List<Instance> getMappedInstances( DescribeInstancesResponse describeInstancesResponse ) {
         return describeInstancesResponse.reservations()
                 .get( 0 )

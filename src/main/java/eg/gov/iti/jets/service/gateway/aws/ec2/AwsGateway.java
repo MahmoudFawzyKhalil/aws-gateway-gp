@@ -13,12 +13,6 @@ public interface AwsGateway {
 
     List<Vpc> describeVpcs();
 
-//    /**
-//     * @param subnetIds subnetIds to retrieve details for
-//     * @return List of available Subnets in Ec2 service
-//     */
-//    List<Subnet> describeSubnets(List<String> subnetIds);
-
     /**
      * An EC2 instance must belong to a specific subnet, and a subnet must belong to a specific VPC.
      *
@@ -32,17 +26,6 @@ public interface AwsGateway {
      * @return KeyPair must be saved immediately to the database as the {@link KeyPair#keyMaterial} (the secret key) can't be obtained again through any other method.
      */
     KeyPair createKeyPair(String keyName);// must be saved immediately to db upon being obtained
-
-//    /**
-//     * @param securityGroupIds Security group ids for which to return details
-//     * @return List of available SecurityGroups in Ec2 service
-//     */
-//    List<SecurityGroup> describeSecurityGroups(List<String> securityGroupIds);
-
-//    /**
-//     * @return List of available security groups in Ec2 service
-//     */
-//    List<SecurityGroup> describeAllSecurityGroups();
 
     /**
      * An EC2 instance must belong to a particular subnet in a particular VPC.
@@ -104,5 +87,15 @@ public interface AwsGateway {
      */
     List<Instance> describeInstances(List<String> instanceIds);
 
+    // TODO javadoc
     List<String> getInstanceTypes();
+
+    // TODO implement + javadoc + unit test
+    Ami describeAmi(String amiId);
+
+    // TODO implement
+    Instance updateInstanceInfo(Instance instance);
+
+    // TODO implement
+    List<Instance> updateInstancesInfo(List<Instance> instance);
 }
