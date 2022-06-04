@@ -26,7 +26,9 @@ public class AwsGatewayImplTest {
 
     @BeforeAll
     public static void test(){
-        awsGateway= new AwsGatewayImpl( Ec2Client.builder().region( Region.EU_WEST_1 ).credentialsProvider(        ProfileCredentialsProvider.create())
+        awsGateway= new AwsGatewayImpl( Ec2Client.builder()
+                .region( Region.EU_WEST_1 )
+                .credentialsProvider(ProfileCredentialsProvider.create())
                 .build() );
     }
 
@@ -54,6 +56,7 @@ public class AwsGatewayImplTest {
     }
 
     @Test
+    @Disabled
     void describeSecurityGroupsForVpc() {
         String s = "vpc-0568de5e397124e85";
         List<SecurityGroup> securityGroups = awsGateway.describeSecurityGroupsForVpc( s );
@@ -61,20 +64,25 @@ public class AwsGatewayImplTest {
     }
 
     @Test
+    @Disabled
     void startInstance() {
-      //  awsGateway.startInstance(  )
-
+         awsGateway.startInstance( "i-064bcb93e8b674643" ) ;
     }
 
     @Test
+    @Disabled
     void stopInstance() {
+        awsGateway.stopInstance( "i-064bcb93e8b674643" );
     }
 
     @Test
+    @Disabled
     void terminateInstance() {
+        awsGateway.terminateInstance( "i-064bcb93e8b674643" ) ;
     }
 
     @Test
+    @Disabled
     void createInstance() {
         List<String> securityGroupNames = new ArrayList<>();
         securityGroupNames.add( "sg-0a0179c23e4cddfb8" );
@@ -98,21 +106,13 @@ public class AwsGatewayImplTest {
 
     @Test
     void describeInstance() {
-    }
-
-    @Test
-    void describeInstances() {
+        Instance instance = awsGateway.describeInstance( "i-064bcb93e8b674643" ).get();
+        assertNotEquals( null , instance );
     }
 
     @Test
     void getInstanceTypes() {
+        assertNotEquals( 0 , awsGateway.getInstanceTypes().size() );
     }
-
-//    @Test
-//    public void describeVpcsFail() {
-//      Assertions.assertEquals(awsGateway.describeVpcs().size() , 2 );
-//    }
-
-
 
 }
