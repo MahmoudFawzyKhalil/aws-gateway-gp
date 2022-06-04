@@ -57,7 +57,8 @@ class AwsGatewayImpl implements AwsGateway {
 
 
     }
-   private Subnet mapAwsSubnetToModel(software.amazon.awssdk.services.ec2.model.Subnet awsSubnet){
+
+    private Subnet mapAwsSubnetToModel(software.amazon.awssdk.services.ec2.model.Subnet awsSubnet) {
 
         Subnet subnet = new Subnet();
         subnet.setSubnetId(awsSubnet.subnetId());
@@ -68,11 +69,12 @@ class AwsGatewayImpl implements AwsGateway {
         subnet.setMapPublicIpOnLaunch(awsSubnet.mapPublicIpOnLaunch());
 
         return subnet;
-   }
+    }
+
     @Override
     public List<Subnet> describeAllSubnets() {
-       var awsSubnets= ec2Client.describeSubnets();
-       return awsSubnets.subnets().stream().map(this::mapAwsSubnetToModel).collect(toList());
+        var awsSubnets = ec2Client.describeSubnets();
+        return awsSubnets.subnets().stream().map(this::mapAwsSubnetToModel).collect(toList());
 
     }
 
@@ -87,7 +89,7 @@ class AwsGatewayImpl implements AwsGateway {
         return keyPair;
     }
 
-    @Override //TODO refactor to use streams
+    @Override
     public List<SecurityGroup> describeSecurityGroups(List<String> securityGroupIds) {
 
         var securityGroups = new ArrayList<>();
@@ -103,32 +105,42 @@ class AwsGatewayImpl implements AwsGateway {
 
 
     }
-    private SecurityGroup mapAwsSecurityGroupToModel(software.amazon.awssdk.services.ec2.model.SecurityGroup securityGroup){
+
+    private SecurityGroup mapAwsSecurityGroupToModel(software.amazon.awssdk.services.ec2.model.SecurityGroup securityGroup) {
 
         SecurityGroup securityGroupModel = new SecurityGroup();
-        Set<InboundRule>inboundRules = new HashSet<>();
         securityGroupModel.setDescription(securityGroup.description());
         securityGroupModel.setSecurityGroupId(securityGroup.groupId());
         securityGroupModel.setVpcId(securityGroup.vpcId());
         securityGroupModel.setName(securityGroup.groupName());
         List<IpPermission> ipPermissionList = securityGroup.ipPermissions();
-
-        for (IpPermission ipPermission : ipPermissionList) {
-            InboundRule inboundRule = new InboundRule();
-            inboundRule.setFromPort(ipPermission.fromPort());
-            inboundRule.setToPort(ipPermission.toPort());
-            inboundRule.setIpProtocol(ipPermission.ipProtocol());
-            inboundRule.setIpRangeAllowedIn(ipPermission.ipRanges().get(0).cidrIp());
-            inboundRules.add(inboundRule);
-        }
+        var ipPermissionsEgress = securityGroup.ipPermissionsEgress();
+        var inboundRules = ipPermissionList.stream().map(this::mapAwsInboundRuleToModel).collect(toSet());
         securityGroupModel.setInboundRules(inboundRules);
-
+        var outBoundRules = ipPermissionsEgress.stream().map(this::mapAwsOutboundRuleToModel).collect(toSet());
+        securityGroupModel.setOutboundRules(outBoundRules);
         return securityGroupModel;
     }
+
+    private InboundRule mapAwsInboundRuleToModel(software.amazon.awssdk.services.ec2.model.IpPermission ipPermission) {
+        InboundRule inboundRule = new InboundRule();
+        inboundRule.setFromPort(ipPermission.fromPort());
+        inboundRule.setToPort(ipPermission.toPort());
+        inboundRule.setIpProtocol(ipPermission.ipProtocol());
+        inboundRule.setIpRangeAllowedIn(ipPermission.ipRanges().get(0).cidrIp());
+        return inboundRule;
+    }
+
+    private OutboundRule mapAwsOutboundRuleToModel(software.amazon.awssdk.services.ec2.model.IpPermission ipPermission) {
+        OutboundRule outboundRule = new OutboundRule();
+        outboundRule.setIpProtocol(ipPermission.ipProtocol());
+        outboundRule.setIpRangeAllowedOut(ipPermission.ipRanges().get(0).cidrIp());
+        return outboundRule;
+    }
+
     @Override
     public List<SecurityGroup> describeAllSecurityGroups() {
-       var securityGroupsResponse= ec2Client.describeSecurityGroups();
-
+        var securityGroupsResponse = ec2Client.describeSecurityGroups();
         return securityGroupsResponse.securityGroups().stream().
                 map(this::mapAwsSecurityGroupToModel).
                 collect(toList());
@@ -136,12 +148,11 @@ class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public String startInstance(String instanceId) {
-
         StartInstancesRequest request = StartInstancesRequest.builder()
                 .instanceIds(instanceId)
                 .build();
-        StartInstancesResponse startInstancesResponse = ec2Client.startInstances(request);
 
+        StartInstancesResponse startInstancesResponse = ec2Client.startInstances(request);
         return startInstancesResponse.startingInstances().get(0).currentState().toString();
     }
 
