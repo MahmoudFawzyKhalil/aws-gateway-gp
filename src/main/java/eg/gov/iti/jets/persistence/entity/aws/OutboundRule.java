@@ -21,5 +21,4 @@ public class OutboundRule {
 
     private String ipProtocol;
     private String ipRangeAllowedOut ;
-    private String securityGroupId;
 }
