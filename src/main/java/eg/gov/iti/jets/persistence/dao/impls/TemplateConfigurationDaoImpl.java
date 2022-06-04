@@ -15,7 +15,7 @@ import java.util.Optional;
 @Repository
 public class TemplateConfigurationDaoImpl implements TemplateConfigurationDao {
 
-    private TemplateConfigurationRepo templateConfigurationRepo;
+    private final TemplateConfigurationRepo templateConfigurationRepo;
 
     public TemplateConfigurationDaoImpl(TemplateConfigurationRepo templateConfigurationRepo){
         this.templateConfigurationRepo=templateConfigurationRepo;
