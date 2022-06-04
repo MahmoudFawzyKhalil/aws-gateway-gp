@@ -17,6 +17,10 @@ public class TemplateConfigurationDaoImpl implements TemplateConfigurationDao {
 
     private TemplateConfigurationRepo templateConfigurationRepo;
 
+    public TemplateConfigurationDaoImpl(TemplateConfigurationRepo templateConfigurationRepo){
+        this.templateConfigurationRepo=templateConfigurationRepo;
+    }
+
     @Override
     public TemplateConfiguration save(TemplateConfiguration templateConfiguration) {
         return templateConfigurationRepo.save(templateConfiguration);
