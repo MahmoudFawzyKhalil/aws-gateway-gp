@@ -21,5 +21,5 @@ public class InboundRule {
     private Integer fromPort;
     private Integer toPort;
     private String ipProtocol;
-    private String ipRangeAllowedIn; // mapped from IpRange
+    private String ipRangeAllowedIn;
 }

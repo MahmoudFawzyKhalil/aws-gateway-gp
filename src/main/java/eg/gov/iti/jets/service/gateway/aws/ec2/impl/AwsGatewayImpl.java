@@ -13,7 +13,6 @@ import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static java.util.stream.Collectors.*;
 
@@ -42,21 +41,21 @@ class AwsGatewayImpl implements AwsGateway {
         return vpc;
     }
 
-    @Override
-    public List<Subnet> describeSubnets(List<String> subnetIds) {
-        DescribeSubnetsRequest describeSubnetsRequest = DescribeSubnetsRequest.builder()
-                .subnetIds(subnetIds)
-                .build();
-
-        DescribeSubnetsResponse describeSubnetsResponse = ec2Client.describeSubnets(describeSubnetsRequest);
-
-        var subnets = describeSubnetsResponse.subnets();
-
-
-        return subnets.stream().map(this::mapAwsSubnetToModel).collect(toList());
-
-
-    }
+//    @Override
+//    public List<Subnet> describeSubnets(List<String> subnetIds) {
+//        DescribeSubnetsRequest describeSubnetsRequest = DescribeSubnetsRequest.builder()
+//                .subnetIds(subnetIds)
+//                .build();
+//
+//        DescribeSubnetsResponse describeSubnetsResponse = ec2Client.describeSubnets(describeSubnetsRequest);
+//
+//        var subnets = describeSubnetsResponse.subnets();
+//
+//
+//        return subnets.stream().map(this::mapAwsSubnetToModel).collect(toList());
+//
+//
+//    }
 
     private Subnet mapAwsSubnetToModel(software.amazon.awssdk.services.ec2.model.Subnet awsSubnet) {
 
@@ -89,22 +88,22 @@ class AwsGatewayImpl implements AwsGateway {
         return keyPair;
     }
 
-    @Override
-    public List<SecurityGroup> describeSecurityGroups(List<String> securityGroupIds) {
-
-        var securityGroups = new ArrayList<>();
-        var inboundRules = new HashSet<>();
-        var describeSecurityGroupsRequest = DescribeSecurityGroupsRequest.builder()
-                .groupIds(securityGroupIds)
-                .build();
-
-        var describeSecurityGroupsResponse = ec2Client.describeSecurityGroups(describeSecurityGroupsRequest);
-        var securityGroupList = describeSecurityGroupsResponse.securityGroups();
-
-        return securityGroupList.stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
-
-
-    }
+//    @Override
+//    public List<SecurityGroup> describeSecurityGroups(List<String> securityGroupIds) {
+//
+//        var securityGroups = new ArrayList<>();
+//        var inboundRules = new HashSet<>();
+//        var describeSecurityGroupsRequest = DescribeSecurityGroupsRequest.builder()
+//                .groupIds(securityGroupIds)
+//                .build();
+//
+//        var describeSecurityGroupsResponse = ec2Client.describeSecurityGroups(describeSecurityGroupsRequest);
+//        var securityGroupList = describeSecurityGroupsResponse.securityGroups();
+//
+//        return securityGroupList.stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
+//
+//
+//    }
 
     private SecurityGroup mapAwsSecurityGroupToModel(software.amazon.awssdk.services.ec2.model.SecurityGroup securityGroup) {
 
@@ -138,9 +137,20 @@ class AwsGatewayImpl implements AwsGateway {
         return outboundRule;
     }
 
+//    @Override
+//    public List<SecurityGroup> describeAllSecurityGroups() {
+//        var securityGroupsResponse = ec2Client.describeSecurityGroups();
+//        return securityGroupsResponse.securityGroups().stream().
+//                map(this::mapAwsSecurityGroupToModel).
+//                collect(toList());
+//    }
+
     @Override
-    public List<SecurityGroup> describeAllSecurityGroups() {
-        var securityGroupsResponse = ec2Client.describeSecurityGroups();
+    public List<SecurityGroup> describeSecurityGroupsForVpc(String vpcId) {
+        DescribeSecurityGroupsRequest build = DescribeSecurityGroupsRequest.builder()
+                .filters(Filter.builder().name("vpc-id").values(vpcId).build())
+                .build();
+        var securityGroupsResponse = ec2Client.describeSecurityGroups(build);
         return securityGroupsResponse.securityGroups().stream().
                 map(this::mapAwsSecurityGroupToModel).
                 collect(toList());
@@ -176,7 +186,7 @@ class AwsGatewayImpl implements AwsGateway {
         return terminateInstancesResponse.terminatingInstances().get(0).currentState().toString();
     }
 
-    @Override
+    @Override //TODO use the new createinstnace command parameters + add validation for security groups must be present
     public Instance createInstance(CreateInstanceCommand command) {
         KeyPair keyPair = command.getKeyPair();
 
@@ -217,7 +227,7 @@ class AwsGatewayImpl implements AwsGateway {
         return instance;
     }
 
-    @Override
+    @Override // TODO grab the security groups from the template configuration
     public Instance createInstance(TemplateConfiguration template, String instanceName) {
         Tag tag = Tag.builder()
                 .key("Name")
@@ -270,6 +280,11 @@ class AwsGatewayImpl implements AwsGateway {
         return describeInstancesResponse.hasReservations() && describeInstancesResponse.reservations().get(0).hasInstances()
                 ? getMappedInstances(describeInstancesResponse)
                 : new ArrayList<>();
+    }
+
+    @Override // TODO return the enum as a list of string
+    public List<String> getInstanceTypes() {
+        return null;
     }
 
     private List<Instance> getMappedInstances(DescribeInstancesResponse describeInstancesResponse) {
