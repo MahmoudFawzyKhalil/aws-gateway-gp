@@ -15,6 +15,8 @@ import software.amazon.awssdk.services.ec2.model.*;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import static java.util.stream.Collectors.*;
+
 @Service
 class AwsGatewayImpl implements AwsGateway {
     private final Ec2Client ec2Client;
@@ -25,43 +27,51 @@ class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public List<Vpc> describeVpcs() {
-
-        List<Vpc> vpcs = new ArrayList<>();
         DescribeVpcsResponse describeVpcsResponse = ec2Client.describeVpcs();
-        List<software.amazon.awssdk.services.ec2.model.Vpc> awsVpcs = describeVpcsResponse.vpcs();
-        for (software.amazon.awssdk.services.ec2.model.Vpc vpc : awsVpcs) {
-            var vpcmodel = new Vpc();
-            vpcmodel.setState(vpc.state().toString());
-            vpcmodel.setVpcId(vpc.vpcId());
-            vpcmodel.setCidrBlock(vpc.cidrBlock());
-            vpcs.add(vpcmodel);
-        }
+        var awsVpcs = describeVpcsResponse.vpcs();
+        return awsVpcs.stream()
+                .map(this::mapAwsVpcToModel)
+                .collect(toList());
+    }
 
-        return vpcs;
+    private Vpc mapAwsVpcToModel(software.amazon.awssdk.services.ec2.model.Vpc awsVpc) {
+        Vpc vpc = new Vpc();
+        vpc.setState(awsVpc.state().toString());
+        vpc.setVpcId(awsVpc.vpcId());
+        vpc.setCidrBlock(awsVpc.cidrBlock());
+        return vpc;
     }
 
     @Override
-    public List<Subnet> describeSubnets(DescribeSubnetsCommand command) {
-
-        List<Subnet> subnets = new ArrayList<>();
+    public List<Subnet> describeSubnets(List<String> subnetIds) {
         DescribeSubnetsRequest describeSubnetsRequest = DescribeSubnetsRequest.builder()
-                .subnetIds(command.getSubnetIds())
+                .subnetIds(subnetIds)
                 .build();
+
         DescribeSubnetsResponse describeSubnetsResponse = ec2Client.describeSubnets(describeSubnetsRequest);
-        List<software.amazon.awssdk.services.ec2.model.Subnet> subnetList = describeSubnetsResponse.subnets();
-        for (software.amazon.awssdk.services.ec2.model.Subnet subnet : subnetList) {
-            Subnet subnetModel = new Subnet();
-            subnetModel.setSubnetId(subnet.subnetId());
-            subnetModel.setCidrBlock(subnet.cidrBlock());
-            subnetModel.setVpcId(subnet.vpcId());
-            subnetModel.setAvailabilityZone(subnet.availabilityZone());
-            subnetModel.setAvailabilityZoneId(subnet.availabilityZoneId());
-            subnetModel.setMapPublicIpOnLaunch(subnet.mapPublicIpOnLaunch());
-            subnets.add(subnetModel);
-        }
-        return subnets;
+
+        var subnets = describeSubnetsResponse.subnets();
+        // TODO refactor to use streams
+
+//        for (software.amazon.awssdk.services.ec2.model.Subnet subnet : subnets) {
+//            Subnet subnetModel = new Subnet();
+//            subnetModel.setSubnetId(subnet.subnetId());
+//            subnetModel.setCidrBlock(subnet.cidrBlock());
+//            subnetModel.setVpcId(subnet.vpcId());
+//            subnetModel.setAvailabilityZone(subnet.availabilityZone());
+//            subnetModel.setAvailabilityZoneId(subnet.availabilityZoneId());
+//            subnetModel.setMapPublicIpOnLaunch(subnet.mapPublicIpOnLaunch());
+//            subnets.add(subnetModel);
+//        }
+//        return subnets;
+
+        return null;
     }
 
+    @Override
+    public List<Subnet> describeAllSubnets() {
+        return null; //TODO
+    }
 
     @Override
     public KeyPair createKeyPair(String keyName) {
@@ -74,13 +84,13 @@ class AwsGatewayImpl implements AwsGateway {
         return keyPair;
     }
 
-    @Override
-    public List<SecurityGroup> describeSecurityGroups(DescribeSecurityGroupsCommand command) {
+    @Override //TODO refactor to use streams
+    public List<SecurityGroup> describeSecurityGroups(List<String> securityGroupIds) {
 
         List<SecurityGroup> securityGroups = new ArrayList<>();
         Set<InboundRule> inboundRules = new HashSet<>();
         DescribeSecurityGroupsRequest describeSecurityGroupsRequest = DescribeSecurityGroupsRequest.builder()
-                .groupIds(command.getSecurityGroupIds())
+                .groupIds(securityGroupIds)
                 .build();
 
         DescribeSecurityGroupsResponse describeSecurityGroupsResponse = ec2Client.describeSecurityGroups(describeSecurityGroupsRequest);
@@ -108,6 +118,11 @@ class AwsGatewayImpl implements AwsGateway {
 
 
         return securityGroups;
+    }
+
+    @Override // TODO
+    public List<SecurityGroup> describeAllSecurityGroups() {
+        return null;
     }
 
     @Override
@@ -238,7 +253,7 @@ class AwsGatewayImpl implements AwsGateway {
     }
 
     private List<Instance> getMappedInstances(DescribeInstancesResponse describeInstancesResponse) {
-        return describeInstancesResponse.reservations().get(0).instances().stream().map(this::mapDescribeInstanceProperties).collect(Collectors.toList());
+        return describeInstancesResponse.reservations().get(0).instances().stream().map(this::mapDescribeInstanceProperties).collect(toList());
     }
 
 }

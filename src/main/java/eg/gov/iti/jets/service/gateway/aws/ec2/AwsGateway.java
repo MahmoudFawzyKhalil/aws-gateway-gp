@@ -15,10 +15,11 @@ public interface AwsGateway {
     List<Vpc> describeVpcs();
 
     /**
-     * @param command Describes how to retrieve available subnets
+     * @param subnetIds subnetIds to retrieve details for
      * @return List of available Subnets in Ec2 service
      */
-    List<Subnet> describeSubnets(DescribeSubnetsCommand command);
+    List<Subnet> describeSubnets(List<String> subnetIds);
+    List<Subnet> describeAllSubnets();
 
     /**
      * Creates a key pair with the given name. A key pair is later used to create an EC2 instance. To be able to access a Linux EC2 instance via SSH the key pair's {@link KeyPair#keyMaterial} must be available to the user of our system to be downloaded as a .pem or .ppk file.
@@ -28,10 +29,11 @@ public interface AwsGateway {
     KeyPair createKeyPair(String keyName);// must be saved immediately to db upon being obtained
 
     /**
-     * @param command Describe how to retrieve available  SecurityGroups
+     * @param securityGroupIds Security group ids for which to return details
      * @return List of available SecurityGroups in Ec2 service
      */
-    List<SecurityGroup> describeSecurityGroups(DescribeSecurityGroupsCommand command);
+    List<SecurityGroup> describeSecurityGroups(List<String> securityGroupIds);
+    List<SecurityGroup> describeAllSecurityGroups();
 
     /**
      * @param instanceId Specify the id of instance you want to start
