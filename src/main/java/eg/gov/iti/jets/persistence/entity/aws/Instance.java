@@ -27,9 +27,7 @@ public class Instance {
     @Column(name = "aws_instance_id", unique = true)
     private String instanceId;
     @Column(name = "state")
-    private String state; // TODO this has been changed from Enum to String -- this todo is just to let you know ♥
-    @Column(name = "instance_keymaterial")
-    private String keyMaterial;
+    private String state;
     @Column(name = "instance_publicip")
     private String publicIp;
     @Column(name = "instance_public_dns_name")
