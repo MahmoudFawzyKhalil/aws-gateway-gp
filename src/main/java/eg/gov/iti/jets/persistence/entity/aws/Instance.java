@@ -5,7 +5,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -23,26 +22,42 @@ public class Instance {
     private Integer id;
     @Column(name = "instance_name")
     private String name;
-    @Column(name = "aws_instance_id",unique = true)
+    @Column(name = "ami_id")
+    String amiId;
+    @Column(name = "aws_instance_id", unique = true)
     private String instanceId;
+    @Column(name = "state")
+    private String state; // TODO this has been changed from Enum to String -- this todo is just to let you know ♥
     @Column(name = "instance_keymaterial")
     private String keyMaterial;
     @Column(name = "instance_publicip")
     private String publicIp;
-    @Column(name = "instance_publicdns")
-    private String publicDNS;
+    @Column(name = "instance_public_dns_name")
+    private String publicDnsName;
+    @Column(name = "instance_type")
+    private String instanceType;
+    @Column(name = "subnet_id")
+    private String subnetId;
+    @Column(name = "vpc_id")
+    private String vpcId;
     @Column(name = "instance_password")
     private String decryptedPassword;
     @Column(name = "instance_username")
     private String username;
     @Column(name = "creation_date_time")
     private LocalDateTime creationDateTime;
-
-    @Column(name = "instance_keypair",unique = true)
-    private String keyPair;
+    @OneToOne
+    @JoinColumn(name = "key_pair_id")
+    private KeyPair keyPair;
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User creator;
-//    @ManyToMany(mappedBy = "instances")
-//    private List<User> instanceUsers;
+    @ManyToMany(mappedBy = "grantedInstances")
+    private List<User> instanceUsers;
+    @ManyToMany
+    @JoinTable(name = "instance_security_groups",
+            joinColumns = @JoinColumn(name = "instance_id"),
+            inverseJoinColumns = @JoinColumn(name = "security_group_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"instance_id", "security_group_id"}))
+    private List<SecurityGroup> securityGroups;
 }

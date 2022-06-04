@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.persistence.entity;
 
+
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,16 +29,20 @@ public class User {
     private String username;
     @Column(unique = true)
     private String email;
+    @NotNull
+    private String password;
 
 
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
 
-    //todo can join multiple tracks or not
-    @ManyToOne
-    @JoinColumn(name = "track_id", nullable = false)
-    private Track track;
+    @ManyToMany
+    @JoinTable(name = "user_tracks",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "track_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "track_id"}))
+    private List<Track> tracks;
 
 
 //    @OneToMany(mappedBy = "creator")
