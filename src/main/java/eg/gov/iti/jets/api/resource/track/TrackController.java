@@ -1,8 +1,8 @@
 package eg.gov.iti.jets.api.resource.track;
 
 import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.service.management.impl.TrackManagement;
-import eg.gov.iti.jets.service.model.Track;
+import eg.gov.iti.jets.persistence.entity.Track;
+import eg.gov.iti.jets.service.management.impl.TrackManagementImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 @RequestMapping("/api/tracks")
 
 public class TrackController {
-    final TrackManagement trackManagement;
+    final TrackManagementImpl trackManagement;
     final Mapper mapper;
 
-    public TrackController( TrackManagement trackManagement , Mapper mapper){
+    public TrackController( TrackManagementImpl trackManagement , Mapper mapper){
         this.trackManagement = trackManagement;
         this.mapper = mapper;
     }

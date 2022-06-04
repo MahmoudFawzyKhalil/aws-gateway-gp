@@ -1,7 +1,7 @@
 package eg.gov.iti.jets.api.resource.template;
 
 import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.service.management.impl.TemplateManagement;
+import eg.gov.iti.jets.service.management.impl.TemplateManagementImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -10,10 +10,10 @@ import java.util.List;
 @RequestMapping("/api/template")
 public class TemplateController {
 
-    final TemplateManagement templateManagement;
+    final TemplateManagementImpl templateManagement;
     final Mapper mapper;
 
-    public TemplateController( TemplateManagement templateManagement, Mapper mapper ) {
+    public TemplateController( TemplateManagementImpl templateManagement, Mapper mapper ) {
         this.templateManagement = templateManagement;
         this.mapper = mapper;
     }

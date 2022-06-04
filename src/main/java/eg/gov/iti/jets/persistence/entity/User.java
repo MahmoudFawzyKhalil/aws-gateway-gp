@@ -45,14 +45,14 @@ public class User {
     private List<Track> tracks;
 
 
-//    @OneToMany(mappedBy = "creator")
-//    private List<Instance> createdInstances = new ArrayList<>();
-//
-//    @ManyToMany
-//    @JoinTable(name = "user_granted_instances",
-//            joinColumns = @JoinColumn(name = "user_id"),
-//            inverseJoinColumns = @JoinColumn(name = "instance_id"),
-//            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "instance_id"}))
-//    private List<Instance> grantedInstances = new ArrayList<>();
+    @OneToMany(mappedBy = "creator")
+    private List<Instance> createdInstances = new ArrayList<>();
+
+    @ManyToMany
+    @JoinTable(name = "user_granted_instances",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "instance_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "instance_id"}))
+    private List<Instance> grantedInstances = new ArrayList<>();
 
 }

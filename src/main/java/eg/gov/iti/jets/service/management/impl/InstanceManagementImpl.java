@@ -3,7 +3,7 @@ package eg.gov.iti.jets.service.management.impl;
 import org.springframework.stereotype.Service;
 
 @Service
-public class InstanceManagement {
+public class InstanceManagementImpl {
 
     public void createInstances(){}
 

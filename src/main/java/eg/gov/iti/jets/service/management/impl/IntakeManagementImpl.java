@@ -1,20 +1,21 @@
 package eg.gov.iti.jets.service.management.impl;
 
+import eg.gov.iti.jets.persistence.entity.Intake;
 import eg.gov.iti.jets.service.management.CrudOperations;
-import eg.gov.iti.jets.service.model.Track;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TrackManagement implements CrudOperations<Track> {
+public class IntakeManagementImpl implements CrudOperations<Intake> {
+
     @Override
-    public Boolean create(Track type) {
+    public Boolean create( Intake type) {
         return null;
     }
 
     @Override
-    public Track update(Track type) {
+    public Intake update(Intake type) {
         return null;
     }
 
@@ -24,14 +25,12 @@ public class TrackManagement implements CrudOperations<Track> {
     }
 
     @Override
-    public List<Track> getAll() {
+    public List<Intake> getAll() {
         return null;
     }
 
     @Override
-    public Track getById(int id) {
+    public Intake getById(int id) {
         return null;
     }
-
-    //TODO getTrackByName
 }

@@ -1,6 +1,6 @@
 package eg.gov.iti.jets.service.management;
 
-import eg.gov.iti.jets.service.model.User;
+import eg.gov.iti.jets.persistence.entity.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

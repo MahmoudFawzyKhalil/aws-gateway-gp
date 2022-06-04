@@ -1,7 +1,7 @@
 package eg.gov.iti.jets.service.management.impl;
 
+import eg.gov.iti.jets.persistence.entity.Privilege;
 import eg.gov.iti.jets.service.management.PrivilegeManagement;
-import eg.gov.iti.jets.service.model.Privilege;
 
 import java.util.List;
 

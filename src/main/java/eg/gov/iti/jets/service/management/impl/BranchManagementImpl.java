@@ -1,7 +1,7 @@
 package eg.gov.iti.jets.service.management.impl;
 
+import eg.gov.iti.jets.persistence.entity.Branch;
 import eg.gov.iti.jets.service.management.BranchManagement;
-import eg.gov.iti.jets.service.model.Branch;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package eg.gov.iti.jets.service.management;
 
-import eg.gov.iti.jets.service.model.Branch;
+import eg.gov.iti.jets.persistence.entity.Branch;
 
 import java.util.List;
 

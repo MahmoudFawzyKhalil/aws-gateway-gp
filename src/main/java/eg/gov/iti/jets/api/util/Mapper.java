@@ -10,12 +10,16 @@ import eg.gov.iti.jets.api.resource.track.TrackRequest;
 import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
+import eg.gov.iti.jets.persistence.entity.Branch;
+import eg.gov.iti.jets.persistence.entity.Intake;
+import eg.gov.iti.jets.persistence.entity.Track;
+import eg.gov.iti.jets.persistence.entity.TrainingProgram;
 import eg.gov.iti.jets.service.model.*;
 import org.springframework.stereotype.Component;
 
 @Component
 public class Mapper {
-    public Branch mapFromBranchRequestToBranch(BranchRequest branchRequest){
+    public Branch mapFromBranchRequestToBranch( BranchRequest branchRequest){
         return null;
     }
 
@@ -32,21 +36,21 @@ public class Mapper {
 
 
 
-    public IntakeResponse mapFromIntakeToIntakeResponse(Intake intake) {
+    public IntakeResponse mapFromIntakeToIntakeResponse( Intake intake) {
         return null;
     }
 
     public Intake mapFromIntakeRequestToIntake(IntakeRequest intakeRequest){return null;}
 
-    public Supervisor mapFromSupervisorRequestToSupervisor(SupervisorRequest supervisorRequest) {
-        return  null;
-    }
+//    public Supervisor mapFromSupervisorRequestToSupervisor(SupervisorRequest supervisorRequest) {
+//        return  null;
+//    }
+//
+//    public SupervisorResponse mapFromSupervisorToSupervisorResponse(Supervisor supervisor) {
+//        return null;
+//    }
 
-    public SupervisorResponse mapFromSupervisorToSupervisorResponse(Supervisor supervisor) {
-        return null;
-    }
-
-    public Track mapFromTrackRequestToTrack(TrackRequest trackRequest) {
+    public Track mapFromTrackRequestToTrack( TrackRequest trackRequest) {
         return null;
     }
 

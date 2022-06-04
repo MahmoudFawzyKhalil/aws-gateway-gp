@@ -1,8 +1,8 @@
 package eg.gov.iti.jets.service.management.impl;
 
+import eg.gov.iti.jets.persistence.entity.Role;
+import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.RoleManagement;
-import eg.gov.iti.jets.service.model.Role;
-import eg.gov.iti.jets.service.model.User;
 
 import java.util.List;
 

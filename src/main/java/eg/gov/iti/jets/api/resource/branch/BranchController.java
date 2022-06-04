@@ -2,8 +2,8 @@ package eg.gov.iti.jets.api.resource.branch;
 
 
 import eg.gov.iti.jets.api.util.Mapper;
+import eg.gov.iti.jets.persistence.entity.Branch;
 import eg.gov.iti.jets.service.management.BranchManagement;
-import eg.gov.iti.jets.service.model.Branch;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

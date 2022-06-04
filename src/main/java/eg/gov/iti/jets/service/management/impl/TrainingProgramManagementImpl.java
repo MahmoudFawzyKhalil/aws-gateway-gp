@@ -1,13 +1,12 @@
 package eg.gov.iti.jets.service.management.impl;
 
-import eg.gov.iti.jets.service.model.Branch;
-import eg.gov.iti.jets.service.model.TrainingProgram;
+import eg.gov.iti.jets.persistence.entity.TrainingProgram;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class TrainingProgramManagement {
+public class TrainingProgramManagementImpl {
 
     public Boolean createTrainingProgram( TrainingProgram trainingProgram){
         return null;

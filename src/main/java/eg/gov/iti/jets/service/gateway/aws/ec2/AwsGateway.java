@@ -2,8 +2,6 @@ package eg.gov.iti.jets.service.gateway.aws.ec2;
 
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.service.model.CreateInstanceCommand;
-import eg.gov.iti.jets.service.model.DescribeSecurityGroupsCommand;
-import eg.gov.iti.jets.service.model.DescribeSubnetsCommand;
 
 import java.util.List;
 import java.util.Optional;

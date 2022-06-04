@@ -2,8 +2,8 @@ package eg.gov.iti.jets.api.resource.intake;
 
 
 import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.service.management.impl.IntakeManagement;
-import eg.gov.iti.jets.service.model.Intake;
+import eg.gov.iti.jets.persistence.entity.Intake;
+import eg.gov.iti.jets.service.management.impl.IntakeManagementImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/intakes")
 public class IntakeController {
-    final IntakeManagement intakeManagement;
+    final IntakeManagementImpl intakeManagement;
     final Mapper mapper;
 
-    public IntakeController(IntakeManagement intakeManagement , Mapper mapper){
+    public IntakeController( IntakeManagementImpl intakeManagement , Mapper mapper){
         this.intakeManagement=intakeManagement ;
         this.mapper=mapper;
     }

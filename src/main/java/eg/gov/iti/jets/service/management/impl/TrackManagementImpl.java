@@ -1,21 +1,20 @@
 package eg.gov.iti.jets.service.management.impl;
 
+import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.service.management.CrudOperations;
-import eg.gov.iti.jets.service.model.Supervisor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class SupervisorManagement implements CrudOperations<Supervisor> {
-
+public class TrackManagementImpl implements CrudOperations<Track> {
     @Override
-    public Boolean create(Supervisor type) {
+    public Boolean create(Track type) {
         return null;
     }
 
     @Override
-    public Supervisor update(Supervisor type) {
+    public Track update(Track type) {
         return null;
     }
 
@@ -25,12 +24,14 @@ public class SupervisorManagement implements CrudOperations<Supervisor> {
     }
 
     @Override
-    public List<Supervisor> getAll() {
+    public List<Track> getAll() {
         return null;
     }
 
     @Override
-    public Supervisor getById(int id) {
+    public Track getById(int id) {
         return null;
     }
+
+    //TODO getTrackByName
 }

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class TemplateManagement {
+public class TemplateManagementImpl {
 
     public Boolean createTemplate( List<String> configs){
         return null;

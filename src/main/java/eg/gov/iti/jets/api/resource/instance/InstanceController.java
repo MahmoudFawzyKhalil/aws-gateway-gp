@@ -1,16 +1,16 @@
 package eg.gov.iti.jets.api.resource.instance;
 
 
-import eg.gov.iti.jets.service.management.impl.InstanceManagement;
+import eg.gov.iti.jets.service.management.impl.InstanceManagementImpl;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/instances")
 public class InstanceController {
 
-    private final InstanceManagement instanceManagement;
+    private final InstanceManagementImpl instanceManagement;
 
-    public InstanceController(InstanceManagement instanceManagement) {
+    public InstanceController( InstanceManagementImpl instanceManagement) {
         this.instanceManagement = instanceManagement;
     }
 
