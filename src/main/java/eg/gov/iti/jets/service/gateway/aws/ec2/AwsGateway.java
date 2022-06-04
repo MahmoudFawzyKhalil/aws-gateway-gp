@@ -7,17 +7,12 @@ import java.util.List;
 import java.util.Optional;
 
 public interface AwsGateway {
+
     /**
      * @return Lists available VPCs for the account
      */
 
     List<Vpc> describeVpcs();
-
-//    /**
-//     * @param subnetIds subnetIds to retrieve details for
-//     * @return List of available Subnets in Ec2 service
-//     */
-//    List<Subnet> describeSubnets(List<String> subnetIds);
 
     /**
      * An EC2 instance must belong to a specific subnet, and a subnet must belong to a specific VPC.
@@ -32,17 +27,6 @@ public interface AwsGateway {
      * @return KeyPair must be saved immediately to the database as the {@link KeyPair#keyMaterial} (the secret key) can't be obtained again through any other method.
      */
     KeyPair createKeyPair(String keyName);// must be saved immediately to db upon being obtained
-
-//    /**
-//     * @param securityGroupIds Security group ids for which to return details
-//     * @return List of available SecurityGroups in Ec2 service
-//     */
-//    List<SecurityGroup> describeSecurityGroups(List<String> securityGroupIds);
-
-//    /**
-//     * @return List of available security groups in Ec2 service
-//     */
-//    List<SecurityGroup> describeAllSecurityGroups();
 
     /**
      * An EC2 instance must belong to a particular subnet in a particular VPC.
@@ -69,15 +53,6 @@ public interface AwsGateway {
      */
     String terminateInstance(String instanceId);
 
-    /**
-     * Creates a custom EC2 instance.
-     *
-     * @param command Describes the instance to be created
-     * @return The newly created instance
-     */
-
-    // TODO add security groups
-    Instance createInstance(CreateInstanceCommand command);
 
     /**
      * Creates instance according to a predefined template.
@@ -86,7 +61,7 @@ public interface AwsGateway {
      * @param instanceName The name of the instance that will be created
      * @return the newly created instance
      */
-    Instance createInstance(TemplateConfiguration template, String instanceName);
+    Instance createInstance(TemplateConfiguration template, String instanceName , KeyPair keyPair);
 
     /**
      * Describes an already created EC2 instance
@@ -104,5 +79,33 @@ public interface AwsGateway {
      */
     List<Instance> describeInstances(List<String> instanceIds);
 
+    /**
+     * Gets available instance types
+     *
+     * @return List of instance types as a {@code String}
+     */
     List<String> getInstanceTypes();
+
+    /**
+     * Describes aws ec2 image
+     *
+     * @param amiId The id of the image to be described
+     * @return an Optional describes the image
+     */
+    Optional<Ami> describeAmi(String amiId);
+
+
+    /**
+     * Updates instance info from aws, NOTICE: only instance public ip, DNS name and state are updated
+     *
+     * @param instance The instance to be updated
+     */
+    void updateInstanceInfoFromAws(Instance instance);
+
+    /**
+     * Updates instances info from aws, NOTICE: only instances public ips, DNS names and states are updated
+     *
+     * @param instances The instances to be updated
+     */
+    void updateInstancesInfoFromAws(List<Instance> instances);
 }
