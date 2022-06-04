@@ -17,5 +17,4 @@ public class CreateInstanceCommand {
     private String subnetId;
     private String instanceName;
     private List<String> securityGroupNames;
-    private List<String> securityGroupIds;
 }
