@@ -5,6 +5,7 @@ import eg.gov.iti.jets.service.management.UserManagement;
 import eg.gov.iti.jets.service.management.impl.UserManagementImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
@@ -52,6 +53,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/api/hello").hasAuthority("READ")
                 .mvcMatchers("/api/users").hasAnyAuthority("WRITE","READ")
                 .mvcMatchers("/api/login").permitAll()
+                .mvcMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .anyRequest()
                 .authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
