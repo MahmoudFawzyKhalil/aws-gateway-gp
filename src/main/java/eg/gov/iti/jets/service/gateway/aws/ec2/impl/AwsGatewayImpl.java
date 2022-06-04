@@ -51,23 +51,24 @@ class AwsGatewayImpl implements AwsGateway {
         DescribeSubnetsResponse describeSubnetsResponse = ec2Client.describeSubnets(describeSubnetsRequest);
 
         var subnets = describeSubnetsResponse.subnets();
-        // TODO refactor to use streams
 
-//        for (software.amazon.awssdk.services.ec2.model.Subnet subnet : subnets) {
-//            Subnet subnetModel = new Subnet();
-//            subnetModel.setSubnetId(subnet.subnetId());
-//            subnetModel.setCidrBlock(subnet.cidrBlock());
-//            subnetModel.setVpcId(subnet.vpcId());
-//            subnetModel.setAvailabilityZone(subnet.availabilityZone());
-//            subnetModel.setAvailabilityZoneId(subnet.availabilityZoneId());
-//            subnetModel.setMapPublicIpOnLaunch(subnet.mapPublicIpOnLaunch());
-//            subnets.add(subnetModel);
-//        }
-//        return subnets;
 
-        return null;
+        return subnets.stream().map(this::mapAwsSubnetToModel).collect(toList());
+
+
     }
+   private Subnet mapAwsSubnetToModel(software.amazon.awssdk.services.ec2.model.Subnet awsSubnet){
 
+        Subnet subnet = new Subnet();
+        subnet.setSubnetId(awsSubnet.subnetId());
+        subnet.setCidrBlock(awsSubnet.cidrBlock());
+        subnet.setVpcId(awsSubnet.vpcId());
+        subnet.setAvailabilityZone(awsSubnet.availabilityZone());
+        subnet.setAvailabilityZoneId(awsSubnet.availabilityZoneId());
+        subnet.setMapPublicIpOnLaunch(awsSubnet.mapPublicIpOnLaunch());
+
+        return subnet;
+   }
     @Override
     public List<Subnet> describeAllSubnets() {
         return null; //TODO
@@ -87,39 +88,41 @@ class AwsGatewayImpl implements AwsGateway {
     @Override //TODO refactor to use streams
     public List<SecurityGroup> describeSecurityGroups(List<String> securityGroupIds) {
 
-        List<SecurityGroup> securityGroups = new ArrayList<>();
-        Set<InboundRule> inboundRules = new HashSet<>();
-        DescribeSecurityGroupsRequest describeSecurityGroupsRequest = DescribeSecurityGroupsRequest.builder()
+        var securityGroups = new ArrayList<>();
+        var inboundRules = new HashSet<>();
+        var describeSecurityGroupsRequest = DescribeSecurityGroupsRequest.builder()
                 .groupIds(securityGroupIds)
                 .build();
 
-        DescribeSecurityGroupsResponse describeSecurityGroupsResponse = ec2Client.describeSecurityGroups(describeSecurityGroupsRequest);
-        List<software.amazon.awssdk.services.ec2.model.SecurityGroup> securityGroupList = describeSecurityGroupsResponse.securityGroups();
-        for (software.amazon.awssdk.services.ec2.model.SecurityGroup securityGroup : securityGroupList) {
-            SecurityGroup securityGroupModel = new SecurityGroup();
-            securityGroupModel.setDescription(securityGroup.description());
-            securityGroupModel.setSecurityGroupId(securityGroup.groupId());
-            securityGroupModel.setVpcId(securityGroup.vpcId());
-            securityGroupModel.setName(securityGroup.groupName());
-            List<IpPermission> ipPermissionList = securityGroup.ipPermissions();
-            for (IpPermission ipPermission : ipPermissionList) {
-                InboundRule inboundRule = new InboundRule();
-                inboundRule.setFromPort(ipPermission.fromPort());
-                inboundRule.setToPort(ipPermission.toPort());
-                inboundRule.setIpProtocol(ipPermission.ipProtocol());
-                inboundRule.setIpRangeAllowedIn(ipPermission.ipRanges().get(0).cidrIp());
-                inboundRules.add(inboundRule);
+        var describeSecurityGroupsResponse = ec2Client.describeSecurityGroups(describeSecurityGroupsRequest);
+        var securityGroupList = describeSecurityGroupsResponse.securityGroups();
 
-            }
-            securityGroupModel.setInboundRules(inboundRules);
-
-            securityGroups.add(securityGroupModel);
-        }
+        return securityGroupList.stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
 
 
-        return securityGroups;
     }
+    private SecurityGroup mapAwsSecurityGroupToModel(software.amazon.awssdk.services.ec2.model.SecurityGroup securityGroup){
 
+        SecurityGroup securityGroupModel = new SecurityGroup();
+        Set<InboundRule>inboundRules = new HashSet<>();
+        securityGroupModel.setDescription(securityGroup.description());
+        securityGroupModel.setSecurityGroupId(securityGroup.groupId());
+        securityGroupModel.setVpcId(securityGroup.vpcId());
+        securityGroupModel.setName(securityGroup.groupName());
+        List<IpPermission> ipPermissionList = securityGroup.ipPermissions();
+
+        for (IpPermission ipPermission : ipPermissionList) {
+            InboundRule inboundRule = new InboundRule();
+            inboundRule.setFromPort(ipPermission.fromPort());
+            inboundRule.setToPort(ipPermission.toPort());
+            inboundRule.setIpProtocol(ipPermission.ipProtocol());
+            inboundRule.setIpRangeAllowedIn(ipPermission.ipRanges().get(0).cidrIp());
+            inboundRules.add(inboundRule);
+        }
+        securityGroupModel.setInboundRules(inboundRules);
+
+        return securityGroupModel;
+    }
     @Override // TODO
     public List<SecurityGroup> describeAllSecurityGroups() {
         return null;
