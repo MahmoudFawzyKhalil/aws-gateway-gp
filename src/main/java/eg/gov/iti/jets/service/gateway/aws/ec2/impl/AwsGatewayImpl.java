@@ -71,7 +71,9 @@ class AwsGatewayImpl implements AwsGateway {
    }
     @Override
     public List<Subnet> describeAllSubnets() {
-        return null; //TODO
+       var awsSubnets= ec2Client.describeSubnets();
+       return awsSubnets.subnets().stream().map(this::mapAwsSubnetToModel).collect(toList());
+
     }
 
     @Override
@@ -123,9 +125,13 @@ class AwsGatewayImpl implements AwsGateway {
 
         return securityGroupModel;
     }
-    @Override // TODO
+    @Override
     public List<SecurityGroup> describeAllSecurityGroups() {
-        return null;
+       var securityGroupsResponse= ec2Client.describeSecurityGroups();
+
+        return securityGroupsResponse.securityGroups().stream().
+                map(this::mapAwsSecurityGroupToModel).
+                collect(toList());
     }
 
     @Override

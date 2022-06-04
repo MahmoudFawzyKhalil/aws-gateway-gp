@@ -19,6 +19,9 @@ public interface AwsGateway {
      * @return List of available Subnets in Ec2 service
      */
     List<Subnet> describeSubnets(List<String> subnetIds);
+    /**
+     * @return List of available Subnets in Ec2 service
+     */
     List<Subnet> describeAllSubnets();
 
     /**
@@ -33,6 +36,9 @@ public interface AwsGateway {
      * @return List of available SecurityGroups in Ec2 service
      */
     List<SecurityGroup> describeSecurityGroups(List<String> securityGroupIds);
+    /**
+     * @return List of available security groups in Ec2 service
+     */
     List<SecurityGroup> describeAllSecurityGroups();
 
     /**
