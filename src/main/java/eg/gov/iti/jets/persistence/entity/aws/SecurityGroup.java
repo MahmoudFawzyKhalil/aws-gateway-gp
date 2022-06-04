@@ -7,7 +7,6 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 @Table(name = "security_groups")
@@ -20,19 +19,19 @@ public class SecurityGroup {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false)
     private Integer id;
-    @Column(name = "security_group_id",unique = true,nullable = false)
+    @Column(name = "security_group_id")
     private String securityGroupId;
-    @Column(name = "name",nullable = false)
+    @Column(name = "name")
     private String name;
     @Column(name = "description")
     private String description;
-    @Column(name = "vpc",nullable = false)
+    @Column(name = "vpc")
     private String vpcId;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany
     @JoinColumn(name = "security_group_id")
-    private Set<InboundRule> inboundRules;
-    @OneToMany(fetch = FetchType.EAGER)
+    private List<InboundRule> inboundRules;
+    @OneToMany
     @JoinColumn(name = "security_group_id")
-    private Set<OutboundRule> outboundRules;
+    private List<OutboundRule> outboundRules;
 }
