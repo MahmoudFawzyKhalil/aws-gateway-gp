@@ -15,6 +15,10 @@ public class SecurityGroupDaoImpl implements SecurityGroupDao {
 
     private SecurityGroupRepo securityGroupRepo;
 
+    public SecurityGroupDaoImpl(SecurityGroupRepo securityGroupRepo) {
+        this.securityGroupRepo = securityGroupRepo;
+    }
+
     @Override
     public SecurityGroup save(SecurityGroup securityGroup) {
         return securityGroupRepo.save(securityGroup);

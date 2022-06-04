@@ -15,6 +15,10 @@ public class InstanceDaoImpl implements InstanceDao {
 
     private InstanceRepo instanceRepo;
 
+    public InstanceDaoImpl(InstanceRepo instanceRepo) {
+        this.instanceRepo = instanceRepo;
+    }
+
     @Override
     public Instance save(Instance instance) {
         return instanceRepo.save(instance);
