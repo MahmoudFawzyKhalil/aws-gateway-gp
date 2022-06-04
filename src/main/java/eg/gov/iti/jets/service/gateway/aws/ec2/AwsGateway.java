@@ -53,15 +53,6 @@ public interface AwsGateway {
      */
     String terminateInstance(String instanceId);
 
-    /**
-     * Creates a custom EC2 instance.
-     *
-     * @param command Describes the instance to be created
-     * @return The newly created instance
-     */
-
-    // TODO add security groups
-    Instance createInstance(CreateInstanceCommand command);
 
     /**
      * Creates instance according to a predefined template.
@@ -70,7 +61,7 @@ public interface AwsGateway {
      * @param instanceName The name of the instance that will be created
      * @return the newly created instance
      */
-    Instance createInstance(TemplateConfiguration template, String instanceName);
+    Instance createInstance(TemplateConfiguration template, String instanceName , KeyPair keyPair);
 
     /**
      * Describes an already created EC2 instance
