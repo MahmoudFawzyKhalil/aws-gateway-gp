@@ -10,6 +10,7 @@ import lombok.*;
 @ToString
 public class InstanceRequest {
     private int templateId;
+    private int studentId;
     private String keyPair;
     private String instanceName;
 }

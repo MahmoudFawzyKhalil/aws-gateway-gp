@@ -23,7 +23,7 @@ public class TemplateManagementImpl implements TemplateManagement {
     }
 
     public Boolean deleteTemplate ( int id ){
-        return templateConfigurationDao.deleteById( id );
+        return null;
     }
 
     // TODO: 6/5/2022 get template upon condition after user 

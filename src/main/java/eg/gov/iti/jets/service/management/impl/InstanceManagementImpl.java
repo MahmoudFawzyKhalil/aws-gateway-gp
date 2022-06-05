@@ -4,7 +4,6 @@ import eg.gov.iti.jets.persistence.dao.TemplateConfigurationDao;
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.InstanceManagement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,10 +46,10 @@ public class InstanceManagementImpl implements InstanceManagement {
     }
 
     @Override
-    public Instance createInstance( int templateConfigurationId, String instanceName , String keyPair){
+    public Optional<Instance> createInstance( int templateConfigurationId, String instanceName , String keyPair){
         Optional<TemplateConfiguration> byId = templateConfigurationDao.findById( templateConfigurationId );
         KeyPair keyPair1 = awsGateway.createKeyPair( keyPair );
-        return byId.map( templateConfiguration -> createInstanceAws( templateConfiguration, instanceName, keyPair1 ) ).orElse( null );
+        return Optional.ofNullable( byId.map( templateConfiguration -> createInstanceAws( templateConfiguration, instanceName, keyPair1 ) ).orElse( null ) );
 
     }
 

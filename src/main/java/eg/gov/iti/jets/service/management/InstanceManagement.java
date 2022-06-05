@@ -10,5 +10,5 @@ public interface InstanceManagement {
     List<String> getInstanceTypes();
     List<Subnet> getAllSubnet();
     Optional<Ami> describeAmi( String amiId);
-    Instance createInstance( int templateConfigurationId, String instanceName , String keyPair);
+    Optional<Instance> createInstance( int templateConfigurationId, String instanceName , String keyPair);
 }

@@ -6,7 +6,6 @@ import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import eg.gov.iti.jets.persistence.entity.aws.Subnet;
 import eg.gov.iti.jets.service.management.InstanceManagement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -44,7 +43,7 @@ public class InstanceController {
 
     @PostMapping
     InstanceResponse createInstance(InstanceRequest instanceRequest){
-        Instance instance = instanceManagement.createInstance( instanceRequest.getTemplateId(), instanceRequest.getInstanceName(), instanceRequest.getKeyPair() );
+        Optional<Instance> instance = instanceManagement.createInstance( instanceRequest.getTemplateId(), instanceRequest.getInstanceName(), instanceRequest.getKeyPair() );
 
         return mapper.mapFromInstanceToInstanceResponse( instance );
     }

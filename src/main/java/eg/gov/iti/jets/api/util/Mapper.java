@@ -5,8 +5,6 @@ import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.instance.InstanceResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
-import eg.gov.iti.jets.api.resource.supervisor.SupervisorRequest;
-import eg.gov.iti.jets.api.resource.supervisor.SupervisorResponse;
 import eg.gov.iti.jets.api.resource.template.TemplateRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.api.resource.track.TrackRequest;
@@ -19,8 +17,9 @@ import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
-import eg.gov.iti.jets.service.model.*;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class Mapper {
@@ -67,7 +66,9 @@ public class Mapper {
         return null;
     }
 
-    public InstanceResponse mapFromInstanceToInstanceResponse( Instance instance) {
-        return null;
+    public InstanceResponse mapFromInstanceToInstanceResponse( Optional<Instance> instance) {
+        InstanceResponse instanceResponse = new InstanceResponse();
+        instanceResponse.setSuccess( instance.isPresent() );
+        return instanceResponse;
     }
 }
