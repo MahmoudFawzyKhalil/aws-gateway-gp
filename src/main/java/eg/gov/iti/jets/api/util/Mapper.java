@@ -56,6 +56,7 @@ public class Mapper {
     }
 
     public TemplateConfiguration mapFromTemplateRequestToTemplate( TemplateRequest templateRequest) {
+
         return null;
     }
 
