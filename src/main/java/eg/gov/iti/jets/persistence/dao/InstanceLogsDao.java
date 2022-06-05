@@ -1,6 +1,6 @@
 package eg.gov.iti.jets.persistence.dao;
 
-import eg.gov.iti.jets.persistence.entity.aws.Instance;
+import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
 
-public interface InstanceLogsDao extends GenericCrudDao<Instance,Long> {
+public interface InstanceLogsDao extends GenericCrudDao<InstanceLogs,Long> {
 }
