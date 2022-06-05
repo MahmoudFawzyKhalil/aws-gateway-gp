@@ -26,11 +26,11 @@ public class Intake {
     @Column(name = "intake_name")
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @ManyToOne
     @JoinColumn(name = "training_program_id",nullable = false)
     private TrainingProgram trainingProgram;
 
-    @OneToMany(mappedBy = "intake" ,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @OneToMany(mappedBy = "intake" )
     private List<Track> tracks = new ArrayList<>();
 
     @Column(name = "intake_description")
