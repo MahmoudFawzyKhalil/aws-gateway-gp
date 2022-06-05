@@ -68,4 +68,8 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
         return instanceLogsRepo.findFirstByActionOrderByDateTimeDesc(action);
     }
 
+    @Override
+    public boolean deleteInstanceLogByDate(LocalDateTime localDateTime) {
+        return instanceLogsRepo.deleteLogsByDateTimeLessThan(localDateTime);
+    }
 }
