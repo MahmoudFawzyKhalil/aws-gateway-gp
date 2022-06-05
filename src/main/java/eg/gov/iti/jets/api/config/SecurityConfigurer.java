@@ -2,9 +2,6 @@ package eg.gov.iti.jets.api.config;
 
 import eg.gov.iti.jets.api.filters.JwtFilter;
 import eg.gov.iti.jets.service.management.UserManagement;
-import eg.gov.iti.jets.service.management.impl.UserManagementImpl;
-import eg.gov.iti.jets.service.model.Privilege;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -50,15 +47,15 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .mvcMatchers(HttpMethod.GET,"/**").permitAll()
+//                .mvcMatchers(HttpMethod.GET,"/**").permitAll()
 
                 .mvcMatchers("/api/admin").hasAuthority("WRITE")
-                .mvcMatchers(HttpMethod.POST,"api/instances")
-                .hasAuthority("START_STOP_INSTANCE")
+                .mvcMatchers(HttpMethod.POST,"/api/instances")
+                .hasAuthority("CREATE_TERMINATE_INSTANCE")
                 .mvcMatchers("/api/hello").hasAuthority("READ")
                 .mvcMatchers("/api/users").hasAnyAuthority("WRITE","READ")
                 .mvcMatchers("/api/login").permitAll()
-                .mvcMatchers(HttpMethod.OPTIONS,"/**").permitAll()
+//                .mvcMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .anyRequest()
                 .authenticated();
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
