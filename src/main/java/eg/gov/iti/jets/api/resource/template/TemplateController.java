@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.api.resource.template;
 
 import eg.gov.iti.jets.api.util.Mapper;
+import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import eg.gov.iti.jets.service.management.TemplateManagement;
@@ -10,6 +11,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("/api/template")
@@ -24,13 +27,8 @@ public class TemplateController {
     }
 
     @PostMapping
-    public ResponseEntity<Boolean> createTemplate(@RequestBody TemplateRequest templateRequest ){
-       Boolean successResponse = templateManagement.createTemplate(mapper.mapFromTemplateRequestToTemplateConfig(templateRequest));
-       if(successResponse==true)
-       return new ResponseEntity<>(successResponse, HttpStatus.OK);
-       else {
-           return new ResponseEntity<>(successResponse, HttpStatus.NO_CONTENT);
-       }
+    public SuccessResponse createTemplate(@RequestBody TemplateRequest templateRequest ){
+       return new SuccessResponse(templateManagement.createTemplate(mapper.mapFromTemplateRequestToTemplateConfig(templateRequest)));
     }
 
     @DeleteMapping("/{id}")
@@ -58,6 +56,16 @@ public class TemplateController {
 
     }
 
+    @PostMapping("/ami")
+    public AmiViewResponse getAmi(@RequestBody AmiRequest amiRequest){
+        Optional<Ami> ami = templateManagement.describeAmi( amiRequest.getAmiId() );
+        return ami.map( value -> new AmiViewResponse( true, mapper.mapFromAmiToAmiResponse( value ) ) ).orElseGet( () -> new AmiViewResponse( false, null ) );
+    }
+
+    @GetMapping("types")
+    ResponseEntity<List<String>> getInstanceTypes(){
+        return  new ResponseEntity<>(templateManagement.getInstanceTypes(), HttpStatus.OK);
+    }
 
     @GetMapping("{id}")
     ResponseEntity<List<SecurityGroupResponse>>getSecurityGroups(@PathVariable String id){

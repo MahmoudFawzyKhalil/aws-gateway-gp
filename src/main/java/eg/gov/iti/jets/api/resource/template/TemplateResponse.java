@@ -5,6 +5,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.persistence.Column;
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -12,4 +15,8 @@ import lombok.Setter;
 
 public class TemplateResponse {
     private int id;
+    private AmiResponse ami;
+    private String subnetId;
+    private String instanceType;
+    private List<String> securityGroup;
 }

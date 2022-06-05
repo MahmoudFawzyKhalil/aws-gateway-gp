@@ -27,22 +27,6 @@ public class InstanceController {
     }
 
 
-    @GetMapping("types")
-    ResponseEntity<List<String>> getInstanceTypes(){
-        return  new ResponseEntity<>(instanceManagement.getInstanceTypes(), HttpStatus.OK);
-    }
-
-
-
-    @GetMapping("ami/{id}")
-    ResponseEntity< Optional<Ami>>  describeAmi (@PathVariable String id){
-        return new ResponseEntity<>(instanceManagement.describeAmi(id),HttpStatus.OK) ;
-    }
-
-    //post
-    //res success
-
-
     @PostMapping
     InstanceResponse createInstance(InstanceRequest instanceRequest){
         Optional<Instance> instance = instanceManagement.createInstance( instanceRequest.getTemplateId(), instanceRequest.getInstanceName(), instanceRequest.getKeyPair() );

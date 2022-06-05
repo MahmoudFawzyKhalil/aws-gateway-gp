@@ -3,22 +3,16 @@ package eg.gov.iti.jets.api.util;
 import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.instance.InstanceResponse;
-import eg.gov.iti.jets.api.resource.template.SecurityGroupResponse;
-import eg.gov.iti.jets.api.resource.template.SubnetResponse;
+import eg.gov.iti.jets.api.resource.template.*;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
-import eg.gov.iti.jets.api.resource.template.TemplateRequest;
-import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.api.resource.track.TrackRequest;
 import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
 import eg.gov.iti.jets.persistence.entity.*;
-import eg.gov.iti.jets.persistence.entity.aws.Instance;
-import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
-import eg.gov.iti.jets.persistence.entity.aws.Subnet;
-import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
-import eg.gov.iti.jets.service.util.MapperFromIdToSecurityGroup;
+import eg.gov.iti.jets.persistence.entity.aws.*;
+import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -29,7 +23,7 @@ import java.util.stream.Collectors;
 @Component
 public class Mapper {
     @Autowired
-    private MapperFromIdToSecurityGroup mapperFromIdToSecurityGroup;
+    private MapperUtilForApi mapperUtilForApi;
 
     public Branch mapFromBranchRequestToBranch( BranchRequest branchRequest ) {
         return null;
@@ -84,11 +78,11 @@ public class Mapper {
     public TemplateConfiguration mapFromTemplateRequestToTemplateConfig( TemplateRequest templateRequest ) {
         TemplateConfiguration templateConfiguration = new TemplateConfiguration();
         templateConfiguration.setAmiId( templateRequest.getAmiId() );
-        templateConfiguration.setCreator( mapperFromIdToSecurityGroup.getUser( 1 ) );
+        templateConfiguration.setCreator( mapperUtilForApi.getUser( 1 ) );
         templateConfiguration.setSubnetId( templateRequest.getSubnetId() );
         templateConfiguration.setInstanceType( templateRequest.getInstanceType() );
         templateConfiguration.setInstructors( null );
-        templateConfiguration.setSecurityGroups( mapperFromIdToSecurityGroup.getSecurityGroups( templateRequest.getSecurityGroups() ) );
+        templateConfiguration.setSecurityGroups( mapperUtilForApi.getSecurityGroups( templateRequest.getSecurityGroups() ) );
         return templateConfiguration;
     }
 
@@ -102,7 +96,17 @@ public class Mapper {
 
 
     public TemplateResponse mapFromTemplateToTemplateResponse( TemplateConfiguration template ) {
+        TemplateResponse templateResponse = new TemplateResponse();
+        templateResponse.setId( template.getId() );
+        templateResponse.setInstanceType( template.getInstanceType() );
+        templateResponse.setSubnetId( template.getSubnetId() );
+        templateResponse.setSecurityGroup( mapperUtilForApi.getSecurityGroupsName( template.getSecurityGroups() )  );
+        templateResponse.setAmi( mapFromAmiToAmiResponse( mapperUtilForApi.getAmiObject( template.getAmiId() ) ) );
+        return templateResponse;
+    }
 
-        return new TemplateResponse( template.getId() );
+    public AmiResponse mapFromAmiToAmiResponse( Ami ami ){
+        AmiResponse amiResponse = new AmiResponse( ami.getImageId(), ami.getImageOwnerAlias(), ami.getArchitecture(), ami.getImageName(), ami.getDescription(), ami.getPlatform() );
+        return amiResponse;
     }
 }

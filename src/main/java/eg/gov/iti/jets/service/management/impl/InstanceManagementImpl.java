@@ -21,16 +21,7 @@ public class InstanceManagementImpl implements InstanceManagement {
     }
 
 
-    @Override
-    public List<String> getInstanceTypes(){
-       return awsGateway.getInstanceTypes();
-    }
 
-
-    @Override
-    public Optional<Ami> describeAmi(String amiId){
-       return awsGateway.describeAmi(amiId);
-    }
 
 
     private Instance createInstanceAws(TemplateConfiguration templateConfiguration, String instanceName , KeyPair keyPair) {

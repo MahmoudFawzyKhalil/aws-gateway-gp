@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.persistence.dao.TemplateConfigurationDao;
+import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.persistence.entity.aws.Subnet;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class TemplateManagementImpl implements TemplateManagement {
@@ -24,7 +26,16 @@ public class TemplateManagementImpl implements TemplateManagement {
         this.awsGateway = awsGateway;
     }
 
+    @Override
+    public List<String> getInstanceTypes(){
+        return awsGateway.getInstanceTypes();
+    }
 
+
+    @Override
+    public Optional<Ami> describeAmi( String amiId){
+        return awsGateway.describeAmi(amiId);
+    }
 
     public Boolean deleteTemplate ( int id ){
         return null;
