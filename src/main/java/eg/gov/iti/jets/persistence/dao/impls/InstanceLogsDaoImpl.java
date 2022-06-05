@@ -2,10 +2,12 @@ package eg.gov.iti.jets.persistence.dao.impls;
 
 import eg.gov.iti.jets.persistence.dao.InstanceLogsDao;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
+@Repository
 public class InstanceLogsDaoImpl implements InstanceLogsDao {
     @Override
     public Instance save(Instance entity) {
