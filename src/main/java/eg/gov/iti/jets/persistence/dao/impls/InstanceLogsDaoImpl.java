@@ -71,4 +71,15 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
         Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAllByActionMakerAndAction(id, userAction, PageRequest.of(pageNumber, pageSize));
         return instanceLogPage.getContent();
     }
+
+
+    @Override
+    public List<InstanceLogs> findAllByAction_TerminateInstance(String terminateInstance) {
+        return instanceLogsRepo.findAllByAction_TerminateInstance(terminateInstance);
+    }
+
+    @Override
+    public InstanceLogs findLatestTerminateInstanceById(Long instanceId) {
+        return instanceLogsRepo.findLatestTerminateInstanceById(instanceId);
+    }
 }

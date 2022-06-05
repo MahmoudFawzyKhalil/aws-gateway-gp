@@ -15,4 +15,9 @@ public interface InstanceLogsDao extends GenericCrudDao<InstanceLogs, Long> {
     List<InstanceLogs> findAllByInstanceId(Long instanceId, int pageNumber, int pageSize);
     List<InstanceLogs> findAllByActionMakerAndAction(int id, UserAction userAction, int pageNumber, int pageSize);
 
+
+    List<InstanceLogs> findAllByAction_TerminateInstance(String terminateInstance);
+    InstanceLogs findLatestTerminateInstanceById(Long instanceId);
+
+
 }
