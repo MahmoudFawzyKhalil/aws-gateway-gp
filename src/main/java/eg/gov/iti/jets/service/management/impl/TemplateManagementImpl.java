@@ -1,7 +1,10 @@
 package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.persistence.dao.TemplateConfigurationDao;
+import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
+import eg.gov.iti.jets.persistence.entity.aws.Subnet;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
+import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.TemplateManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,8 +17,11 @@ public class TemplateManagementImpl implements TemplateManagement {
     final
     TemplateConfigurationDao templateConfigurationDao;
 
-    public TemplateManagementImpl( TemplateConfigurationDao templateConfigurationDao ) {
+    private final AwsGateway awsGateway;
+
+    public TemplateManagementImpl(TemplateConfigurationDao templateConfigurationDao, AwsGateway awsGateway) {
         this.templateConfigurationDao = templateConfigurationDao;
+        this.awsGateway = awsGateway;
     }
 
 
@@ -38,7 +44,15 @@ public class TemplateManagementImpl implements TemplateManagement {
         else{
         return true;}
     }
+    @Override
+    public List<Subnet> getAllSubnet(){
+        return awsGateway.describeAllSubnets();
+    }
 
+    @Override
+    public List<SecurityGroup> describeSecurityGroupsForVpc(String vpcId){
+        return awsGateway.describeSecurityGroupsForVpc(vpcId);
+    }
 
     //TODO what do you really want
 

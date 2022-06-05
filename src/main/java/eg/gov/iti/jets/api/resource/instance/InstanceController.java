@@ -4,8 +4,6 @@ package eg.gov.iti.jets.api.resource.instance;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
-import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
-import eg.gov.iti.jets.persistence.entity.aws.Subnet;
 import eg.gov.iti.jets.service.management.InstanceManagement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -35,22 +33,7 @@ public class InstanceController {
     }
 
 
-    @GetMapping("subnet")
-    SubnetResponse getAllSubnet(){
-        return  mapper.mapFromSubnetToSubnetResponse(instanceManagement.getAllSubnet());
 
-    }
-
-
-    @GetMapping("{id}")
-    ResponseEntity<List<SecurityGroupResponse>>getSecurityGroups(@PathVariable String id){
-        List<SecurityGroup> securityGroups= instanceManagement.describeSecurityGroupsForVpc(id);
-        List<SecurityGroupResponse> securityGroupResponses = new ArrayList<>();
-       for(SecurityGroup group:securityGroups){
-           securityGroupResponses.add(mapper.mapFromSecurityGroupToSecurityGroupResponse(group));
-       }
-        return new ResponseEntity<>(securityGroupResponses,HttpStatus.OK);
-    }
     @GetMapping("ami/{id}")
     ResponseEntity< Optional<Ami>>  describeAmi (@PathVariable String id){
         return new ResponseEntity<>(instanceManagement.describeAmi(id),HttpStatus.OK) ;
