@@ -1,16 +1,9 @@
 package eg.gov.iti.jets.persistence.dao.impls;
 
-import eg.gov.iti.jets.persistence.dao.InstanceDao;
 import eg.gov.iti.jets.persistence.dao.InstanceLogsDao;
-import eg.gov.iti.jets.persistence.dao.KeyPairDao;
-import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.User;
-import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
-import eg.gov.iti.jets.persistence.entity.aws.KeyPair;
 import eg.gov.iti.jets.persistence.entity.enums.UserAction;
-import org.springframework.boot.CommandLineRunner;
-import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -29,7 +22,6 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
         this.instanceLogsRepo = instanceLogsRepo;
     }
 
-
     @Override
     public InstanceLogs save(InstanceLogs entity) {
         return instanceLogsRepo.save(entity);
@@ -37,7 +29,7 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
 
     @Override
     public InstanceLogs update(InstanceLogs entity) {
-        return null;
+        return instanceLogsRepo.save(entity);
     }
 
     @Override
@@ -62,7 +54,6 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
         return instanceLogsRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
     }
 
-
     @Override
     public Optional<InstanceLogs> findLastLogByActionAndInstanceId(UserAction action,int instanceId) {
         return instanceLogsRepo.findFirstByActionAndInstance_IdOrderByDateTimeDesc(action,instanceId);
@@ -75,6 +66,12 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
 
     public List<InstanceLogs> findAllByInstanceId(Long id, int pageNumber, int pageSize) {
         Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAllByInstanceId(id, PageRequest.of(pageNumber, pageSize));
+        return instanceLogPage.getContent();
+    }
+
+    @Override
+    public List<InstanceLogs> findInstanceLogsByActionMakerAndAction(User user, UserAction userAction, int pageNumber, int pageSize) {
+        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findInstanceLogsByActionMakerAndAction(user, userAction, PageRequest.of(pageNumber, pageSize));
         return instanceLogPage.getContent();
     }
 

@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.persistence.dao.impls;
 
+import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
 import eg.gov.iti.jets.persistence.entity.enums.UserAction;
 import org.springframework.data.domain.Page;
@@ -16,5 +17,8 @@ interface InstanceLogsRepo extends JpaRepository<InstanceLogs, Long> {
     boolean deleteLogsByDateTimeLessThan(LocalDateTime startDate);
 
     Page<InstanceLogs> findAllByInstanceId(Long id, Pageable pageable);
+
+    Page<InstanceLogs> findInstanceLogsByActionMakerAndAction(User user, UserAction userAction, Pageable pageable);
+
 
 }
