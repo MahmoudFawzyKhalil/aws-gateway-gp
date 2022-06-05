@@ -1,7 +1,7 @@
 package eg.gov.iti.jets.persistence.entity;
 
 
-import eg.gov.iti.jets.persistence.entity.enums.PrivilegeNames;
+import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -29,7 +29,7 @@ public class Privilege {
     @NotNull
     @Column(name = "privilege_name", unique = true, nullable = false)
     @Enumerated(EnumType.STRING)
-    private PrivilegeNames name;
+    private PrivilegeName name;
 
     @ManyToMany(mappedBy = "privileges")
     private List<Role> roles = new ArrayList<>();
