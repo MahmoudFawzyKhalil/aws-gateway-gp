@@ -4,10 +4,7 @@ import eg.gov.iti.jets.persistence.dao.InstanceLogsDao;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
 import eg.gov.iti.jets.persistence.entity.enums.UserAction;
-import org.springframework.data.domain.Example;
-import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -70,9 +67,8 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     }
 
     @Override
-    public List<InstanceLogs> findInstanceLogsByActionMakerAndAction(int id, UserAction userAction, int pageNumber, int pageSize) {
-        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findInstanceLogsByActionMakerAndAction(id, userAction, PageRequest.of(pageNumber, pageSize));
+    public List<InstanceLogs> findAllByActionMakerAndAction(int id, UserAction userAction, int pageNumber, int pageSize) {
+        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAllByActionMakerAndAction(id, userAction, PageRequest.of(pageNumber, pageSize));
         return instanceLogPage.getContent();
     }
-
 }

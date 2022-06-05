@@ -18,7 +18,5 @@ interface InstanceLogsRepo extends JpaRepository<InstanceLogs, Long> {
 
     Page<InstanceLogs> findAllByInstanceId(Long id, Pageable pageable);
 
-    Page<InstanceLogs> findInstanceLogsByActionMakerAndAction(int id, UserAction userAction, Pageable pageable);
-
-
+    Page<InstanceLogs> findAllByActionMakerAndAction(int id, UserAction userAction, Pageable pageable);
 }
