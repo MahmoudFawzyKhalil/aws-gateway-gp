@@ -11,5 +11,6 @@ import java.util.List;
 @AllArgsConstructor
 @ToString
 public class DummyResponse {
-    private List<String> student = new ArrayList<>();
+    private int id;
+    private String student ;
 }

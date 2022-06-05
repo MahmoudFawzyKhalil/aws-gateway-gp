@@ -13,10 +13,12 @@ import java.util.List;
 public class DummyController {
 
     @GetMapping
-    public DummyResponse listOfStudent(){
-        String[] names = {"Marwa" , "Mariam" , "Hend" , "Hafsa"};
-        List<String> list = new ArrayList<>( List.of( names ) );
-        return new DummyResponse(list);
+    public List<DummyResponse> listOfStudent(){
+        DummyResponse dummyResponse = new DummyResponse(1,"Mariam");
+        DummyResponse dummyResponse1 = new DummyResponse(2,"Marwa");
+        DummyResponse dummyResponse2 = new DummyResponse(3,"Halla");
+        DummyResponse dummyResponse3 = new DummyResponse(4,"Hend");
+        return new ArrayList<>(List.of(dummyResponse,dummyResponse1, dummyResponse2 , dummyResponse3));
     }
 
 }
