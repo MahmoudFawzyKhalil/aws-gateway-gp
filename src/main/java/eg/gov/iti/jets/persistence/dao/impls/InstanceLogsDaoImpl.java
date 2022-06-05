@@ -9,6 +9,12 @@ import java.util.Optional;
 
 @Repository
 public class InstanceLogsDaoImpl implements InstanceLogsDao {
+    private final InstanceLogsRepo instanceLogsRepo;
+
+    public InstanceLogsDaoImpl(InstanceLogsRepo instanceLogsRepo) {
+        this.instanceLogsRepo = instanceLogsRepo;
+    }
+
     @Override
     public Instance save(Instance entity) {
         return null;
