@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.api.resource.instance;
+package eg.gov.iti.jets.api.resource.template;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -10,9 +10,8 @@ import java.util.List;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
-public class DummyResponse {
-
-    private List<DummyObjectResponse> dummyObjectResponses = new ArrayList<>();
+@NoArgsConstructor
+public class TemplateViewResponse {
+    private List<TemplateResponse> templateResponseList;
 }

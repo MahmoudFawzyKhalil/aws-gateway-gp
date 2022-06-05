@@ -32,14 +32,14 @@ public class TemplateController {
     }
 
     @DeleteMapping("/{id}")
-    public Boolean deleteTemplate ( @PathVariable int id ){
-        return templateManagement.deleteTemplate( id );
+    public SuccessResponse deleteTemplate ( @PathVariable int id ){
+        return new SuccessResponse(templateManagement.deleteTemplate( id )) ;
     }
 
 
     @GetMapping
     // TODO: 6/5/2022 get the Id?
-    public List<TemplateResponse> getAllTemplates(){
+    public TemplateViewResponse getAllTemplates(){
         List<TemplateResponse> templateResponses = new ArrayList<>();
         List<TemplateConfiguration> templateConfiguration = templateManagement.getTemplateConfiguration();
         for ( TemplateConfiguration template :
@@ -47,7 +47,8 @@ public class TemplateController {
             TemplateResponse templateResponse = mapper.mapFromTemplateToTemplateResponse( template );
             templateResponses.add( templateResponse );
         }
-        return templateResponses;
+
+        return new TemplateViewResponse(templateResponses);
     }
 
     @GetMapping("subnet")
@@ -63,18 +64,18 @@ public class TemplateController {
     }
 
     @GetMapping("types")
-    ResponseEntity<List<String>> getInstanceTypes(){
-        return  new ResponseEntity<>(templateManagement.getInstanceTypes(), HttpStatus.OK);
+    InstanceTypeResponse getInstanceTypes(){
+        return  new InstanceTypeResponse(templateManagement.getInstanceTypes());
     }
 
     @GetMapping("{id}")
-    ResponseEntity<List<SecurityGroupResponse>>getSecurityGroups(@PathVariable String id){
+    SecurityGroupObjectResponse getSecurityGroups(@PathVariable String id){
         List<SecurityGroup> securityGroups= templateManagement.describeSecurityGroupsForVpc(id);
         List<SecurityGroupResponse> securityGroupResponses = new ArrayList<>();
         for(SecurityGroup group:securityGroups){
             securityGroupResponses.add(mapper.mapFromSecurityGroupToSecurityGroupResponse(group));
         }
-        return new ResponseEntity<>(securityGroupResponses,HttpStatus.OK);
+        return new SecurityGroupObjectResponse(securityGroupResponses);
     }
 
     // TODO: 6/2/2022 3ayzen bs two methods mkmlesh wala 3ala hasab mariam

@@ -5,7 +5,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -13,12 +12,12 @@ import java.util.List;
 public class DummyController {
 
     @GetMapping
-    public List<DummyResponse> listOfStudent(){
-        DummyResponse dummyResponse = new DummyResponse(1,"Mariam");
-        DummyResponse dummyResponse1 = new DummyResponse(2,"Marwa");
-        DummyResponse dummyResponse2 = new DummyResponse(3,"Halla");
-        DummyResponse dummyResponse3 = new DummyResponse(4,"Hend");
-        return new ArrayList<>(List.of(dummyResponse,dummyResponse1, dummyResponse2 , dummyResponse3));
+    public DummyResponse listOfStudent(){
+        DummyObjectResponse dummyObjectResponse = new DummyObjectResponse(1,"Mariam");
+        DummyObjectResponse dummyObjectResponse1 = new DummyObjectResponse(2,"Marwa");
+        DummyObjectResponse dummyObjectResponse2 = new DummyObjectResponse(3,"Halla");
+        DummyObjectResponse dummyObjectResponse3 = new DummyObjectResponse(4,"Hend");
+        return new DummyResponse(new ArrayList<>(List.of( dummyObjectResponse, dummyObjectResponse1, dummyObjectResponse2, dummyObjectResponse3 )));
     }
 
 }
