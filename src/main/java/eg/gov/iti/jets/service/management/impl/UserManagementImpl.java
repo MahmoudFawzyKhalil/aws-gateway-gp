@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.persistence.dao.UserDao;
+import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.Privilege;
 import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.User;

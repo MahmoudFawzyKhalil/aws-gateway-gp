@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.api.resource.template;
+package eg.gov.iti.jets.api.resource.instance;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,8 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TemplateResponse {
-    private int id;
+public class SecurityGroupResponse {
+
+    private Integer id;
+    private String name;
 }

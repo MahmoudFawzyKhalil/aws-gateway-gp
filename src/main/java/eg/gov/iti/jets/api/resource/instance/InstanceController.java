@@ -1,71 +1,66 @@
 package eg.gov.iti.jets.api.resource.instance;
 
 
-import eg.gov.iti.jets.service.management.impl.InstanceManagementImpl;
+import eg.gov.iti.jets.api.util.Mapper;
+import eg.gov.iti.jets.persistence.entity.aws.Ami;
+import eg.gov.iti.jets.persistence.entity.aws.Instance;
+import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
+import eg.gov.iti.jets.persistence.entity.aws.Subnet;
+import eg.gov.iti.jets.service.management.InstanceManagement;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/instances")
 public class InstanceController {
 
-    private final InstanceManagementImpl instanceManagement;
+    private final InstanceManagement instanceManagement;
 
-    public InstanceController( InstanceManagementImpl instanceManagement) {
+    final Mapper mapper;
+
+    public InstanceController( InstanceManagement instanceManagement, Mapper mapper ) {
         this.instanceManagement = instanceManagement;
+        this.mapper = mapper;
     }
 
-    @PostMapping("create")
-    void createInstances(){
-        instanceManagement.createInstances();
-    }
-
-    @DeleteMapping("delete")
-    void deleteInstances(){
-        instanceManagement.deleteInstances();
-    }
-
-    @GetMapping
-    void getAllInstances(){
-        instanceManagement.getAllInstances();
-    }
-
-    @GetMapping("{branchName}")
-    void getAllBranchInstances(@PathVariable String branchName){
-        instanceManagement.getAllBranchInstances(branchName);
-    }
-
-    @GetMapping ("{trackName}")
-    void getAllTrackInstances(@PathVariable String trackName){
-        instanceManagement.getAllTrackInstances(trackName);
+//List<>
+    @GetMapping("types")
+    ResponseEntity<List<String>> getInstanceTypes(){
+        return  new ResponseEntity<>(instanceManagement.getInstanceTypes(), HttpStatus.OK);
     }
 
 
-    @PostMapping("instnace/assign")
-    void assignInstance(){
-        instanceManagement.assignInstance();
-    }
+    @GetMapping("subnet")
+    SubnetResponse getAllSubnet(){
+        return  mapper.mapFromSubnetToSubnetResponse(instanceManagement.getAllSubnet());
 
-    @PostMapping("customInstance/create")
-    void createInstanceUsingTemplate(){
-        instanceManagement.createInstanceUsingTemplate();
-    }
-
-    @GetMapping("instance/{id}")
-    void getInstance(@PathVariable String id){
-        instanceManagement.getInstance(id);
-    }
-
-    @GetMapping("instance/start/{id}")
-    void startInstance(@PathVariable String id){
-        instanceManagement.startInstance(id);
-    }
-
-    @GetMapping("instance/stop/{id}")
-    void stopInstance(@PathVariable String id){
-        instanceManagement.stopInstance(id);
     }
 
 
+    @GetMapping("{id}")
+    ResponseEntity<List<SecurityGroupResponse>>getSecurityGroups(@PathVariable String id){
+        List<SecurityGroup> securityGroups= instanceManagement.describeSecurityGroupsForVpc(id);
+        List<SecurityGroupResponse> securityGroupResponses = new ArrayList<>();
+       for(SecurityGroup group:securityGroups){
+           securityGroupResponses.add(mapper.mapFromSecurityGroupToSecurityGroupResponse(group));
+       }
+        return new ResponseEntity<>(securityGroupResponses,HttpStatus.OK);
+    }
+    @GetMapping("ami/{id}")
+   ResponseEntity< Optional<Ami>>  describeAmi (@PathVariable String id){
+        return new ResponseEntity<>(instanceManagement.describeAmi(id),HttpStatus.OK) ;
+    }
 
+    @PostMapping
+    InstanceResponse createInstance(InstanceRequest instanceRequest){
+        Optional<Instance> instance = instanceManagement.createInstance( instanceRequest.getTemplateId(), instanceRequest.getInstanceName(), instanceRequest.getKeyPair() );
+
+        return mapper.mapFromInstanceToInstanceResponse( instance );
+    }
 
 }
