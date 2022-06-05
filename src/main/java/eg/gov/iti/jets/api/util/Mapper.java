@@ -13,10 +13,8 @@ import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
 import eg.gov.iti.jets.api.resource.user.UserRequest;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
 import eg.gov.iti.jets.persistence.entity.*;
-import eg.gov.iti.jets.service.model.*;
 import org.springframework.stereotype.Component;
 
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -61,12 +59,14 @@ public class Mapper {
     }
 
     public User mapFromUserRequestToUser(UserRequest userRequest) {
-        return null;
+        User user = new User();
+        user.setId(userRequest.getId());
+        user.setEmail(userRequest.getEmail());
+        user.setUsername(userRequest.getUsername());
+        user.setPassword(userRequest.getPassword());
+        user.setRole(userRequest.getRole());
+        return user;
     }
-
-//    public UserResponse mapFromUserToUserResponse(User user) {
-//        return null;
-//    }
 
     public UserResponse mapFromUserToUserResponse(User user) {
         UserResponse response = new UserResponse();

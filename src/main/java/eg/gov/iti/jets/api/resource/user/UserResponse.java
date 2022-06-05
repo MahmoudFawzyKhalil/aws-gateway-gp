@@ -1,6 +1,5 @@
 package eg.gov.iti.jets.api.resource.user;
 
-import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import lombok.Data;
