@@ -16,5 +16,9 @@ interface GenericCrudDao<T, Id> {
 
     List<T> findAllByExample(T example);
 
+    Boolean deleteById( int id );
+
+    // TODO: 6/5/2022 Osama implement DeleteById
+
 
 }

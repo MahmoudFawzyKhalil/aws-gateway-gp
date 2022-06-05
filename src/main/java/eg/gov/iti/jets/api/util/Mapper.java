@@ -2,10 +2,13 @@ package eg.gov.iti.jets.api.util;
 
 import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
+import eg.gov.iti.jets.api.resource.instance.InstanceResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
 import eg.gov.iti.jets.api.resource.supervisor.SupervisorRequest;
 import eg.gov.iti.jets.api.resource.supervisor.SupervisorResponse;
+import eg.gov.iti.jets.api.resource.template.TemplateRequest;
+import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.api.resource.track.TrackRequest;
 import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
@@ -14,6 +17,8 @@ import eg.gov.iti.jets.persistence.entity.Branch;
 import eg.gov.iti.jets.persistence.entity.Intake;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
+import eg.gov.iti.jets.persistence.entity.aws.Instance;
+import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import eg.gov.iti.jets.service.model.*;
 import org.springframework.stereotype.Component;
 
@@ -42,19 +47,27 @@ public class Mapper {
 
     public Intake mapFromIntakeRequestToIntake(IntakeRequest intakeRequest){return null;}
 
-//    public Supervisor mapFromSupervisorRequestToSupervisor(SupervisorRequest supervisorRequest) {
-//        return  null;
-//    }
-//
-//    public SupervisorResponse mapFromSupervisorToSupervisorResponse(Supervisor supervisor) {
-//        return null;
-//    }
 
     public Track mapFromTrackRequestToTrack( TrackRequest trackRequest) {
         return null;
     }
 
     public TrackResponse mapFromTrackToTrackResponse(Track track) {
+        return null;
+    }
+
+    public TemplateConfiguration mapFromTemplateRequestToTemplate( TemplateRequest templateRequest) {
+        return null;
+    }
+
+    public TemplateResponse mapFromTemplateToTemplateResponse( TemplateConfiguration templateConfiguration) {
+        return null;
+    }
+    public Instance mapFromInstanceRequestToInstance( IntakeRequest intakeRequest) {
+        return null;
+    }
+
+    public InstanceResponse mapFromInstanceToInstanceResponse( Instance instance) {
         return null;
     }
 }
