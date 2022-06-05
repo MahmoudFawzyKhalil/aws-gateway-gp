@@ -9,8 +9,11 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface InstanceLogsDao extends GenericCrudDao<InstanceLogs,Long> {
+public interface InstanceLogsDao extends GenericCrudDao<InstanceLogs, Long> {
 
     Optional<InstanceLogs> findLastLogByAction(UserAction action);
     boolean deleteInstanceLogByDate(LocalDateTime localDateTime);
+    List<InstanceLogs> findAllByInstanceId(Long instanceId, int pageNumber, int pageSize);
+
+
 }

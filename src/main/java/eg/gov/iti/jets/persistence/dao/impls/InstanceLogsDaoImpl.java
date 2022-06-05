@@ -41,18 +41,18 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     }
 
     @Override
-    public Optional<InstanceLogs> findById(Long aLong) {
-        return Optional.empty();
+    public Optional<InstanceLogs> findById(Long id) {
+        return instanceLogsRepo.findById(id);
     }
 
     @Override
     public List<InstanceLogs> findAll() {
-        return null;
+        return instanceLogsRepo.findAll();
     }
 
     @Override
     public List<InstanceLogs> findAll(int pageNumber, int pageSize) {
-        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAll(PageRequest.of(pageNumber,pageSize));
+        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAll(PageRequest.of(pageNumber, pageSize));
         return instanceLogPage.toList();
     }
 
@@ -72,4 +72,10 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     public boolean deleteInstanceLogByDate(LocalDateTime localDateTime) {
         return instanceLogsRepo.deleteLogsByDateTimeLessThan(localDateTime);
     }
+
+    public List<InstanceLogs> findAllByInstanceId(Long id, int pageNumber, int pageSize) {
+        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAllByInstanceId(id, PageRequest.of(pageNumber, pageSize));
+        return instanceLogPage.getContent();
+    }
+
 }
