@@ -31,7 +31,7 @@ public class Privilege {
     @Enumerated(EnumType.STRING)
     private PrivilegeName name;
 
-    @ManyToMany(mappedBy = "privileges")
+    @ManyToMany(mappedBy = "privileges" ,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<Role> roles = new ArrayList<>();
 
 

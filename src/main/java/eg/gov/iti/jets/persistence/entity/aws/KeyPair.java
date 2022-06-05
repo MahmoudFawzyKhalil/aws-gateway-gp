@@ -32,11 +32,10 @@ public class KeyPair {
 
     // TODO people should be able to the keys they created, add a User creator field and relationship
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinTable(name = "user_keypair",
             joinColumns = @JoinColumn(name = "keypair_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"keypair_id", "user_id"}))
     private List<User> usersCreator =new ArrayList<>();
-
 }

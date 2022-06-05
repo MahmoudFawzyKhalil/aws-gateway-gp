@@ -29,12 +29,10 @@ public class Branch {
     private String name;
 
     private String address;
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "training_manager_id")
     private User trainingManager;
 
-    @OneToMany(mappedBy = "branch")
+    @OneToMany(mappedBy = "branch",cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<TrainingProgram> trainingPrograms = new ArrayList<>();
-
-
 }

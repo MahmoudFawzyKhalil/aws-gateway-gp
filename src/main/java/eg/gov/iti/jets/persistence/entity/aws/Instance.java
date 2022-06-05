@@ -44,22 +44,22 @@ public class Instance {
     private String username;
     @Column(name = "creation_date_time")
     private LocalDateTime creationDateTime;
-    @OneToOne
+    @OneToOne(cascade = {CascadeType.MERGE , CascadeType.PERSIST})
     @JoinColumn(name = "key_pair_id")
     private KeyPair keyPair;
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE , CascadeType.PERSIST})
     @JoinColumn(name = "creator_id")
     private User creator;
-    @ManyToMany(mappedBy = "grantedInstances")
+    @ManyToMany(mappedBy = "grantedInstances" , cascade = {CascadeType.MERGE , CascadeType.PERSIST})
     private List<User> instanceUsers;
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinTable(name = "instance_security_groups",
             joinColumns = @JoinColumn(name = "instance_id"),
             inverseJoinColumns = @JoinColumn(name = "security_group_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"instance_id", "security_group_id"}))
     private List<SecurityGroup> securityGroups;
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "template_configuration_id",nullable = false)
     TemplateConfiguration templateConfiguration;
 }

@@ -33,11 +33,11 @@ public class User {
     private String password;
 
 
-    @ManyToOne
+    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinTable(name = "user_tracks",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "track_id"),
@@ -45,10 +45,10 @@ public class User {
     private List<Track> tracks;
 
 
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator" ,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<Instance> createdInstances = new ArrayList<>();
 
-    @ManyToMany
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinTable(name = "user_granted_instances",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "instance_id"),
