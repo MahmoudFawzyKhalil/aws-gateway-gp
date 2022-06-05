@@ -4,6 +4,8 @@ package eg.gov.iti.jets.api.resource.instance;
 import eg.gov.iti.jets.service.management.impl.InstanceManagementImpl;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("api/instances")
 public class InstanceController {
@@ -66,6 +68,9 @@ public class InstanceController {
     }
 
 
-
+    @GetMapping("types")
+    List<String> getInstanceTypes(){
+            return  instanceManagement.getInstanceTypes();
+    }
 
 }
