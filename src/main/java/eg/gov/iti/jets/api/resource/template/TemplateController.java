@@ -42,7 +42,7 @@ public class TemplateController {
     @GetMapping
     @Secured("VIEW_TEMPLATES")
     // TODO: 6/5/2022 get the Id?
-    public TemplateViewResponse getAllTemplates(){
+    public TemplateViewResponse getAllTemplates(@AuthenticationPrincipal UserAdapter userDetails){
         List<TemplateResponse> templateResponses = new ArrayList<>();
         List<TemplateConfiguration> templateConfiguration = templateManagement.getTemplateConfiguration();
         for ( TemplateConfiguration template :
