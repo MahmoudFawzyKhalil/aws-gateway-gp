@@ -51,7 +51,7 @@ public class TemplateController {
         return new TemplateViewResponse(templateResponses);
     }
 
-    @GetMapping("subnet")
+    @GetMapping("/subnet")
     SubnetResponse getAllSubnet(){
         return  mapper.mapFromSubnetToSubnetResponse(templateManagement.getAllSubnet());
 
