@@ -57,7 +57,17 @@ public class JwtFilter extends OncePerRequestFilter {
         }
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userService.loadUserByUsername(userName);
+//            UserDetails userDetails = this.userService.loadUserByUsername(userName);
+//            logger.warn(Arrays.toString(roles.toArray()));
+            String[] rolesArray = convertStringListToArray(roles);
+//            UserDetails userDetails = new User(userName,"", AuthorityUtils.createAuthorityList(rolesArray));
+            User userEntity = new User();
+            userEntity.setUsername(userName);
+            userEntity.setId(userId); // todo set userId
+            userEntity.setPassword(null);
+            UserAdapter userDetails = new UserAdapter(userEntity, AuthorityUtils.createAuthorityList(rolesArray));
+            logger.warn("authorities : "+userDetails.getAuthorities());
+            logger.warn("authorities : "+userDetails.getId());
             /**
              * extract user privileges from JWT instead of loading user from db
              */
@@ -70,6 +80,14 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
+    }
+
+    private String[] convertStringListToArray(List<String> roles) {
+        String[] rolesArray = new String[roles.size()];
+        for(int i = 0; i < roles.size(); i++){
+            rolesArray[i] = roles.get(i);
+        }
+        return rolesArray;
     }
 
 //    @Override
