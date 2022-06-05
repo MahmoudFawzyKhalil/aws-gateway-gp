@@ -1,11 +1,19 @@
 package eg.gov.iti.jets.persistence.entity.aws;
 
 import eg.gov.iti.jets.persistence.entity.User;
-import eg.gov.iti.jets.persistence.entity.enums.UserActions;
+import eg.gov.iti.jets.persistence.entity.enums.UserAction;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "instance_logs")
 public class InstanceLogs {
@@ -20,7 +28,7 @@ public class InstanceLogs {
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    UserActions action;
+    UserAction action;
 
     @ManyToOne
     @JoinColumn(name = "action_maker_id", nullable = false)
