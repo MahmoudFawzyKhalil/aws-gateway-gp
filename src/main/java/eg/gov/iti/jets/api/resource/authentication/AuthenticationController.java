@@ -2,6 +2,7 @@ package eg.gov.iti.jets.api.resource.authentication;
 
 import eg.gov.iti.jets.api.util.JwtUtil;
 import eg.gov.iti.jets.service.management.UserManagement;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -33,10 +34,11 @@ public class AuthenticationController {
     }
 
     @GetMapping("/admin")
-//    @Secured("WRITE")          //security worked only after using this annotation not using authorities in security configurer
+    @Secured("WRITE")          //security worked only after using this annotation not using authorities in security configurer
     public String testWrite() {
         return "test write";
     }
+
     @GetMapping("/hello")
     public String hello() {
         return "test hello";
