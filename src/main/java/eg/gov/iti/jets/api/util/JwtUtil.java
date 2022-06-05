@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.api.util;
 
+import eg.gov.iti.jets.service.model.UserAdapter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -54,10 +55,10 @@ public class JwtUtil {
         return extractExpirationDate(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserAdapter userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(TOKEN_PRIVILEGES, userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
-        claims.put(TOKEN_ID, "dumb id");
+        claims.put(TOKEN_ID, userDetails.getId());
         return createToken(claims, userDetails.getUsername());
     }
 
