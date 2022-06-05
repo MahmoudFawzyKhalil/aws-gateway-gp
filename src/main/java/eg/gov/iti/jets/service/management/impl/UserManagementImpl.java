@@ -1,17 +1,25 @@
 package eg.gov.iti.jets.service.management.impl;
 
+import eg.gov.iti.jets.api.resource.user.UserResponse;
+import eg.gov.iti.jets.api.util.Mapper;
+import eg.gov.iti.jets.persistence.dao.impls.UserDaoImpl;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.UserManagement;
-//import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-public class UserManagementImpl implements UserDetailsService, UserManagement {
+public class UserManagementImpl implements UserManagement {
+    private UserDaoImpl userDaoImpl;
+    private Mapper mapper;
+    public UserManagementImpl(UserDaoImpl userDao , Mapper mapper){
+        this.userDaoImpl = userDao;
+        this.mapper = mapper;
+    }
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         switch (username){
@@ -51,7 +59,14 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
     }
 
     @Override
-    public User getUserById( int id ) {
+    public UserResponse getUserById(int id ) {
+
+        return mapper.mapFromUserToUserResponse(userDaoImpl.findById(id)
+                .orElseThrow(() -> new RuntimeException("User with id : "+id+" , Not found")));
+    }
+
+    @Override
+    public User getUserByName(String username) {
         return null;
     }
 
@@ -59,4 +74,5 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
     public Boolean createUserFromCSV( String csvFile ) {
         return null;
     }
+
 }

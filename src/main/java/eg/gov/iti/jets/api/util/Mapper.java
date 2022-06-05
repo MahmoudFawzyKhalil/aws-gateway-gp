@@ -10,12 +10,14 @@ import eg.gov.iti.jets.api.resource.track.TrackRequest;
 import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
-import eg.gov.iti.jets.persistence.entity.Branch;
-import eg.gov.iti.jets.persistence.entity.Intake;
-import eg.gov.iti.jets.persistence.entity.Track;
-import eg.gov.iti.jets.persistence.entity.TrainingProgram;
+import eg.gov.iti.jets.api.resource.user.UserRequest;
+import eg.gov.iti.jets.api.resource.user.UserResponse;
+import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.service.model.*;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class Mapper {
@@ -56,5 +58,27 @@ public class Mapper {
 
     public TrackResponse mapFromTrackToTrackResponse(Track track) {
         return null;
+    }
+
+    public User mapFromUserRequestToUser(UserRequest userRequest) {
+        return null;
+    }
+
+//    public UserResponse mapFromUserToUserResponse(User user) {
+//        return null;
+//    }
+
+    public UserResponse mapFromUserToUserResponse(User user) {
+        UserResponse response = new UserResponse();
+        response.setId(user.getId());
+        response.setUsername(user.getUsername());
+        response.setEmail(user.getEmail());
+        response.setRole(user.getRole().getName());
+        response.setPassword(user.getPassword());
+        response.setPrivileges(user.getRole().getPrivileges().stream().map(Privilege::getName).collect(Collectors.toList()));
+        response.setTracks(null);
+        response.setGrantedInstances(null);
+        response.setCreatedInstances(null);
+        return response;
     }
 }
