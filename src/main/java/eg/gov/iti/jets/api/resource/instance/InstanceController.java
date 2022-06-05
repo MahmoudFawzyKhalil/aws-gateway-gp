@@ -24,16 +24,19 @@ public class InstanceController {
         this.mapper = mapper;
     }
 
-
+//List<>
     @GetMapping("types")
     List<String> getInstanceTypes(){
         return  instanceManagement.getInstanceTypes();
     }
 
+    // return List<String>
     @GetMapping("subnet")
     List<Subnet> getAllSubnet(){
         return  instanceManagement.getAllSubnet();
     }
+
+    // retun List<String> securitygroup
 
 
     @GetMapping("ami/{id}")
