@@ -1,9 +1,22 @@
 package eg.gov.iti.jets.service.management.impl;
 
+import eg.gov.iti.jets.persistence.entity.aws.Ami;
+import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
+import eg.gov.iti.jets.persistence.entity.aws.Subnet;
+import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class InstanceManagementImpl {
+
+    public AwsGateway awsGateway;
+
+    public InstanceManagementImpl(AwsGateway awsGateway) {
+        this.awsGateway = awsGateway;
+    }
 
     public void createInstances(){}
 
@@ -28,5 +41,21 @@ public class InstanceManagementImpl {
     public void getInstance(String id){}
 
 
+    public List<SecurityGroup> describeSecurityGroupsForVpc(String vpcId){
+        return awsGateway.describeSecurityGroupsForVpc(vpcId);
+    }
 
+    public List<String> getInstanceTypes(){
+       return awsGateway.getInstanceTypes();
+    }
+
+
+    public List<Subnet> getAllSubnet(){
+        return awsGateway.describeAllSubnets();
+    }
+
+
+    public Optional<Ami> describeAmi(String amiId){
+       return awsGateway.describeAmi(amiId);
+    }
 }
