@@ -7,6 +7,7 @@ import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,5 +49,11 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     public List<InstanceLogs> findAllByExample(InstanceLogs example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return instanceLogsRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+
+    @Override
+    public LocalDateTime findLastStopDate(Instance instance) {
+        return instanceLogsRepo.findLastStopDate(instance);
     }
 }
