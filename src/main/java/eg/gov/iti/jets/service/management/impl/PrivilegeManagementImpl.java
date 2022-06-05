@@ -15,9 +15,12 @@ public class PrivilegeManagementImpl implements PrivilegeManagement {
 
     @Override
     public Boolean addPrivilege( Privilege privilege ) {
-        privilege = privilegeDao.save(privilege);
-        System.out.println(privilege);
-        return true;
+        try {
+            privilegeDao.save(privilege);
+            return true;
+        }catch (Exception exception) {
+            throw new RuntimeException("privilege already exists");
+        }
     }
 
     @Override
