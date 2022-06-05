@@ -30,13 +30,15 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
                 user.setPassword("1234");
                 Privilege privilege = new Privilege();
                 privilege.setName("WRITE");
+                Privilege privilege2 = new Privilege();
+                privilege2.setName("START_STOP_INSTANCE");
                 Role role = new Role();
-                role.setPrivileges(List.of(privilege));
+                role.setPrivileges(List.of(privilege, privilege2));
                 user.setRole(role);
                 return new UserAdapter(user);
             default:
                 User user1 = new User();
-                user1.setUsername("hesham");
+                user1.setUsername("ashraf");
                 user1.setPassword("1234");
                 Privilege privilege1 = new Privilege();
                 privilege1.setName("READ");
