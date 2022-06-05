@@ -1,16 +1,12 @@
 package eg.gov.iti.jets.persistence.dao;
 
-import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
+import eg.gov.iti.jets.persistence.entity.enums.UserAction;
 
 import java.util.List;
-import java.time.LocalDateTime;
+import java.util.Optional;
 
 public interface InstanceLogsDao extends GenericCrudDao<InstanceLogs,Long> {
 
-    LocalDateTime findLastStopDate(Instance instance);
-
-     List<InstanceLogs> findAllByAction_TerminateInstance(String terminateInstance);
-     InstanceLogs findLatestTerminateInstanceById(Long instanceId);
-
+    Optional<InstanceLogs> findLastLogByAction(UserAction action);
 }

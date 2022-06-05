@@ -1,9 +1,16 @@
 package eg.gov.iti.jets.persistence.dao.impls;
 
+import eg.gov.iti.jets.persistence.dao.InstanceDao;
 import eg.gov.iti.jets.persistence.dao.InstanceLogsDao;
+import eg.gov.iti.jets.persistence.dao.KeyPairDao;
+import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
+import eg.gov.iti.jets.persistence.entity.aws.KeyPair;
+import eg.gov.iti.jets.persistence.entity.enums.UserAction;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Bean;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -25,7 +32,7 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
 
     @Override
     public InstanceLogs save(InstanceLogs entity) {
-        return null;
+        return instanceLogsRepo.save(entity);
     }
 
     @Override
@@ -57,18 +64,8 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
 
 
     @Override
-    public LocalDateTime findLastStopDate(Instance instance) {
-        return instanceLogsRepo.findLastStopDate(instance);
+    public Optional<InstanceLogs> findLastLogByAction(UserAction action) {
+        return instanceLogsRepo.findFirstByActionOrderByDateTimeDesc(action);
     }
 
-
-    @Override
-    public List<InstanceLogs> findAllByAction_TerminateInstance(String terminateInstance) {
-        return instanceLogsRepo.findAllByAction_TerminateInstance(terminateInstance);
-    }
-
-    @Override
-    public InstanceLogs findLatestTerminateInstanceById(Long instanceId) {
-        return instanceLogsRepo.findLatestTerminateInstanceById(instanceId);
-    }
 }
