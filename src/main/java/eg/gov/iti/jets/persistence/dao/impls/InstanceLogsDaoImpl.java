@@ -3,6 +3,8 @@ package eg.gov.iti.jets.persistence.dao.impls;
 import eg.gov.iti.jets.persistence.dao.InstanceLogsDao;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -44,6 +46,7 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
 
     @Override
     public List<InstanceLogs> findAllByExample(InstanceLogs example) {
-        return null;
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return instanceLogsRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
     }
 }
