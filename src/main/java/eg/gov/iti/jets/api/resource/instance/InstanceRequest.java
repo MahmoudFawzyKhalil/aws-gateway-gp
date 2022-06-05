@@ -9,6 +9,8 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class InstanceRequest {
+
+    // template
     private int templateId;
     private int studentId;
     private String keyPair;

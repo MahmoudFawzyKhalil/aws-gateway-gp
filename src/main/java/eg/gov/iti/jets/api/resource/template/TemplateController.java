@@ -37,7 +37,9 @@ public class TemplateController {
         return templateManagement.deleteTemplate( id );
     }
 
+
     @GetMapping
+    // TODO: 6/5/2022 get the Id?
     public List<TemplateResponse> getAllTemplates(){
         List<TemplateResponse> templateResponses = new ArrayList<>();
         List<TemplateConfiguration> templateConfiguration = templateManagement.getTemplateConfiguration();

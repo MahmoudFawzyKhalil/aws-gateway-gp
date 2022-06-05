@@ -28,7 +28,7 @@ public class InstanceController {
         this.mapper = mapper;
     }
 
-//List<>
+
     @GetMapping("types")
     ResponseEntity<List<String>> getInstanceTypes(){
         return  new ResponseEntity<>(instanceManagement.getInstanceTypes(), HttpStatus.OK);
@@ -52,9 +52,13 @@ public class InstanceController {
         return new ResponseEntity<>(securityGroupResponses,HttpStatus.OK);
     }
     @GetMapping("ami/{id}")
-   ResponseEntity< Optional<Ami>>  describeAmi (@PathVariable String id){
+    ResponseEntity< Optional<Ami>>  describeAmi (@PathVariable String id){
         return new ResponseEntity<>(instanceManagement.describeAmi(id),HttpStatus.OK) ;
     }
+
+    //post
+    //res success
+
 
     @PostMapping
     InstanceResponse createInstance(InstanceRequest instanceRequest){
