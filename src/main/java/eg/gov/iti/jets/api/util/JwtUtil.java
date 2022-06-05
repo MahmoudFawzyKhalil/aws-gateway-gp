@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -38,6 +39,8 @@ public class JwtUtil {
     public Date extractExpirationDate(String token) {
         return extractClaim(token, Claims::getExpiration);
     }
+
+    public List<String> extractRoles(String token){ return (List<String>) extractClaim(token, claims->claims.get(TOKEN_PRIVILEGES));}
 
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);

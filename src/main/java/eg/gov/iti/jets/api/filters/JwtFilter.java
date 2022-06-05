@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
@@ -33,12 +34,15 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         String userName = null;
+        List<String> roles ;
         String jwt = null;
         if (authorizationHeader != null && authorizationHeader.startsWith(prefix + " ")) {
             jwt = authorizationHeader.substring(prefix.length() + 1);
             try {
 
                 userName = jwtUtil.extractUsername(jwt);
+                roles = jwtUtil.extractRoles(jwt);
+                logger.info(roles+"  wow");
 
             } catch (IllegalArgumentException e) {
                 logger.error("Unable to get JWT Token");
@@ -65,10 +69,11 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request, response);
     }
-    @Override
-    protected boolean shouldNotFilter(
-            HttpServletRequest request) {
-        return request.getServletPath()
-                .equals("/api/login");
-    }
+
+//    @Override
+//    protected boolean shouldNotFilter(
+//            HttpServletRequest request) {
+//        return request.getServletPath()
+//                .equals("/api/login");
+//    }
 }
