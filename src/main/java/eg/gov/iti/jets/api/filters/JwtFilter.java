@@ -1,14 +1,16 @@
 package eg.gov.iti.jets.api.filters;
 
 import eg.gov.iti.jets.api.util.JwtUtil;
+import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.UserManagement;
+import eg.gov.iti.jets.service.model.UserAdapter;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -34,16 +36,17 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
         String userName = null;
-        List<String> roles ;
+        Integer userId = null;
+        List<String> roles = null ;
         String jwt = null;
         if (authorizationHeader != null && authorizationHeader.startsWith(prefix + " ")) {
-            jwt = authorizationHeader.substring(prefix.length() + 1);
+            jwt = authorizationHeader.substring(prefix.length() + 1).trim();
+//            jwt = authorizationHeader.split(" ")[1].trim(); // 
             try {
 
                 userName = jwtUtil.extractUsername(jwt);
                 roles = jwtUtil.extractRoles(jwt);
-                logger.info(roles+"  wow");
-
+                userId =  (Integer) jwtUtil.extractClaim(jwt,claims -> claims.get("id")); // todo cast to integer after type edit above
             } catch (IllegalArgumentException e) {
                 logger.error("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
@@ -58,7 +61,6 @@ public class JwtFilter extends OncePerRequestFilter {
             /**
              * extract user privileges from JWT instead of loading user from db
              */
-            logger.info("test");
             if (jwtUtil.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
