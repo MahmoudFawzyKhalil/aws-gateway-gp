@@ -58,4 +58,8 @@ public class Instance {
             inverseJoinColumns = @JoinColumn(name = "security_group_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"instance_id", "security_group_id"}))
     private List<SecurityGroup> securityGroups;
+
+    @ManyToOne
+    @JoinColumn(name = "template_configuration_id",nullable = false)
+    TemplateConfiguration templateConfiguration;
 }
