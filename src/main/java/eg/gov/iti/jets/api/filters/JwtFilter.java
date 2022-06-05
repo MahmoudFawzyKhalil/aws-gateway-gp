@@ -51,6 +51,10 @@ public class JwtFilter extends OncePerRequestFilter {
 
         if (userName != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             UserDetails userDetails = this.userService.loadUserByUsername(userName);
+            /**
+             * extract user privileges from JWT instead of loading user from db
+             */
+            logger.info("test");
             if (jwtUtil.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
@@ -60,12 +64,11 @@ public class JwtFilter extends OncePerRequestFilter {
             }
         }
         filterChain.doFilter(request, response);
-
     }
-//    @Override
-//    protected boolean shouldNotFilter(
-//            HttpServletRequest request) {
-//        return !request.getServletPath()
-//                .equals("/api/authenticate");
-//    }
+    @Override
+    protected boolean shouldNotFilter(
+            HttpServletRequest request) {
+        return request.getServletPath()
+                .equals("/api/login");
+    }
 }
