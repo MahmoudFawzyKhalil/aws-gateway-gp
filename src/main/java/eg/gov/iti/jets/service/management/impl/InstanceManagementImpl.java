@@ -22,18 +22,10 @@ public class InstanceManagementImpl implements InstanceManagement {
 
 
     @Override
-    public List<SecurityGroup> describeSecurityGroupsForVpc(String vpcId){
-        return awsGateway.describeSecurityGroupsForVpc(vpcId);
-    }
-    @Override
     public List<String> getInstanceTypes(){
        return awsGateway.getInstanceTypes();
     }
 
-    @Override
-    public List<Subnet> getAllSubnet(){
-        return awsGateway.describeAllSubnets();
-    }
 
     @Override
     public Optional<Ami> describeAmi(String amiId){
