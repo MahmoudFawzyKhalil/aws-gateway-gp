@@ -70,8 +70,8 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     }
 
     @Override
-    public List<InstanceLogs> findInstanceLogsByActionMakerAndAction(User user, UserAction userAction, int pageNumber, int pageSize) {
-        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findInstanceLogsByActionMakerAndAction(user, userAction, PageRequest.of(pageNumber, pageSize));
+    public List<InstanceLogs> findInstanceLogsByActionMakerAndAction(int id, UserAction userAction, int pageNumber, int pageSize) {
+        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findInstanceLogsByActionMakerAndAction(id, userAction, PageRequest.of(pageNumber, pageSize));
         return instanceLogPage.getContent();
     }
 

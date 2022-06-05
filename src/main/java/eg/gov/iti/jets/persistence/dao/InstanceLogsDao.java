@@ -1,6 +1,5 @@
 package eg.gov.iti.jets.persistence.dao;
 
-import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
 import eg.gov.iti.jets.persistence.entity.enums.UserAction;
 
@@ -13,6 +12,6 @@ public interface InstanceLogsDao extends GenericCrudDao<InstanceLogs, Long> {
     Optional<InstanceLogs> findLastLogByActionAndInstanceId(UserAction action,int instanceId);
     boolean deleteInstanceLogByDate(LocalDateTime localDateTime);
     List<InstanceLogs> findAllByInstanceId(Long instanceId, int pageNumber, int pageSize);
-    List<InstanceLogs> findInstanceLogsByActionMakerAndAction(User user, UserAction userAction, int pageNumber, int pageSize);
+    List<InstanceLogs> findInstanceLogsByActionMakerAndAction(int id, UserAction userAction, int pageNumber, int pageSize);
 
 }
