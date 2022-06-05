@@ -64,8 +64,8 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
 
 
     @Override
-    public Optional<InstanceLogs> findLastLogByAction(UserAction action) {
-        return instanceLogsRepo.findFirstByActionOrderByDateTimeDesc(action);
+    public Optional<InstanceLogs> findLastLogByActionAndInstanceId(UserAction action,int instanceId) {
+        return instanceLogsRepo.findFirstByActionAndInstance_IdOrderByDateTimeDesc(action,instanceId);
     }
 
     @Override

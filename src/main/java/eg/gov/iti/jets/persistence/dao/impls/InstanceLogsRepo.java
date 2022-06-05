@@ -7,12 +7,11 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 interface InstanceLogsRepo extends JpaRepository<InstanceLogs, Long> {
 
-    Optional<InstanceLogs> findFirstByActionOrderByDateTimeDesc(UserAction action);
+    Optional<InstanceLogs> findFirstByActionAndInstance_IdOrderByDateTimeDesc(UserAction action,int id);
 
     boolean deleteLogsByDateTimeLessThan(LocalDateTime startDate);
 
