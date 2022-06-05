@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.persistence.entity;
 
 
+import eg.gov.iti.jets.persistence.entity.enums.PrivilegeNames;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,7 +19,7 @@ import java.util.List;
 
 
 @Entity
-@Table(name = "privilege" )
+@Table(name = "privilege")
 public class Privilege {
 
     @Id
@@ -26,8 +27,9 @@ public class Privilege {
     private Integer id;
 
     @NotNull
-    @Column(unique = true,nullable = false)
-    private String name;
+    @Column(name = "privilege_name", unique = true, nullable = false)
+    @Enumerated(EnumType.STRING)
+    private PrivilegeNames name;
 
     @ManyToMany(mappedBy = "privileges")
     private List<Role> roles = new ArrayList<>();
