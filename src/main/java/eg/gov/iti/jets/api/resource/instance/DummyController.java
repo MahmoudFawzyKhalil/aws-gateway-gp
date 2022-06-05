@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/dummystudent")
+@RequestMapping("/api/dummystudent")
 public class DummyController {
 
     @GetMapping

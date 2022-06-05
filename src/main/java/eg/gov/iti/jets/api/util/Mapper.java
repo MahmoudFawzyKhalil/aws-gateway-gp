@@ -30,75 +30,79 @@ import java.util.stream.Collectors;
 public class Mapper {
     @Autowired
     private MapperFromIdToSecurityGroup mapperFromIdToSecurityGroup;
-    public Branch mapFromBranchRequestToBranch( BranchRequest branchRequest){
+
+    public Branch mapFromBranchRequestToBranch( BranchRequest branchRequest ) {
         return null;
     }
 
-    public BranchResponse mapFromBranchToBranchResponse(Branch branch){
-        return null;
-    }
-    public TrainingProgram mapFromTrainingProgramRequestToTrainingProgram( TrainingProgramRequest trainingProgramRequest){
+    public BranchResponse mapFromBranchToBranchResponse( Branch branch ) {
         return null;
     }
 
-    public TrainingProgramResponse mapFromTrainingProgramToTrainingProgramResponse( TrainingProgram trainingProgram){
+    public TrainingProgram mapFromTrainingProgramRequestToTrainingProgram( TrainingProgramRequest trainingProgramRequest ) {
+        return null;
+    }
+
+    public TrainingProgramResponse mapFromTrainingProgramToTrainingProgramResponse( TrainingProgram trainingProgram ) {
         return null;
     }
 
 
-
-    public IntakeResponse mapFromIntakeToIntakeResponse( Intake intake) {
+    public IntakeResponse mapFromIntakeToIntakeResponse( Intake intake ) {
         return null;
     }
 
-    public Intake mapFromIntakeRequestToIntake(IntakeRequest intakeRequest){return null;}
-
-
-    public Track mapFromTrackRequestToTrack( TrackRequest trackRequest) {
+    public Intake mapFromIntakeRequestToIntake( IntakeRequest intakeRequest ) {
         return null;
     }
 
-    public TrackResponse mapFromTrackToTrackResponse(Track track) {
+
+    public Track mapFromTrackRequestToTrack( TrackRequest trackRequest ) {
         return null;
     }
 
-    public Instance mapFromInstanceRequestToInstance( IntakeRequest intakeRequest) {
+    public TrackResponse mapFromTrackToTrackResponse( Track track ) {
         return null;
     }
 
-    public InstanceResponse mapFromInstanceToInstanceResponse( Optional<Instance> instance) {
+    public Instance mapFromInstanceRequestToInstance( IntakeRequest intakeRequest ) {
+        return null;
+    }
+
+    public InstanceResponse mapFromInstanceToInstanceResponse( Optional<Instance> instance ) {
         InstanceResponse instanceResponse = new InstanceResponse();
         instanceResponse.setSuccess( instance.isPresent() );
         return instanceResponse;
     }
 
-    public SubnetResponse mapFromSubnetToSubnetResponse(List<Subnet> subnets) {
+    public SubnetResponse mapFromSubnetToSubnetResponse( List<Subnet> subnets ) {
         SubnetResponse subnetResponse = new SubnetResponse();
-        subnetResponse.setSubnets(subnets.stream().map(subnet -> subnet.getSubnetId()).collect(Collectors.toList()));
+        subnetResponse.setSubnets( subnets.stream().map( Subnet::getSubnetId ).collect( Collectors.toList() ) );
         return subnetResponse;
     }
 
-    public TemplateConfiguration mapFromTemplateRequestToTemplateConfig(TemplateRequest templateRequest) {
-        TemplateConfiguration  templateConfiguration = new TemplateConfiguration ();
-        templateConfiguration.setAmiId(templateRequest.getAmiId());
-        templateConfiguration.setCreator(null);
-        templateConfiguration.setSubnetId(templateRequest.getSubnetId());
-        templateConfiguration.setInstanceType(templateRequest.getInstanceType());
-        templateConfiguration.setInstructors(null);
-       templateConfiguration.setSecurityGroups(mapperFromIdToSecurityGroup.getSecurityGroups(templateRequest.getSecurityGroups()));
+    public TemplateConfiguration mapFromTemplateRequestToTemplateConfig( TemplateRequest templateRequest ) {
+        TemplateConfiguration templateConfiguration = new TemplateConfiguration();
+        templateConfiguration.setAmiId( templateRequest.getAmiId() );
+        templateConfiguration.setCreator( mapperFromIdToSecurityGroup.getUser( 1 ) );
+        templateConfiguration.setSubnetId( templateRequest.getSubnetId() );
+        templateConfiguration.setInstanceType( templateRequest.getInstanceType() );
+        templateConfiguration.setInstructors( null );
+        templateConfiguration.setSecurityGroups( mapperFromIdToSecurityGroup.getSecurityGroups( templateRequest.getSecurityGroups() ) );
         return templateConfiguration;
     }
 
-    public SecurityGroupResponse mapFromSecurityGroupToSecurityGroupResponse(SecurityGroup securityGroup) {
+    public SecurityGroupResponse mapFromSecurityGroupToSecurityGroupResponse( SecurityGroup securityGroup ) {
         SecurityGroupResponse securityGroupResponse = new SecurityGroupResponse();
-        securityGroupResponse.setId(securityGroup.getId());
-        securityGroupResponse.setName(securityGroup.getName());
+        securityGroupResponse.setId( securityGroup.getId() );
+        securityGroupResponse.setName( securityGroup.getName() );
         return securityGroupResponse;
 
     }
 
 
-    public TemplateResponse mapFromTemplateToTemplateResponse(TemplateConfiguration template) {
-        return  null;
+    public TemplateResponse mapFromTemplateToTemplateResponse( TemplateConfiguration template ) {
+
+        return new TemplateResponse( template.getId() );
     }
 }
