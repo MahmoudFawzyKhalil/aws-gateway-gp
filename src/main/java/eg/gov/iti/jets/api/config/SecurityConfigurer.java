@@ -52,6 +52,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .mvcMatchers("/api/admin").hasAuthority("WRITE")
                 .mvcMatchers("/api/hello").hasAuthority("READ")
                 .mvcMatchers("/api/users").hasAnyAuthority("WRITE","READ")
+//                .mvcMatchers("/api/dummystudent").hasAnyAuthority("WRITE","READ")
                 .mvcMatchers("/api/login").permitAll()
                 .mvcMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .anyRequest()

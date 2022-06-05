@@ -1,14 +1,17 @@
-package eg.gov.iti.jets.api.resource.template;
+package eg.gov.iti.jets.api.resource.instance;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class TemplateResponse {
-    private int id;
+public class SubnetResponse {
+
+    List<String> subnets;
 }

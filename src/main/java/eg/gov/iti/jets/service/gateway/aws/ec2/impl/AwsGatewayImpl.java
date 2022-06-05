@@ -211,13 +211,12 @@ class AwsGatewayImpl implements AwsGateway {
                 .builder()
                 .imageId( template.getAmiId() )
                 .tagSpecifications( tagSpecification )
-//                .securityGroups( template.getSecurityGroups().stream().map( SecurityGroup::getName ).collect(toList()) )
                 .keyName( keyPair.getKeyName() )
                 .instanceType( template.getInstanceType() )
                 .subnetId( template.getSubnetId() )
                 .maxCount( 1 ).minCount( 1 ).build();
         var runInstancesResponse = ec2Client.runInstances( runInstancesRequest );
-        Instance instance = mapCreateInstanceProperties( runInstancesResponse, template.getKeyPair(), tag );
+        Instance instance = mapCreateInstanceProperties( runInstancesResponse, keyPair, tag );
         if ( !runInstancesResponse.hasInstances() )
             throw new AwsGatewayException( "Failed to create instance." );
 
