@@ -25,11 +25,11 @@ public class Track {
     @Column
     private String name;
 
-    @ManyToOne(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @ManyToOne
     @JoinColumn(name = "intake_id",nullable = false)
     private Intake intake;
 
-    @ManyToMany(mappedBy = "tracks" , cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @ManyToMany(mappedBy = "tracks" )
     private List<User> users = new ArrayList<>();
 
 
