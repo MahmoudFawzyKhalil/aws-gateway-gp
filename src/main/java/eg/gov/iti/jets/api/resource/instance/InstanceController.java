@@ -4,10 +4,14 @@ package eg.gov.iti.jets.api.resource.instance;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
+import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.persistence.entity.aws.Subnet;
 import eg.gov.iti.jets.service.management.InstanceManagement;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,22 +30,30 @@ public class InstanceController {
 
 //List<>
     @GetMapping("types")
-    List<String> getInstanceTypes(){
-        return  instanceManagement.getInstanceTypes();
+    ResponseEntity<List<String>> getInstanceTypes(){
+        return  new ResponseEntity<>(instanceManagement.getInstanceTypes(), HttpStatus.OK);
     }
 
-    // return List<String>
+
     @GetMapping("subnet")
-    List<Subnet> getAllSubnet(){
-        return  instanceManagement.getAllSubnet();
+    SubnetResponse getAllSubnet(){
+        return  mapper.mapFromSubnetToSubnetResponse(instanceManagement.getAllSubnet());
+
     }
 
-    // retun List<String> securitygroup
 
-
+    @GetMapping("{id}")
+    ResponseEntity<List<SecurityGroupResponse>>getSecurityGroups(@PathVariable String id){
+        List<SecurityGroup> securityGroups= instanceManagement.describeSecurityGroupsForVpc(id);
+        List<SecurityGroupResponse> securityGroupResponses = new ArrayList<>();
+       for(SecurityGroup group:securityGroups){
+           securityGroupResponses.add(mapper.mapFromSecurityGroupToSecurityGroupResponse(group));
+       }
+        return new ResponseEntity<>(securityGroupResponses,HttpStatus.OK);
+    }
     @GetMapping("ami/{id}")
-    Optional<Ami> describeAmi (@PathVariable String id){
-        return  instanceManagement.describeAmi(id);
+   ResponseEntity< Optional<Ami>>  describeAmi (@PathVariable String id){
+        return new ResponseEntity<>(instanceManagement.describeAmi(id),HttpStatus.OK) ;
     }
 
     @PostMapping

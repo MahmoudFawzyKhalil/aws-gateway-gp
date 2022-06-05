@@ -18,9 +18,7 @@ public class TemplateManagementImpl implements TemplateManagement {
         this.templateConfigurationDao = templateConfigurationDao;
     }
 
-    public Boolean createTemplate( List<String> configs){
-        return null;
-    }
+
 
     public Boolean deleteTemplate ( int id ){
         return null;
@@ -30,8 +28,17 @@ public class TemplateManagementImpl implements TemplateManagement {
     public List<TemplateConfiguration> getTemplateConfiguration(){
         return templateConfigurationDao.findAll();
     }
-    
-   
+
+    @Override
+    public Boolean createTemplate(TemplateConfiguration templateConfiguration) {
+        TemplateConfiguration net= templateConfigurationDao.save(templateConfiguration);
+        if(net==null){
+            return false;
+        }
+        else{
+        return true;}
+    }
+
 
     //TODO what do you really want
 

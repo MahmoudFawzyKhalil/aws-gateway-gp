@@ -3,6 +3,8 @@ package eg.gov.iti.jets.api.util;
 import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.instance.InstanceResponse;
+import eg.gov.iti.jets.api.resource.instance.SecurityGroupResponse;
+import eg.gov.iti.jets.api.resource.instance.SubnetResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
 import eg.gov.iti.jets.api.resource.template.TemplateRequest;
@@ -11,18 +13,23 @@ import eg.gov.iti.jets.api.resource.track.TrackRequest;
 import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
-import eg.gov.iti.jets.persistence.entity.Branch;
-import eg.gov.iti.jets.persistence.entity.Intake;
-import eg.gov.iti.jets.persistence.entity.Track;
-import eg.gov.iti.jets.persistence.entity.TrainingProgram;
+import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
+import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
+import eg.gov.iti.jets.persistence.entity.aws.Subnet;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
+import eg.gov.iti.jets.service.util.MapperFromIdToSecurityGroup;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Component
 public class Mapper {
+    @Autowired
+    private MapperFromIdToSecurityGroup mapperFromIdToSecurityGroup;
     public Branch mapFromBranchRequestToBranch( BranchRequest branchRequest){
         return null;
     }
@@ -55,14 +62,6 @@ public class Mapper {
         return null;
     }
 
-    public TemplateConfiguration mapFromTemplateRequestToTemplate( TemplateRequest templateRequest) {
-
-        return null;
-    }
-
-    public TemplateResponse mapFromTemplateToTemplateResponse( TemplateConfiguration templateConfiguration) {
-        return null;
-    }
     public Instance mapFromInstanceRequestToInstance( IntakeRequest intakeRequest) {
         return null;
     }
@@ -71,5 +70,35 @@ public class Mapper {
         InstanceResponse instanceResponse = new InstanceResponse();
         instanceResponse.setSuccess( instance.isPresent() );
         return instanceResponse;
+    }
+
+    public SubnetResponse mapFromSubnetToSubnetResponse(List<Subnet> subnets) {
+        SubnetResponse subnetResponse = new SubnetResponse();
+        subnetResponse.setSubnets(subnets.stream().map(subnet -> subnet.getSubnetId()).collect(Collectors.toList()));
+        return subnetResponse;
+    }
+
+    public TemplateConfiguration mapFromTemplateRequestToTemplateConfig(TemplateRequest templateRequest) {
+        TemplateConfiguration  templateConfiguration = new TemplateConfiguration ();
+        templateConfiguration.setAmiId(templateRequest.getAmiId());
+        templateConfiguration.setCreator(null);
+        templateConfiguration.setSubnetId(templateRequest.getSubnetId());
+        templateConfiguration.setInstanceType(templateRequest.getInstanceType());
+        templateConfiguration.setInstructors(null);
+       templateConfiguration.setSecurityGroups(mapperFromIdToSecurityGroup.getSecurityGroups(templateRequest.getSecurityGroups()));
+        return templateConfiguration;
+    }
+
+    public SecurityGroupResponse mapFromSecurityGroupToSecurityGroupResponse(SecurityGroup securityGroup) {
+        SecurityGroupResponse securityGroupResponse = new SecurityGroupResponse();
+        securityGroupResponse.setId(securityGroup.getId());
+        securityGroupResponse.setName(securityGroup.getName());
+        return securityGroupResponse;
+
+    }
+
+
+    public TemplateResponse mapFromTemplateToTemplateResponse(TemplateConfiguration template) {
+        return  null;
     }
 }

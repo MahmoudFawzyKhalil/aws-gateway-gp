@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface TemplateManagement {
     List<TemplateConfiguration> getTemplateConfiguration();
-    Boolean createTemplate( List<String> configs);
+    Boolean createTemplate( TemplateConfiguration templateConfiguration);
     Boolean deleteTemplate ( int id );
 
 }

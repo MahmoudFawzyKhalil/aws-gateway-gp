@@ -3,6 +3,8 @@ package eg.gov.iti.jets.api.resource.template;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import eg.gov.iti.jets.service.management.TemplateManagement;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -21,8 +23,13 @@ public class TemplateController {
     }
 
     @PostMapping
-    public Boolean createTemplate( List<String> configs ){
-        return templateManagement.createTemplate( configs );
+    public ResponseEntity<Boolean> createTemplate(@RequestBody TemplateRequest templateRequest ){
+       Boolean successResponse = templateManagement.createTemplate(mapper.mapFromTemplateRequestToTemplateConfig(templateRequest));
+       if(successResponse==true)
+       return new ResponseEntity<>(successResponse, HttpStatus.OK);
+       else {
+           return new ResponseEntity<>(successResponse, HttpStatus.NO_CONTENT);
+       }
     }
 
     @DeleteMapping("/{id}")
