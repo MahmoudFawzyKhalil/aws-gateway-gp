@@ -9,6 +9,8 @@ import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
 import eg.gov.iti.jets.api.resource.privilege.PrivilegeRequest;
 import eg.gov.iti.jets.api.resource.privilege.PrivilegeResponse;
+import eg.gov.iti.jets.api.resource.role.RoleRequest;
+import eg.gov.iti.jets.api.resource.role.RoleResponse;
 import eg.gov.iti.jets.api.resource.template.TemplateRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.api.resource.track.TrackRequest;
@@ -116,5 +118,27 @@ public class Mapper {
         Privilege privilege = new Privilege();
         privilege.setName(privilegeRequest.getName());
         return privilege;
+    }
+
+    public Role mapRoleRequestToRole(RoleRequest roleRequest) {
+        Role role = new Role();
+        role.setName(roleRequest.getName());
+        role.setPrivileges(
+                roleRequest.getPrivileges().stream().map(id ->{
+                    Privilege privilege = new Privilege();
+                    privilege.setId(id);
+                    return privilege;
+                }).collect(Collectors.toList())
+        );
+        return role;
+    }
+
+    public RoleResponse mapRoleToRoleResponse(Role role) {
+        RoleResponse roleResponse = new RoleResponse();
+        roleResponse.setName(role.getName());
+        roleResponse.setPrivileges(role.getPrivileges().stream().map(
+                Privilege::getName
+        ).collect(Collectors.toList()));
+        return roleResponse;
     }
 }
