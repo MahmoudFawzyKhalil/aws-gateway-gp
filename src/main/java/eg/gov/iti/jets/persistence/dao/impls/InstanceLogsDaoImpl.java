@@ -1,10 +1,13 @@
 package eg.gov.iti.jets.persistence.dao.impls;
 
 import eg.gov.iti.jets.persistence.dao.InstanceLogsDao;
+import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -42,7 +45,8 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
 
     @Override
     public List<InstanceLogs> findAll(int pageNumber, int pageSize) {
-        return null;
+        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAll(PageRequest.of(pageNumber,pageSize));
+        return instanceLogPage.toList();
     }
 
     @Override
@@ -55,5 +59,16 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     @Override
     public LocalDateTime findLastStopDate(Instance instance) {
         return instanceLogsRepo.findLastStopDate(instance);
+    }
+
+
+    @Override
+    public List<InstanceLogs> findAllByAction_TerminateInstance(String terminateInstance) {
+        return instanceLogsRepo.findAllByAction_TerminateInstance(terminateInstance);
+    }
+
+    @Override
+    public InstanceLogs findLatestTerminateInstanceById(Long instanceId) {
+        return instanceLogsRepo.findLatestTerminateInstanceById(instanceId);
     }
 }
