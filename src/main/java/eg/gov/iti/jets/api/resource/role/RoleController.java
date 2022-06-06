@@ -41,4 +41,5 @@ public class RoleController {
         Role role = mapper.updateRoleRequestToRole(updateRoleRequest);
         return roleManagement.updateRole(role);
     }
+
 }

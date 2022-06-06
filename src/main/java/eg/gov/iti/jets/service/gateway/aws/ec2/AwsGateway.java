@@ -35,6 +35,10 @@ public interface AwsGateway {
      */
     List<SecurityGroup> describeSecurityGroupsForVpc(String vpcId);
 
+    List<SecurityGroup> describeSecurityGroupsForIds(List<String> securityGroupIds);
+
+    List<SecurityGroup> describeSecurityGroupsForNames(List<String> securityGroupNames);
+
     /**
      * @param instanceId Specify the id of instance you want to start
      * @return The current state of that instance

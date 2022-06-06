@@ -1,9 +1,6 @@
 package eg.gov.iti.jets.persistence.entity.aws;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
@@ -15,6 +12,7 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class SecurityGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -29,10 +27,10 @@ public class SecurityGroup {
     @Column(name = "vpc",nullable = false)
     private String vpcId;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER , cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "security_group_id")
     private Set<InboundRule> inboundRules;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER , cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "security_group_id")
     private Set<OutboundRule> outboundRules;
 }

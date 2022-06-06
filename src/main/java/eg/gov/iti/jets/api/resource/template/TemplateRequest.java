@@ -18,6 +18,5 @@ public class TemplateRequest {
     private String amiId;
     private String subnetId;
     private String instanceType;
-    private List<User> instructors;
-    private List<Integer> securityGroups;
+    private List<String> securityGroups;
 }

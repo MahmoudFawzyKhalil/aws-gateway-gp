@@ -1,10 +1,8 @@
 package eg.gov.iti.jets.persistence.entity.aws;
 
 import eg.gov.iti.jets.persistence.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -15,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "instance")
+@ToString
 public class Instance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,6 +37,8 @@ public class Instance {
     private String subnetId;
     @Column(name = "vpc_id")
     private String vpcId;
+    @Column(name = "platform")
+    private String platform; // windows or linux
     @Column(name = "instance_password")
     private String decryptedPassword;
     @Column(name = "instance_username")
@@ -60,6 +61,6 @@ public class Instance {
     private List<SecurityGroup> securityGroups;
 
     @ManyToOne
-    @JoinColumn(name = "template_configuration_id",nullable = false)
+    @JoinColumn(name = "template_configuration_id", nullable = false)
     TemplateConfiguration templateConfiguration;
 }

@@ -2,10 +2,7 @@ package eg.gov.iti.jets.persistence.entity;
 
 
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -19,6 +16,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "user")
+@ToString
 public class User {
 
     @Id
@@ -45,7 +43,7 @@ public class User {
     private List<Track> tracks;
 
 
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator" ,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<Instance> createdInstances = new ArrayList<>();
 
     @ManyToMany

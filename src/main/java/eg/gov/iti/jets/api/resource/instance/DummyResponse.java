@@ -1,6 +1,9 @@
 package eg.gov.iti.jets.api.resource.instance;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,8 +12,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class DummyResponse {
-    private int id;
-    private String student ;
+
+    private List<DummyObjectResponse> dummyObjectResponses = new ArrayList<>();
 }

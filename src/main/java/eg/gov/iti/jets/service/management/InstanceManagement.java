@@ -6,9 +6,5 @@ import java.util.List;
 import java.util.Optional;
 
 public interface InstanceManagement {
-    List<SecurityGroup> describeSecurityGroupsForVpc( String vpcId);
-    List<String> getInstanceTypes();
-    List<Subnet> getAllSubnet();
-    Optional<Ami> describeAmi( String amiId);
     Optional<Instance> createInstance( int templateConfigurationId, String instanceName , String keyPair);
 }
