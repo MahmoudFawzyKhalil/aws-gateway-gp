@@ -1,7 +1,6 @@
 package eg.gov.iti.jets.persistence.dao.impls;
 
 import eg.gov.iti.jets.persistence.dao.InstanceLogsDao;
-import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
 import eg.gov.iti.jets.persistence.entity.enums.UserAction;
 import org.springframework.data.domain.*;
@@ -61,25 +60,16 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
         return instanceLogsRepo.deleteLogsByDateTimeLessThan(localDateTime);
     }
 
-    public List<InstanceLogs> findAllByInstanceId(Long id, int pageNumber, int pageSize) {
+    @Override
+    public List<InstanceLogs> findAllByInstanceId(int id, int pageNumber, int pageSize) {
         Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAllByInstanceId(id, PageRequest.of(pageNumber, pageSize));
         return instanceLogPage.getContent();
     }
 
     @Override
     public List<InstanceLogs> findAllByActionMakerAndAction(int id, UserAction userAction, int pageNumber, int pageSize) {
-        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAllByActionMakerAndAction(id, userAction, PageRequest.of(pageNumber, pageSize));
+        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAllByActionMaker_IdAndAction(id, userAction, PageRequest.of(pageNumber, pageSize));
         return instanceLogPage.getContent();
     }
 
-
-    @Override
-    public List<InstanceLogs> findAllByAction_TerminateInstance(String terminateInstance) {
-        return instanceLogsRepo.findAllByAction_TerminateInstance(terminateInstance);
-    }
-
-    @Override
-    public InstanceLogs findLatestTerminateInstanceById(Long instanceId) {
-        return instanceLogsRepo.findLatestTerminateInstanceById(instanceId);
-    }
 }
