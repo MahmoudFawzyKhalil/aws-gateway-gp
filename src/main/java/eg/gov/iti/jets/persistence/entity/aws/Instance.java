@@ -1,10 +1,7 @@
 package eg.gov.iti.jets.persistence.entity.aws;
 
 import eg.gov.iti.jets.persistence.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "instance")
+@ToString
 public class Instance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

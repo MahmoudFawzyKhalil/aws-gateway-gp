@@ -3,6 +3,7 @@ package eg.gov.iti.jets.api.util;
 import eg.gov.iti.jets.api.resource.ami.AmiResponse;
 import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
+import eg.gov.iti.jets.api.resource.instance.InstanceRequest;
 import eg.gov.iti.jets.api.resource.instance.InstanceResponse;
 import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeObjectResponse;
 import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeResponse;
@@ -74,6 +75,11 @@ public class Mapper {
         instanceResponse.setSuccess( instance.isPresent() );
         return instanceResponse;
     }
+
+//    public Instance mapFromInstanceRequestToInstance( InstanceRequest instanceRequest ) {
+//
+//        return instanceResponse;
+//    }
 
     public SubnetObjectResponse mapFromSubnetToSubnetResponse( List<Subnet> subnets ) {
         List<SubnetResponse> list = new ArrayList<>();
