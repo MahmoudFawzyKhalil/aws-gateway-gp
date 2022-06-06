@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class PrivilegeTypeResponse {
-    private int id;
+public class AddPrivilegeRequest {
     private String name;
 }

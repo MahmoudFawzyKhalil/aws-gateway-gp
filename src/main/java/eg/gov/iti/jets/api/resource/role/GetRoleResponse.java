@@ -9,7 +9,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RoleResponse {
+public class GetRoleResponse {
     private String name;
-    private List<String> privileges;
+    private List<PrivilegeType> privileges;
 }

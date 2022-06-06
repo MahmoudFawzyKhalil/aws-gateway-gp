@@ -16,24 +16,24 @@ public class PrivilegeController {
     private final Mapper mapper;
 
     @GetMapping
-    public GetPrivilegesResponse getAllPrivileges(){
-        GetPrivilegesResponse getPrivilegesResponse = new GetPrivilegesResponse();
-        List<PrivilegeTypeResponse> privileges = privilegeManagement.getAllPrivilege().stream().map(
-                mapper::mapPrivilegeToPrivilegeTypeResponse
+    public GetAllPrivilegesResponse getAllPrivileges(){
+        GetAllPrivilegesResponse getPrivilegesResponse = new GetAllPrivilegesResponse();
+        List<GetPrivilegeResponse> privileges = privilegeManagement.getAllPrivilege().stream().map(
+                mapper::privilegeToGetPrivilegeResponse
         ) .collect(Collectors.toList());
         getPrivilegesResponse.setPrivileges(privileges);
         return getPrivilegesResponse;
     }
 
     @PostMapping
-    public Boolean addPrivilege(@RequestBody PrivilegeRequest privilegeRequest) {
-      return privilegeManagement.addPrivilege(mapper.mapPrivilegeRequestToPrivilege(privilegeRequest));
+    public Boolean addPrivilege(@RequestBody AddPrivilegeRequest addPrivilegeRequest) {
+      return privilegeManagement.addPrivilege(mapper.addPrivilegeRequestToPrivilege(addPrivilegeRequest));
     }
 
     @GetMapping("/{id}")
-    public PrivilegeTypeResponse getPrivilege(@PathVariable("id") int id) {
+    public GetPrivilegeResponse getPrivilege(@PathVariable("id") int id) {
         Privilege privilege = privilegeManagement.getPrivilegeById(id);
-        return mapper.mapPrivilegeToPrivilegeTypeResponse(privilege);
+        return mapper.privilegeToGetPrivilegeResponse(privilege);
     }
 
 }

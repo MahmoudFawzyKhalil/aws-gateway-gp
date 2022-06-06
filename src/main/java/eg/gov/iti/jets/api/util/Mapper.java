@@ -7,10 +7,12 @@ import eg.gov.iti.jets.api.resource.instance.SecurityGroupResponse;
 import eg.gov.iti.jets.api.resource.instance.SubnetResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
-import eg.gov.iti.jets.api.resource.privilege.PrivilegeRequest;
-import eg.gov.iti.jets.api.resource.privilege.PrivilegeTypeResponse;
-import eg.gov.iti.jets.api.resource.role.RoleRequest;
-import eg.gov.iti.jets.api.resource.role.RoleResponse;
+import eg.gov.iti.jets.api.resource.privilege.AddPrivilegeRequest;
+import eg.gov.iti.jets.api.resource.privilege.GetPrivilegeResponse;
+import eg.gov.iti.jets.api.resource.role.PrivilegeType;
+import eg.gov.iti.jets.api.resource.role.AddRoleRequest;
+import eg.gov.iti.jets.api.resource.role.GetRoleResponse;
+import eg.gov.iti.jets.api.resource.role.UpdateRoleRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.api.resource.track.TrackRequest;
@@ -110,21 +112,21 @@ public class Mapper {
         return new TemplateResponse( template.getId() );
     }
 
-    public PrivilegeTypeResponse mapPrivilegeToPrivilegeTypeResponse(Privilege privilege){
-        return new PrivilegeTypeResponse(privilege.getId(), privilege.getName());
+    public GetPrivilegeResponse privilegeToGetPrivilegeResponse(Privilege privilege){
+        return new GetPrivilegeResponse(privilege.getId(), privilege.getName());
     }
 
-    public Privilege mapPrivilegeRequestToPrivilege(PrivilegeRequest privilegeRequest) {
+    public Privilege addPrivilegeRequestToPrivilege(AddPrivilegeRequest addPrivilegeRequest) {
         Privilege privilege = new Privilege();
-        privilege.setName(privilegeRequest.getName());
+        privilege.setName(addPrivilegeRequest.getName());
         return privilege;
     }
 
-    public Role mapRoleRequestToRole(RoleRequest roleRequest) {
+    public Role addRoleRequestToRole(AddRoleRequest addRoleRequest) {
         Role role = new Role();
-        role.setName(roleRequest.getName());
+        role.setName(addRoleRequest.getName());
         role.setPrivileges(
-                roleRequest.getPrivileges().stream().map(id ->{
+                addRoleRequest.getPrivileges().stream().map(id ->{
                     Privilege privilege = new Privilege();
                     privilege.setId(id);
                     return privilege;
@@ -133,12 +135,32 @@ public class Mapper {
         return role;
     }
 
-    public RoleResponse mapRoleToRoleResponse(Role role) {
-        RoleResponse roleResponse = new RoleResponse();
-        roleResponse.setName(role.getName());
-        roleResponse.setPrivileges(role.getPrivileges().stream().map(
-                Privilege::getName
+    public GetRoleResponse roleToGetRoleResponse(Role role) {
+        GetRoleResponse getRoleResponse = new GetRoleResponse();
+        getRoleResponse.setName(role.getName());
+        getRoleResponse.setPrivileges(role.getPrivileges().stream().map(
+                privilege -> {
+                    PrivilegeType privilegeRoleType = new PrivilegeType();
+                    privilegeRoleType.setId(privilege.getId());
+                    privilegeRoleType.setName(privilege.getName());
+                    return privilegeRoleType;
+                }
         ).collect(Collectors.toList()));
-        return roleResponse;
+        return getRoleResponse;
+    }
+
+    public Role updateRoleRequestToRole(UpdateRoleRequest updateRoleRequest) {
+        Role role = new Role();
+        role.setId(updateRoleRequest.getId());
+        role.setName(updateRoleRequest.getName());
+        role.setPrivileges(
+                updateRoleRequest.getPrivileges().stream().map(
+                        privilegeId-> {
+                            Privilege privilege = new Privilege();
+                            privilege.setId(privilegeId);
+                            return privilege;
+                        }
+        ).collect(Collectors.toList()));
+        return role;
     }
 }

@@ -1,13 +1,15 @@
-package eg.gov.iti.jets.api.resource.privilege;
+package eg.gov.iti.jets.api.resource.role;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.util.List;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class GetPrivilegesResponse {
-    List<PrivilegeTypeResponse> privileges;
+public class AddRoleRequest {
+    private String name;
+    private List<Integer> privileges;
 }
