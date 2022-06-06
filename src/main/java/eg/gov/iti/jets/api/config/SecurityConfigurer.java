@@ -49,8 +49,6 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-//                .mvcMatchers(HttpMethod.GET,"/**").permitAll()
-
                 .mvcMatchers("/api/admin").hasAuthority("WRITE")
                 .mvcMatchers(HttpMethod.POST,"/api/instances")
                 .hasAuthority("CREATE_TERMINATE_INSTANCE")
