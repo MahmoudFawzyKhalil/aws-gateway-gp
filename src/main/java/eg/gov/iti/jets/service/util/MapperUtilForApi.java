@@ -22,11 +22,14 @@ public class MapperUtilForApi {
     @Autowired
     AwsGateway awsGateway;
 
-    public List<SecurityGroup> getSecurityGroups(List<Integer> ids){
+    public List<SecurityGroup> getSecurityGroups(List<String> ids){
         List<SecurityGroup> securityGroups = new ArrayList<>();
-        for (Integer id:ids){
-            Optional<SecurityGroup> group = securityGroupDao.findById(id);
-            group.ifPresent(securityGroups::add);
+        for (String id:ids){
+            SecurityGroup securityGroup = new SecurityGroup();
+            securityGroup.setSecurityGroupId( id );
+            System.out.println(securityGroupDao.findAllByExample( securityGroup ));
+            SecurityGroup securityGroup1 = securityGroupDao.findAllByExample( securityGroup ).get( 0 );
+            securityGroups.add( securityGroup1 );
 
         }
         return securityGroups;
