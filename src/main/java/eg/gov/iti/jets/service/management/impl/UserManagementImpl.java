@@ -1,17 +1,11 @@
 package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.persistence.dao.UserDao;
-import eg.gov.iti.jets.persistence.dao.UserDao;
-import eg.gov.iti.jets.persistence.entity.Privilege;
-import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.UserManagement;
-//import org.springframework.security.core.userdetails.User;
 import eg.gov.iti.jets.service.model.UserAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -62,12 +56,11 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
 ////                user1.setRole(role1);
 //                return new UserAdapter(user1,AuthorityUtils.createAuthorityList("READ"));
 //        }
-//        user == null ? null : new UserAdapter(user , user.getRole()
-//                .getPrivileges()
-//                .stream().map(Privilege::getName)
-//                .map(SimpleGrantedAuthority::new)
-//                .collect(Collectors.toList()));
-        return null;
+        return user == null ? null : new UserAdapter(user, user.getRole()
+                .getPrivileges()
+                .stream().map(privilege -> privilege.getName().name())
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList()));
     }
 
     @Override
