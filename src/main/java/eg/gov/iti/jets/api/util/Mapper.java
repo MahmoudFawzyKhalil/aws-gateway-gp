@@ -15,6 +15,7 @@ import eg.gov.iti.jets.api.resource.user.UserResponse;
 import eg.gov.iti.jets.persistence.entity.*;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 @Component
@@ -81,4 +82,11 @@ public class Mapper {
         response.setCreatedInstances(null);
         return response;
     }
+
+    public List<UserResponse> mapFromListOfUsersToListOfUserResponses(List<User> users){
+        List<UserResponse> userResponses =
+                users.stream().map(e -> this.mapFromUserToUserResponse(e)).collect(Collectors.toList());
+        return userResponses;
+    }
+
 }

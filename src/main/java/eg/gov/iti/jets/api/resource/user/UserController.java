@@ -6,7 +6,6 @@ import eg.gov.iti.jets.service.management.impl.UserManagementImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/users")
@@ -14,7 +13,7 @@ public class UserController {
     final UserManagementImpl userManagement;
     final Mapper mapper;
 
-    public UserController(UserManagementImpl userManagement , Mapper mapper){
+    public UserController(UserManagementImpl userManagement , Mapper mapper ){
         this.userManagement = userManagement;
         this.mapper = mapper;
     }
@@ -39,11 +38,14 @@ public class UserController {
     }
 
     @GetMapping
-    public List<UserResponse> getUsers(){
+    public UserResponseList getUsers(){
         List<User> users = userManagement.getAllUsers();
-        List<UserResponse> userResponses =
-                users.stream().map(e -> mapper.mapFromUserToUserResponse(e)).collect(Collectors.toList());
-        return userResponses;
+        List<UserResponse> userResponses =  mapper.mapFromListOfUsersToListOfUserResponses(users);
+        UserResponseList userResponseList = new UserResponseList();
+        for(UserResponse response : userResponses){
+            userResponseList.getUserResponsesList().add(response);
+        }
+        return userResponseList;
     }
 
     @DeleteMapping("/{id}")
