@@ -28,7 +28,7 @@ public class InstanceController {
 
 
     @PostMapping
-    InstanceResponse createInstance(InstanceRequest instanceRequest){
+    InstanceResponse createInstance( @RequestBody  InstanceRequest instanceRequest){
         Optional<Instance> instance = instanceManagement.createInstance( instanceRequest.getTemplateId(), instanceRequest.getInstanceName(), instanceRequest.getKeyPair() );
 
         return mapper.mapFromInstanceToInstanceResponse( instance );

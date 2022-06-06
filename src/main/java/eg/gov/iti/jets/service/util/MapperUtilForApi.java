@@ -23,16 +23,7 @@ public class MapperUtilForApi {
     AwsGateway awsGateway;
 
     public List<SecurityGroup> getSecurityGroups(List<String> ids){
-        List<SecurityGroup> securityGroups = new ArrayList<>();
-        for (String id:ids){
-            SecurityGroup securityGroup = new SecurityGroup();
-            securityGroup.setSecurityGroupId( id );
-            System.out.println(securityGroupDao.findAllByExample( securityGroup ));
-            SecurityGroup securityGroup1 = securityGroupDao.findAllByExample( securityGroup ).get( 0 );
-            securityGroups.add( securityGroup1 );
-
-        }
-        return securityGroups;
+        return  awsGateway.describeSecurityGroupsForIds( ids );
     }
 
     public List<String> getSecurityGroupsName(List<SecurityGroup> securityGroups){

@@ -62,11 +62,12 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
 ////                user1.setRole(role1);
 //                return new UserAdapter(user1,AuthorityUtils.createAuthorityList("READ"));
 //        }
-        return user == null ? null : new UserAdapter(user , user.getRole()
-                                                                .getPrivileges()
-                                                                .stream().map(Privilege::getName)
-                                                                .map(SimpleGrantedAuthority::new)
-                                                                .collect(Collectors.toList()));
+//        user == null ? null : new UserAdapter(user , user.getRole()
+//                .getPrivileges()
+//                .stream().map(Privilege::getName)
+//                .map(SimpleGrantedAuthority::new)
+//                .collect(Collectors.toList()));
+        return null;
     }
 
     @Override
