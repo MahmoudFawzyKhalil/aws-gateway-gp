@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.persistence.dao.impls;
+package eg.gov.iti.jets.persistence.dao.impls.aws;
 
 import eg.gov.iti.jets.persistence.dao.AmiDao;
 import eg.gov.iti.jets.persistence.entity.aws.Ami;
@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class AmiDaoIml implements AmiDao {
+public class AmiDaoImpl implements AmiDao {
 
     private final AmiRepo amiRepo;
 
-    public AmiDaoIml(AmiRepo amiRepo) {
+    public AmiDaoImpl(AmiRepo amiRepo) {
         this.amiRepo = amiRepo;
     }
 

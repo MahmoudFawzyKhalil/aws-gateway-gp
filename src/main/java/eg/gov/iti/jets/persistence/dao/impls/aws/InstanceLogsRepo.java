@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.persistence.dao.impls;
+package eg.gov.iti.jets.persistence.dao.impls.aws;
 
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
 import eg.gov.iti.jets.persistence.entity.enums.UserAction;
