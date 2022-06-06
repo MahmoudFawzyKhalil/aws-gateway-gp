@@ -29,4 +29,5 @@ public class RoleController {
     public RoleResponse getRole(@PathVariable("id") int id){
        return mapper.mapRoleToRoleResponse(roleManagement.getRoleById(id));
     }
+
 }
