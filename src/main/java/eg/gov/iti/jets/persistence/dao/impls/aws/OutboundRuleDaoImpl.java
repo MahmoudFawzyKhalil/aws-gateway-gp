@@ -34,7 +34,7 @@ public class OutboundRuleDaoImpl implements OutboundRuleDao {
     }
 
     @Override
-    public <C> Optional<OutboundRule> findById(Integer integer, Class<C> projection) {
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
         return Optional.empty();
     }
 
@@ -50,7 +50,7 @@ public class OutboundRuleDaoImpl implements OutboundRuleDao {
     }
 
     @Override
-    public <C> List<OutboundRule> findAll(int pageNumber, int pageSize, Class<C> projection) {
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
         return null;
     }
 
@@ -61,7 +61,7 @@ public class OutboundRuleDaoImpl implements OutboundRuleDao {
     }
 
     @Override
-    public <C> List<OutboundRule> findAllByExample(OutboundRule example, Class<C> projection) {
+    public <C> List<C> findAllByExample(OutboundRule example, Class<C> projection) {
         return null;
     }
 }

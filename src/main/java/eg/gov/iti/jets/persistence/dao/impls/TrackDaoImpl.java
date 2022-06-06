@@ -35,7 +35,7 @@ public class TrackDaoImpl implements TrackDao {
     }
 
     @Override
-    public <C> Optional<Track> findById(Integer integer, Class<C> projection) {
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
         return Optional.empty();
     }
 
@@ -51,7 +51,7 @@ public class TrackDaoImpl implements TrackDao {
     }
 
     @Override
-    public <C> List<Track> findAll(int pageNumber, int pageSize, Class<C> projection) {
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
         return null;
     }
 
@@ -62,7 +62,7 @@ public class TrackDaoImpl implements TrackDao {
     }
 
     @Override
-    public <C> List<Track> findAllByExample(Track example, Class<C> projection) {
+    public <C> List<C> findAllByExample(Track example, Class<C> projection) {
         return null;
     }
 }

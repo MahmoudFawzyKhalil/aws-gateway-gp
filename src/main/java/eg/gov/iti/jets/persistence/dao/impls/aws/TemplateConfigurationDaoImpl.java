@@ -37,7 +37,7 @@ public class TemplateConfigurationDaoImpl implements TemplateConfigurationDao {
     }
 
     @Override
-    public <C> Optional<TemplateConfiguration> findById(Integer integer, Class<C> projection) {
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
         return Optional.empty();
     }
 
@@ -53,7 +53,7 @@ public class TemplateConfigurationDaoImpl implements TemplateConfigurationDao {
     }
 
     @Override
-    public <C> List<TemplateConfiguration> findAll(int pageNumber, int pageSize, Class<C> projection) {
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
         return null;
     }
 
@@ -64,7 +64,7 @@ public class TemplateConfigurationDaoImpl implements TemplateConfigurationDao {
     }
 
     @Override
-    public <C> List<TemplateConfiguration> findAllByExample(TemplateConfiguration example, Class<C> projection) {
+    public <C> List<C> findAllByExample(TemplateConfiguration example, Class<C> projection) {
         return null;
     }
 }

@@ -10,17 +10,17 @@ interface GenericCrudDao<T, Id> {
 
     Optional<T> findById(Id id);
 
-    <C> Optional<T> findById(Id id, Class<C> projection);
+    <C> Optional<C> findById(Id id, Class<C> projection);
 
     List<T> findAll();
 
     List<T> findAll(int pageNumber, int pageSize);
 
-    <C> List<T> findAll(int pageNumber, int pageSize, Class<C> projection);
+    <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection);
 
     List<T> findAllByExample(T example);
 
-    <C> List<T> findAllByExample(T example, Class<C> projection);
+    <C> List<C> findAllByExample(T example, Class<C> projection);
 
 
 }

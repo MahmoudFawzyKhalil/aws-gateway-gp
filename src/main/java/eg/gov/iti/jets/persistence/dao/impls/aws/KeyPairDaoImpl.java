@@ -36,7 +36,7 @@ public class KeyPairDaoImpl implements KeyPairDao {
     }
 
     @Override
-    public <C> Optional<KeyPair> findById(Integer integer, Class<C> projection) {
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
         return Optional.empty();
     }
 
@@ -52,7 +52,7 @@ public class KeyPairDaoImpl implements KeyPairDao {
     }
 
     @Override
-    public <C> List<KeyPair> findAll(int pageNumber, int pageSize, Class<C> projection) {
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
         return null;
     }
 
@@ -63,7 +63,7 @@ public class KeyPairDaoImpl implements KeyPairDao {
     }
 
     @Override
-    public <C> List<KeyPair> findAllByExample(KeyPair example, Class<C> projection) {
+    public <C> List<C> findAllByExample(KeyPair example, Class<C> projection) {
         return null;
     }
 
