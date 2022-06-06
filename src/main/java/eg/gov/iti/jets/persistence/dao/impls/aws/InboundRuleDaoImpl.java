@@ -61,7 +61,7 @@ public class InboundRuleDaoImpl implements InboundRuleDao {
     }
 
     @Override
-    public <C> List<C> findAllByExample(InboundRule example, Class<C> projection) {
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
         return null;
     }
 }

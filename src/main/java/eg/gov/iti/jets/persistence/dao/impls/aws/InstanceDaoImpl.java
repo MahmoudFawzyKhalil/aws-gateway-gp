@@ -63,7 +63,7 @@ public class InstanceDaoImpl implements InstanceDao {
     }
 
     @Override
-    public <C> List<C> findAllByExample(Instance example, Class<C> projection) {
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
         return null;
     }
 }

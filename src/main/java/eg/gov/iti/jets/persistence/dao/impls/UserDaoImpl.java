@@ -63,7 +63,7 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public <C> List<C> findAllByExample(User example, Class<C> projection) {
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
         return null;
     }
 

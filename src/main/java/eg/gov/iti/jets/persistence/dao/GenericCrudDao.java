@@ -20,7 +20,7 @@ interface GenericCrudDao<T, Id> {
 
     List<T> findAllByExample(T example);
 
-    <C> List<C> findAllByExample(T example, Class<C> projection);
+    <C> List<C> findAllByExample(C example, Class<C> projection);
 
 
 }

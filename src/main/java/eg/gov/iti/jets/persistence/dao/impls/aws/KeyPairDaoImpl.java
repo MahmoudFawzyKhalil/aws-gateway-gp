@@ -63,7 +63,7 @@ public class KeyPairDaoImpl implements KeyPairDao {
     }
 
     @Override
-    public <C> List<C> findAllByExample(KeyPair example, Class<C> projection) {
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
         return null;
     }
 

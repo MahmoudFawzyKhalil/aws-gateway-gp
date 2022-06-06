@@ -62,7 +62,7 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public <C> List<C> findAllByExample(Role example, Class<C> projection) {
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
         return null;
     }
 }
