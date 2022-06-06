@@ -8,7 +8,7 @@ import eg.gov.iti.jets.api.resource.instance.SubnetResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
 import eg.gov.iti.jets.api.resource.privilege.PrivilegeRequest;
-import eg.gov.iti.jets.api.resource.privilege.PrivilegeResponse;
+import eg.gov.iti.jets.api.resource.privilege.PrivilegeTypeResponse;
 import eg.gov.iti.jets.api.resource.role.RoleRequest;
 import eg.gov.iti.jets.api.resource.role.RoleResponse;
 import eg.gov.iti.jets.api.resource.template.TemplateRequest;
@@ -110,8 +110,8 @@ public class Mapper {
         return new TemplateResponse( template.getId() );
     }
 
-    public PrivilegeResponse mapPrivilegeToPrivilegeResponse(Privilege privilege){
-        return new PrivilegeResponse(privilege.getId(), privilege.getName());
+    public PrivilegeTypeResponse mapPrivilegeToPrivilegeTypeResponse(Privilege privilege){
+        return new PrivilegeTypeResponse(privilege.getId(), privilege.getName());
     }
 
     public Privilege mapPrivilegeRequestToPrivilege(PrivilegeRequest privilegeRequest) {
