@@ -25,6 +25,7 @@ import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
+import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -153,12 +154,14 @@ public class Mapper {
     }
 
     public PrivilegeResponse mapPrivilegeToPrivilegeResponse(Privilege privilege){
-        return new PrivilegeResponse(privilege.getId(), privilege.getName());
+        return new PrivilegeResponse(privilege.getId(), privilege.getName().name());
     }
 
     public Privilege mapPrivilegeRequestToPrivilege(PrivilegeRequest privilegeRequest) {
         Privilege privilege = new Privilege();
-        privilege.setName(privilegeRequest.getName());
+        privilege.setName(
+                PrivilegeName.valueOf( privilegeRequest.getName() )
+        );
         return privilege;
     }
 
@@ -178,9 +181,7 @@ public class Mapper {
     public RoleResponse mapRoleToRoleResponse(Role role) {
         RoleResponse roleResponse = new RoleResponse();
         roleResponse.setName(role.getName());
-        roleResponse.setPrivileges(role.getPrivileges().stream().map(
-                Privilege::getName
-        ).collect(Collectors.toList()));
+        roleResponse.setPrivileges(role.getPrivileges().stream().map(privilege -> {return privilege.getName().name();}).collect(Collectors.toList()));
         return roleResponse;
     }
 }
