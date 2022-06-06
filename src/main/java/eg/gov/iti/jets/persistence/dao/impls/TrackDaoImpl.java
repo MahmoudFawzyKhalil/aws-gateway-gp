@@ -62,7 +62,7 @@ public class TrackDaoImpl implements TrackDao {
     }
 
     @Override
-    public <C> List<C> findAllByExample(Track example, Class<C> projection) {
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
         return null;
     }
 }

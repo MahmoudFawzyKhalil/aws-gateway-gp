@@ -61,7 +61,7 @@ public class IntakeDaoImpl implements IntakeDao {
     }
 
     @Override
-    public <C> List<C> findAllByExample(Intake example, Class<C> projection) {
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
         return null;
     }
 }

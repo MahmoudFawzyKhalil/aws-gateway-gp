@@ -62,7 +62,7 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
     }
 
     @Override
-    public <C> List<C> findAllByExample(Privilege example, Class<C> projection) {
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
         return null;
     }
 }

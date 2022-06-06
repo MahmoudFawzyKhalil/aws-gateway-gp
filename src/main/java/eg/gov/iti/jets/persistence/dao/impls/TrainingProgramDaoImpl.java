@@ -65,7 +65,7 @@ public class TrainingProgramDaoImpl implements TrainingProgramDao {
     }
 
     @Override
-    public <C> List<C> findAllByExample(TrainingProgram example, Class<C> projection) {
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
         return null;
     }
 

@@ -61,7 +61,7 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     }
 
     @Override
-    public <C> List<C> findAllByExample(InstanceLogs example, Class<C> projection) {
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
         return null;
     }
 

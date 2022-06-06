@@ -63,7 +63,7 @@ public class AmiDaoImpl implements AmiDao {
     }
 
     @Override
-    public <C> List<C> findAllByExample(Ami example, Class<C> projection) {
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
         return null;
     }
 }

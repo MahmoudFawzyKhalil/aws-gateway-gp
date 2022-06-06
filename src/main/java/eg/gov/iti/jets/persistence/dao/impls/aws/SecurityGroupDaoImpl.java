@@ -63,7 +63,7 @@ public class SecurityGroupDaoImpl implements SecurityGroupDao {
     }
 
     @Override
-    public <C> List<C> findAllByExample(SecurityGroup example, Class<C> projection) {
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
         return null;
     }
 }
