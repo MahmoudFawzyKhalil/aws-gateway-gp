@@ -3,14 +3,12 @@ package eg.gov.iti.jets.api.util;
 import eg.gov.iti.jets.api.resource.ami.AmiResponse;
 import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
-import eg.gov.iti.jets.api.resource.instance.InstanceRequest;
 import eg.gov.iti.jets.api.resource.instance.InstanceResponse;
 import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeObjectResponse;
 import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeResponse;
 import eg.gov.iti.jets.api.resource.securityGroup.SecurityGroupResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetResponse;
-import eg.gov.iti.jets.api.resource.template.*;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
 import eg.gov.iti.jets.api.resource.privilege.AddPrivilegeRequest;
@@ -31,7 +29,6 @@ import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -180,23 +177,18 @@ public class Mapper {
         return role;
     }
 
-    public RoleResponse mapRoleToRoleResponse(Role role) {
-        RoleResponse roleResponse = new RoleResponse();
-        roleResponse.setName(role.getName());
-        roleResponse.setPrivileges(role.getPrivileges().stream().map(privilege -> {return privilege.getName().name();}).collect(Collectors.toList()));
-        return roleResponse;
-    public GetRoleResponse roleToGetRoleResponse(Role role) {
-        GetRoleResponse getRoleResponse = new GetRoleResponse();
-        getRoleResponse.setName(role.getName());
-        getRoleResponse.setPrivileges(role.getPrivileges().stream().map(
-                privilege -> {
-                    PrivilegeType privilegeRoleType = new PrivilegeType();
-                    privilegeRoleType.setId(privilege.getId());
-                    privilegeRoleType.setName(privilege.getName().name());
-                    return privilegeRoleType;
-                }
-        ).collect(Collectors.toList()));
-        return getRoleResponse;
+     public GetRoleResponse roleToGetRoleResponse(Role role) {
+            GetRoleResponse getRoleResponse = new GetRoleResponse();
+            getRoleResponse.setName(role.getName());
+            getRoleResponse.setPrivileges(role.getPrivileges().stream().map(
+                    privilege -> {
+                        PrivilegeType privilegeRoleType = new PrivilegeType();
+                        privilegeRoleType.setId(privilege.getId());
+                        privilegeRoleType.setName(privilege.getName().name());
+                        return privilegeRoleType;
+                    }
+            ).collect(Collectors.toList()));
+            return getRoleResponse;
     }
 
     public Role updateRoleRequestToRole(UpdateRoleRequest updateRoleRequest) {
