@@ -53,4 +53,5 @@ public class AuthenticationController {
         UserAdapter userDetails = userService.loadUserByUsername(username);
         return jwtUtil.generateToken(userDetails);
     }
+    // todo refactor: move the logic to another class
 }
