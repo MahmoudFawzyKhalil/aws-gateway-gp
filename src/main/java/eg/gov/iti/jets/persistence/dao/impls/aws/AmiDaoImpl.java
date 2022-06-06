@@ -36,6 +36,11 @@ public class AmiDaoImpl implements AmiDao {
     }
 
     @Override
+    public <C> Optional<Ami> findById(Integer integer, Class<C> projection) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<Ami> findAll() {
         return amiRepo.findAll();
     }
@@ -47,8 +52,18 @@ public class AmiDaoImpl implements AmiDao {
     }
 
     @Override
+    public <C> List<Ami> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        return null;
+    }
+
+    @Override
     public List<Ami> findAllByExample(Ami example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return amiRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<Ami> findAllByExample(Ami example, Class<C> projection) {
+        return null;
     }
 }

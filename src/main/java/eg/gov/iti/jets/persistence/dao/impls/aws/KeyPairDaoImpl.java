@@ -36,6 +36,11 @@ public class KeyPairDaoImpl implements KeyPairDao {
     }
 
     @Override
+    public <C> Optional<KeyPair> findById(Integer integer, Class<C> projection) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<KeyPair> findAll() {
         return keyPairRepo.findAll();
     }
@@ -47,9 +52,19 @@ public class KeyPairDaoImpl implements KeyPairDao {
     }
 
     @Override
+    public <C> List<KeyPair> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        return null;
+    }
+
+    @Override
     public List<KeyPair> findAllByExample(KeyPair example) {
         ExampleMatcher  caseInsensitiveExampleMatcher=ExampleMatcher.matchingAll().withIgnoreCase();
         return keyPairRepo.findAll(Example.of(example,caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<KeyPair> findAllByExample(KeyPair example, Class<C> projection) {
+        return null;
     }
 
 }

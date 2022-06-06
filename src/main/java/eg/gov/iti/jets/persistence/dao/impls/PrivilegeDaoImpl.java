@@ -35,6 +35,11 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
     }
 
     @Override
+    public <C> Optional<Privilege> findById(Integer integer, Class<C> projection) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<Privilege> findAll() {
         return privilegeRepo.findAll();
     }
@@ -46,8 +51,18 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
     }
 
     @Override
+    public <C> List<Privilege> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        return null;
+    }
+
+    @Override
     public List<Privilege> findAllByExample(Privilege example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return privilegeRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<Privilege> findAllByExample(Privilege example, Class<C> projection) {
+        return null;
     }
 }
