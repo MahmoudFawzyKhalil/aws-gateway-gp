@@ -234,7 +234,7 @@ class AwsGatewayImpl implements AwsGateway {
             throw new AwsGatewayException("Failed to create instance.");
 
         ModifyInstanceAttributeRequest build = ModifyInstanceAttributeRequest.builder()
-                .groups(template.getSecurityGroups().stream().map(SecurityGroup::getName).collect(toList()))
+                .groups(template.getSecurityGroups().stream().map(SecurityGroup::getSecurityGroupId).collect(toList()))
                 .instanceId(instance.getInstanceId())
                 .build();
         ModifyInstanceAttributeResponse modifyInstanceAttributeResponse = ec2Client.modifyInstanceAttribute(build);
