@@ -56,7 +56,7 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     }
 
     @Override
-    public boolean deleteInstanceLogByDate(LocalDateTime localDateTime) {
+    public boolean deleteInstanceLogsBeforeDate(LocalDateTime localDateTime) {
         return instanceLogsRepo.deleteLogsByDateTimeLessThan(localDateTime);
     }
 
@@ -67,7 +67,7 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     }
 
     @Override
-    public List<InstanceLogs> findAllByActionMakerAndAction(int id, UserAction userAction, int pageNumber, int pageSize) {
+    public List<InstanceLogs> findAllByActionMakerIdAndAction(int id, UserAction userAction, int pageNumber, int pageSize) {
         Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAllByActionMaker_IdAndAction(id, userAction, PageRequest.of(pageNumber, pageSize));
         return instanceLogPage.getContent();
     }

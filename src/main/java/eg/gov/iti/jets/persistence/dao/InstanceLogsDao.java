@@ -10,8 +10,8 @@ import java.util.Optional;
 public interface InstanceLogsDao extends GenericCrudDao<InstanceLogs, Long> {
 
     Optional<InstanceLogs> findLastLogByActionAndInstanceId(UserAction action,int instanceId);
-    boolean deleteInstanceLogByDate(LocalDateTime localDateTime);
+    boolean deleteInstanceLogsBeforeDate(LocalDateTime localDateTime);
     List<InstanceLogs> findAllByInstanceId(int instanceId, int pageNumber, int pageSize);
-    List<InstanceLogs> findAllByActionMakerAndAction(int id, UserAction userAction, int pageNumber, int pageSize);
+    List<InstanceLogs> findAllByActionMakerIdAndAction(int id, UserAction userAction, int pageNumber, int pageSize);
 
 }
