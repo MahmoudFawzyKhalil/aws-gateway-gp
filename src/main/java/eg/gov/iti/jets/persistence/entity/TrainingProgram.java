@@ -26,7 +26,7 @@ public class TrainingProgram {
     private Integer id;
 
     @NotNull
-    @Column(unique = true,nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne
