@@ -8,15 +8,19 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
 import java.util.List;
 
-public interface UserManagement extends UserDetailsService {
+public interface UserManagement extends UserDetailsService{
 
     @Override
     UserAdapter loadUserByUsername(String username) throws UsernameNotFoundException;
     Boolean createUser( User user );
+    UserDetails loadUserByUsername( String username) throws UsernameNotFoundException;
+    User createUser( User user );
     User updateUser( User user );
-    Boolean deleteUser( int id );
-    List<User> getAllUser();
-    User getUserById( int id );
+    String deleteUser( int id );
+    List<User> getAllUsers();
+    User getUserById(int id );
+
     Boolean createUserFromCSV( String csvFile );
 
+    User getUserByName(String username);
 }

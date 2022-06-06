@@ -28,7 +28,12 @@ import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import eg.gov.iti.jets.api.resource.user.UserRequest;
+import eg.gov.iti.jets.api.resource.user.UserResponse;
+import eg.gov.iti.jets.persistence.entity.*;
 import org.springframework.stereotype.Component;
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -70,7 +75,7 @@ public class Mapper {
         return null;
     }
 
-    public TrackResponse mapFromTrackToTrackResponse( Track track ) {
+    public TrackResponse mapFromTrackToTrackResponse(Track track) {
         return null;
     }
 
@@ -184,4 +189,35 @@ public class Mapper {
         roleResponse.setPrivileges(role.getPrivileges().stream().map(privilege -> {return privilege.getName().name();}).collect(Collectors.toList()));
         return roleResponse;
     }
+
+    public User mapFromUserRequestToUser(UserRequest userRequest) {
+        User user = new User();
+        user.setId(userRequest.getId());
+        user.setEmail(userRequest.getEmail());
+        user.setUsername(userRequest.getUsername());
+        user.setPassword(userRequest.getPassword());
+        user.setRole(userRequest.getRole());
+        return user;
+    }
+
+    public UserResponse mapFromUserToUserResponse(User user) {
+        UserResponse response = new UserResponse();
+        response.setId(user.getId());
+        response.setUsername(user.getUsername());
+        response.setEmail(user.getEmail());
+        response.setRole(user.getRole().getName());
+        response.setPassword(user.getPassword());
+        response.setPrivileges(user.getRole().getPrivileges().stream().map(Privilege::getName).collect(Collectors.toList()));
+        response.setTracks(null);
+        response.setGrantedInstances(null);
+        response.setCreatedInstances(null);
+        return response;
+    }
+
+    public List<UserResponse> mapFromListOfUsersToListOfUserResponses(List<User> users){
+        List<UserResponse> userResponses =
+                users.stream().map(e -> this.mapFromUserToUserResponse(e)).collect(Collectors.toList());
+        return userResponses;
+    }
+
 }

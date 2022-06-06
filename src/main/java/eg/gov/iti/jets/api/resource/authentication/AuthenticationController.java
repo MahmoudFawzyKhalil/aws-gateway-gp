@@ -28,11 +28,6 @@ public class AuthenticationController {
         return new AuthenticationResponse(jwt);
     }
 
-    @GetMapping("/users")
-    public String test() {
-        return "test users read and write authorities";
-    }
-
     @GetMapping("/admin")
 //    @Secured("WRITE")          //security worked only after using this annotation not using authorities in security configurer
     public String testWrite() {
