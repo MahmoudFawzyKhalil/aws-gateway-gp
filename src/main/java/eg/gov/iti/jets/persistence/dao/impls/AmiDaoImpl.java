@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class AmiDaoIml implements AmiDao {
+public class AmiDaoImpl implements AmiDao {
 
     private final AmiRepo amiRepo;
 
-    public AmiDaoIml(AmiRepo amiRepo) {
+    public AmiDaoImpl(AmiRepo amiRepo) {
         this.amiRepo = amiRepo;
     }
 
