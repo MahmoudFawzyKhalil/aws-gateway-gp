@@ -12,8 +12,8 @@ public interface TemplateManagement {
     List<TemplateConfiguration> getTemplateConfiguration();
     Boolean createTemplate( TemplateConfiguration templateConfiguration);
     Boolean deleteTemplate ( int id );
-    List<SecurityGroup> describeSecurityGroupsForVpc(String vpcId);
-    List<Subnet> getAllSubnet();
-    List<String> getInstanceTypes();
-    Optional<Ami> describeAmi( String amiId);
+
+
+
+
 }

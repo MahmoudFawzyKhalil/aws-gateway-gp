@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.api.resource.template;
+package eg.gov.iti.jets.api.resource.securityGroup;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -8,6 +8,6 @@ import lombok.Setter;
 import java.util.List;
 
 @Getter@Setter@NoArgsConstructor@AllArgsConstructor
-public class InstanceTypeResponse {
-    private List<String> instanceType;
+public class SecurityGroupObjectResponse {
+    private List<SecurityGroupResponse> securityGroupResponseList;
 }

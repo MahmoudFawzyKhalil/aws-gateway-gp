@@ -1,5 +1,6 @@
-package eg.gov.iti.jets.api.resource.template;
+package eg.gov.iti.jets.api.resource.ami;
 
+import eg.gov.iti.jets.api.resource.ami.AmiResponse;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

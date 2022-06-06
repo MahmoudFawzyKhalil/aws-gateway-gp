@@ -1,18 +1,16 @@
 package eg.gov.iti.jets.api.resource.template;
 
+import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import eg.gov.iti.jets.service.management.TemplateManagement;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("/api/template")
@@ -51,32 +49,6 @@ public class TemplateController {
         return new TemplateViewResponse(templateResponses);
     }
 
-    @GetMapping("/subnet")
-    SubnetResponse getAllSubnet(){
-        return  mapper.mapFromSubnetToSubnetResponse(templateManagement.getAllSubnet());
 
-    }
 
-    @PostMapping("/ami")
-    public AmiViewResponse getAmi(@RequestBody AmiRequest amiRequest){
-        Optional<Ami> ami = templateManagement.describeAmi( amiRequest.getAmiId() );
-        return ami.map( value -> new AmiViewResponse( true, mapper.mapFromAmiToAmiResponse( value ) ) ).orElseGet( () -> new AmiViewResponse( false, null ) );
-    }
-
-    @GetMapping("types")
-    InstanceTypeResponse getInstanceTypes(){
-        return  new InstanceTypeResponse(templateManagement.getInstanceTypes());
-    }
-
-    @GetMapping("{id}")
-    SecurityGroupObjectResponse getSecurityGroups(@PathVariable String id){
-        List<SecurityGroup> securityGroups= templateManagement.describeSecurityGroupsForVpc(id);
-        List<SecurityGroupResponse> securityGroupResponses = new ArrayList<>();
-        for(SecurityGroup group:securityGroups){
-            securityGroupResponses.add(mapper.mapFromSecurityGroupToSecurityGroupResponse(group));
-        }
-        return new SecurityGroupObjectResponse(securityGroupResponses);
-    }
-
-    // TODO: 6/2/2022 3ayzen bs two methods mkmlesh wala 3ala hasab mariam
 }

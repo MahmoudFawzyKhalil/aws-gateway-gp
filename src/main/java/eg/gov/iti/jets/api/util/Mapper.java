@@ -1,8 +1,14 @@
 package eg.gov.iti.jets.api.util;
 
+import eg.gov.iti.jets.api.resource.ami.AmiResponse;
 import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.instance.InstanceResponse;
+import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeObjectResponse;
+import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeResponse;
+import eg.gov.iti.jets.api.resource.securityGroup.SecurityGroupResponse;
+import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
+import eg.gov.iti.jets.api.resource.subnet.SubnetResponse;
 import eg.gov.iti.jets.api.resource.template.*;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
@@ -16,9 +22,9 @@ import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @Component
 public class Mapper {
@@ -69,10 +75,18 @@ public class Mapper {
         return instanceResponse;
     }
 
-    public SubnetResponse mapFromSubnetToSubnetResponse( List<Subnet> subnets ) {
-        SubnetResponse subnetResponse = new SubnetResponse();
-        subnetResponse.setSubnets( subnets.stream().map( Subnet::getSubnetId ).collect( Collectors.toList() ) );
-        return subnetResponse;
+    public SubnetObjectResponse mapFromSubnetToSubnetResponse( List<Subnet> subnets ) {
+        List<SubnetResponse> list = new ArrayList<>();
+        for ( Subnet subnetResponse : subnets
+               ) {
+            SubnetResponse subnetResponse1 = new SubnetResponse( subnetResponse.getSubnetId(), subnetResponse.getVpcId()
+                                    , subnetResponse.getSubnetId(), subnetResponse.getAvailabilityZoneId(), subnetResponse.getAvailableIpAddressCount()
+                                    ,subnetResponse.getCidrBlock(),subnetResponse.getMapPublicIpOnLaunch());
+            list.add( subnetResponse1 );
+        }
+        SubnetObjectResponse subnetObjectResponse = new SubnetObjectResponse(list);
+
+        return subnetObjectResponse;
     }
 
     public TemplateConfiguration mapFromTemplateRequestToTemplateConfig( TemplateRequest templateRequest ) {
@@ -90,6 +104,9 @@ public class Mapper {
         SecurityGroupResponse securityGroupResponse = new SecurityGroupResponse();
         securityGroupResponse.setId( securityGroup.getId() );
         securityGroupResponse.setName( securityGroup.getName() );
+        securityGroupResponse.setSecurityGroupId( securityGroup.getSecurityGroupId() );
+        securityGroupResponse.setDescription( securityGroup.getDescription() );
+        securityGroupResponse.setVpcId( securityGroup.getVpcId() );
         return securityGroupResponse;
 
     }
@@ -108,5 +125,17 @@ public class Mapper {
     public AmiResponse mapFromAmiToAmiResponse( Ami ami ){
         AmiResponse amiResponse = new AmiResponse( ami.getImageId(), ami.getImageOwnerAlias(), ami.getArchitecture(), ami.getImageName(), ami.getDescription(), ami.getPlatform() );
         return amiResponse;
+    }
+
+    public InstanceTypeObjectResponse mapFromInstanceTypeToObjectResponse(List<String> types){
+        List<InstanceTypeResponse> list = new ArrayList<>();
+        for ( String type :
+                types ) {
+            InstanceTypeResponse instanceType = new InstanceTypeResponse( type );
+            list.add( instanceType );
+        }
+
+        InstanceTypeObjectResponse instanceTypeObjectResponse = new InstanceTypeObjectResponse(list);
+        return instanceTypeObjectResponse;
     }
 }

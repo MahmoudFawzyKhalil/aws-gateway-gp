@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.api.resource.template;
+package eg.gov.iti.jets.api.resource.ami;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

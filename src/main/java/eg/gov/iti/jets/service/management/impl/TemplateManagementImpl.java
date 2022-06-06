@@ -26,16 +26,8 @@ public class TemplateManagementImpl implements TemplateManagement {
         this.awsGateway = awsGateway;
     }
 
-    @Override
-    public List<String> getInstanceTypes(){
-        return awsGateway.getInstanceTypes();
-    }
 
 
-    @Override
-    public Optional<Ami> describeAmi( String amiId){
-        return awsGateway.describeAmi(amiId);
-    }
 
     public Boolean deleteTemplate ( int id ){
         return null;
@@ -55,15 +47,9 @@ public class TemplateManagementImpl implements TemplateManagement {
         else{
         return true;}
     }
-    @Override
-    public List<Subnet> getAllSubnet(){
-        return awsGateway.describeAllSubnets();
-    }
 
-    @Override
-    public List<SecurityGroup> describeSecurityGroupsForVpc(String vpcId){
-        return awsGateway.describeSecurityGroupsForVpc(vpcId);
-    }
+
+
 
     //TODO what do you really want
 
