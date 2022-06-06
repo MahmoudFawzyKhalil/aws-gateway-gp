@@ -45,7 +45,7 @@ public class User {
     private List<Track> tracks;
 
 
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator" ,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<Instance> createdInstances = new ArrayList<>();
 
     @ManyToMany

@@ -29,7 +29,7 @@ public class Track {
     @JoinColumn(name = "intake_id",nullable = false)
     private Intake intake;
 
-    @ManyToMany(mappedBy = "tracks")
+    @ManyToMany(mappedBy = "tracks" )
     private List<User> users = new ArrayList<>();
 
 
