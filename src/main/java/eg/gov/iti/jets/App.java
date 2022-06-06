@@ -46,11 +46,12 @@ public class App {
 //                templateConfigurationDao.save(templateConfiguration2);
 ////                Instance instance = instanceDao.save(new Instance(null, "name", "amid", "instanceId", "state", "publicIp", "publicDnsName", "instanceType", "subnetId", "vpcId", "decryptedPassword", "userName", LocalDateTime.now(), key, adminUser, null, null, templateConfiguration));
 ////                Instance instance2 = instanceDao.save(new Instance(null, "name2", "amid2", "instanceId2", "state2", "publicIp2", "publicDnsName2", "instanceType2", "subnetId2", "vpcId2", "decryptedPassword2", "userName2", LocalDateTime.now(), key, adminUser, null, null, templateConfiguration2));
-//
-////                instanceDao.save(instance);
-////                instanceDao.save(instance2);
-//
-//
+////
+////
+//                Instance instance = instanceDao.save(new Instance(null, "name", "amid", "instanceId", "state", "publicIp", "publicDnsName", "instanceType", "subnetId", "vpcId", "platform", "decryptedPassword", "userName", LocalDateTime.now(), key, adminUser, null, null, templateConfiguration));
+//                Instance instance2 = instanceDao.save(new Instance(null, "name2", "amid2", "instanceId2", "state2", "publicIp2", "publicDnsName2", "instanceType2", "subnetId2", "vpcId2", "platform2", "decryptedPassword2", "userName2", LocalDateTime.now(), key, adminUser, null, null, templateConfiguration2));
+//                instanceDao.save(instance);
+//                instanceDao.save(instance2);
 //                Ami ami1=amiDao.save(new Ami(null,"imageId","imagwOwnerAlias","arch","imageName","description","platform"));
 //                Ami ami2=amiDao.save(new Ami(null,"imageId2","imagwOwnerAlias2","arch2","imageName2","description2","platform2"));
 //
