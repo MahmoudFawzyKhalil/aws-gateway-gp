@@ -44,19 +44,38 @@ public class UserManagementImpl implements UserManagement {
     }
 
     @Override
-    public String createUser( UserRequest userRequest ) {
-         User user = mapper.mapFromUserRequestToUser(userRequest);
+    public User createUser( User user ) {
          roleDaoImpl.save(user.getRole());
          userDaoImpl.save(user);
-         return "success without handling";
+         return user;
     }
 
     @Override
-    public String updateUser(UserRequest userRequest) {
-        User user = mapper.mapFromUserRequestToUser(userRequest);
+    public User updateUser(User user) {
         roleDaoImpl.update(user.getRole());
         userDaoImpl.update(user);
-        return "updated successfully without error handling";
+        return user;
+    }
+
+    @Override
+    public List<User> getAllUsers() {
+        List<User> users = userDaoImpl.findAll();
+        return users;
+    }
+
+    @Override
+    public User getUserById(int id ) {
+        return userDaoImpl.findById(id).orElseThrow(()->new RuntimeException("User with this id not exists"));
+    }
+
+    @Override
+    public User getUserByName(String username) {
+        return null;
+    }
+
+    @Override
+    public Boolean createUserFromCSV( String csvFile ) {
+        return null;
     }
 
     @Override
@@ -67,31 +86,6 @@ public class UserManagementImpl implements UserManagement {
                 // userDaoImpl.d
             }
         }
-        return null;
-    }
-
-    @Override
-    public List<UserResponse> getAllUsers() {
-        List<User> users = userDaoImpl.findAll();
-        List<UserResponse> userResponses =
-                users.stream().map(e -> mapper.mapFromUserToUserResponse(e)).collect(Collectors.toList());
-        System.out.println("getAllUsers");
-        return userResponses;
-    }
-
-    @Override
-    public UserResponse getUserById(int id ) {
-        return mapper.mapFromUserToUserResponse(userDaoImpl.findById(id)
-                .orElseThrow(() -> new RuntimeException("User with id : "+id+" , Not found")));
-    }
-
-    @Override
-    public User getUserByName(String username) {
-        return null;
-    }
-
-    @Override
-    public Boolean createUserFromCSV( String csvFile ) {
         return null;
     }
 
