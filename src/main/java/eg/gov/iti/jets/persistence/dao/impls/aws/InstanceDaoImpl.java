@@ -36,7 +36,7 @@ public class InstanceDaoImpl implements InstanceDao {
     }
 
     @Override
-    public <C> Optional<Instance> findById(Integer integer, Class<C> projection) {
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
         return Optional.empty();
     }
 
@@ -52,7 +52,7 @@ public class InstanceDaoImpl implements InstanceDao {
     }
 
     @Override
-    public <C> List<Instance> findAll(int pageNumber, int pageSize, Class<C> projection) {
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
         return null;
     }
 
@@ -63,7 +63,7 @@ public class InstanceDaoImpl implements InstanceDao {
     }
 
     @Override
-    public <C> List<Instance> findAllByExample(Instance example, Class<C> projection) {
+    public <C> List<C> findAllByExample(Instance example, Class<C> projection) {
         return null;
     }
 }

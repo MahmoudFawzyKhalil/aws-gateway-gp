@@ -36,7 +36,7 @@ public class SecurityGroupDaoImpl implements SecurityGroupDao {
     }
 
     @Override
-    public <C> Optional<SecurityGroup> findById(Integer integer, Class<C> projection) {
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
         return Optional.empty();
     }
 
@@ -52,7 +52,7 @@ public class SecurityGroupDaoImpl implements SecurityGroupDao {
     }
 
     @Override
-    public <C> List<SecurityGroup> findAll(int pageNumber, int pageSize, Class<C> projection) {
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
         return null;
     }
 
@@ -63,7 +63,7 @@ public class SecurityGroupDaoImpl implements SecurityGroupDao {
     }
 
     @Override
-    public <C> List<SecurityGroup> findAllByExample(SecurityGroup example, Class<C> projection) {
+    public <C> List<C> findAllByExample(SecurityGroup example, Class<C> projection) {
         return null;
     }
 }

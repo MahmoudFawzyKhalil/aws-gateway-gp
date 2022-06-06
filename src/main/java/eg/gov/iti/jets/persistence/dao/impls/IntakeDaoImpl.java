@@ -34,7 +34,7 @@ public class IntakeDaoImpl implements IntakeDao {
     }
 
     @Override
-    public <C> Optional<Intake> findById(Integer integer, Class<C> projection) {
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
         return Optional.empty();
     }
 
@@ -50,7 +50,7 @@ public class IntakeDaoImpl implements IntakeDao {
     }
 
     @Override
-    public <C> List<Intake> findAll(int pageNumber, int pageSize, Class<C> projection) {
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
         return null;
     }
 
@@ -61,7 +61,7 @@ public class IntakeDaoImpl implements IntakeDao {
     }
 
     @Override
-    public <C> List<Intake> findAllByExample(Intake example, Class<C> projection) {
+    public <C> List<C> findAllByExample(Intake example, Class<C> projection) {
         return null;
     }
 }

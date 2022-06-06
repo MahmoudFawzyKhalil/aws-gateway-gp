@@ -37,7 +37,7 @@ public class TrainingProgramDaoImpl implements TrainingProgramDao {
     }
 
     @Override
-    public <C> Optional<TrainingProgram> findById(Integer integer, Class<C> projection) {
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
         return Optional.empty();
     }
 
@@ -54,7 +54,7 @@ public class TrainingProgramDaoImpl implements TrainingProgramDao {
     }
 
     @Override
-    public <C> List<TrainingProgram> findAll(int pageNumber, int pageSize, Class<C> projection) {
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
         return null;
     }
 
@@ -65,7 +65,7 @@ public class TrainingProgramDaoImpl implements TrainingProgramDao {
     }
 
     @Override
-    public <C> List<TrainingProgram> findAllByExample(TrainingProgram example, Class<C> projection) {
+    public <C> List<C> findAllByExample(TrainingProgram example, Class<C> projection) {
         return null;
     }
 

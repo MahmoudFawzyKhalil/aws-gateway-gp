@@ -35,7 +35,7 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
     }
 
     @Override
-    public <C> Optional<Privilege> findById(Integer integer, Class<C> projection) {
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
         return Optional.empty();
     }
 
@@ -51,7 +51,7 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
     }
 
     @Override
-    public <C> List<Privilege> findAll(int pageNumber, int pageSize, Class<C> projection) {
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
         return null;
     }
 
@@ -62,7 +62,7 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
     }
 
     @Override
-    public <C> List<Privilege> findAllByExample(Privilege example, Class<C> projection) {
+    public <C> List<C> findAllByExample(Privilege example, Class<C> projection) {
         return null;
     }
 }

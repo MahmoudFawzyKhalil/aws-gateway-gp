@@ -34,7 +34,7 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     }
 
     @Override
-    public <C> Optional<InstanceLogs> findById(Long aLong, Class<C> projection) {
+    public <C> Optional<C> findById(Long aLong, Class<C> projection) {
         return Optional.empty();
     }
 
@@ -50,7 +50,7 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     }
 
     @Override
-    public <C> List<InstanceLogs> findAll(int pageNumber, int pageSize, Class<C> projection) {
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
         return null;
     }
 
@@ -61,7 +61,7 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     }
 
     @Override
-    public <C> List<InstanceLogs> findAllByExample(InstanceLogs example, Class<C> projection) {
+    public <C> List<C> findAllByExample(InstanceLogs example, Class<C> projection) {
         return null;
     }
 

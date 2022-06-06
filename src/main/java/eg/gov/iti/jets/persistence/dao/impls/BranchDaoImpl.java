@@ -38,7 +38,7 @@ public class BranchDaoImpl implements BranchDao {
     }
 
     @Override
-    public <C> Optional<Branch> findById(Integer integer, Class<C> projection) {
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
         return Optional.empty();
     }
 
@@ -54,7 +54,7 @@ public class BranchDaoImpl implements BranchDao {
     }
 
     @Override
-    public <C> List<Branch> findAll(int pageNumber, int pageSize, Class<C> projection) {
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
         return null;
     }
 
@@ -65,7 +65,7 @@ public class BranchDaoImpl implements BranchDao {
     }
 
     @Override
-    public <C> List<Branch> findAllByExample(Branch example, Class<C> projection) {
+    public <C> List<C> findAllByExample(Branch example, Class<C> projection) {
         return null;
     }
 
