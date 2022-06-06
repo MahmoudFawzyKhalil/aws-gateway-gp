@@ -34,6 +34,11 @@ public class OutboundRuleDaoImpl implements OutboundRuleDao {
     }
 
     @Override
+    public <C> Optional<OutboundRule> findById(Integer integer, Class<C> projection) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<OutboundRule> findAll() {
         return outboundRuleRepo.findAll();
     }
@@ -45,8 +50,18 @@ public class OutboundRuleDaoImpl implements OutboundRuleDao {
     }
 
     @Override
+    public <C> List<OutboundRule> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        return null;
+    }
+
+    @Override
     public List<OutboundRule> findAllByExample(OutboundRule example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return outboundRuleRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<OutboundRule> findAllByExample(OutboundRule example, Class<C> projection) {
+        return null;
     }
 }

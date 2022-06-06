@@ -34,6 +34,11 @@ public class IntakeDaoImpl implements IntakeDao {
     }
 
     @Override
+    public <C> Optional<Intake> findById(Integer integer, Class<C> projection) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<Intake> findAll() {
         return intakeRepo.findAll();
     }
@@ -45,8 +50,18 @@ public class IntakeDaoImpl implements IntakeDao {
     }
 
     @Override
+    public <C> List<Intake> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        return null;
+    }
+
+    @Override
     public List<Intake> findAllByExample(Intake example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return intakeRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<Intake> findAllByExample(Intake example, Class<C> projection) {
+        return null;
     }
 }

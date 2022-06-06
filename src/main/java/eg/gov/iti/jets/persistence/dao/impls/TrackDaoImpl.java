@@ -35,6 +35,11 @@ public class TrackDaoImpl implements TrackDao {
     }
 
     @Override
+    public <C> Optional<Track> findById(Integer integer, Class<C> projection) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<Track> findAll() {
         return trackRepo.findAll();
     }
@@ -46,8 +51,18 @@ public class TrackDaoImpl implements TrackDao {
     }
 
     @Override
+    public <C> List<Track> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        return null;
+    }
+
+    @Override
     public List<Track> findAllByExample(Track example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return trackRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<Track> findAllByExample(Track example, Class<C> projection) {
+        return null;
     }
 }

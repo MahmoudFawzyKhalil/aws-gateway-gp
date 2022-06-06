@@ -36,6 +36,11 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public <C> Optional<User> findById(Integer integer, Class<C> projection) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<User> findAll() {
         return userRepo.findAll();
     }
@@ -47,9 +52,19 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public <C> List<User> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        return null;
+    }
+
+    @Override
     public List<User> findAllByExample(User example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return userRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<User> findAllByExample(User example, Class<C> projection) {
+        return null;
     }
 
     @Override

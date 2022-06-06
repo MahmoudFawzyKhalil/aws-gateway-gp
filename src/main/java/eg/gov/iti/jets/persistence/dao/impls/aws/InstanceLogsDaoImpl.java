@@ -34,6 +34,11 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     }
 
     @Override
+    public <C> Optional<InstanceLogs> findById(Long aLong, Class<C> projection) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<InstanceLogs> findAll() {
         return instanceLogsRepo.findAll();
     }
@@ -45,9 +50,19 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     }
 
     @Override
+    public <C> List<InstanceLogs> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        return null;
+    }
+
+    @Override
     public List<InstanceLogs> findAllByExample(InstanceLogs example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return instanceLogsRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<InstanceLogs> findAllByExample(InstanceLogs example, Class<C> projection) {
+        return null;
     }
 
     @Override

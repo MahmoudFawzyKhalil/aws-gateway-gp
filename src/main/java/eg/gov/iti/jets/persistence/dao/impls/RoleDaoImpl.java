@@ -35,6 +35,11 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
+    public <C> Optional<Role> findById(Integer integer, Class<C> projection) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<Role> findAll() {
         return roleRepo.findAll();
     }
@@ -46,8 +51,18 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
+    public <C> List<Role> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        return null;
+    }
+
+    @Override
     public List<Role> findAllByExample(Role example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return roleRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<Role> findAllByExample(Role example, Class<C> projection) {
+        return null;
     }
 }
