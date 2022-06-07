@@ -26,7 +26,7 @@ public class BranchDaoImpl implements BranchDao {
 
     @Override
     public Branch update(Branch entity) {
-        if(entity==null||entity.getId()==null){
+        if (entity == null || entity.getId() == null) {
             throw new NullPointerException("entity or id can't be null");
         }
         return branchRepo.save(entity);
@@ -38,8 +38,8 @@ public class BranchDaoImpl implements BranchDao {
     }
 
     @Override
-    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
-        return Optional.empty();
+    public <C> Optional<C> findById(Integer id, Class<C> projection) {
+        return branchRepo.findById(id, projection);
     }
 
     @Override
@@ -55,7 +55,8 @@ public class BranchDaoImpl implements BranchDao {
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        return null;
+        Page<C> page = branchRepo.findBy(PageRequest.of(pageNumber, pageSize),projection);
+        return page.getContent();
     }
 
     @Override
@@ -66,7 +67,8 @@ public class BranchDaoImpl implements BranchDao {
 
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
-        return null;
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return branchRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
 
 

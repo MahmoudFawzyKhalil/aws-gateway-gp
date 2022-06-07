@@ -20,7 +20,7 @@ public class App {
     }
 
     @Bean
-    CommandLineRunner commandLineRunner(IntakeDao intakeDao,TrackDao trackDao,TrainingProgramDao trainingProgramDao, BranchDao branchDao, PrivilegeDao privilegeDao, SecurityGroupDao securityGroupDao, RoleDao roleDao, UserDao userDao, KeyPairDao keyPairDao, InstanceDao instanceDao, AmiDao amiDao, TemplateConfigurationDao templateConfigurationDao) {
+    CommandLineRunner commandLineRunner(IntakeDao intakeDao, TrackDao trackDao, TrainingProgramDao trainingProgramDao, BranchDao branchDao, PrivilegeDao privilegeDao, SecurityGroupDao securityGroupDao, RoleDao roleDao, UserDao userDao, KeyPairDao keyPairDao, InstanceDao instanceDao, AmiDao amiDao, TemplateConfigurationDao templateConfigurationDao) {
 
         return ars -> {
             if (roleDao.findAllByExample(new Role(null, "STUDENT", null)).isEmpty()) {
@@ -42,9 +42,9 @@ public class App {
                 User instructorUser = userDao.save(new User(null, "instructor", "instructor", "instructor", instructorRole, null, null, null));
                 User trainingMangerUser = userDao.save(new User(null, "trainingManger", "trainingManger", "trainingManger", trainingMangerRole, null, null, null));
 
-                DummyData.populateStaticDataForSmartBranch(studentRole,branchMangerRole,intakeDao, trackDao, trainingProgramDao,  branchDao,  privilegeDao,  securityGroupDao,  roleDao,  userDao,  keyPairDao,  instanceDao,  amiDao,  templateConfigurationDao);
-                DummyData.populateStaticDataForIsmailiaBranch(studentRole,branchMangerRole,intakeDao, trackDao, trainingProgramDao,  branchDao,  privilegeDao,  securityGroupDao,  roleDao,  userDao,  keyPairDao,  instanceDao,  amiDao,  templateConfigurationDao);
-                DummyData.populateStaticDataForMenofiaBranch(studentRole,branchMangerRole,intakeDao, trackDao, trainingProgramDao,  branchDao,  privilegeDao,  securityGroupDao,  roleDao,  userDao,  keyPairDao,  instanceDao,  amiDao,  templateConfigurationDao);
+                DummyData.populateStaticDataForSmartBranch(studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
+                DummyData.populateStaticDataForIsmailiaBranch(studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
+                DummyData.populateStaticDataForMenofiaBranch(studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
 
 
                 var key = keyPairDao.save(new KeyPair(null, "keyPairId", "keyName", "keyMaterial", "keyMaterialType", superVisorUser));
@@ -65,7 +65,8 @@ public class App {
                 Ami ami2 = amiDao.save(new Ami(null, "imageId2", "imagwOwnerAlias2", "arch2", "imageName2", "description2", "platform2"));
 
             }
-
+            List<Branch> branches = branchDao.findAllByExample(new Branch(null,"smart",null,null,null));
+            branches.forEach(b-> System.out.println(b.getName()));
             System.out.println("Finished Inserting");
 
         };
@@ -87,10 +88,9 @@ class DummyData {
                                                         KeyPairDao keyPairDao,
                                                         InstanceDao instanceDao,
                                                         AmiDao amiDao,
-                                                        TemplateConfigurationDao templateConfigurationDao){
+                                                        TemplateConfigurationDao templateConfigurationDao) {
 
         User smartBranchMangerUser = userDao.save(new User(null, "smartBranchManger", "smartBranchManger", "smartBranchManger", branchMangerRole, null, null, null));
-
 
 
         User studentUser = userDao.save(new User(null, "student", "student", "student", studentRole, null, null, null));
@@ -99,7 +99,6 @@ class DummyData {
         User studentUser3 = userDao.save(new User(null, "student3", "student3", "student3", studentRole, null, null, null));
         User studentUser4 = userDao.save(new User(null, "student4", "student4", "student4", studentRole, null, null, null));
         User studentUser5 = userDao.save(new User(null, "student5", "student5", "student5", studentRole, null, null, null));
-
 
 
         Branch smartBranch = new Branch(null, "Smart", "October", smartBranchMangerUser, null);
@@ -112,15 +111,15 @@ class DummyData {
 
 
         Intake intake42 = new Intake(null, "intake_42", nineMonthTrainingProgram, null, "intake 42 description");
-        intake42=intakeDao.save(intake42);
-        Intake intakeFirstQuarter42=new Intake(null, "intake_42_first_quarter", threeMonthTrainingProgram, null, "intake 42 description");
-        intakeFirstQuarter42=intakeDao.save(intakeFirstQuarter42);
+        intake42 = intakeDao.save(intake42);
+        Intake intakeFirstQuarter42 = new Intake(null, "intake_42_first_quarter", threeMonthTrainingProgram, null, "intake 42 description");
+        intakeFirstQuarter42 = intakeDao.save(intakeFirstQuarter42);
 
 
         Track javaTrack = new Track(null, "Java", intake42, List.of(studentUser, studentUser1, studentUser2));
-        javaTrack=trackDao.save(javaTrack);
-        Track phpTrack= new Track(null, "PHP", intakeFirstQuarter42, List.of(studentUser3, studentUser4, studentUser5));
-        phpTrack=trackDao.save(phpTrack);
+        javaTrack = trackDao.save(javaTrack);
+        Track phpTrack = new Track(null, "PHP", intakeFirstQuarter42, List.of(studentUser3, studentUser4, studentUser5));
+        phpTrack = trackDao.save(phpTrack);
 
 
     }
@@ -146,7 +145,7 @@ class DummyData {
         User studentUser8 = userDao.save(new User(null, "student8", "student8", "student8", studentRole, null, null, null));
         User studentUser9 = userDao.save(new User(null, "student9", "student9", "student9", studentRole, null, null, null));
         User studentUser10 = userDao.save(new User(null, "student10", "student10", "student10", studentRole, null, null, null));
-        User studentUser11= userDao.save(new User(null, "student11", "student11", "student11", studentRole, null, null, null));
+        User studentUser11 = userDao.save(new User(null, "student11", "student11", "student11", studentRole, null, null, null));
 
 
         Branch ismailiaBranch = new Branch(null, "Ismailia", "Ismailia", IsmailiaBranchMangerUser, null);
@@ -157,15 +156,15 @@ class DummyData {
 
 
         Intake intake42 = new Intake(null, "intake_42", nineMonthTrainingProgram, null, "intake 42 description");
-        intake42=intakeDao.save(intake42);
+        intake42 = intakeDao.save(intake42);
 
 
         Track qualityControl = new Track(null, "QA", intake42, List.of(studentUser6, studentUser7));
-        qualityControl=trackDao.save(qualityControl);
+        qualityControl = trackDao.save(qualityControl);
         Track testing = new Track(null, "testing", intake42, List.of(studentUser8, studentUser9));
-        testing=trackDao.save(testing);
+        testing = trackDao.save(testing);
         Track mobileApplication = new Track(null, "Mobile Application", intake42, List.of(studentUser10, studentUser11));
-        mobileApplication=trackDao.save(mobileApplication);
+        mobileApplication = trackDao.save(mobileApplication);
 
     }
 
@@ -192,7 +191,7 @@ class DummyData {
         User studentUser14 = userDao.save(new User(null, "student14", "student14", "student14", studentRole, null, null, null));
         User studentUser15 = userDao.save(new User(null, "student15", "student15", "student15", studentRole, null, null, null));
         User studentUser16 = userDao.save(new User(null, "student16", "student16", "student16", studentRole, null, null, null));
-        User studentUser17= userDao.save(new User(null, "student17", "student17", "student17", studentRole, null, null, null));
+        User studentUser17 = userDao.save(new User(null, "student17", "student17", "student17", studentRole, null, null, null));
 
 
         Branch menofiaBranch = new Branch(null, "menofia", "menofia", menofiaBranchMangerUser, null);
@@ -205,17 +204,17 @@ class DummyData {
         nineMonthTrainingProgram = trainingProgramDao.save(nineMonthTrainingProgram);
 
         Intake intake42 = new Intake(null, "intake_42", nineMonthTrainingProgram, null, "intake 42 description");
-        intake42=intakeDao.save(intake42);
-        Intake intakeFirstQuarter42=new Intake(null, "intake_42_first_quarter", threeMonthTrainingProgram, null, "intake 42 description");
-        intakeFirstQuarter42=intakeDao.save(intakeFirstQuarter42);
+        intake42 = intakeDao.save(intake42);
+        Intake intakeFirstQuarter42 = new Intake(null, "intake_42_first_quarter", threeMonthTrainingProgram, null, "intake 42 description");
+        intakeFirstQuarter42 = intakeDao.save(intakeFirstQuarter42);
 
 
         Track testing = new Track(null, "testing", intake42, List.of(studentUser14, studentUser15));
-        testing=trackDao.save(testing);
+        testing = trackDao.save(testing);
         Track mobileApplication = new Track(null, "Mobile Application", intakeFirstQuarter42, List.of(studentUser16, studentUser17));
-        mobileApplication=trackDao.save(mobileApplication);
+        mobileApplication = trackDao.save(mobileApplication);
         Track qualityControl = new Track(null, "QA", intake42, List.of(studentUser12, studentUser13));
-        qualityControl=trackDao.save(qualityControl);
+        qualityControl = trackDao.save(qualityControl);
     }
 
 }
