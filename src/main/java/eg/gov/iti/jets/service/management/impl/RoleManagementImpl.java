@@ -38,4 +38,14 @@ public class RoleManagementImpl implements RoleManagement {
     public Role getRoleById( int id ) {
         return roleDao.findById(id).orElseThrow(()->new RuntimeException("Not found role with id"));
     }
+
+    @Override
+    public Boolean updateRole(Role role) {
+        try {
+            roleDao.update(role);
+            return true;
+        }catch (Exception e) {
+            throw new RuntimeException("Could not update role with id");
+        }
+    }
 }

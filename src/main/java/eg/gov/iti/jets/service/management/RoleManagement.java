@@ -11,4 +11,5 @@ public interface RoleManagement {
     Boolean deleteRole( int id );
     List<Role> getAllRole();
     Role getRoleById( int id );
+    Boolean updateRole(Role role);
 }

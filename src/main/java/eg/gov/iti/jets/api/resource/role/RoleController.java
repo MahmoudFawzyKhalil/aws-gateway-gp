@@ -1,11 +1,11 @@
 package eg.gov.iti.jets.api.resource.role;
 
 import eg.gov.iti.jets.api.util.Mapper;
+import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.service.management.RoleManagement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -16,18 +16,30 @@ public class RoleController {
     private final Mapper mapper;
 
     @PostMapping
-    public Boolean addRole(@RequestBody RoleRequest roleRequest) {
-        return roleManagement.addRole(mapper.mapRoleRequestToRole(roleRequest));
+    public Boolean addRole(@RequestBody AddRoleRequest roleRequest) {
+        return roleManagement.addRole(mapper.addRoleRequestToRole(roleRequest));
     }
 
     @GetMapping
-    public List<RoleResponse> getAllRoles() {
-       return roleManagement.getAllRole().stream().map(mapper::mapRoleToRoleResponse).collect(Collectors.toList());
+    public GetAllRolesResponse getAllRoles() {
+        GetAllRolesResponse getRolesResponse = new GetAllRolesResponse();
+        getRolesResponse.setRoles(
+                roleManagement.getAllRole().stream()
+                        .map(mapper::roleToGetRoleResponse)
+                        .collect(Collectors.toList())
+        );
+       return getRolesResponse;
     }
 
     @GetMapping("/{id}")
-    public RoleResponse getRole(@PathVariable("id") int id){
-       return mapper.mapRoleToRoleResponse(roleManagement.getRoleById(id));
+    public GetRoleResponse getRole(@PathVariable("id") int id){
+       return mapper.roleToGetRoleResponse(roleManagement.getRoleById(id));
+    }
+
+    @PutMapping
+    public Boolean updateRole(@RequestBody UpdateRoleRequest updateRoleRequest) {
+        Role role = mapper.updateRoleRequestToRole(updateRoleRequest);
+        return roleManagement.updateRole(role);
     }
 
 }
