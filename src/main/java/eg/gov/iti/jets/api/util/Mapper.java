@@ -41,11 +41,18 @@ public class Mapper {
     private MapperUtilForApi mapperUtilForApi;
 
     public Branch mapFromBranchRequestToBranch( BranchRequest branchRequest ) {
-        return null;
+        Branch branch = new Branch();
+        branch.setAddress(branchRequest.getAddress());
+        branch.setName(branchRequest.getName());
+        branch.setId(branchRequest.getId());
+        return branch;
     }
 
     public BranchResponse mapFromBranchToBranchResponse( Branch branch ) {
-        return null;
+        BranchResponse branchResponse = new BranchResponse();
+        branchResponse.setAddress(branch.getAddress());
+        branchResponse.setName(branch.getName());
+        return branchResponse;
     }
 
     public TrainingProgram mapFromTrainingProgramRequestToTrainingProgram( TrainingProgramRequest trainingProgramRequest ) {
