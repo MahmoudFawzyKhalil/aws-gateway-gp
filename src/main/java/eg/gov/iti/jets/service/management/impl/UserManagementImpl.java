@@ -23,6 +23,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -99,6 +100,22 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
     public List<User> getAllUsers() {
         List<User> users = userDaoImpl.findAll();
         return users;
+    }
+
+    /**
+     * todo
+     * get by role from db
+     */
+    @Override
+    public List<User> getAllStudentUsers() {
+        List<User> users = userDaoImpl.findAll();
+        List<User> students = new ArrayList<>();
+        for(User user : users ){
+            if(user.getRole().getName().equals("STUDENT")){
+                students.add(user);
+            }
+        }
+        return students;
     }
 
     @Override

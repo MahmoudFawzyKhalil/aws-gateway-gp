@@ -37,6 +37,18 @@ public class UserController {
         return mapper.mapFromUserToUserResponse(userManagement.updateUser(user));
     }
 
+    @GetMapping("students")
+    public UserResponseList getStudents(){
+        List<User> users = userManagement.getAllStudentUsers();
+        List<UserResponse> userResponses =  mapper.mapFromListOfUsersToListOfUserResponses(users);
+        UserResponseList userResponseList = new UserResponseList();
+        for(UserResponse response : userResponses){
+            userResponseList.getUserResponsesList().add(response);
+        }
+        return userResponseList;
+    }
+
+
     @GetMapping
     public UserResponseList getUsers(){
         List<User> users = userManagement.getAllUsers();
