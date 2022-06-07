@@ -53,12 +53,6 @@ public class Instance {
     private User creator;
     @ManyToMany(mappedBy = "grantedInstances")
     private List<User> instanceUsers;
-    @ManyToMany
-    @JoinTable(name = "instance_security_groups",
-            joinColumns = @JoinColumn(name = "instance_id"),
-            inverseJoinColumns = @JoinColumn(name = "security_group_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"instance_id", "security_group_id"}))
-    private List<SecurityGroup> securityGroups;
 
     @ManyToOne
     @JoinColumn(name = "template_configuration_id", nullable = false)

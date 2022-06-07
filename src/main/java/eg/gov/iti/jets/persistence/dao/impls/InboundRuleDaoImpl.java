@@ -25,6 +25,9 @@ public class InboundRuleDaoImpl implements InboundRuleDao {
 
     @Override
     public InboundRule update(InboundRule entity) {
+        if (entity == null || entity.getId() == null) {
+            throw new NullPointerException("entity or id can't be null");
+        }
         return inboundRuleRepo.save(entity);
     }
 
@@ -35,7 +38,7 @@ public class InboundRuleDaoImpl implements InboundRuleDao {
 
     @Override
     public <C> Optional<C> findById(Integer integer, Class<C> projection) {
-        return Optional.empty();
+        return inboundRuleRepo.findById(integer,projection);
     }
 
     @Override
@@ -51,7 +54,8 @@ public class InboundRuleDaoImpl implements InboundRuleDao {
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        return null;
+        Page<C> page = inboundRuleRepo.findBy(PageRequest.of(pageNumber, pageSize),projection);
+        return page.getContent();
     }
 
     @Override
@@ -62,6 +66,7 @@ public class InboundRuleDaoImpl implements InboundRuleDao {
 
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
-        return null;
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return inboundRuleRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
 }
