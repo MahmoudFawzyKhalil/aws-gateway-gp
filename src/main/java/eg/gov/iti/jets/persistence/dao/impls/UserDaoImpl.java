@@ -27,6 +27,9 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User update(User entity) {
+        if (entity == null || entity.getId() == null) {
+            throw new NullPointerException("entity or id can't be null");
+        }
         return userRepo.save(entity);
     }
 
