@@ -18,6 +18,7 @@ public interface UserManagement extends UserDetailsService{
     List<User> getAllUsers();
     User getUserById(int id );
 
+    List<User> getAllStudentUsers();
     Boolean createUserFromCSV( String csvFile );
 
     User getUserByName(String username);
