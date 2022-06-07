@@ -27,6 +27,7 @@ public class KeyPairDaoImpl implements KeyPairDao {
 
     @Override
     public KeyPair update(KeyPair entity) {
+        if(entity == null || entity.getId() == null) throw new NullPointerException("KeyPair id can't be null");
         return keyPairRepo.save(entity);
     }
 
@@ -36,8 +37,8 @@ public class KeyPairDaoImpl implements KeyPairDao {
     }
 
     @Override
-    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
-        return Optional.empty();
+    public <C> Optional<C> findById(Integer id, Class<C> projection) {
+        return keyPairRepo.findById(id,projection);
     }
 
     @Override
@@ -53,7 +54,7 @@ public class KeyPairDaoImpl implements KeyPairDao {
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        return null;
+        return keyPairRepo.findBy(PageRequest.of(pageNumber,pageSize),projection).getContent();
     }
 
     @Override
@@ -64,7 +65,8 @@ public class KeyPairDaoImpl implements KeyPairDao {
 
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
-        return null;
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return keyPairRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
 
 }

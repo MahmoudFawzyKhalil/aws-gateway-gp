@@ -25,8 +25,9 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public Role update(Role roleEntity) {
-        return roleRepo.save(roleEntity);
+    public Role update(Role entity) {
+        if(entity == null || entity.getId() == null) throw new NullPointerException("Role id can't be null");
+        return roleRepo.save(entity);
     }
 
     @Override
@@ -35,8 +36,8 @@ public class RoleDaoImpl implements RoleDao {
     }
 
     @Override
-    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
-        return Optional.empty();
+    public <C> Optional<C> findById(Integer id, Class<C> projection) {
+        return roleRepo.findById(id,projection);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        return null;
+        return roleRepo.findBy(PageRequest.of(pageNumber,pageSize),projection).getContent();
     }
 
     @Override
@@ -63,6 +64,7 @@ public class RoleDaoImpl implements RoleDao {
 
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
-        return null;
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return roleRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
 }
