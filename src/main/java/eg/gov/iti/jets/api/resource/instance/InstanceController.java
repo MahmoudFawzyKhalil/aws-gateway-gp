@@ -39,20 +39,20 @@ public class InstanceController {
         return mapper.mapFromInstanceToInstanceResponse( instance );
     }
 
-    @GetMapping("{instanceId}")
+    @GetMapping("start/{instanceId}")
     SuccessResponse startInstance (@PathVariable String instanceId){
         instanceManagement.startInstance(instanceId);
         return new SuccessResponse(true);
     }
 
 
-    @GetMapping("{instanceId}")
+    @GetMapping("stop/{instanceId}")
     SuccessResponse stopInstance (@PathVariable String instanceId){
         instanceManagement.stopInstance(instanceId);
         return new SuccessResponse(true);
     }
 
-    @DeleteMapping("{instanceId}")
+    @DeleteMapping("delete/{instanceId}")
     SuccessResponse deleteInstance (@PathVariable String instanceId){
         instanceManagement.stopInstance(instanceId);
         return new SuccessResponse(true);
