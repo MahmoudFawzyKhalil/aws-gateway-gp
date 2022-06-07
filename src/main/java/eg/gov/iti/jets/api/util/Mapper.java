@@ -21,6 +21,7 @@ import eg.gov.iti.jets.api.resource.template.TemplateRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.api.resource.track.TrackRequest;
 import eg.gov.iti.jets.api.resource.track.TrackResponse;
+import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramPutRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
 import eg.gov.iti.jets.persistence.entity.*;
@@ -40,6 +41,8 @@ public class Mapper {
     @Autowired
     private MapperUtilForApi mapperUtilForApi;
 
+
+
     public Branch mapFromBranchRequestToBranch( BranchRequest branchRequest ) {
         return null;
     }
@@ -49,11 +52,20 @@ public class Mapper {
     }
 
     public TrainingProgram mapFromTrainingProgramRequestToTrainingProgram( TrainingProgramRequest trainingProgramRequest ) {
-        return null;
+        TrainingProgram trainingProgram = new TrainingProgram();
+        Branch branch = mapperUtilForApi.getBranchById(trainingProgramRequest.getBranchId());
+        trainingProgram.setBranch(branch);
+        trainingProgram.setName(trainingProgramRequest.getName());
+        return trainingProgram;
     }
 
+
     public TrainingProgramResponse mapFromTrainingProgramToTrainingProgramResponse( TrainingProgram trainingProgram ) {
-        return null;
+        TrainingProgramResponse trainingProgramResponse =  new TrainingProgramResponse();
+       trainingProgramResponse.setBranchId(trainingProgram.getBranch().getId());
+        trainingProgramResponse.setName(trainingProgram.getName());
+        trainingProgramResponse.setId(trainingProgram.getId());
+        return trainingProgramResponse;
     }
 
 
@@ -183,5 +195,14 @@ public class Mapper {
         roleResponse.setName(role.getName());
         roleResponse.setPrivileges(role.getPrivileges().stream().map(privilege -> {return privilege.getName().name();}).collect(Collectors.toList()));
         return roleResponse;
+    }
+
+    public TrainingProgram mapFromTrainingProgramPutRequestToTrainingProgram( TrainingProgramPutRequest trainingProgramPutRequest ) {
+        TrainingProgram trainingProgram = new TrainingProgram();
+        Branch branch = mapperUtilForApi.getBranchById(trainingProgramPutRequest.getBranchId());
+        trainingProgram.setBranch(branch);
+        trainingProgram.setName(trainingProgramPutRequest.getName());
+        trainingProgram.setId(trainingProgramPutRequest.getId());
+        return trainingProgram;
     }
 }
