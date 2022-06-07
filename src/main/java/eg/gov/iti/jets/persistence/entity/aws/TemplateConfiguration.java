@@ -21,8 +21,11 @@ public class TemplateConfiguration {
     @Column(nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @ManyToOne()
     @Column(name = "image_ami", nullable = false)
-    private String amiId;
+    private Ami amiId;
+
     @Column(name = "subnet_id")
     private String subnetId;
     @Column(name = "instance_type", nullable = false)
