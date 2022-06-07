@@ -33,14 +33,12 @@ public class TemplateManagementImpl implements TemplateManagement {
         this.awsGateway = awsGateway;
     }
 
-
-
-
     public Boolean deleteTemplate ( int id ){
+
         return null;
     }
 
-    // TODO: 6/5/2022 get template upon condition after user 
+
     public List<TemplateConfiguration> getTemplateConfiguration(){
         return templateConfigurationDao.findAll();
     }
@@ -48,25 +46,19 @@ public class TemplateManagementImpl implements TemplateManagement {
     @Transactional
     @Override
     public Boolean createTemplate(TemplateConfiguration templateConfiguration) {
-        System.out.println(templateConfiguration.getSecurityGroups().get( 0 ));
         List<SecurityGroup> saved = new ArrayList<>();
-        for ( SecurityGroup s: templateConfiguration.getSecurityGroups()
-               ) {
-            SecurityGroup save = securityGroupDao.save( s );
-            saved.add( save );
+        for ( SecurityGroup s: templateConfiguration.getSecurityGroups() ) {
+            List<SecurityGroup> securityGroupDaoAllByExample = securityGroupDao. findAllByExample( s );
+            if(securityGroupDaoAllByExample.isEmpty()){
+                saved.add( securityGroupDao.save( s ) );
+            }else{
+                saved.add( securityGroupDaoAllByExample.get( 0 ) );
+            }
         }
         templateConfiguration.setSecurityGroups( saved );
         TemplateConfiguration net= templateConfigurationDao.save(templateConfiguration);
-        if(net==null){
-            return false;
-        }
-        else{
-        return true;}
+        return net != null;
     }
 
-
-
-
-    //TODO what do you really want
 
 }

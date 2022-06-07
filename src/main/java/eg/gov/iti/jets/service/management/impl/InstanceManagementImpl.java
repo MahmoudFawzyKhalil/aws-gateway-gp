@@ -42,11 +42,9 @@ public class InstanceManagementImpl implements InstanceManagement {
         instance.setTemplateConfiguration( templateConfiguration );
         keyPair.setCreator( user ) ;
         instance.setCreator( user );
+        instance.setSecurityGroups(sg);
         keyPairDao.save( keyPair );
         instanceDao.save( instance );
-//        instance.setSecurityGroups(
-
-
         return awsGateway.createInstance( templateConfiguration , instanceName, keyPair );
     }
 
