@@ -1,5 +1,4 @@
 package eg.gov.iti.jets.api.resource.branch;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -7,11 +6,10 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 
-public class BranchRequest {
-    private int id;
-    private String address;
-    private String name;
+public class BranchViewResponse {
+    private Boolean success;
+    private BranchResponse branchResponse;
 }
