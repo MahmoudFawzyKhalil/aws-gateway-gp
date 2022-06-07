@@ -26,6 +26,9 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
 
     @Override
     public Privilege update(Privilege entity) {
+        if (entity == null || entity.getId() == null) {
+            throw new NullPointerException("entity or id can't be null");
+        }
         return privilegeRepo.save(entity);
     }
 
