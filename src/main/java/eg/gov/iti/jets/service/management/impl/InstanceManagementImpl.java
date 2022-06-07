@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,6 +95,19 @@ public class InstanceManagementImpl implements InstanceManagement {
 
         // TODO: 6/7/2022 void where is the update
         return instance1;
+    }
+
+    @Override
+    public List<Instance> getInstancesByUserId( Integer id ) {
+
+        Optional<User> user = userDao.findById( id );
+        List<Instance>  listOfInstance = new ArrayList<>();
+        if(user.isPresent()){
+            listOfInstance = user.get().getGrantedInstances();
+        }
+        awsGateway.updateInstancesInfoFromAws( listOfInstance );
+
+        return listOfInstance;
     }
 
 }

@@ -12,4 +12,6 @@ public interface InstanceManagement {
     String stopInstance(String instanceId);
     String deleteInstance(String instanceId);
     Instance instanceDetails (String instanceId);
+
+    List<Instance> getInstancesByUserId( Integer id );
 }

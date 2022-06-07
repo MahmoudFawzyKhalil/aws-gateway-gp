@@ -71,8 +71,16 @@ public class InstanceController {
     }
 
     @GetMapping
-    Boolean getInstances ( @AuthenticationPrincipal UserDetails userDetails ){
-        return null;
+    InstanceObjectResponse getInstances ( @AuthenticationPrincipal UserAdapter userDetails ){
+        Integer id = userDetails.getId();
+        List<InstanceResponse> list = new ArrayList<>();
+        List<Instance> instancesByUserId = instanceManagement.getInstancesByUserId( id );
+        for ( Instance instance:
+              instancesByUserId ) {
+            list.add( mapper.mapFromInstanceToInstanceResponse( instance ) );
+        }
+        return new InstanceObjectResponse(list);
     }
+
 
 }
