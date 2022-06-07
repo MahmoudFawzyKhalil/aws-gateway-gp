@@ -17,9 +17,10 @@ public interface UserManagement extends UserDetailsService{
     String deleteUser( int id );
     List<User> getAllUsers();
     User getUserById(int id );
-
     List<User> getAllStudentUsers();
     Boolean createUserFromCSV( String csvFile );
-
     User getUserByName(String username);
+    List<User> getFollowingStudents(User user);
+    List<User> getFollowingInstructors(User user);
+    List<User> getAllUserFollowers(User user);
 }

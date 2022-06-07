@@ -275,9 +275,6 @@ public class Mapper {
         response.setRole(user.getRole().getName());
         response.setPassword(user.getPassword());
         response.setPrivileges(user.getRole().getPrivileges().stream().map(privilege -> {return privilege.getName().name();}).collect(Collectors.toList()));
-        response.setTracks(null);
-        response.setGrantedInstances(null);
-        response.setCreatedInstances(null);
         return response;
     }
 

@@ -129,6 +129,29 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
     }
 
     @Override
+    public List<User> getFollowingStudents(User user) {
+        return userDao.findAllFollowers(user).stream()
+                .filter(user1 -> user1.getRole().getName().equals("STUDENT")
+                && !user.getId().equals(user1.getId()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<User> getFollowingInstructors(User user) {
+        return userDao.findAllFollowers(user).stream()
+                .filter(user1 -> user1.getRole().getName().equals("INSTRUCTOR")
+                && !user.getId().equals(user1.getId()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<User> getAllUserFollowers(User user) {
+        return userDao.findAllFollowers(user)
+                .stream().filter(user1 -> !user.getId().equals(user1.getId()))
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public Boolean createUserFromCSV( String csvFile ) {
         return null;
     }
@@ -143,5 +166,7 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
         }
         return null;
     }
+
+
 
 }
