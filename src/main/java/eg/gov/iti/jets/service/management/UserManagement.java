@@ -12,8 +12,6 @@ public interface UserManagement extends UserDetailsService{
 
     @Override
     UserAdapter loadUserByUsername(String username) throws UsernameNotFoundException;
-    Boolean createUser( User user );
-    UserDetails loadUserByUsername( String username) throws UsernameNotFoundException;
     User createUser( User user );
     User updateUser( User user );
     String deleteUser( int id );

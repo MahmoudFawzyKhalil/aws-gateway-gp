@@ -18,5 +18,9 @@ public class TemplateResponse {
     private AmiResponse ami;
     private String subnetId;
     private String instanceType;
+
+    // TODO: 6/7/2022 SecurityGroup string bs ?? 
     private List<String> securityGroup;
+    private List<UserTemplateResponse> instructors;
+    private UserTemplateResponse creator; 
 }

@@ -108,10 +108,10 @@ public class Mapper {
         return subnetObjectResponse;
     }
 
-    public TemplateConfiguration mapFromTemplateRequestToTemplateConfig( TemplateRequest templateRequest ) {
+    public TemplateConfiguration mapFromTemplateRequestToTemplateConfig( TemplateRequest templateRequest , int id) {
         TemplateConfiguration templateConfiguration = new TemplateConfiguration();
         templateConfiguration.setAmiId( templateRequest.getAmiId() );
-        templateConfiguration.setCreator( mapperUtilForApi.getUser( 1 ) );
+        templateConfiguration.setCreator( mapperUtilForApi.getUser( id ) );
         templateConfiguration.setSubnetId( templateRequest.getSubnetId() );
         templateConfiguration.setInstanceType( templateRequest.getInstanceType() );
         templateConfiguration.setInstructors( null );
@@ -207,7 +207,7 @@ public class Mapper {
         response.setEmail(user.getEmail());
         response.setRole(user.getRole().getName());
         response.setPassword(user.getPassword());
-        response.setPrivileges(user.getRole().getPrivileges().stream().map(Privilege::getName).collect(Collectors.toList()));
+        response.setPrivileges(user.getRole().getPrivileges().stream().map(privilege -> {return privilege.getName().name();}).collect(Collectors.toList()));
         response.setTracks(null);
         response.setGrantedInstances(null);
         response.setCreatedInstances(null);

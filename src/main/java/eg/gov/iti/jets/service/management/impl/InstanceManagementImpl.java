@@ -36,31 +36,42 @@ public class InstanceManagementImpl implements InstanceManagement {
 
 
 
+    @Transactional
+    Instance createInstanceAws(TemplateConfiguration templateConfiguration, String instanceName , KeyPair keyPair ,User user , List<SecurityGroup> sg) {
+        Instance instance = awsGateway.createInstance( templateConfiguration, instanceName, keyPair );
+        instance.setTemplateConfiguration( templateConfiguration );
+        keyPair.setCreator( user ) ;
+        instance.setCreator( user );
+        keyPairDao.save( keyPair );
+        instanceDao.save( instance );
+//        instance.setSecurityGroups(
 
-    private Instance createInstanceAws(TemplateConfiguration templateConfiguration, String instanceName , KeyPair keyPair) {
+
         return awsGateway.createInstance( templateConfiguration , instanceName, keyPair );
     }
 
     @Transactional
     @Override
-    public Optional<Instance> createInstance( int templateConfigurationId, String instanceName , String keyPair){
+    public Optional<Instance> createInstance( int templateConfigurationId, String instanceName , String keyPair , User user){
         Optional<TemplateConfiguration> byId = templateConfigurationDao.findById( templateConfigurationId );
         KeyPair keyPair1 = awsGateway.createKeyPair( keyPair );
-        Optional<Instance> instance = Optional.ofNullable( byId.map( templateConfiguration -> createInstanceAws( templateConfiguration, instanceName, keyPair1 ) ).orElse( null ) );
-        if(instance.isPresent()){
-            Instance instance1 = instance.get();
-//            User user = userDao.findById( 1 ).get();
-//            instance1.setTemplateConfiguration( byId.get() );
-//            System.out.println( user );
-//            instance1.setCreator( user );
-//            System.out.println(instance1);
-//            keyPairDao.save( keyPair1 );
-//            instanceDao.save( instance1 );
+        return Optional.ofNullable( byId.map( templateConfiguration -> createInstanceAws( templateConfiguration, instanceName, keyPair1 ,user ,templateConfiguration.getSecurityGroups()) ).orElse( null ) );
 
-            return instance;
-        }else {
-            return null;
-        }
+    }
+
+    @Override
+    public Boolean startInstance( String instanceId ) {
+        return null;
+    }
+
+    @Override
+    public Boolean stopInstance( String instanceId ) {
+        return null;
+    }
+
+    @Override
+    public Boolean deleteInstance( String instanceId ) {
+        return null;
     }
 
 }

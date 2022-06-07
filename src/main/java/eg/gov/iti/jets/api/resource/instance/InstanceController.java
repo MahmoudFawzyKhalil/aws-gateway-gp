@@ -5,6 +5,8 @@ import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import eg.gov.iti.jets.service.management.InstanceManagement;
+import eg.gov.iti.jets.service.util.MapperUtilForApi;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,8 @@ import java.util.Optional;
 @RequestMapping("api/instances")
 public class InstanceController {
 
+    @Autowired
+    MapperUtilForApi mapperUtilForApi;
     private final InstanceManagement instanceManagement;
 
     final Mapper mapper;
@@ -29,9 +33,28 @@ public class InstanceController {
 
     @PostMapping
     InstanceResponse createInstance( @RequestBody  InstanceRequest instanceRequest){
-        Optional<Instance> instance = instanceManagement.createInstance( instanceRequest.getTemplateId(), instanceRequest.getInstanceName(), instanceRequest.getKeyPair() );
+
+        Optional<Instance> instance = instanceManagement.createInstance( instanceRequest.getTemplateId(), instanceRequest.getInstanceName(), instanceRequest.getKeyPair() ,mapperUtilForApi.getUser( 1 ) );
 
         return mapper.mapFromInstanceToInstanceResponse( instance );
     }
 
+    @GetMapping("{instanceId}")
+    SuccessResponse startInstance (@PathVariable String instanceId){
+        instanceManagement.startInstance(instanceId);
+        return new SuccessResponse(true);
+    }
+
+
+    @GetMapping("{instanceId}")
+    SuccessResponse stopInstance (@PathVariable String instanceId){
+        instanceManagement.stopInstance(instanceId);
+        return new SuccessResponse(true);
+    }
+
+    @DeleteMapping("{instanceId}")
+    SuccessResponse deleteInstance (@PathVariable String instanceId){
+        instanceManagement.stopInstance(instanceId);
+        return new SuccessResponse(true);
+    }
 }

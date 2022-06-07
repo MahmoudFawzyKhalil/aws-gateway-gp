@@ -28,20 +28,21 @@ public class TemplateController {
     }
 
     @PostMapping
-//    @Secured("MANAGE_TEMPLATE")
-    public SuccessResponse createTemplate(@RequestBody TemplateRequest templateRequest ){
-       return new SuccessResponse(templateManagement.createTemplate(mapper.mapFromTemplateRequestToTemplateConfig(templateRequest)));
+    @Secured("MANAGE_TEMPLATE")
+    public SuccessResponse createTemplate(@RequestBody TemplateRequest templateRequest , @AuthenticationPrincipal UserAdapter userDetails ){
+        Integer id = userDetails.getId();
+        return new SuccessResponse(templateManagement.createTemplate(mapper.mapFromTemplateRequestToTemplateConfig(templateRequest , id)));
     }
 
     @DeleteMapping("/{id}")
-//    @Secured("MANAGE_TEMPLATE")
+    @Secured("MANAGE_TEMPLATE")
     public SuccessResponse deleteTemplate ( @PathVariable int id ){
         return new SuccessResponse(templateManagement.deleteTemplate( id )) ;
     }
 
 
     @GetMapping
-//    @Secured("VIEW_TEMPLATES")
+    @Secured("VIEW_TEMPLATES")
     // TODO: 6/5/2022 get the Id?
     public TemplateViewResponse getAllTemplates(@AuthenticationPrincipal UserAdapter userDetails){
         List<TemplateResponse> templateResponses = new ArrayList<>();
@@ -55,18 +56,6 @@ public class TemplateController {
         return new TemplateViewResponse(templateResponses);
     }
 
-
-//    @Secured("MANAGE_TEMPLATE")
-//
-//
-//
-//    @Secured("MANAGE_TEMPLATE")
-//
-//
-//    @Secured("MANAGE_TEMPLATE")
-//
-//
-//    @Secured("MANAGE_TEMPLATE")
 
 
 }

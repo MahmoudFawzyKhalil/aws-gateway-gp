@@ -3,6 +3,7 @@ package eg.gov.iti.jets.service.management.impl;
 import eg.gov.iti.jets.api.resource.user.UserRequest;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
 import eg.gov.iti.jets.api.util.Mapper;
+import eg.gov.iti.jets.persistence.dao.RoleDao;
 import eg.gov.iti.jets.persistence.dao.impls.RoleDaoImpl;
 import eg.gov.iti.jets.persistence.dao.impls.UserDaoImpl;
 import eg.gov.iti.jets.persistence.dao.UserDao;
@@ -26,20 +27,16 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UserManagementImpl implements UserManagement {
-    private UserDaoImpl userDaoImpl;
-    private RoleDaoImpl roleDaoImpl;
-    private Mapper mapper;
-    public UserManagementImpl(UserDaoImpl userDao , RoleDaoImpl roleDaoImpl , Mapper mapper){
-        this.userDaoImpl = userDao;
-        this.roleDaoImpl =roleDaoImpl;
-        this.mapper = mapper;
-    }
-
 public class UserManagementImpl implements UserDetailsService, UserManagement {
-
+    @Autowired
+    private UserDao userDaoImpl;
+    @Autowired
+    private RoleDao roleDaoImpl;
+    @Autowired
+    private Mapper mapper;
     @Autowired
     private UserDao userDao;
+
     @Transactional
     @Override
     public UserAdapter loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -77,12 +74,11 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
 ////                user1.setRole(role1);
 //                return new UserAdapter(user1,AuthorityUtils.createAuthorityList("READ"));
 //        }
-//        user == null ? null : new UserAdapter(user , user.getRole()
-//                .getPrivileges()
-//                .stream().map(Privilege::getName)
-//                .map(SimpleGrantedAuthority::new)
-//                .collect(Collectors.toList()));
-        return null;
+        return user == null ? null : new UserAdapter(user, user.getRole()
+                .getPrivileges()
+                .stream().map(privilege -> privilege.getName().name())
+                .map(SimpleGrantedAuthority::new)
+                .collect(Collectors.toList()));
     }
 
     @Override
@@ -125,7 +121,7 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
         List<User> users = userDaoImpl.findAll();
         for(User user : users){
             if(user.getId() == id){
-                // userDaoImpl.d
+//                 userDaoImpl.de
             }
         }
         return null;
