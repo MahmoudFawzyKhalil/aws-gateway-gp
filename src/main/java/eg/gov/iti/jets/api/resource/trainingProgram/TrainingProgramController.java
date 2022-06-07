@@ -2,6 +2,7 @@ package eg.gov.iti.jets.api.resource.trainingProgram;
 
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
+import eg.gov.iti.jets.service.management.TrainingProgramManagement;
 import eg.gov.iti.jets.service.management.impl.TrainingProgramManagementImpl;
 import org.springframework.web.bind.annotation.*;
 
@@ -11,7 +12,7 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/api/trainingprogram")
 public class TrainingProgramController {
-    final TrainingProgramManagementImpl trainingProgramManagement;
+    final TrainingProgramManagement trainingProgramManagement;
     final Mapper mapper;
 
     public TrainingProgramController( TrainingProgramManagementImpl trainingProgramManagement , Mapper mapper){
@@ -21,12 +22,14 @@ public class TrainingProgramController {
 
     @PostMapping
     public Boolean createTrainingProgram( @RequestBody TrainingProgramRequest trainingProgramRequest){
-        return trainingProgramManagement.createTrainingProgram( mapper.mapFromTrainingProgramRequestToTrainingProgram( trainingProgramRequest )  );
+
+        TrainingProgram trainingProgram = mapper.mapFromTrainingProgramRequestToTrainingProgram( trainingProgramRequest );
+        return trainingProgramManagement.createTrainingProgram(trainingProgram );
     }
 
     @PutMapping
-    public TrainingProgramResponse updateTrainingProgram ( @RequestBody TrainingProgramRequest trainingProgramRequest){
-        TrainingProgram trainingProgram = trainingProgramManagement.updateTrainingProgram( mapper.mapFromTrainingProgramRequestToTrainingProgram( trainingProgramRequest ) );
+    public TrainingProgramResponse updateTrainingProgram ( @RequestBody TrainingProgramPutRequest trainingProgramPutRequest){
+        TrainingProgram trainingProgram = trainingProgramManagement.updateTrainingProgram( mapper.mapFromTrainingProgramPutRequestToTrainingProgram( trainingProgramPutRequest ) );
         return mapper.mapFromTrainingProgramToTrainingProgramResponse( trainingProgram );
     }
 
@@ -37,14 +40,19 @@ public class TrainingProgramController {
 
     @GetMapping("/{id}")
     public TrainingProgramResponse getTrainingProgramById(@PathVariable int id){
-        return mapper.mapFromTrainingProgramToTrainingProgramResponse( trainingProgramManagement.getTrainingProgramById( id ) );
+        TrainingProgram trainingProgram = trainingProgramManagement.getTrainingProgramById( id );
+        return mapper.mapFromTrainingProgramToTrainingProgramResponse(trainingProgram);
     }
 
     @GetMapping
-    public List<TrainingProgramResponse> getTrainingPrograms(){
-        return trainingProgramManagement.getAllTrainingPrograms()
+    public GetTrainingProgramsResponse getTrainingPrograms(){
+        GetTrainingProgramsResponse getTrainingProgramsResponse = new GetTrainingProgramsResponse();
+        getTrainingProgramsResponse.setTrainingPrograms(  trainingProgramManagement.getAllTrainingPrograms()
                 .stream().map( mapper::mapFromTrainingProgramToTrainingProgramResponse )
-                .collect( Collectors.toList() );
+                .collect( Collectors.toList() ));
+        System.out.println(getTrainingProgramsResponse);
+        return getTrainingProgramsResponse;
+
     }
 
 }

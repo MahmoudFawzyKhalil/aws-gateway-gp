@@ -1,7 +1,9 @@
 package eg.gov.iti.jets.service.util;
 
+import eg.gov.iti.jets.persistence.dao.BranchDao;
 import eg.gov.iti.jets.persistence.dao.SecurityGroupDao;
 import eg.gov.iti.jets.persistence.dao.UserDao;
+import eg.gov.iti.jets.persistence.entity.Branch;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
@@ -19,6 +21,9 @@ public class MapperUtilForApi {
     private SecurityGroupDao securityGroupDao;
     @Autowired
     UserDao userDao;
+
+    @Autowired
+    private BranchDao branchDao;
     @Autowired
     AwsGateway awsGateway;
 
@@ -44,5 +49,12 @@ public class MapperUtilForApi {
     public Ami getAmiObject( String amiId){
         Optional<Ami> ami = awsGateway.describeAmi( amiId );
         return ami.orElse( null );
+    }
+
+
+
+    public Branch getBranchById(int id) {
+        Optional<Branch> branch = branchDao.findById(id);
+        return branch.orElse( null );
     }
 }
