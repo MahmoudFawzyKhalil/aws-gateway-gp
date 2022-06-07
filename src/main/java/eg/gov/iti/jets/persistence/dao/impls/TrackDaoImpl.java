@@ -26,6 +26,9 @@ public class TrackDaoImpl implements TrackDao {
 
     @Override
     public Track update(Track entity) {
+        if (entity == null || entity.getId() == null) {
+            throw new NullPointerException("track entity or id can't be null ");
+        }
         return trackRepo.save(entity);
     }
 
@@ -36,7 +39,7 @@ public class TrackDaoImpl implements TrackDao {
 
     @Override
     public <C> Optional<C> findById(Integer integer, Class<C> projection) {
-        return Optional.empty();
+        return trackRepo.findById(integer, projection);
     }
 
     @Override
@@ -52,7 +55,8 @@ public class TrackDaoImpl implements TrackDao {
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        return null;
+        Page<C> page = trackRepo.findBy(PageRequest.of(pageNumber, pageSize), projection);
+        return page.getContent();
     }
 
     @Override
@@ -63,6 +67,8 @@ public class TrackDaoImpl implements TrackDao {
 
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
-        return null;
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return trackRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher), projection);
+
     }
 }
