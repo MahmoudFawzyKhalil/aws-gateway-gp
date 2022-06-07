@@ -1,14 +1,26 @@
 package eg.gov.iti.jets.service.management.impl;
 
+import eg.gov.iti.jets.persistence.dao.PrivilegeDao;
 import eg.gov.iti.jets.persistence.entity.Privilege;
 import eg.gov.iti.jets.service.management.PrivilegeManagement;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
+@RequiredArgsConstructor
 public class PrivilegeManagementImpl implements PrivilegeManagement {
+    private final PrivilegeDao privilegeDao;
+
     @Override
     public Boolean addPrivilege( Privilege privilege ) {
-        return null;
+        try {
+            privilegeDao.save(privilege);
+            return true;
+        }catch (Exception exception) {
+            throw new RuntimeException("privilege already exists");
+        }
     }
 
     @Override
@@ -18,11 +30,13 @@ public class PrivilegeManagementImpl implements PrivilegeManagement {
 
     @Override
     public List<Privilege> getAllPrivilege() {
-        return null;
+        return privilegeDao.findAll();
     }
 
     @Override
     public Privilege getPrivilegeById( int id ) {
-        return null;
+       return privilegeDao.findById(id).orElseThrow(
+               ()-> new RuntimeException("Not found privilege with id")
+       );
     }
 }
