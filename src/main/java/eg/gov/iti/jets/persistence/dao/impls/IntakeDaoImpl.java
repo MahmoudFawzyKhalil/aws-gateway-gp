@@ -25,23 +25,20 @@ public class IntakeDaoImpl implements IntakeDao {
 
     @Override
     public Intake update(Intake entity) {
+        if (entity == null || entity.getId() == null) {
+            throw new NullPointerException("entity or id can't be null");
+        }
         return intakeRepo.save(entity);
     }
 
     @Override
-    public Optional<Intake> findById(Integer integer) {
-            return intakeRepo.findById(integer);
-    }
+    public Optional<Intake> findById(Integer id) {return intakeRepo.findById(id);}
 
     @Override
-    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
-        return Optional.empty();
-    }
+    public <C> Optional<C> findById(Integer id, Class<C> projection) {return intakeRepo.findById(id, projection);}
 
     @Override
-    public List<Intake> findAll() {
-        return intakeRepo.findAll();
-    }
+    public List<Intake> findAll() {return intakeRepo.findAll();}
 
     @Override
     public List<Intake> findAll(int pageNumber, int pageSize) {
@@ -51,7 +48,8 @@ public class IntakeDaoImpl implements IntakeDao {
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        return null;
+        Page<C> page = intakeRepo.findBy(PageRequest.of(pageNumber, pageSize),projection);
+        return page.getContent();
     }
 
     @Override
@@ -62,6 +60,7 @@ public class IntakeDaoImpl implements IntakeDao {
 
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
-        return null;
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return intakeRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
 }
