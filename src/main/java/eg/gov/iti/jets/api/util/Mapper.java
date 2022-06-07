@@ -26,6 +26,7 @@ import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramPutRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
+import eg.gov.iti.jets.api.resource.user.RoleType;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
@@ -236,7 +237,12 @@ public class Mapper {
         user.setEmail(userRequest.getEmail());
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
-        user.setRole(userRequest.getRole());
+
+        Role role = new Role();
+        role.setId( userRequest.getRole().getId());
+        role.setName(userRequest.getRole().getName());
+
+        user.setRole(role);
         return user;
     }
 
@@ -247,7 +253,9 @@ public class Mapper {
         response.setEmail(user.getEmail());
         response.setRole(user.getRole().getName());
         response.setPassword(user.getPassword());
-        response.setPrivileges(user.getRole().getPrivileges().stream().map(privilege -> {return privilege.getName().name();}).collect(Collectors.toList()));
+        response.setPrivileges(user.getRole().getPrivileges().stream()
+                .map(privilege -> {return privilege.getName().name();})
+                .collect(Collectors.toList()));
         response.setTracks(null);
         response.setGrantedInstances(null);
         response.setCreatedInstances(null);

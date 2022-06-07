@@ -1,6 +1,6 @@
 package eg.gov.iti.jets.api.resource.user;
 
-import eg.gov.iti.jets.persistence.entity.Track;
+
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import lombok.Data;
 
@@ -24,7 +24,7 @@ public class UserResponse {
 
     private List<String> privileges;
 
-    private List<Track> tracks;
+    private List<TrackType> tracks;
 
     private List<Instance> createdInstances = new ArrayList<>();
 

@@ -1,6 +1,5 @@
 package eg.gov.iti.jets.api.resource.user;
 
-import eg.gov.iti.jets.persistence.entity.Role;
 import lombok.Data;
 
 @Data
@@ -16,7 +15,7 @@ public class UserRequest {
 
  //   private String role ;
 
-    private Role role;
+    private RoleType role;
 //
 //    private List<Track> tracks;
 //
