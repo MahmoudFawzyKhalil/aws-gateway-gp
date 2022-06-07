@@ -70,7 +70,7 @@ public class UserController {
         user.setId(id);
         UserResponseList userResponseList = new UserResponseList();
         userResponseList.setUserResponsesList(
-                userManagement.getFollowingStudents(user)
+                userManagement.getUserStudents(user)
                         .stream().map(mapper::mapFromUserToUserResponse)
                         .collect(Collectors.toList())
         );
@@ -78,28 +78,28 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}/instructors")
-    public UserResponseList getUserInstructor(@PathVariable Integer id) {
+    public UserResponseList getSupervisorInstructors(@PathVariable Integer id) {
         User user = new User();
         user.setId(id);
         UserResponseList userResponseList = new UserResponseList();
-        userResponseList.setUserResponsesList(        userManagement.getFollowingInstructors(user)
+        userResponseList.setUserResponsesList(        userManagement.getSupervisorInstructors(user)
                 .stream().map(mapper::mapFromUserToUserResponse)
                 .collect(Collectors.toList()));
         return userResponseList;
     }
 
-    @GetMapping("/users/{id}/followers")
-    public UserResponseList getAllUserFollowers(@PathVariable Integer id) {
-        User user = new User();
-        user.setId(id);
-        UserResponseList userResponseList = new UserResponseList();
-        userResponseList.setUserResponsesList(
-                userManagement.getAllUserFollowers(user)
-                .stream().map(mapper::mapFromUserToUserResponse)
-                        .collect(Collectors.toList())
-        );
-        return userResponseList;
-    }
+//    @GetMapping("/users/{id}/followers")
+//    public UserResponseList getAllUserFollowers(@PathVariable Integer id) {
+//        User user = new User();
+//        user.setId(id);
+//        UserResponseList userResponseList = new UserResponseList();
+//        userResponseList.setUserResponsesList(
+//                userManagement.getAllUserFollowers(user)
+//                .stream().map(mapper::mapFromUserToUserResponse)
+//                        .collect(Collectors.toList())
+//        );
+//        return userResponseList;
+//    }
 
 //    @GetMapping("/{name}")
 //    public UserResponse getUserByName(@PathVariable String username){
