@@ -57,4 +57,10 @@ public class User {
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "instance_id"}))
     private List<Instance> grantedInstances = new ArrayList<>();
 
+    @ManyToOne
+    private User manager;
+
+    @OneToMany(mappedBy="manager")
+    private List<User> followers;
+
 }

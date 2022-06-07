@@ -1,5 +1,7 @@
 package eg.gov.iti.jets.persistence.dao.impls;
 
+import eg.gov.iti.jets.persistence.entity.Role;
+import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
@@ -10,12 +12,21 @@ import java.util.List;
 import java.util.Optional;
 
 interface UserRepo extends JpaRepository<User, Integer> {
+
     Optional<User> findByUsernameAndPassword(String userName, String password);
 
     <C> Optional<C> findById(Integer id, Class<C> projection);
 
-
     <C> Page<C> findBy(PageRequest pageRequest, Class<C> projection);
 
     <C> List<C> findAllBy(Example<C> example, Class<C> projection);
+
+    List<User> findAllByTracksEquals(Track track);
+
+    List<User> findAllByTracksEqualsAndRoleEquals(Track track, Role role);
+
+    List<User> findAllByRoleEquals(Role role);
+
+    List<User> findAllByManager(User user);
+
 }
