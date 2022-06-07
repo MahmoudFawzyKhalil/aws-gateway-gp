@@ -27,12 +27,20 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User update(User entity) {
+        if (entity == null || entity.getId() == null) {
+            throw new NullPointerException("entity or id can't be null");
+        }
         return userRepo.save(entity);
     }
 
     @Override
     public Optional<User> findById(Integer integer) {
         return userRepo.findById(integer);
+    }
+
+    @Override
+    public <C> Optional<C> findById(Integer id, Class<C> projection) {
+        return userRepo.findById(id, projection);
     }
 
     @Override
@@ -47,9 +55,20 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        Page<C> page = userRepo.findBy(PageRequest.of(pageNumber, pageSize),projection);
+        return page.getContent();
+    }
+
+    @Override
     public List<User> findAllByExample(User example) {
+        return userRepo.findAll(Example.of(example));
+    }
+
+    @Override
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
-        return userRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+        return userRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
 
     @Override

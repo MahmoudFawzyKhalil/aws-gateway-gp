@@ -36,6 +36,11 @@ public class InstanceDaoImpl implements InstanceDao {
     }
 
     @Override
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<Instance> findAll() {
         return instanceRepo.findAll();
     }
@@ -47,8 +52,18 @@ public class InstanceDaoImpl implements InstanceDao {
     }
 
     @Override
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        return null;
+    }
+
+    @Override
     public List<Instance> findAllByExample(Instance example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return instanceRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
+        return null;
     }
 }

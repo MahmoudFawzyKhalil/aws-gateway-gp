@@ -36,6 +36,11 @@ public class SecurityGroupDaoImpl implements SecurityGroupDao {
     }
 
     @Override
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<SecurityGroup> findAll() {
         return securityGroupRepo.findAll();
     }
@@ -47,8 +52,18 @@ public class SecurityGroupDaoImpl implements SecurityGroupDao {
     }
 
     @Override
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        return null;
+    }
+
+    @Override
     public List<SecurityGroup> findAllByExample(SecurityGroup example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return securityGroupRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
+        return null;
     }
 }

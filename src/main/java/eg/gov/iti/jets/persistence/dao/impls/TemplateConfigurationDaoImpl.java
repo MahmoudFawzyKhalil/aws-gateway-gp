@@ -37,6 +37,11 @@ public class TemplateConfigurationDaoImpl implements TemplateConfigurationDao {
     }
 
     @Override
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
+        return Optional.empty();
+    }
+
+    @Override
     public List<TemplateConfiguration> findAll() {
         return templateConfigurationRepo.findAll();
     }
@@ -48,8 +53,18 @@ public class TemplateConfigurationDaoImpl implements TemplateConfigurationDao {
     }
 
     @Override
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        return null;
+    }
+
+    @Override
     public List<TemplateConfiguration> findAllByExample(TemplateConfiguration example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return templateConfigurationRepo.findAll(Example.of(example,caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
+        return null;
     }
 }

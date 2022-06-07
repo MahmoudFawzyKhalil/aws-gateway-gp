@@ -35,11 +35,13 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(name = "user_tracks",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "track_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "track_id"}))
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "track_id"}))*/
+    @ManyToMany(mappedBy = "users" )
+
     private List<Track> tracks;
 
 
