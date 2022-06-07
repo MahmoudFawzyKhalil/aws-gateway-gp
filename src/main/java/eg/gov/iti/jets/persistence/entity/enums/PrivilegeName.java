@@ -5,5 +5,5 @@ public enum PrivilegeName {
     READ,
     VIEW_TEMPLATES,
     MANAGE_TEMPLATE,
-    START_STOP_INSTANCE
+    START_STOP_INSTANCE,
 }

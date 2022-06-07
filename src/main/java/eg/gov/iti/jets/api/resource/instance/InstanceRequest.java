@@ -3,6 +3,8 @@ package eg.gov.iti.jets.api.resource.instance;
 
 import lombok.*;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -12,7 +14,7 @@ public class InstanceRequest {
 
     // template
     private int templateId;
-    private int studentId;
+    private List<Integer> studentId;
     private String keyPair;
     private String instanceName;
 }

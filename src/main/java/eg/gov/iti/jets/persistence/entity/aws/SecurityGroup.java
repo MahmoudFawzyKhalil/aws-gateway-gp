@@ -1,6 +1,9 @@
 package eg.gov.iti.jets.persistence.entity.aws;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
 import java.util.List;
@@ -12,7 +15,6 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class SecurityGroup {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

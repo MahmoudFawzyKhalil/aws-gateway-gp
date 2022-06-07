@@ -51,7 +51,11 @@ public class Instance {
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User creator;
-    @ManyToMany(mappedBy = "grantedInstances")
+    @ManyToMany
+    @JoinTable(name = "user_granted_instances",
+            joinColumns = @JoinColumn(name = "instance_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "instance_id"}))
     private List<User> instanceUsers;
 
     @ManyToOne

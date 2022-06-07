@@ -16,7 +16,6 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "user")
-@ToString
 public class User {
 
     @Id
@@ -48,11 +47,7 @@ public class User {
     @OneToMany(mappedBy = "creator" ,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<Instance> createdInstances = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "user_granted_instances",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "instance_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "instance_id"}))
+    @ManyToMany(mappedBy = "instanceUsers")
     private List<Instance> grantedInstances = new ArrayList<>();
 
 }

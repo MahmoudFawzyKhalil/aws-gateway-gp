@@ -101,9 +101,24 @@ public class Mapper {
         return null;
     }
 
-    public InstanceResponse mapFromInstanceToInstanceResponse( Optional<Instance> instance ) {
+    public InstanceResponse mapFromInstanceToInstanceResponse( Instance instance ) {
         InstanceResponse instanceResponse = new InstanceResponse();
-        instanceResponse.setSuccess( instance.isPresent() );
+        instanceResponse.setInstanceId( instance.getInstanceId() );
+        instanceResponse.setInstanceType( instance.getInstanceType() );
+//        instanceResponse.setInstanceUsers( instance.getInstanceUsers() );
+//        instanceResponse.setCreator( instance.getCreator() );
+        instanceResponse.setId( instance.getId() );
+        instanceResponse.setName( instance.getName() );
+        instanceResponse.setVpcId( instance.getVpcId() );
+        instanceResponse.setSubnetId( instance.getSubnetId() );
+        instanceResponse.setAmiId( instance.getAmiId() );
+//        instanceResponse.setKeyPair( instance.getKeyPair() );
+        instanceResponse.setPlatform( instance.getPlatform() );
+        instanceResponse.setCreationDateTime( instance.getCreationDateTime().toString() );
+        instanceResponse.setDecryptedPassword( instance.getDecryptedPassword() );
+//        instanceResponse.setTemplateConfiguration( instance.getTemplateConfiguration() );
+        instanceResponse.setPublicDnsName( instance.getPublicDnsName() );
+        instanceResponse.setUsername( instance.getUsername() );
         return instanceResponse;
     }
 
@@ -174,6 +189,18 @@ public class Mapper {
 
         InstanceTypeObjectResponse instanceTypeObjectResponse = new InstanceTypeObjectResponse(list);
         return instanceTypeObjectResponse;
+    }
+
+    public Instance mapFromInstanceReqToInstance(InstanceRequest instanceRequest , int creatorId){
+        Instance instance = new Instance();
+        instance.setTemplateConfiguration( mapperUtilForApi.getTemplateConfigurationById( instanceRequest.getTemplateId() ) );
+        System.out.println("temmmpllattee iiidd "+ instanceRequest.getTemplateId());
+        instance.setKeyPair( mapperUtilForApi.getKeyPair( instanceRequest.getKeyPair() , creatorId ) );
+        instance.setName( instanceRequest.getInstanceName() );
+        instance.setInstanceUsers( mapperUtilForApi.getUsers(instanceRequest.getStudentId()) );
+        instance.setCreator( mapperUtilForApi.getUser( creatorId ) );
+        System.out.println(instance);
+        return instance;
     }
 
     public GetPrivilegeResponse privilegeToGetPrivilegeResponse(Privilege privilege){

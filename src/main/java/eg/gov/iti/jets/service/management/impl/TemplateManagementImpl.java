@@ -46,6 +46,7 @@ public class TemplateManagementImpl implements TemplateManagement {
     @Transactional
     @Override
     public Boolean createTemplate(TemplateConfiguration templateConfiguration) {
+
         List<SecurityGroup> saved = new ArrayList<>();
         for ( SecurityGroup s: templateConfiguration.getSecurityGroups() ) {
             List<SecurityGroup> securityGroupDaoAllByExample = securityGroupDao. findAllByExample( s );
@@ -56,6 +57,7 @@ public class TemplateManagementImpl implements TemplateManagement {
             }
         }
         templateConfiguration.setSecurityGroups( saved );
+
         TemplateConfiguration net= templateConfigurationDao.save(templateConfiguration);
         return net != null;
     }

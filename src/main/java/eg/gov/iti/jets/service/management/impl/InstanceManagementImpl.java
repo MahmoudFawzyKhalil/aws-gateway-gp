@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -36,40 +37,63 @@ public class InstanceManagementImpl implements InstanceManagement {
 
 
 
-    @Transactional
-    Instance createInstanceAws(TemplateConfiguration templateConfiguration, String instanceName , KeyPair keyPair ,User user , List<SecurityGroup> sg) {
-        Instance instance = awsGateway.createInstance( templateConfiguration, instanceName, keyPair );
-        instance.setTemplateConfiguration( templateConfiguration );
-        keyPair.setCreator( user ) ;
-        instance.setCreator( user );
-        instance.setSecurityGroups(sg);
-        keyPairDao.save( keyPair );
-        instanceDao.save( instance );
-        return awsGateway.createInstance( templateConfiguration , instanceName, keyPair );
-    }
+
 
     @Transactional
     @Override
-    public Optional<Instance> createInstance( int templateConfigurationId, String instanceName , String keyPair , User user){
-        Optional<TemplateConfiguration> byId = templateConfigurationDao.findById( templateConfigurationId );
-        KeyPair keyPair1 = awsGateway.createKeyPair( keyPair );
-        return Optional.ofNullable( byId.map( templateConfiguration -> createInstanceAws( templateConfiguration, instanceName, keyPair1 ,user ,templateConfiguration.getSecurityGroups()) ).orElse( null ) );
-
+    public Instance createInstance(Instance instance){
+        Instance instance1 = awsGateway.createInstance( instance.getTemplateConfiguration(), instance.getName(), instance.getKeyPair() );
+        instance1.setInstanceUsers( instance.getInstanceUsers() );
+        instance1.setCreator( instance.getCreator() );
+        instance1.setTemplateConfiguration( instance.getTemplateConfiguration() );
+        instance1.setCreationDateTime( LocalDateTime.now() );
+        instance1.setState( "Running" );
+        Instance saved = instanceDao.save( instance1 );
+        return saved;
     }
 
     @Override
-    public Boolean startInstance( String instanceId ) {
-        return null;
+    public String startInstance( String instanceId ) {
+        String s = awsGateway.startInstance( instanceId );
+        Instance instance = new Instance();
+        instance.setInstanceId( instanceId );
+        Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
+        instance1.setState( "Running" );
+        instanceDao.update( instance1 );
+        return s;
     }
 
     @Override
-    public Boolean stopInstance( String instanceId ) {
-        return null;
+    public String stopInstance( String instanceId ) {
+        String s = awsGateway.stopInstance( instanceId );
+        Instance instance = new Instance();
+        instance.setInstanceId( instanceId );
+        Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
+        instance1.setState( "Stopped" );
+        instanceDao.update( instance1 );
+        return s;
     }
 
     @Override
-    public Boolean deleteInstance( String instanceId ) {
-        return null;
+    public String deleteInstance( String instanceId ) {
+        String s = awsGateway.terminateInstance( instanceId );
+        Instance instance = new Instance();
+        instance.setInstanceId( instanceId );
+        Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
+        instance1.setState( "Terminated" );
+        instanceDao.update( instance1 );
+        return s;
+    }
+
+    @Override
+    public Instance instanceDetails( String instanceId ) {
+        Instance instance = new Instance();
+        instance.setInstanceId( instanceId );
+        Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
+        awsGateway.updateInstanceInfoFromAws( instance1 );
+
+        // TODO: 6/7/2022 void where is the update
+        return instance1;
     }
 
 }
