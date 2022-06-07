@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.persistence.dao.impls;
+package eg.gov.iti.jets.persistence.dao.impls.aws;
 
 import eg.gov.iti.jets.persistence.dao.TemplateConfigurationDao;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
@@ -28,12 +28,20 @@ public class TemplateConfigurationDaoImpl implements TemplateConfigurationDao {
 
     @Override
     public TemplateConfiguration update(TemplateConfiguration templateConfiguration) {
+        if(templateConfiguration == null || templateConfiguration.getId() == null){
+            throw new NullPointerException("template configuration or can't be null");
+        }
         return templateConfigurationRepo.save(templateConfiguration);
     }
 
     @Override
     public Optional<TemplateConfiguration> findById(Integer id) {
         return templateConfigurationRepo.findById(id);
+    }
+
+    @Override
+    public <C> Optional<C> findById(Integer id, Class<C> projection) {
+        return templateConfigurationRepo.findById(id,projection);
     }
 
     @Override
@@ -48,8 +56,19 @@ public class TemplateConfigurationDaoImpl implements TemplateConfigurationDao {
     }
 
     @Override
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        return templateConfigurationRepo.findBy(PageRequest.of(pageNumber,pageSize),projection).getContent();
+    }
+
+    @Override
     public List<TemplateConfiguration> findAllByExample(TemplateConfiguration example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return templateConfigurationRepo.findAll(Example.of(example,caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return templateConfigurationRepo.findAllBy(Example.of(example,caseInsensitiveExampleMatcher),projection);
     }
 }

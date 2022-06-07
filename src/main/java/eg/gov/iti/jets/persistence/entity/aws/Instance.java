@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -38,6 +39,8 @@ public class Instance {
     private String subnetId;
     @Column(name = "vpc_id")
     private String vpcId;
+    @Column(name = "platform")
+    private String platform; // windows or linux
     @Column(name = "instance_password")
     private String decryptedPassword;
     @Column(name = "instance_username")
@@ -52,10 +55,8 @@ public class Instance {
     private User creator;
     @ManyToMany(mappedBy = "grantedInstances")
     private List<User> instanceUsers;
-    @ManyToMany
-    @JoinTable(name = "instance_security_groups",
-            joinColumns = @JoinColumn(name = "instance_id"),
-            inverseJoinColumns = @JoinColumn(name = "security_group_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"instance_id", "security_group_id"}))
-    private List<SecurityGroup> securityGroups;
+
+    @ManyToOne
+    @JoinColumn(name = "template_configuration_id", nullable = false)
+    TemplateConfiguration templateConfiguration;
 }

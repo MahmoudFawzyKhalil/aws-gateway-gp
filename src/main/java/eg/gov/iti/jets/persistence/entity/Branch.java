@@ -35,6 +35,4 @@ public class Branch {
 
     @OneToMany(mappedBy = "branch")
     private List<TrainingProgram> trainingPrograms = new ArrayList<>();
-
-
 }

@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.persistence.dao.impls;
+package eg.gov.iti.jets.persistence.dao.impls.aws;
 
 import eg.gov.iti.jets.persistence.dao.InboundRuleDao;
 import eg.gov.iti.jets.persistence.entity.aws.InboundRule;
@@ -25,12 +25,20 @@ public class InboundRuleDaoImpl implements InboundRuleDao {
 
     @Override
     public InboundRule update(InboundRule entity) {
+        if (entity == null || entity.getId() == null) {
+            throw new NullPointerException("entity or id can't be null");
+        }
         return inboundRuleRepo.save(entity);
     }
 
     @Override
     public Optional<InboundRule> findById(Integer id) {
         return inboundRuleRepo.findById(id);
+    }
+
+    @Override
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
+        return inboundRuleRepo.findById(integer,projection);
     }
 
     @Override
@@ -45,8 +53,20 @@ public class InboundRuleDaoImpl implements InboundRuleDao {
     }
 
     @Override
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        Page<C> page = inboundRuleRepo.findBy(PageRequest.of(pageNumber, pageSize),projection);
+        return page.getContent();
+    }
+
+    @Override
     public List<InboundRule> findAllByExample(InboundRule example) {
         ExampleMatcher caseInsensitiveExampleMatcher=ExampleMatcher.matchingAll().withIgnoreCase();
         return inboundRuleRepo.findAll(Example.of(example,caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return inboundRuleRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
 }

@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.persistence.dao.impls;
+package eg.gov.iti.jets.persistence.dao.impls.aws;
 
 import eg.gov.iti.jets.persistence.dao.AmiDao;
 import eg.gov.iti.jets.persistence.entity.aws.Ami;
@@ -12,11 +12,11 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public class AmiDaoIml implements AmiDao {
+public class AmiDaoImpl implements AmiDao {
 
     private final AmiRepo amiRepo;
 
-    public AmiDaoIml(AmiRepo amiRepo) {
+    public AmiDaoImpl(AmiRepo amiRepo) {
         this.amiRepo = amiRepo;
     }
 
@@ -27,12 +27,20 @@ public class AmiDaoIml implements AmiDao {
 
     @Override
     public Ami update(Ami entity) {
+        if (entity == null || entity.getId() == null) {
+            throw new NullPointerException("Ami Entity or id can't be null");
+        }
         return amiRepo.save(entity);
     }
 
     @Override
     public Optional<Ami> findById(Integer integer) {
         return amiRepo.findById(integer);
+    }
+
+    @Override
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
+        return amiRepo.findById(integer, projection);
     }
 
     @Override
@@ -47,8 +55,20 @@ public class AmiDaoIml implements AmiDao {
     }
 
     @Override
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        Page<C> page = amiRepo.findBy(PageRequest.of(pageNumber, pageSize), projection);
+        return page.getContent();
+    }
+
+    @Override
     public List<Ami> findAllByExample(Ami example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return amiRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return amiRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher), projection);
     }
 }

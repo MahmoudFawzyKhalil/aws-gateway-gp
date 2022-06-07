@@ -37,15 +37,17 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(name = "user_tracks",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "track_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "track_id"}))
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "track_id"}))*/
+    @ManyToMany(mappedBy = "users" )
+
     private List<Track> tracks;
 
 
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator" ,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<Instance> createdInstances = new ArrayList<>();
 
     @ManyToMany
@@ -54,5 +56,11 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "instance_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "instance_id"}))
     private List<Instance> grantedInstances = new ArrayList<>();
+
+    @ManyToOne
+    private User manager;
+
+    @OneToMany(mappedBy="manager")
+    private List<User> followers;
 
 }

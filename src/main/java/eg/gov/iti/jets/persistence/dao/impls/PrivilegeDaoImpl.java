@@ -26,12 +26,20 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
 
     @Override
     public Privilege update(Privilege entity) {
+        if (entity == null || entity.getId() == null) {
+            throw new NullPointerException("entity or id can't be null");
+        }
         return privilegeRepo.save(entity);
     }
 
     @Override
     public Optional<Privilege> findById(Integer id) {
         return privilegeRepo.findById(id);
+    }
+
+    @Override
+    public <C> Optional<C> findById(Integer id, Class<C> projection) {
+        return privilegeRepo.findById(id, projection);
     }
 
     @Override
@@ -46,8 +54,20 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
     }
 
     @Override
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        Page<C> page = privilegeRepo.findBy(PageRequest.of(pageNumber, pageSize),projection);
+        return page.getContent();
+    }
+
+    @Override
     public List<Privilege> findAllByExample(Privilege example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return privilegeRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return privilegeRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
 }

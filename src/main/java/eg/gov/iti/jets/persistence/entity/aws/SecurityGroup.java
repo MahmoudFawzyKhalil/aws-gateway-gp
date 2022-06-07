@@ -29,10 +29,10 @@ public class SecurityGroup {
     @Column(name = "vpc",nullable = false)
     private String vpcId;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER , cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "security_group_id")
     private Set<InboundRule> inboundRules;
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(fetch = FetchType.EAGER , cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "security_group_id")
     private Set<OutboundRule> outboundRules;
 }
