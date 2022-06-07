@@ -38,7 +38,7 @@ public class TrainingProgramDaoImpl implements TrainingProgramDao {
 
     @Override
     public <C> Optional<C> findById(Integer integer, Class<C> projection) {
-        return Optional.empty();
+        return trainingProgramRepo.findById(integer, projection);
     }
 
     @Override
@@ -55,7 +55,8 @@ public class TrainingProgramDaoImpl implements TrainingProgramDao {
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        return null;
+        Page<C> page = trainingProgramRepo.findBy(PageRequest.of(pageNumber, pageSize),projection);
+        return page.getContent();
     }
 
     @Override
@@ -66,7 +67,8 @@ public class TrainingProgramDaoImpl implements TrainingProgramDao {
 
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
-        return null;
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return trainingProgramRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
 
 
