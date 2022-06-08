@@ -27,6 +27,9 @@ public class SecurityGroupDaoImpl implements SecurityGroupDao {
 
     @Override
     public SecurityGroup update(SecurityGroup securityGroup) {
+        if(securityGroup == null || securityGroup.getId() == null){
+            throw new NullPointerException("securityGroup or id can't be null");
+        }
         return securityGroupRepo.save(securityGroup);
     }
 
@@ -36,8 +39,8 @@ public class SecurityGroupDaoImpl implements SecurityGroupDao {
     }
 
     @Override
-    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
-        return Optional.empty();
+    public <C> Optional<C> findById(Integer id, Class<C> projection) {
+        return securityGroupRepo.findById(id,projection);
     }
 
     @Override
@@ -48,12 +51,12 @@ public class SecurityGroupDaoImpl implements SecurityGroupDao {
     @Override
     public List<SecurityGroup> findAll(int pageNumber, int pageSize) {
         Page<SecurityGroup> securityGroupPage = securityGroupRepo.findAll(PageRequest.of(pageNumber,pageSize));
-        return securityGroupPage.toList();
+        return securityGroupPage.getContent();
     }
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        return null;
+        return securityGroupRepo.findBy(PageRequest.of(pageNumber,pageSize),projection).getContent();
     }
 
     @Override
@@ -64,6 +67,7 @@ public class SecurityGroupDaoImpl implements SecurityGroupDao {
 
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
-        return null;
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return securityGroupRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
 }

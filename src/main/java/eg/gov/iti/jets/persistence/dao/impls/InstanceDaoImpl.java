@@ -16,8 +16,8 @@ public class InstanceDaoImpl implements InstanceDao {
 
     private InstanceRepo instanceRepo;
 
-    public InstanceDaoImpl(InstanceRepo instanceRepo) {
-        this.instanceRepo = instanceRepo;
+    public InstanceDaoImpl(InstanceRepo instanceRepo){
+        this.instanceRepo=instanceRepo;
     }
 
     @Override
@@ -27,7 +27,10 @@ public class InstanceDaoImpl implements InstanceDao {
 
     @Override
     public Instance update(Instance instance) {
-        return instanceRepo.save(instance);
+        if(instance == null || instance.getId()==null){
+            throw new NullPointerException("instance or id can't be null");
+        }
+        return instanceRepo.save(instance) ;
     }
 
     @Override
@@ -37,7 +40,7 @@ public class InstanceDaoImpl implements InstanceDao {
 
     @Override
     public <C> Optional<C> findById(Integer integer, Class<C> projection) {
-        return Optional.empty();
+        return instanceRepo.findById(integer,projection);
     }
 
     @Override
@@ -47,23 +50,23 @@ public class InstanceDaoImpl implements InstanceDao {
 
     @Override
     public List<Instance> findAll(int pageNumber, int pageSize) {
-        Page<Instance> instancePage = instanceRepo.findAll(PageRequest.of(pageNumber,pageSize));
-        return instancePage.toList();
+        return instanceRepo.findAll(PageRequest.of(pageNumber,pageSize)).getContent();
     }
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        return null;
+        return instanceRepo.findBy(PageRequest.of(pageNumber,pageSize),projection).getContent();
     }
 
     @Override
     public List<Instance> findAllByExample(Instance example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
-        return instanceRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+        return instanceRepo.findAll(Example.of(example,caseInsensitiveExampleMatcher));
     }
 
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
-        return null;
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return instanceRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
 }

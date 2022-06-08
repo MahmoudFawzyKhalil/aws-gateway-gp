@@ -1,6 +1,8 @@
 package eg.gov.iti.jets.persistence.dao.impls;
 
 import eg.gov.iti.jets.persistence.dao.UserDao;
+import eg.gov.iti.jets.persistence.entity.Role;
+import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
 import eg.gov.iti.jets.persistence.entity.User;
 import org.springframework.data.domain.Example;
@@ -74,6 +76,27 @@ public class UserDaoImpl implements UserDao {
     @Override
     public Optional<User> findByUsernameAndPassword(String userName, String password) {
         return userRepo.findByUsernameAndPassword(userName, password);
+    }
+
+
+    @Override
+    public List<User> findAllUsersByTrackAndRole(Track track, Role role) {
+        return userRepo.findAllByTracksEqualsAndRoleEquals(track,role);
+    }
+
+    @Override
+    public List<User> findAllUsersByTrack(Track track) {
+        return userRepo.findAllByTracksEquals(track);
+    }
+
+    @Override
+    public List<User> findAllUsersByRole(Role role) {
+        return userRepo.findAllByRoleEquals(role);
+    }
+
+    @Override
+    public List<User> findAllFollowers(User user) {
+        return userRepo.findAllByManager(user);
     }
 
 

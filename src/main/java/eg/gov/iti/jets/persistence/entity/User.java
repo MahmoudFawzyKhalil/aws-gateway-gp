@@ -50,4 +50,10 @@ public class User {
     @ManyToMany(mappedBy = "instanceUsers")
     private List<Instance> grantedInstances = new ArrayList<>();
 
+    @ManyToOne
+    private User manager;
+
+    @OneToMany(mappedBy="manager")
+    private List<User> followers;
+
 }

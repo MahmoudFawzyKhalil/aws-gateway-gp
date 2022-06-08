@@ -27,6 +27,9 @@ public class AmiDaoIml implements AmiDao {
 
     @Override
     public Ami update(Ami entity) {
+        if (entity == null || entity.getId() == null) {
+            throw new NullPointerException("Ami Entity or id can't be null");
+        }
         return amiRepo.save(entity);
     }
 
@@ -37,7 +40,7 @@ public class AmiDaoIml implements AmiDao {
 
     @Override
     public <C> Optional<C> findById(Integer integer, Class<C> projection) {
-        return Optional.empty();
+        return amiRepo.findById(integer, projection);
     }
 
     @Override
@@ -53,7 +56,8 @@ public class AmiDaoIml implements AmiDao {
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        return null;
+        Page<C> page = amiRepo.findBy(PageRequest.of(pageNumber, pageSize), projection);
+        return page.getContent();
     }
 
     @Override
@@ -64,6 +68,7 @@ public class AmiDaoIml implements AmiDao {
 
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
-        return null;
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return amiRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher), projection);
     }
 }
