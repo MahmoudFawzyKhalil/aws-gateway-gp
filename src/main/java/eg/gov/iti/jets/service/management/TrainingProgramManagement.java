@@ -15,4 +15,6 @@ public interface TrainingProgramManagement {
     public List<TrainingProgram> getAllTrainingPrograms();
 
     public TrainingProgram getTrainingProgramById( int id );
+
+    List<TrainingProgram> getTrainingProgramByBranchId( int branchId );
 }

@@ -1,12 +1,16 @@
 package eg.gov.iti.jets.api.resource.trainingProgram;
 
 import eg.gov.iti.jets.api.util.Mapper;
+import eg.gov.iti.jets.persistence.dao.BranchDao;
+import eg.gov.iti.jets.persistence.entity.Branch;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
 import eg.gov.iti.jets.service.management.TrainingProgramManagement;
 import eg.gov.iti.jets.service.management.impl.TrainingProgramManagementImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -14,6 +18,8 @@ import java.util.stream.Collectors;
 public class TrainingProgramController {
     final TrainingProgramManagement trainingProgramManagement;
     final Mapper mapper;
+    @Autowired
+    BranchDao branchDao;
 
     public TrainingProgramController( TrainingProgramManagementImpl trainingProgramManagement , Mapper mapper){
         this.trainingProgramManagement = trainingProgramManagement;
@@ -57,6 +63,7 @@ public class TrainingProgramController {
 
     @GetMapping("{branchId}/trainingprogram")
     GetTrainingProgramsResponse getTrainingProgramsByBranchId(@PathVariable int branchId){
+        trainingProgramManagement.getTrainingProgramByBranchId(branchId);
         return null;
     }
 
