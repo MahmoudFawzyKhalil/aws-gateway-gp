@@ -198,7 +198,7 @@ public class Mapper {
         System.out.println("temmmpllattee iiidd "+ instanceRequest.getTemplateId());
         instance.setKeyPair( mapperUtilForApi.getKeyPair( instanceRequest.getKeyPair() , creatorId ) );
         instance.setName( instanceRequest.getInstanceName() );
-        instance.setInstanceUsers( mapperUtilForApi.getUsers(instanceRequest.getStudentId()) );
+        instance.setInstanceUsers( mapperUtilForApi.getUsers(instanceRequest.getStudentIds()) );
         instance.setCreator( mapperUtilForApi.getUser( creatorId ) );
         System.out.println(instance);
         return instance;

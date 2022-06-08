@@ -102,7 +102,7 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
         List<User> users = userDaoImpl.findAll();
         List<User> students = new ArrayList<>();
         for(User user : users ){
-            if(user.getRole().getName().equals("STUDENT")){
+            if(user.getRole().getName().equals("ROLE_STUDENT")){
                 students.add(user);
             }
         }
