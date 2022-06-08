@@ -14,7 +14,7 @@ public class InstanceRequest {
 
     // template
     private int templateId;
-    private List<Integer> studentId;
+    private List<Integer> studentIds;
     private String keyPair;
     private String instanceName;
 }

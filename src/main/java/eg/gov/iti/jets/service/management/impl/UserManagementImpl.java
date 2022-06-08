@@ -74,17 +74,13 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
     }
 
     @Override
-    public User createUser( User user ) {
-         roleDaoImpl.save(user.getRole());
-         userDaoImpl.save(user);
-         return user;
+    public User createUser(User user ) {
+         return userDaoImpl.save(user);
     }
 
     @Override
     public User updateUser(User user) {
-        roleDaoImpl.update(user.getRole());
-        userDaoImpl.update(user);
-        return user;
+        return userDaoImpl.update(user);
     }
 
     @Override
@@ -102,7 +98,7 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
         List<User> users = userDaoImpl.findAll();
         List<User> students = new ArrayList<>();
         for(User user : users ){
-            if(user.getRole().getName().equals("STUDENT")){
+            if(user.getRole().getName().equals("ROLE_STUDENT")){
                 students.add(user);
             }
         }
@@ -137,7 +133,7 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
 
     public List<User> getSupervisorInstructors(User user) {
         return userDao.findAllFollowers(user).stream()
-                .filter(user1 -> user1.getRole().getName().equals("INSTRUCTOR")
+                .filter(user1 -> user1.getRole().getName().equals("ROLE_INSTRUCTOR")
                         && !user.getId().equals(user1.getId()))
                 .collect(Collectors.toList());
     }
@@ -150,10 +146,9 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
     public List<User> getUserStudents(User user) {
         List<User> students = new ArrayList<>();
         userDao.findAllFollowers(user).forEach(user1 -> {
-            System.out.println(user1.getRole().getName());
-            if(user1.getRole().getName().equals("INSTRUCTOR"))
+            if(user1.getRole().getName().equals("ROLE_INSTRUCTOR"))
                 students.addAll(getInstructorStudents(user1));
-            else if(user1.getRole().getName().equals("STUDENT"))
+            else if(user1.getRole().getName().equals("ROLE_STUDENT"))
                 students.add(user1);
         });
         return students;
@@ -161,7 +156,7 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
 
     private List<User> getInstructorStudents(User user) {
         return userDao.findAllFollowers(user).stream()
-                .filter(user1 -> user1.getRole().getName().equals("STUDENT")
+                .filter(user1 -> user1.getRole().getName().equals("ROLE_STUDENT")
                         && !user.getId().equals(user1.getId()))
                 .collect(Collectors.toList());
     }

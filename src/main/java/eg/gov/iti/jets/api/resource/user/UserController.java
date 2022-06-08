@@ -19,8 +19,8 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public UserResponse createUser( @RequestBody UserRequest userRequest){
-        User user = mapper.mapFromUserRequestToUser(userRequest);
+    public UserResponse createUser( @RequestBody CreateUserRequest userRequest){
+        User user = mapper.createUserRequestToUser(userRequest);
         return mapper.mapFromUserToUserResponse(userManagement.createUser(user));
     }
 
@@ -32,8 +32,8 @@ public class UserController {
     }
 
     @PutMapping("/users")
-    public UserResponse updateUser (@RequestBody UserRequest userRequest){
-        User user = mapper.mapFromUserRequestToUser(userRequest);
+    public UserResponse updateUser (@RequestBody UpdateUserRequest userRequest){
+        User user = mapper.updateUserRequestToUser(userRequest);
         return mapper.mapFromUserToUserResponse(userManagement.updateUser(user));
     }
 
@@ -87,6 +87,11 @@ public class UserController {
                 .collect(Collectors.toList()));
         return userResponseList;
     }
+
+    /**
+     * todo
+     * assign privilege to user
+     */
 
 //    @GetMapping("/users/{id}/followers")
 //    public UserResponseList getAllUserFollowers(@PathVariable Integer id) {
