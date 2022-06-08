@@ -150,6 +150,7 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
     public List<User> getUserStudents(User user) {
         List<User> students = new ArrayList<>();
         userDao.findAllFollowers(user).forEach(user1 -> {
+            System.out.println(user1.getRole().getName());
             if(user1.getRole().getName().equals("INSTRUCTOR"))
                 students.addAll(getInstructorStudents(user1));
             else if(user1.getRole().getName().equals("STUDENT"))
