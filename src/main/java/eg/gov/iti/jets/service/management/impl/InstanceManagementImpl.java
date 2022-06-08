@@ -119,6 +119,7 @@ public class InstanceManagementImpl implements InstanceManagement {
             }
         }
 //        awsGateway.updateInstancesInfoFromAws( listOfInstance );
+        // TODO: 6/8/2022 mahmlud 
         return list;
     }
 
