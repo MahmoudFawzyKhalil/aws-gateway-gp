@@ -7,6 +7,8 @@ import eg.gov.iti.jets.api.resource.instance.InstanceRequest;
 import eg.gov.iti.jets.api.resource.instance.InstanceResponse;
 import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeObjectResponse;
 import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeResponse;
+import eg.gov.iti.jets.api.resource.intake.GetTrackInIntakeResponse;
+import eg.gov.iti.jets.api.resource.intake.TrackType;
 import eg.gov.iti.jets.api.resource.securityGroup.SecurityGroupResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetResponse;
@@ -92,8 +94,6 @@ public class Mapper {
         intakeResponse.setIntakeDescription(intake.getDescription());
         return intakeResponse;
     }
-
-
 
 
     public Intake mapFromIntakeRequestToIntake( IntakeRequest intakeRequest ) {
@@ -254,6 +254,23 @@ public class Mapper {
             ).collect(Collectors.toList()));
             return getRoleResponse;
     }
+
+    public GetTrackInIntakeResponse intakeToGetTrackInIntakeResponse(Intake intake) {
+        GetTrackInIntakeResponse getTrackInIntakeResponse = new GetTrackInIntakeResponse();
+        getTrackInIntakeResponse.setIntakeName(intake.getName());
+        getTrackInIntakeResponse.setIntakeDescription(intake.getDescription());
+        getTrackInIntakeResponse.setTrainingProgramId(intake.getTrainingProgram().getId());
+        getTrackInIntakeResponse.setTracks(intake.getTracks().stream().map(
+                track -> {
+                    TrackType trackType = new TrackType();
+                    trackType.setId(track.getId());
+                    trackType.setName(track.getName());
+                    return trackType;
+                }
+        ).collect(Collectors.toList()));
+        return getTrackInIntakeResponse;
+    }
+
 
     public Role updateRoleRequestToRole(UpdateRoleRequest updateRoleRequest) {
         Role role = new Role();
