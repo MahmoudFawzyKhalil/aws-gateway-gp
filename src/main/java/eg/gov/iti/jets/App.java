@@ -298,7 +298,7 @@ public class App {
 //                        privilegeViewTemplates,
 //                        privilegeRead ) ) );
 //
-//                Role studentRole = roleDao.save( new Role( null, "ROLE_STUDENT", List.of( privilegeRead ) ) );
+//                Role studentRole = roleDao.save( new Role( null, "ROLE_STUDENT", List.of( privilegeRead,privilegeStartStopInstance) ) );
 //                System.out.println( studentRole.getName() + " " + studentRole.getId() );
 //                User supervisorUser = userDao.save(
 //                        new User( null, "ashrf", "ashrf@g.com",
