@@ -47,7 +47,6 @@ public class Mapper {
     private MapperUtilForApi mapperUtilForApi;
 
 
-
     public Branch mapFromBranchRequestToBranch( BranchRequest branchRequest ) {
         Branch branch = new Branch();
         branch.setAddress(branchRequest.getAddress());
@@ -61,6 +60,12 @@ public class Mapper {
         branchResponse.setAddress(branch.getAddress());
         branchResponse.setName(branch.getName());
         return branchResponse;
+    }
+
+    public List<BranchResponse> mapFromListOfBranchToListOfBranchResponses(List<Branch> branches){
+        List<BranchResponse> branchResponses=
+                branches.stream().map(e -> this.mapFromBranchToBranchResponse(e)).collect(Collectors.toList());
+        return branchResponses;
     }
 
     public TrainingProgram mapFromTrainingProgramRequestToTrainingProgram( TrainingProgramRequest trainingProgramRequest ) {
@@ -81,20 +86,55 @@ public class Mapper {
 
 
     public IntakeResponse mapFromIntakeToIntakeResponse( Intake intake ) {
-        return null;
+        IntakeResponse intakeResponse =  new IntakeResponse();
+        intakeResponse.setTrainingProgramId(intake.getTrainingProgram().getId());
+        intakeResponse.setIntakeName(intake.getName());
+        intakeResponse.setIntakeDescription(intake.getDescription());
+        return intakeResponse;
     }
 
+
+
+
     public Intake mapFromIntakeRequestToIntake( IntakeRequest intakeRequest ) {
-        return null;
+        Intake intake = new Intake();
+        TrainingProgram trainingProgram = mapperUtilForApi.getTrainingProgramById(intakeRequest.getTrainingProgramId());
+        intake.setTrainingProgram(trainingProgram);
+        intake.setId(intakeRequest.getId());
+        intake.setDescription(intakeRequest.getIntakeDescription());
+        intake.setName(intakeRequest.getIntakeName());
+        return intake;
+    }
+
+
+    public List<IntakeResponse> mapFromListOfIntakesToListOfIntakeResponses(List<Intake> intakes){
+        List<IntakeResponse> intakeResponses =
+                intakes.stream().map(e -> this.mapFromIntakeToIntakeResponse(e)).collect(Collectors.toList());
+        return intakeResponses;
     }
 
 
     public Track mapFromTrackRequestToTrack( TrackRequest trackRequest ) {
-        return null;
+        Track track = new Track();
+        Intake intake = mapperUtilForApi.getIntackById(trackRequest.getIntakeId());
+        track.setIntake(intake);
+        track.setId(trackRequest.getId());
+        track.setName(trackRequest.getName());
+        return track;
     }
 
+
     public TrackResponse mapFromTrackToTrackResponse(Track track) {
-        return null;
+        TrackResponse trackResponse =  new TrackResponse();
+        trackResponse.setName(track.getName());
+        trackResponse.setIntakeId(track.getIntake().getId());
+        return trackResponse;
+    }
+
+    public List<TrackResponse> mapFromListOfTracksToListOfTrackResponses(List<Track> tracks){
+        List<TrackResponse> trackResponses =
+                tracks.stream().map(e -> this.mapFromTrackToTrackResponse(e)).collect(Collectors.toList());
+        return trackResponses;
     }
 
     public Instance mapFromInstanceRequestToInstance( IntakeRequest intakeRequest ) {
@@ -259,6 +299,7 @@ public class Mapper {
                 users.stream().map(e -> this.mapFromUserToUserResponse(e)).collect(Collectors.toList());
         return userResponses;
     }
+
 
 
     public TrainingProgram mapFromTrainingProgramPutRequestToTrainingProgram( TrainingProgramPutRequest trainingProgramPutRequest ) {
