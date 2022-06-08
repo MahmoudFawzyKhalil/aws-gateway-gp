@@ -248,8 +248,9 @@ package eg.gov.iti.jets;
         import org.springframework.boot.autoconfigure.SpringBootApplication;
         import org.springframework.context.annotation.Bean;
 
-        import java.time.LocalDateTime;
-        import java.util.List;
+import java.io.BufferedReader;
+import java.time.LocalDateTime;
+import java.util.List;
 
 @SpringBootApplication
 public class App {
@@ -257,13 +258,86 @@ public class App {
 
         SpringApplication.run( App.class, args );
     }
+// Ahmed Ashrf related data
+    //    @Bean
+//    CommandLineRunner commandLineRunner( IntakeDao intakeDao, TrackDao trackDao, TrainingProgramDao trainingProgramDao, BranchDao branchDao, PrivilegeDao privilegeDao, SecurityGroupDao securityGroupDao, RoleDao roleDao, UserDao userDao, KeyPairDao keyPairDao, InstanceDao instanceDao, AmiDao amiDao, TemplateConfigurationDao templateConfigurationDao ) {
+//
+//        return ars -> {
+//            if ( roleDao.findAllByExample( new Role( null, "ROLE_STUDEN", null ) ).isEmpty() ) {
+    //<editor-fold desc="adding privileges for existing roles">
+//          Privilege privilegeViewInstance =privilegeDao.findAllByExample(new Privilege( null, PrivilegeName.VIEW_INSTANCE, null )).get(0);
+//          privilegeViewInstance = privilegeDao.save( privilegeViewInstance );
+//          Role role = roleDao.findAllByExample(new Role(null,"ROLE_SUPERVISOR",null)).get(0);
+//          Role role2 = roleDao.findAllByExample(new Role(null,"ROLE_INSTRUCTOR",null)).get(0);
+//          System.out.println(role.getPrivileges());
+//          role.getPrivileges().add(privilegeViewInstance);
+//          role2.getPrivileges().add(privilegeViewInstance);
+//          role = roleDao.save(role);
+//          role2 = roleDao.save(role2);
+//          role.getPrivileges().stream().map(privilege -> privilege.getName().name()).forEach(System.out::println);
+//          role2.getPrivileges().stream().map(privilege -> privilege.getName().name()).forEach(System.out::println);
+    //</editor-fold>
+//                Privilege privilegeRead = new Privilege( null, PrivilegeName.READ, null );
+//                Privilege privilegeManageTemplate = new Privilege( null, PrivilegeName.MANAGE_TEMPLATE, null );
+//                Privilege privilegeCreateTerminateInstance = new Privilege( null, PrivilegeName.CREATE_TERMINATE_INSTANCE, null );
+//                Privilege privilegeStartStopInstance = new Privilege( null, PrivilegeName.START_STOP_INSTANCE, null );
+//                Privilege privilegeViewTemplates = new Privilege( null, PrivilegeName.VIEW_TEMPLATES, null );
+//                privilegeRead = privilegeDao.save( privilegeRead );
+//                privilegeViewTemplates = privilegeDao.save( privilegeViewTemplates );
+//                privilegeStartStopInstance = privilegeDao.save( privilegeStartStopInstance );
+//                privilegeCreateTerminateInstance = privilegeDao.save( privilegeCreateTerminateInstance );
+//                privilegeManageTemplate = privilegeDao.save( privilegeManageTemplate );
+//                Role supervisorRole = roleDao.save( new Role( null, "ROLE_SUPERVISOR", List.of( privilegeManageTemplate,
+//                        privilegeCreateTerminateInstance,
+//                        privilegeStartStopInstance,
+//                        privilegeViewTemplates,
+//                        privilegeRead ) ) );
+//
+//                Role instructorRole = roleDao.save( new Role( null, "ROLE_INSTRUCTOR", List.of( privilegeCreateTerminateInstance,
+//                        privilegeStartStopInstance,
+//                        privilegeViewTemplates,
+//                        privilegeRead ) ) );
+//
+//                Role studentRole = roleDao.save( new Role( null, "ROLE_STUDENT", List.of( privilegeRead ) ) );
+//                System.out.println( studentRole.getName() + " " + studentRole.getId() );
+//                User supervisorUser = userDao.save(
+//                        new User( null, "ashrf", "ashrf@g.com",
+//                                "1234", supervisorRole, null, null, null ) );
+//                User adminUser = userDao.save(
+//                        new User( null, "marwa", "m@m.com",
+//                                "1234", instructorRole, null, null, null ) );
+//                User studentUser = userDao.save(
+//                        new User( null, "hesham", "h@h.com",
+//                                "1234", studentRole, null, null, null ) );
+//                User studentUser2 = userDao.save(
+//                        new User( null, "hossam", "ho@h.com",
+//                                "1234", studentRole, null, null, null ) );
 
+//            }
+
+//
+//        }
+//    }
+//
+//}
 //    @Bean
 //    CommandLineRunner commandLineRunner( IntakeDao intakeDao, TrackDao trackDao, TrainingProgramDao trainingProgramDao, BranchDao branchDao, PrivilegeDao privilegeDao, SecurityGroupDao securityGroupDao, RoleDao roleDao, UserDao userDao, KeyPairDao keyPairDao, InstanceDao instanceDao, AmiDao amiDao, TemplateConfigurationDao templateConfigurationDao ) {
 //
 //        return ars -> {
-//            if ( roleDao.findAllByExample( new Role( null, "STUDENT", null ) ).isEmpty() ) {
-//
+//            if ( roleDao.findAllByExample( new Role( null, "ROLE_STUDEN", null ) ).isEmpty() ) {
+//                //<editor-fold desc="adding privileges for existing roles">
+//                Privilege privilegeViewInstance =privilegeDao.findAllByExample(new Privilege( null, PrivilegeName.VIEW_INSTANCE, null )).get(0);
+//                privilegeViewInstance = privilegeDao.save( privilegeViewInstance );
+//                Role role = roleDao.findAllByExample(new Role(null,"ROLE_SUPERVISOR",null)).get(0);
+//                Role role2 = roleDao.findAllByExample(new Role(null,"ROLE_INSTRUCTOR",null)).get(0);
+//        System.out.println(role.getPrivileges());
+//        role.getPrivileges().add(privilegeViewInstance);
+//        role2.getPrivileges().add(privilegeViewInstance);
+//        role = roleDao.save(role);
+//        role2 = roleDao.save(role2);
+//        role.getPrivileges().stream().map(privilege -> privilege.getName().name()).forEach(System.out::println);
+//        role2.getPrivileges().stream().map(privilege -> privilege.getName().name()).forEach(System.out::println);
+                //</editor-fold>
 //                Privilege privilegeRead = new Privilege( null, PrivilegeName.READ, null );
 //                Privilege privilegeManageTemplate = new Privilege( null, PrivilegeName.MANAGE_TEMPLATE, null );
 //                Privilege privilegeCreateTerminateInstance = new Privilege( null, PrivilegeName.CREATE_TERMINATE_INSTANCE, null );
@@ -326,10 +400,11 @@ public class App {
 //            branches.forEach( b -> System.out.println( b.getName() ) );
 //            System.out.println( "Finished Inserting" );
 //
-//        };
+//        }
 //    }
-
+//
 }
+
 
 //class DummyData {
 //
