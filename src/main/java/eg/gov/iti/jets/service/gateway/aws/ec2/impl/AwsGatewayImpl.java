@@ -200,13 +200,17 @@ class AwsGatewayImpl implements AwsGateway {
 
     private Instance mapCreateInstanceProperties(RunInstancesResponse runInstancesResponse, KeyPair keyPair, Tag tag) {
         Instance instance = new Instance();
-        instance.setInstanceId(runInstancesResponse.instances().get(0).instanceId());
+        var awsInstance = runInstancesResponse.instances().get( 0 );
+        instance.setInstanceId( awsInstance.instanceId());
         instance.setKeyPair(keyPair);
-        instance.setInstanceType(runInstancesResponse.instances().get(0).instanceTypeAsString());
-        instance.setVpcId(runInstancesResponse.instances().get(0).vpcId());
-        instance.setAmiId(runInstancesResponse.instances().get(0).imageId());
+        instance.setInstanceType( awsInstance.instanceTypeAsString());
+        instance.setVpcId( awsInstance.vpcId());
+        instance.setAmiId( awsInstance.imageId());
+        Ami ami = describeAmi( instance.getAmiId() ).get();
         instance.setName(tag.value());
-        instance.setSubnetId(runInstancesResponse.instances().get(0).subnetId());
+        instance.setSubnetId( awsInstance.subnetId());
+
+        instance.setPlatform( ami.getPlatform() );
         return instance;
     }
 
@@ -286,8 +290,9 @@ class AwsGatewayImpl implements AwsGateway {
         ami.setImageId(image.imageId());
         ami.setDescription(image.description());
         ami.setArchitecture(image.architectureAsString());
-        ami.setPlatform(image.platformAsString());
+        ami.setPlatform(image.platformDetails());
         ami.setImageName(image.name());
+
         ami.setImageOwnerAlias(image.imageOwnerAlias());
         return Optional.of(ami);
     }
