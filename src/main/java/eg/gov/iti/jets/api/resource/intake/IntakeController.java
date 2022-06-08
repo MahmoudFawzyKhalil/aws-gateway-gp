@@ -43,7 +43,7 @@ public class IntakeController {
     @GetMapping("/{id}")
     public IntakeViewResponse getIntakeById(@PathVariable int id){
         Optional<Intake> intake = intakeManagement.getIntakeById(id);
-        return intake.map( value -> new IntakeViewResponse( true, mapper.mapFromIntakeToIntakeResponse(value))).orElseGet( () -> new IntakeViewResponse( false, null ) );
+        return intake.map( value -> new IntakeViewResponse( true, mapper.intakeToGetTrackInIntakeResponse(value))).orElseGet( () -> new IntakeViewResponse( false, null ) );
     }
 
 
