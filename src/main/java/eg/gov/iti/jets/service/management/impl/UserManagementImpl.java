@@ -1,23 +1,14 @@
 package eg.gov.iti.jets.service.management.impl;
 
-import eg.gov.iti.jets.api.resource.user.UserRequest;
-import eg.gov.iti.jets.api.resource.user.UserResponse;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.dao.RoleDao;
-import eg.gov.iti.jets.persistence.dao.impls.RoleDaoImpl;
-import eg.gov.iti.jets.persistence.dao.impls.UserDaoImpl;
 import eg.gov.iti.jets.persistence.dao.UserDao;
-import eg.gov.iti.jets.persistence.dao.UserDao;
-import eg.gov.iti.jets.persistence.entity.Privilege;
-import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.UserManagement;
 //import org.springframework.security.core.userdetails.User;
 import eg.gov.iti.jets.service.model.UserAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -143,5 +134,36 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
         }
         return null;
     }
+
+    public List<User> getSupervisorInstructors(User user) {
+        return userDao.findAllFollowers(user).stream()
+                .filter(user1 -> user1.getRole().getName().equals("INSTRUCTOR")
+                        && !user.getId().equals(user1.getId()))
+                .collect(Collectors.toList());
+    }
+
+    /**
+     * return students under only instructor & supervisor
+     * @param user
+     * @return
+     */
+    public List<User> getUserStudents(User user) {
+        List<User> students = new ArrayList<>();
+        userDao.findAllFollowers(user).forEach(user1 -> {
+            if(user1.getRole().getName().equals("INSTRUCTOR"))
+                students.addAll(getInstructorStudents(user1));
+            else if(user1.getRole().getName().equals("STUDENT"))
+                students.add(user1);
+        });
+        return students;
+    }
+
+    private List<User> getInstructorStudents(User user) {
+        return userDao.findAllFollowers(user).stream()
+                .filter(user1 -> user1.getRole().getName().equals("STUDENT")
+                        && !user.getId().equals(user1.getId()))
+                .collect(Collectors.toList());
+    }
+
 
 }
