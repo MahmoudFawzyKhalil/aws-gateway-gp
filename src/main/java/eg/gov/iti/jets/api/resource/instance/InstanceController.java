@@ -59,7 +59,7 @@ public class InstanceController {
 
     @DeleteMapping("delete/{instanceId}")
     SuccessResponse deleteInstance (@PathVariable String instanceId){
-        String s = instanceManagement.stopInstance( instanceId );
+        String s = instanceManagement.deleteInstance( instanceId );
         return new SuccessResponse(true);
     }
 

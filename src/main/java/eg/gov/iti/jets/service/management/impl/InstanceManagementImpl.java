@@ -86,8 +86,10 @@ public class InstanceManagementImpl implements InstanceManagement {
         Instance instance = new Instance();
         instance.setInstanceId( instanceId );
         Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
-        instance1.setState( s.substring( 0,s.length()-1 ) );
+        instance1.setState( "terminated" );
+        System.out.println(instance1);
         instanceDao.update( instance1 );
+//        instanceDao.( instance1 );
         return s;
     }
 
@@ -106,13 +108,18 @@ public class InstanceManagementImpl implements InstanceManagement {
 
         Optional<User> user = userDao.findById( id );
         List<Instance>  listOfInstance = new ArrayList<>();
-        System.out.println(user);
+        List<Instance> list = new ArrayList<>();
         if(user.isPresent()){
             listOfInstance = user.get().getGrantedInstances();
+            for ( Instance instance : listOfInstance ) {
+                String state = instance.getState();
+                if ( !state.equals( "terminated" ) ){
+                    list.add( instance );
+                }
+            }
         }
 //        awsGateway.updateInstancesInfoFromAws( listOfInstance );
-
-        return listOfInstance;
+        return list;
     }
 
 }
