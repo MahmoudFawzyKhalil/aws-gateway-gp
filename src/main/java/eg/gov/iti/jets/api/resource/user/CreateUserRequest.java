@@ -4,8 +4,8 @@ import eg.gov.iti.jets.persistence.entity.Role;
 import lombok.Data;
 
 @Data
-public class UserRequest {
-    private Integer id;
+public class CreateUserRequest {
+//    private Integer id;
     private String username;
     private String email;
     private String password;

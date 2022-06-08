@@ -10,7 +10,6 @@ import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeResponse;
 import eg.gov.iti.jets.api.resource.securityGroup.SecurityGroupResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetResponse;
-import eg.gov.iti.jets.api.resource.template.*;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
 import eg.gov.iti.jets.api.resource.privilege.AddPrivilegeRequest;
@@ -26,19 +25,18 @@ import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramPutRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
+import eg.gov.iti.jets.api.resource.user.UpdateUserRequest;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import eg.gov.iti.jets.api.resource.user.UserRequest;
+import eg.gov.iti.jets.api.resource.user.CreateUserRequest;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
-import eg.gov.iti.jets.persistence.entity.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -298,13 +296,22 @@ public class Mapper {
         return role;
     }
 
-    public User mapFromUserRequestToUser(UserRequest userRequest) {
+    public User createUserRequestToUser(CreateUserRequest userRequest) {
         User user = new User();
-        user.setId(userRequest.getId());
         user.setEmail(userRequest.getEmail());
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
         user.setRole(userRequest.getRole());
+        return user;
+    }
+
+    public User updateUserRequestToUser(UpdateUserRequest updateUserRequest) {
+        User user = new User();
+        user.setId(updateUserRequest.getId());
+        user.setEmail(updateUserRequest.getEmail());
+        user.setUsername(updateUserRequest.getUsername());
+        user.setPassword(updateUserRequest.getPassword());
+        user.setRole(updateUserRequest.getRole());
         return user;
     }
 
@@ -315,14 +322,12 @@ public class Mapper {
         response.setEmail(user.getEmail());
         response.setRole(user.getRole().getName());
         response.setPassword(user.getPassword());
-        response.setPrivileges(user.getRole().getPrivileges().stream().map(privilege -> {return privilege.getName().name();}).collect(Collectors.toList()));
+        response.setPrivileges(user.getRole().getPrivileges().stream().map(privilege -> privilege.getName().name()).collect(Collectors.toList()));
         return response;
     }
 
     public List<UserResponse> mapFromListOfUsersToListOfUserResponses(List<User> users){
-        List<UserResponse> userResponses =
-                users.stream().map(e -> this.mapFromUserToUserResponse(e)).collect(Collectors.toList());
-        return userResponses;
+        return users.stream().map(this::mapFromUserToUserResponse).collect(Collectors.toList());
     }
 
 
