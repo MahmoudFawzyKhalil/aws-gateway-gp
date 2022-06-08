@@ -13,7 +13,8 @@ import lombok.Setter;
 
 public class IntakeViewResponse {
     private Boolean success;
-    private IntakeResponse intakeResponse;
+//    private IntakeResponse intakeResponse;
+    private GetTrackInIntakeResponse getTrackInIntakeResponse;
 }
 
 
