@@ -55,9 +55,9 @@ public class TrainingProgramManagementImpl implements TrainingProgramManagement 
         Optional<Branch> branch = branchDao.findById( branchId );
         TrainingProgram trainingProgram = new TrainingProgram();
         List<TrainingProgram> allByExample = new ArrayList<>();
-        branch.ifPresent( branch1 ->  {trainingProgram.setBranch( branch1 );
-            allByExample = trainingProgramDao.findAllByExample( trainingProgram );
-        } );
+//        branch.ifPresent( branch1 ->  {trainingProgram.setBranch( branch1 );
+//            allByExample = trainingProgramDao.findAllByExample( trainingProgram );
+//        } );
         return allByExample;
     }
 }
