@@ -55,33 +55,38 @@ public class InstanceManagementImpl implements InstanceManagement {
 
     @Override
     public String startInstance( String instanceId ) {
-        String s = awsGateway.startInstance( instanceId );
+        String s = awsGateway.startInstance( instanceId ).split( "," )[1].split( "=" )[1];;
+
         Instance instance = new Instance();
         instance.setInstanceId( instanceId );
         Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
-        instance1.setState( "Running" );
+        instance1.setState( s.substring( 0,s.length()-1 ) );
+
         instanceDao.update( instance1 );
         return s;
     }
 
     @Override
     public String stopInstance( String instanceId ) {
-        String s = awsGateway.stopInstance( instanceId );
+        String s = awsGateway.stopInstance( instanceId ).split( "," )[1].split( "=" )[1];
+
         Instance instance = new Instance();
         instance.setInstanceId( instanceId );
         Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
-        instance1.setState( "Stopped" );
+        instance1.setState( s.substring( 0,s.length()-1 ) );
+
         instanceDao.update( instance1 );
         return s;
     }
 
     @Override
     public String deleteInstance( String instanceId ) {
-        String s = awsGateway.terminateInstance( instanceId );
+        String s = awsGateway.terminateInstance( instanceId ).split( "," )[1].split( "=" )[1];
+
         Instance instance = new Instance();
         instance.setInstanceId( instanceId );
         Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
-        instance1.setState( "Terminated" );
+        instance1.setState( s.substring( 0,s.length()-1 ) );
         instanceDao.update( instance1 );
         return s;
     }
@@ -92,7 +97,6 @@ public class InstanceManagementImpl implements InstanceManagement {
         instance.setInstanceId( instanceId );
         Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
         awsGateway.updateInstanceInfoFromAws( instance1 );
-
         // TODO: 6/7/2022 void where is the update
         return instance1;
     }
@@ -102,10 +106,11 @@ public class InstanceManagementImpl implements InstanceManagement {
 
         Optional<User> user = userDao.findById( id );
         List<Instance>  listOfInstance = new ArrayList<>();
+        System.out.println(user);
         if(user.isPresent()){
             listOfInstance = user.get().getGrantedInstances();
         }
-        awsGateway.updateInstancesInfoFromAws( listOfInstance );
+//        awsGateway.updateInstancesInfoFromAws( listOfInstance );
 
         return listOfInstance;
     }

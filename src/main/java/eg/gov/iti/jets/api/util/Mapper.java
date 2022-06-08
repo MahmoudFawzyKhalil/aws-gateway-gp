@@ -119,6 +119,7 @@ public class Mapper {
 //        instanceResponse.setTemplateConfiguration( instance.getTemplateConfiguration() );
         instanceResponse.setPublicDnsName( instance.getPublicDnsName() );
         instanceResponse.setUsername( instance.getUsername() );
+        instanceResponse.setState( instance.getState() );
         return instanceResponse;
     }
 
