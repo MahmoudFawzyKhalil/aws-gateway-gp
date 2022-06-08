@@ -10,6 +10,8 @@ import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
@@ -35,6 +37,7 @@ public class InstanceController {
 
 
     @PostMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_INSTANCE.name())")
     SuccessResponse createInstance( @RequestBody  InstanceRequest instanceRequest , @AuthenticationPrincipal UserAdapter userDetails){
         Integer id = userDetails.getId();
         Instance instance1 = mapper.mapFromInstanceReqToInstance( instanceRequest, id );
@@ -42,7 +45,8 @@ public class InstanceController {
         return new SuccessResponse(instance != null);
     }
 
-    @GetMapping("start/{instanceId}")
+    @GetMapping("/start/{instanceId}")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_INSTANCE.name())")
     SuccessResponse startInstance (@PathVariable String instanceId){
         String s = instanceManagement.startInstance( instanceId );
         System.out.println(s);
@@ -51,19 +55,22 @@ public class InstanceController {
 
 
     @GetMapping("stop/{instanceId}")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_INSTANCE.name())")
     SuccessResponse stopInstance (@PathVariable String instanceId){
         String s = instanceManagement.stopInstance( instanceId );
         return new SuccessResponse(true);
     }
 
 
-    @DeleteMapping("delete/{instanceId}")
+    @DeleteMapping("/delete/{instanceId}")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_INSTANCE.name())")
     SuccessResponse deleteInstance (@PathVariable String instanceId){
         String s = instanceManagement.deleteInstance( instanceId );
         return new SuccessResponse(true);
     }
 
     @GetMapping("{instanceId}")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTANCE.name())")
     InstanceResponse getDetails (@PathVariable String instanceId){
         Instance instance = instanceManagement.instanceDetails( instanceId );
 
@@ -71,6 +78,7 @@ public class InstanceController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTANCE.name())")
     InstanceObjectResponse getInstances ( @AuthenticationPrincipal UserAdapter userDetails ){
         Integer id = userDetails.getId();
         List<InstanceResponse> list = new ArrayList<>();
