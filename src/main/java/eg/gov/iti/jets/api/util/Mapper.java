@@ -148,8 +148,8 @@ public class Mapper {
         templateConfiguration.setCreator( mapperUtilForApi.getUser( id ) );
         templateConfiguration.setSubnetId( templateRequest.getSubnetId() );
         templateConfiguration.setInstanceType( templateRequest.getInstanceType() );
-        templateConfiguration.setInstructors( null );
         templateConfiguration.setSecurityGroups( mapperUtilForApi.getSecurityGroups( templateRequest.getSecurityGroups() ) );
+        templateConfiguration.setInstructors( mapperUtilForApi.getUsers(templateRequest.getInstructorId()) );
         return templateConfiguration;
     }
 
