@@ -1,11 +1,16 @@
 package eg.gov.iti.jets.api.resource.track;
 
+import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
+import eg.gov.iti.jets.api.resource.intake.IntakeResponseList;
+import eg.gov.iti.jets.api.resource.intake.IntakeViewResponse;
 import eg.gov.iti.jets.api.util.Mapper;
+import eg.gov.iti.jets.persistence.entity.Intake;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.service.management.impl.TrackManagementImpl;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -20,34 +25,46 @@ public class TrackController {
         this.mapper = mapper;
     }
 
-
-    @PostMapping
-    public Boolean createTrack( @RequestBody TrackRequest trackRequest){
-        return trackManagement.create( mapper.mapFromTrackRequestToTrack( trackRequest )  );
+    @GetMapping
+    public TrackResponseList getTracks(){
+        List<Track> tracks = trackManagement.getAllTracks();
+        List<TrackResponse> trackResponses =  mapper.mapFromListOfTracksToListOfTrackResponses(tracks);
+        TrackResponseList trackResponseList = new TrackResponseList();
+        for(TrackResponse response : trackResponses){
+            trackResponseList.getTrackResponsesList().add(response);
+        }
+        return trackResponseList;
     }
 
-    @PutMapping
-    public TrackResponse updateTrack (@RequestBody TrackRequest trackRequest){
-        Track track = trackManagement.update( mapper.mapFromTrackRequestToTrack( trackRequest ) );
+
+    @GetMapping("/{id}")
+    public TrackViewResponse getTrackById(@PathVariable int id){
+        Optional<Track> track = trackManagement.getTrackById(id);
+        return track.map( value -> new TrackViewResponse( true, mapper.mapFromTrackToTrackResponse(value))).orElseGet( () -> new TrackViewResponse( false, null ) );
+    }
+
+
+    @PostMapping
+    public TrackResponse createTrack( @RequestBody TrackRequest trackRequest){
+        Track track = trackManagement.createTrack( mapper.mapFromTrackRequestToTrack( trackRequest ) );
         return mapper.mapFromTrackToTrackResponse( track );
     }
 
-    @DeleteMapping("/{id}")
-    public Boolean deleteTrack( @PathVariable int id){
-        return trackManagement.delete( id );
+
+    @PutMapping
+    public TrackResponse updateTrack (@RequestBody TrackRequest trackRequest){
+        Track track = trackManagement.updateTrack( mapper.mapFromTrackRequestToTrack( trackRequest ) );
+        return mapper.mapFromTrackToTrackResponse( track );
     }
 
-    @GetMapping("/{id}")
-    public TrackResponse getTrackById(@PathVariable int id){
-        return mapper.mapFromTrackToTrackResponse( trackManagement.getById( id ) );
-    }
+//    @DeleteMapping("/{id}")
+//    public Boolean deleteTrack( @PathVariable int id){
+//        return trackManagement.delete( id );
+//    }
 
-    @GetMapping
-    public List<TrackResponse> getTrainingPrograms(){
-        return trackManagement.getAll()
-                .stream().map( mapper::mapFromTrackToTrackResponse )
-                .collect( Collectors.toList() );
-    }
+
+
+
 
 
 }
