@@ -55,4 +55,9 @@ public class TrainingProgramController {
 
     }
 
+    @GetMapping("{branchId}/trainingprogram")
+    GetTrainingProgramsResponse getTrainingProgramsByBranchId(@PathVariable int branchId){
+        return null;
+    }
+
 }
