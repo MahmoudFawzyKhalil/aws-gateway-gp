@@ -43,6 +43,11 @@ public class App {
                 DummyData.populateStaticDataForIsmailiaBranch(instructorRole,trainingMangerRole,supervisorRole,studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
 
             }
+            System.out.println("------------");
+            for(User user:userDao.getUserByBranchIdAndRoleName(1,"INSTRUCTOR")){
+                System.out.println(user.getUsername());
+            }
+            System.out.println("-------------------------");
                 //            List<Branch> branches = branchDao.findAllByExample(new Branch(null,"smart",null,null,null));
                 //            branches.forEach(b-> System.out.println(b.getName()));
                 //            System.out.println("Finished Inserting");
