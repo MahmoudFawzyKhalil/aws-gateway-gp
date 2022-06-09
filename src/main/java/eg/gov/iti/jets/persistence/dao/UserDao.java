@@ -35,4 +35,6 @@ public interface UserDao extends GenericCrudDao<User, Integer> {
 
     List<User>getUserByTrainingIdAndRoleName(int trainingProgramId,String roleName);
 
+    Optional<User>getBranchManger(int branchId);
+
 }

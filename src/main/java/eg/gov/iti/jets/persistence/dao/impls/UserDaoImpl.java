@@ -119,5 +119,10 @@ public class UserDaoImpl implements UserDao {
         return userRepo.getUserByTrainingIdAndRoleName(trainingProgramId,roleName);
     }
 
+    @Override
+    public Optional<User> getBranchManger(int branchId) {
+        return userRepo.getBranchManger(branchId);
+    }
+
 
 }
