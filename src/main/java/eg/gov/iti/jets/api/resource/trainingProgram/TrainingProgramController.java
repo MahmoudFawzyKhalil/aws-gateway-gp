@@ -9,6 +9,7 @@ import eg.gov.iti.jets.service.management.impl.TrainingProgramManagementImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -18,19 +19,21 @@ import java.util.stream.Collectors;
 public class TrainingProgramController {
     final TrainingProgramManagement trainingProgramManagement;
     final Mapper mapper;
-    @Autowired
+    final
     BranchDao branchDao;
 
-    public TrainingProgramController( TrainingProgramManagementImpl trainingProgramManagement , Mapper mapper){
+    public TrainingProgramController( TrainingProgramManagementImpl trainingProgramManagement, Mapper mapper, BranchDao branchDao ){
         this.trainingProgramManagement = trainingProgramManagement;
         this.mapper = mapper;
+        this.branchDao = branchDao;
     }
 
     @PostMapping
-    public Boolean createTrainingProgram( @RequestBody TrainingProgramRequest trainingProgramRequest){
+    public SuccessResponse createTrainingProgram( @RequestBody TrainingProgramRequest trainingProgramRequest){
 
         TrainingProgram trainingProgram = mapper.mapFromTrainingProgramRequestToTrainingProgram( trainingProgramRequest );
-        return trainingProgramManagement.createTrainingProgram(trainingProgram );
+        Boolean program = trainingProgramManagement.createTrainingProgram( trainingProgram );
+        return new SuccessResponse(program);
     }
 
     @PutMapping
@@ -63,8 +66,12 @@ public class TrainingProgramController {
 
     @GetMapping("{branchId}/trainingprogram")
     GetTrainingProgramsResponse getTrainingProgramsByBranchId(@PathVariable int branchId){
-        trainingProgramManagement.getTrainingProgramByBranchId(branchId);
-        return null;
+        List<TrainingProgram> trainingProgramByBranchId = trainingProgramManagement.getTrainingProgramByBranchId( branchId );
+        List<TrainingProgramResponse> trainingProgramResponse = new ArrayList<>();
+        trainingProgramByBranchId.forEach( trainingProgram -> {
+            trainingProgramResponse.add( mapper.mapFromTrainingProgramToTrainingProgramResponse( trainingProgram ) );
+        } );
+        return new GetTrainingProgramsResponse(trainingProgramResponse);
     }
 
 }

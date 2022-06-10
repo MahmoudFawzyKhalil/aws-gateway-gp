@@ -1,10 +1,7 @@
 package eg.gov.iti.jets.persistence.entity;
 
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,7 +13,6 @@ import java.util.List;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-
 @Entity
 @Table(name = "training_program")
 public class TrainingProgram {

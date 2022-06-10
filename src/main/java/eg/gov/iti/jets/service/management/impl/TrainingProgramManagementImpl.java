@@ -30,7 +30,7 @@ public class TrainingProgramManagementImpl implements TrainingProgramManagement 
 
     @Override
     public TrainingProgram updateTrainingProgram(TrainingProgram trainingProgram) {
-        return trainingProgramDao.save(trainingProgram);
+        return trainingProgramDao.update(trainingProgram);
     }
 
     @Override
@@ -54,11 +54,9 @@ public class TrainingProgramManagementImpl implements TrainingProgramManagement 
     public List<TrainingProgram> getTrainingProgramByBranchId( int branchId ) {
         Optional<Branch> branch = branchDao.findById( branchId );
         TrainingProgram trainingProgram = new TrainingProgram();
-        List<TrainingProgram> allByExample = new ArrayList<>();
-//        branch.ifPresent( branch1 ->  {trainingProgram.setBranch( branch1 );
-//            allByExample = trainingProgramDao.findAllByExample( trainingProgram );
-//        } );
-        return allByExample;
+        branch.ifPresent( trainingProgram::setBranch );
+        List<TrainingProgram> listOfTrainingProgram = trainingProgramDao.findAllByExample( trainingProgram );
+        return listOfTrainingProgram;
     }
 }
 

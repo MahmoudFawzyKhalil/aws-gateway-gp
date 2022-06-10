@@ -1,21 +1,14 @@
 package eg.gov.iti.jets.api.resource.intake;
 
 
-import eg.gov.iti.jets.api.resource.branch.BranchRequest;
-import eg.gov.iti.jets.api.resource.branch.BranchResponse;
-import eg.gov.iti.jets.api.resource.branch.BranchViewResponse;
-import eg.gov.iti.jets.api.resource.user.UserResponse;
-import eg.gov.iti.jets.api.resource.user.UserResponseList;
 import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.persistence.entity.Branch;
 import eg.gov.iti.jets.persistence.entity.Intake;
-import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.impl.IntakeManagementImpl;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/intakes")
@@ -66,6 +59,13 @@ public class IntakeController {
 //        return intakeManagement.delete( id );
 //    }
 
+    @GetMapping("{programId}/intake")
+    public IntakeResponseList getIntakeByProgramId (@PathVariable int programId){
+        List<Intake> listOfIntake = intakeManagement.getIntakeByProgramId(programId);
+        List<IntakeResponse> listOfResponse = new ArrayList<>();
+        listOfIntake.forEach( intake -> listOfResponse.add( mapper.mapFromIntakeToIntakeResponse( intake ) ) );
+        return new IntakeResponseList(listOfResponse);
+    }
 
 
 

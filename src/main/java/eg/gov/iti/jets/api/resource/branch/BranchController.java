@@ -42,9 +42,13 @@ public class BranchController {
     }
 
     @GetMapping("/{id}")
-    public BranchViewResponse getBranchById(@PathVariable int id){
+    public BranchResponse getBranchById(@PathVariable int id){
         Optional<Branch> branch = branchManagement.getBranchById(id);
-        return branch.map( value -> new BranchViewResponse( true, mapper.mapFromBranchToBranchResponse(value))).orElseGet( () -> new BranchViewResponse( false, null ) );
+        BranchResponse branchResponse = new BranchResponse();
+        if(branch.isPresent()){
+            branchResponse = mapper.mapFromBranchToBranchResponse( branch.get() );
+        }
+        return branchResponse;
     }
 
     @PostMapping
@@ -56,8 +60,8 @@ public class BranchController {
 
 
     @PutMapping
-    public BranchResponse updateBranch (@RequestBody BranchRequest branchRequest){
-        Branch branch = branchManagement.updateBranch( mapper.mapFromBranchRequestToBranch(branchRequest) );
+    public BranchResponse updateBranch (@RequestBody BranchPutRequest branchPutRequest){
+        Branch branch = branchManagement.updateBranch( mapper.mapFromBranchPutRequestToBranch(branchPutRequest) );
         return mapper.mapFromBranchToBranchResponse( branch );
     }
 

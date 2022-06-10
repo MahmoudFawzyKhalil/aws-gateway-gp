@@ -1,4 +1,5 @@
-package eg.gov.iti.jets.api.resource.branch;
+package eg.gov.iti.jets.api.resource.trainingProgram;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,8 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-
-public class BranchViewResponse {
+public class SuccessResponse {
     private Boolean success;
-    private BranchResponse branchResponse;
 }

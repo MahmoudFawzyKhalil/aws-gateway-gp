@@ -17,5 +17,6 @@ import java.util.List;
 public class TrainingProgramResponse {
     private Integer id;
     private String name;
-    private Integer branchId;
+    private String branchName;
+    private List<String> intakeNames;
 }

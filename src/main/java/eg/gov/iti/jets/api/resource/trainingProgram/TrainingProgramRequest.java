@@ -18,4 +18,5 @@ import java.util.List;
 public class TrainingProgramRequest {
     private String name;
     private Integer branchId;
+    private List<Integer> intakeIds;
 }

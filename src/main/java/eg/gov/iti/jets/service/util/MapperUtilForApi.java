@@ -1,10 +1,7 @@
 package eg.gov.iti.jets.service.util;
 
 import eg.gov.iti.jets.persistence.dao.*;
-import eg.gov.iti.jets.persistence.entity.Branch;
-import eg.gov.iti.jets.persistence.entity.Intake;
-import eg.gov.iti.jets.persistence.entity.TrainingProgram;
-import eg.gov.iti.jets.persistence.entity.User;
+import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.KeyPair;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
@@ -38,6 +35,8 @@ public class MapperUtilForApi {
 
     @Autowired
     KeyPairDao keyPairDao;
+    @Autowired
+    TrackDao trackDao;
 
     @Autowired
     TemplateConfigurationDao templateConfigurationDao;
@@ -74,7 +73,6 @@ public class MapperUtilForApi {
 
     public TemplateConfiguration getTemplateConfigurationById( int id) {
         Optional<TemplateConfiguration> templateConfigurationDaoById = templateConfigurationDao.findById( id );
-        System.out.println("INSTNACEE  "+ templateConfigurationDaoById.get().getAmiId() );
         return templateConfigurationDaoById.orElse( null );
     }
 
@@ -102,12 +100,27 @@ public class MapperUtilForApi {
 
     public Intake getIntackById(int id) {
         Optional<Intake> intake = intakeDao.findById(id);
-        System.out.println("##########################################################");
-        System.out.println(intake);
         return intake.orElse( null );
     }
 
 
+    public List<TrainingProgram> getTrainingProgramList( List<Integer> trainingPrograms ) {
+        List<TrainingProgram> trainingProgramList = new ArrayList<>();
+        for ( Integer id    :
+                trainingPrograms ) {
+            Optional<TrainingProgram> trainingProgram = trainingProgramDao.findById( id );
+            trainingProgram.ifPresent( trainingProgramList::add );
+        }
+        return trainingProgramList;
+    }
 
-
+    public List<Intake> getIntakeList( List<Integer> intakeId ) {
+        List<Intake> intakes = new ArrayList<>();
+        for ( Integer id    :
+                intakeId ) {
+            Optional<Intake> trainingProgram = intakeDao.findById( id );
+            trainingProgram.ifPresent( intakes::add );
+        }
+        return intakes;
+    }
 }

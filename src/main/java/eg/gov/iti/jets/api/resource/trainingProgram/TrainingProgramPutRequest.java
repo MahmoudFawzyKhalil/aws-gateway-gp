@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -13,5 +15,5 @@ public class TrainingProgramPutRequest {
     private Integer id;
     private String name;
     private Integer branchId;
-
+    private List<Integer> intakeIds;
 }

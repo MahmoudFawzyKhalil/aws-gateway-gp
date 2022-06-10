@@ -2,7 +2,10 @@ package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.persistence.dao.BranchDao;
 import eg.gov.iti.jets.persistence.dao.IntakeDao;
+import eg.gov.iti.jets.persistence.dao.TrainingProgramDao;
+import eg.gov.iti.jets.persistence.entity.Branch;
 import eg.gov.iti.jets.persistence.entity.Intake;
+import eg.gov.iti.jets.persistence.entity.TrainingProgram;
 import eg.gov.iti.jets.service.management.CrudOperations;
 import eg.gov.iti.jets.service.management.IntakeManagement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,8 @@ public class IntakeManagementImpl implements IntakeManagement {
 
     @Autowired
     IntakeDao intakeDao;
+    @Autowired
+    TrainingProgramDao trainingProgramDao;
 
     @Override
     public Intake createIntake(Intake intake) {
@@ -35,6 +40,15 @@ public class IntakeManagementImpl implements IntakeManagement {
     @Override
     public Optional<Intake> getIntakeById(int id) {
         return intakeDao.findById(id);
+    }
+
+    @Override
+    public List<Intake> getIntakeByProgramId( int programId ) {
+        Optional<TrainingProgram> trainingProgram = trainingProgramDao.findById( programId );
+        Intake intakeExample = new Intake();
+        trainingProgram.ifPresent( intakeExample::setTrainingProgram );
+        List<Intake> intakes = intakeDao.findAllByExample( intakeExample );
+        return intakes;
     }
 
 //    @Override

@@ -22,7 +22,9 @@ public class BranchManagementImpl implements BranchManagement {
 
     @Override
     public Branch updateBranch( Branch branch ) {
-        return branchDao.save(branch);
+        Branch update = branchDao.update( branch );
+        System.out.println("marwaaa  "+update);
+        return update;
     }
 
     @Override

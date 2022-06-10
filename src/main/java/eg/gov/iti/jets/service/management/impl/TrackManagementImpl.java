@@ -1,7 +1,11 @@
 package eg.gov.iti.jets.service.management.impl;
 
+import eg.gov.iti.jets.persistence.dao.IntakeDao;
 import eg.gov.iti.jets.persistence.dao.TrackDao;
+import eg.gov.iti.jets.persistence.entity.Branch;
+import eg.gov.iti.jets.persistence.entity.Intake;
 import eg.gov.iti.jets.persistence.entity.Track;
+import eg.gov.iti.jets.persistence.entity.TrainingProgram;
 import eg.gov.iti.jets.service.management.CrudOperations;
 import eg.gov.iti.jets.service.management.TrackManagement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,8 @@ public class TrackManagementImpl implements TrackManagement {
 
     @Autowired
     TrackDao trackDao;
+    @Autowired
+    IntakeDao intakeDao;
 
     @Override
     public Track createTrack(Track track) {
@@ -35,5 +41,14 @@ public class TrackManagementImpl implements TrackManagement {
     @Override
     public Optional<Track> getTrackById(int id) {
         return trackDao.findById(id);
+    }
+
+    @Override
+    public List<Track> getTrackByIntakeId( int intakeId ) {
+        Optional<Intake> intake = intakeDao.findById( intakeId );
+        Track track = new Track();
+        intake.ifPresent( track::setIntake );
+        List<Track> listOfTracks = trackDao.findAllByExample( track );
+        return listOfTracks;
     }
 }

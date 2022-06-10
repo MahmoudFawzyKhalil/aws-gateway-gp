@@ -13,4 +13,5 @@ public interface IntakeManagement {
 
     Optional<Intake> getIntakeById(int id);
 
+    List<Intake> getIntakeByProgramId( int programId );
 }
