@@ -4,6 +4,8 @@ import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.impl.UserManagementImpl;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -20,44 +22,46 @@ public class UserController {
     }
 
     @PostMapping("/users")
-    public UserResponse createUser( @RequestBody CreateUserRequest userRequest){
+    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest userRequest){
         User user = mapper.createUserRequestToUser(userRequest);
-        return mapper.mapFromUserToUserResponse(userManagement.createUser(user));
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(mapper.mapFromUserToUserResponse(userManagement.createUser(user)));
+
     }
 
     @GetMapping("/users/{id}")
-    public UserResponse getUserById(@PathVariable int id){
+    public ResponseEntity<UserResponse> getUserById(@PathVariable int id){
         User user = userManagement.getUserById(id);
         UserResponse response = mapper.mapFromUserToUserResponse(user);
-        return response;
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/users")
-    public UserResponse updateUser (@RequestBody UpdateUserRequest userRequest){
+    public ResponseEntity<UserResponse> updateUser (@RequestBody UpdateUserRequest userRequest){
         User user = mapper.updateUserRequestToUser(userRequest);
-        return mapper.mapFromUserToUserResponse(userManagement.updateUser(user));
+        return ResponseEntity.ok(mapper.mapFromUserToUserResponse(userManagement.updateUser(user)));
     }
 
     @GetMapping("/students")
-    public UserResponseList getStudents(){
+    public ResponseEntity<UserResponseList> getStudents(){
         List<User> users = userManagement.getAllStudentUsers();
         List<UserResponse> userResponses =  mapper.mapFromListOfUsersToListOfUserResponses(users);
         UserResponseList userResponseList = new UserResponseList();
         for(UserResponse response : userResponses){
             userResponseList.getUserResponsesList().add(response);
         }
-        return userResponseList;
+        return ResponseEntity.ok(userResponseList);
     }
 
     @GetMapping("/users")
-    public UserResponseList getUsers(){
+    public ResponseEntity<UserResponseList> getUsers(){
         List<User> users = userManagement.getAllUsers();
         List<UserResponse> userResponses =  mapper.mapFromListOfUsersToListOfUserResponses(users);
         UserResponseList userResponseList = new UserResponseList();
         for(UserResponse response : userResponses){
             userResponseList.getUserResponsesList().add(response);
         }
-        return userResponseList;
+        return ResponseEntity.ok(userResponseList);
     }
 
     @DeleteMapping("/users/{id}")
@@ -66,7 +70,7 @@ public class UserController {
     }
 
     @GetMapping("/tracks/{id}/students")
-    public UserResponseList getUserStudents(@PathVariable Integer id) {
+    public ResponseEntity<UserResponseList> getUserStudents(@PathVariable Integer id) {
         Track track = new Track();
         track.setId(id);
         UserResponseList userResponseList = new UserResponseList();
@@ -75,7 +79,7 @@ public class UserController {
                         .stream().map(mapper::mapFromUserToUserResponse)
                         .collect(Collectors.toList())
         );
-        return userResponseList;
+        return ResponseEntity.ok(userResponseList);
     }
 
 //    @GetMapping("/users/{id}/instructors")

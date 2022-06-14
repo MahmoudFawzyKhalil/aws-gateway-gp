@@ -5,6 +5,7 @@ import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.UserManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
 import lombok.RequiredArgsConstructor;
@@ -100,7 +101,7 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
 
     @Override
     public User getUserById(int id ) {
-        return userDao.findById(id).orElseThrow(()->new RuntimeException("User with this id not exists"));
+        return userDao.findById(id).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
