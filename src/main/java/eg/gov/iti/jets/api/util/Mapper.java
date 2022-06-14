@@ -29,6 +29,7 @@ import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
+import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,6 +61,11 @@ public class Mapper {
         branchResponse.setAddress( branch.getAddress() );
         branchResponse.setName( branch.getName() );
         branchResponse.setId( branch.getId() );
+        if ( branch.getStatus() == BranchStatus.ACTIVE ) {
+            branchResponse.setBranchStatus( true );
+        } else {
+            branchResponse.setBranchStatus( false );
+        }
         return branchResponse;
     }
 
@@ -74,7 +80,7 @@ public class Mapper {
         Branch branch = mapperUtilForApi.getBranchById( trainingProgramRequest.getBranchId() );
         trainingProgram.setBranch( branch );
         trainingProgram.setName( trainingProgramRequest.getName() );
-        if(trainingProgramRequest != null || trainingProgramRequest.getIntakeIds().isEmpty()){
+        if ( trainingProgramRequest != null || trainingProgramRequest.getIntakeIds().isEmpty() ) {
             trainingProgram.setIntakes( mapperUtilForApi.getIntakeList( trainingProgramRequest.getIntakeIds() ) );
         }
         return trainingProgram;
@@ -85,7 +91,7 @@ public class Mapper {
         trainingProgramResponse.setBranchName( trainingProgram.getBranch().getName() );
         trainingProgramResponse.setName( trainingProgram.getName() );
         trainingProgramResponse.setId( trainingProgram.getId() );
-        trainingProgramResponse.setIntakeNames( trainingProgram.getIntakes().stream().map( Intake::getName ).collect( Collectors.toList()) );
+        trainingProgramResponse.setIntakeNames( trainingProgram.getIntakes().stream().map( Intake::getName ).collect( Collectors.toList() ) );
         return trainingProgramResponse;
     }
 
@@ -341,11 +347,25 @@ public class Mapper {
         return trainingProgram;
     }
 
-    public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest ) {
-        Branch branch = new Branch();
-        branch.setId( branchPutRequest.getId() );
+    public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest, int id ) {
+        Branch branch = mapperUtilForApi.getBranchById( id );
         branch.setAddress( branchPutRequest.getAddress() );
         branch.setName( branchPutRequest.getName() );
+        if ( branchPutRequest.isBranchStatus() ) {
+            branch.setStatus( BranchStatus.ACTIVE );
+        } else {
+            branch.setStatus( BranchStatus.DE_ACTIVE );
+        }
+        return branch;
+    }
+
+    public Branch mapFromBranchPatchRequestToBranch( Boolean branchStatus, int id ) {
+        Branch branch = mapperUtilForApi.getBranchById( id );
+        if ( branchStatus ) {
+            branch.setStatus( BranchStatus.ACTIVE );
+        } else {
+            branch.setStatus( BranchStatus.DE_ACTIVE );
+        }
         return branch;
     }
 }

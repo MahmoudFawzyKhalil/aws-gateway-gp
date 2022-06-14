@@ -59,21 +59,29 @@ public class BranchController {
 
 
 
-    @PutMapping
-    public ResponseEntity<BranchResponse> updateBranch (@RequestBody BranchPutRequest branchPutRequest){
-        Branch branch = branchManagement.updateBranch( mapper.mapFromBranchPutRequestToBranch(branchPutRequest) );
+    @PutMapping("/{id}")
+    public ResponseEntity<BranchResponse> updateBranch (@PathVariable int id , @RequestBody BranchPutRequest branchPutRequest){
+        Branch branch = branchManagement.updateBranch( mapper.mapFromBranchPutRequestToBranch(branchPutRequest , id) );
+        BranchResponse branchResponse = mapper.mapFromBranchToBranchResponse( branch );
+        return new ResponseEntity<>( branchResponse , HttpStatus.OK );
+    }
+
+    @PatchMapping  ("/{id}")
+    public ResponseEntity<BranchResponse> changeStatus (@PathVariable int id , @RequestParam boolean branchStatus){
+        Branch branch = branchManagement.updateBranch( mapper.mapFromBranchPatchRequestToBranch(branchStatus , id) );
         BranchResponse branchResponse = mapper.mapFromBranchToBranchResponse( branch );
         return new ResponseEntity<>( branchResponse , HttpStatus.OK );
     }
 
     @GetMapping("{branchId}/trainingPrograms")
-    GetTrainingProgramsResponse getTrainingProgramsByBranchId( @PathVariable int branchId){
+    public ResponseEntity<GetTrainingProgramsResponse> getTrainingProgramsByBranchId( @PathVariable int branchId){
         List<TrainingProgram> trainingProgramByBranchId = trainingProgramManagement.getTrainingProgramByBranchId( branchId );
         List<TrainingProgramResponse> trainingProgramResponse = new ArrayList<>();
         trainingProgramByBranchId.forEach( trainingProgram -> {
             trainingProgramResponse.add( mapper.mapFromTrainingProgramToTrainingProgramResponse( trainingProgram ) );
         } );
-        return new GetTrainingProgramsResponse(trainingProgramResponse);
+        GetTrainingProgramsResponse trainingProgramsResponse = new GetTrainingProgramsResponse( trainingProgramResponse );
+        return new ResponseEntity<>(  trainingProgramsResponse  , HttpStatus.OK);
     }
 
 }

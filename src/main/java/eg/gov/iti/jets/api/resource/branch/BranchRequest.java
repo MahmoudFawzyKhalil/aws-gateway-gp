@@ -15,4 +15,5 @@ import java.util.List;
 public class BranchRequest {
     private String address;
     private String name;
+    private boolean branchStatus;
 }
