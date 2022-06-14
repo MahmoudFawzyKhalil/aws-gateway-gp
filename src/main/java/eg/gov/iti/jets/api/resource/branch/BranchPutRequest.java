@@ -14,6 +14,4 @@ public class BranchPutRequest {
     private int id;
     private String address;
     private String name;
-    private int trainingManager;
-    private List<Integer> trainingPrograms;
 }

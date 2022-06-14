@@ -1,68 +1,79 @@
 package eg.gov.iti.jets.api.resource.branch;
 
-
-import eg.gov.iti.jets.api.resource.ami.AmiRequest;
-import eg.gov.iti.jets.api.resource.ami.AmiViewResponse;
-import eg.gov.iti.jets.api.resource.template.SuccessResponse;
-import eg.gov.iti.jets.api.resource.track.TrackRequest;
-import eg.gov.iti.jets.api.resource.track.TrackResponse;
-import eg.gov.iti.jets.api.resource.track.TrackResponseList;
+import eg.gov.iti.jets.api.resource.trainingProgram.GetTrainingProgramsResponse;
+import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.Branch;
-import eg.gov.iti.jets.persistence.entity.Track;
-import eg.gov.iti.jets.persistence.entity.aws.Ami;
+import eg.gov.iti.jets.persistence.entity.TrainingProgram;
 import eg.gov.iti.jets.service.management.BranchManagement;
+import eg.gov.iti.jets.service.management.TrainingProgramManagement;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/branches")
 public class BranchController {
     final BranchManagement branchManagement;
     final Mapper mapper;
+    final TrainingProgramManagement trainingProgramManagement;
 
-    public BranchController( BranchManagement branchManagementImpl, Mapper mapper){
+    public BranchController( BranchManagement branchManagementImpl, Mapper mapper, TrainingProgramManagement trainingProgramManagement ){
         this.branchManagement = branchManagementImpl;
         this.mapper = mapper;
+        this.trainingProgramManagement = trainingProgramManagement;
     }
 
 
     @GetMapping
-    public BranchResponseList getBranches(){
+    public ResponseEntity<BranchResponseList> getBranches(){
         List<Branch> branches = branchManagement.getAllBranches();
         List<BranchResponse> branchResponses =  mapper.mapFromListOfBranchToListOfBranchResponses(branches);
         BranchResponseList branchResponseList = new BranchResponseList();
         for(BranchResponse response : branchResponses){
             branchResponseList.getBranchResponsesList().add(response);
         }
-        return branchResponseList;
+        return new ResponseEntity<>( branchResponseList , HttpStatus.OK );
     }
 
     @GetMapping("/{id}")
-    public BranchResponse getBranchById(@PathVariable int id){
+    public ResponseEntity<BranchResponse> getBranchById(@PathVariable int id){
         Optional<Branch> branch = branchManagement.getBranchById(id);
         BranchResponse branchResponse = new BranchResponse();
         if(branch.isPresent()){
             branchResponse = mapper.mapFromBranchToBranchResponse( branch.get() );
         }
-        return branchResponse;
+        return new ResponseEntity<>( branchResponse ,HttpStatus.OK );
     }
 
     @PostMapping
-    public BranchResponse createBranch(@RequestBody BranchRequest branchRequest){
+    public ResponseEntity<BranchResponse> createBranch(@RequestBody BranchRequest branchRequest){
         Branch branch = branchManagement.createBranch( mapper.mapFromBranchRequestToBranch( branchRequest ) );
-        return mapper.mapFromBranchToBranchResponse(branch);
+        BranchResponse branchResponse = mapper.mapFromBranchToBranchResponse( branch );
+        return new ResponseEntity<>(branchResponse , HttpStatus.CREATED ) ;
     }
 
 
 
     @PutMapping
-    public BranchResponse updateBranch (@RequestBody BranchPutRequest branchPutRequest){
+    public ResponseEntity<BranchResponse> updateBranch (@RequestBody BranchPutRequest branchPutRequest){
         Branch branch = branchManagement.updateBranch( mapper.mapFromBranchPutRequestToBranch(branchPutRequest) );
-        return mapper.mapFromBranchToBranchResponse( branch );
+        BranchResponse branchResponse = mapper.mapFromBranchToBranchResponse( branch );
+        return new ResponseEntity<>( branchResponse , HttpStatus.OK );
+    }
+
+    @GetMapping("{branchId}/trainingPrograms")
+    GetTrainingProgramsResponse getTrainingProgramsByBranchId( @PathVariable int branchId){
+        List<TrainingProgram> trainingProgramByBranchId = trainingProgramManagement.getTrainingProgramByBranchId( branchId );
+        List<TrainingProgramResponse> trainingProgramResponse = new ArrayList<>();
+        trainingProgramByBranchId.forEach( trainingProgram -> {
+            trainingProgramResponse.add( mapper.mapFromTrainingProgramToTrainingProgramResponse( trainingProgram ) );
+        } );
+        return new GetTrainingProgramsResponse(trainingProgramResponse);
     }
 
 }

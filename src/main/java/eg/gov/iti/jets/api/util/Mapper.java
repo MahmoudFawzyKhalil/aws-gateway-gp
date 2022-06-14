@@ -52,10 +52,6 @@ public class Mapper {
         Branch branch = new Branch();
         branch.setAddress( branchRequest.getAddress() );
         branch.setName( branchRequest.getName() );
-        branch.setTrainingManager( mapperUtilForApi.getUser( branchRequest.getTrainingManager() ) );
-        if ( !branchRequest.getTrainingPrograms().isEmpty() || branch.getTrainingPrograms() != null ) {
-            branch.setTrainingPrograms( mapperUtilForApi.getTrainingProgramList( branchRequest.getTrainingPrograms() ) );
-        }
         return branch;
     }
 
@@ -64,12 +60,6 @@ public class Mapper {
         branchResponse.setAddress( branch.getAddress() );
         branchResponse.setName( branch.getName() );
         branchResponse.setId( branch.getId() );
-        branchResponse.setTrainingManager( branch.getTrainingManager().getUsername() );
-
-        if ( !branch.getTrainingPrograms().isEmpty() ) {
-            branchResponse.setTrainingPrograms( branch.getTrainingPrograms().stream().map( TrainingProgram::getName ).collect( Collectors.toList() ) );
-        }
-
         return branchResponse;
     }
 
@@ -356,11 +346,6 @@ public class Mapper {
         branch.setId( branchPutRequest.getId() );
         branch.setAddress( branchPutRequest.getAddress() );
         branch.setName( branchPutRequest.getName() );
-        branch.setTrainingManager( mapperUtilForApi.getUser( branchPutRequest.getTrainingManager() ) );
-        if ( (!branchPutRequest.getTrainingPrograms().isEmpty()) || (branchPutRequest.getTrainingPrograms() != null) ) {
-
-            branch.setTrainingPrograms( mapperUtilForApi.getTrainingProgramList( branchPutRequest.getTrainingPrograms() ) );
-        }
         return branch;
     }
 }

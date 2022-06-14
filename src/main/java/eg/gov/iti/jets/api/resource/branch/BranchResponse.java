@@ -15,6 +15,4 @@ public class BranchResponse {
     private int id;
     private String address;
     private String name;
-    private String trainingManager;
-    private List<String> trainingPrograms;
 }

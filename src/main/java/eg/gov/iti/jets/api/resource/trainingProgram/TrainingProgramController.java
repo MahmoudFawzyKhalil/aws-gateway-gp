@@ -64,14 +64,6 @@ public class TrainingProgramController {
 
     }
 
-    @GetMapping("{branchId}/trainingprogram")
-    GetTrainingProgramsResponse getTrainingProgramsByBranchId(@PathVariable int branchId){
-        List<TrainingProgram> trainingProgramByBranchId = trainingProgramManagement.getTrainingProgramByBranchId( branchId );
-        List<TrainingProgramResponse> trainingProgramResponse = new ArrayList<>();
-        trainingProgramByBranchId.forEach( trainingProgram -> {
-            trainingProgramResponse.add( mapper.mapFromTrainingProgramToTrainingProgramResponse( trainingProgram ) );
-        } );
-        return new GetTrainingProgramsResponse(trainingProgramResponse);
-    }
+
 
 }

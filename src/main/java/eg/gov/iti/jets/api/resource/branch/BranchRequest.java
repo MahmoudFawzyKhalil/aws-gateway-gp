@@ -15,6 +15,4 @@ import java.util.List;
 public class BranchRequest {
     private String address;
     private String name;
-    private int trainingManager;
-    private List<Integer> trainingPrograms;
 }
