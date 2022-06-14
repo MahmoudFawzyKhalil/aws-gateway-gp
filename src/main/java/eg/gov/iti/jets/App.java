@@ -3,6 +3,7 @@ package eg.gov.iti.jets;
 import eg.gov.iti.jets.persistence.dao.*;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
+import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -105,7 +106,7 @@ class DummyData {
         User studentUser5 = userDao.save(new User(null, "student5", "student5", "student5", studentRole, null, null, null,instructorUserForPHP,null));
 
 
-        Branch smartBranch = new Branch(null, "Smart", "October", smartBranchMangerUser, null);
+        Branch smartBranch = new Branch(null,BranchStatus.ACTIVE, "Smart", "October", smartBranchMangerUser, null);
         smartBranch = branchDao.save(smartBranch);
 
         TrainingProgram nineMonthTrainingProgram = new TrainingProgram(null, "9 Month program", smartBranch, null);
@@ -180,7 +181,7 @@ class DummyData {
         User studentUser11 = userDao.save(new User(null, "student11", "student11", "student11", studentRole, null, null, null,instructorUserForMobileApplication,null));
 
 
-        Branch ismailiaBranch = new Branch(null, "Ismailia", "Ismailia", IsmailiaBranchMangerUser, null);
+        Branch ismailiaBranch = new Branch(null, BranchStatus.ACTIVE,"Ismailia", "Ismailia", IsmailiaBranchMangerUser, null);
         ismailiaBranch = branchDao.save(ismailiaBranch);
 
         TrainingProgram nineMonthTrainingProgram = new TrainingProgram(null, "9 Month program", ismailiaBranch, null);
@@ -231,7 +232,7 @@ class DummyData {
         User studentUser17 = userDao.save(new User(null, "student17", "student17", "student17", studentRole, null, null, null,null,null));
 
 
-        Branch menofiaBranch = new Branch(null, "menofia", "menofia", menofiaBranchMangerUser, null);
+        Branch menofiaBranch = new Branch(null, BranchStatus.ACTIVE, "menofia", "menofia", menofiaBranchMangerUser, null);
         menofiaBranch = branchDao.save(menofiaBranch);
 
 
