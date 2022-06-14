@@ -48,6 +48,8 @@ public class App {
             for(User user:userDao.getUserByBranchIdAndRoleName(1,"INSTRUCTOR")){
                 System.out.println(user.getUsername());
             }
+
+            userDao.getAllByTrackAndRole(1,"STUDENT",User.class).forEach(u -> System.out.println(u.getUsername()));
             System.out.println("-------------------------");
                 //            List<Branch> branches = branchDao.findAllByExample(new Branch(null,"smart",null,null,null));
                 //            branches.forEach(b-> System.out.println(b.getName()));

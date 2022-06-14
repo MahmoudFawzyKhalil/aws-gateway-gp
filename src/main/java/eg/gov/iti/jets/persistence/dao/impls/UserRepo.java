@@ -32,20 +32,21 @@ interface UserRepo extends JpaRepository<User, Integer> {
 
 
     @Query("select distinct u from Branch b join b.trainingPrograms tr join tr.intakes i join i.tracks t join t.users u where u.role.name=:roleName and b.id=:branchId")
-    List<User>getUserByBranchIdAndRoleName(int branchId,String roleName);
+    List<User> getUserByBranchIdAndRoleName(int branchId, String roleName);
 
     @Query("select distinct u from TrainingProgram tr join tr.intakes i join i.tracks t join t.users u where u.role.name=:roleName and tr.id=:trainingProgramId")
-    List<User>getUserByTrainingIdAndRoleName(int trainingProgramId,String roleName);
+    List<User> getUserByTrainingIdAndRoleName(int trainingProgramId, String roleName);
 
     @Query("select distinct u from Intake i join i.tracks t join t.users u where u.role.name=:roleName and i.id=:intakeId")
-    List<User>getUserByIntakeIdAndRoleName(int intakeId,String roleName);
+    List<User> getUserByIntakeIdAndRoleName(int intakeId, String roleName);
 
     @Query("select distinct u from Track t join t.users u where u.role.name=:roleName and t.id=:trackId")
-    List<User>getUserByTrackIdAndRoleName(int trackId,String roleName);
+    List<User> getUserByTrackIdAndRoleName(int trackId, String roleName);
 
     @Query("select u from Branch b join b.trainingManager u where b.id=:branchId")
     Optional<User> getBranchManger(int branchId);
 
+    <C> List<C> findAllByTracks_idAndRole_NameLike(int trackId, String roleName, Class<C> projection);
 
 
 }
