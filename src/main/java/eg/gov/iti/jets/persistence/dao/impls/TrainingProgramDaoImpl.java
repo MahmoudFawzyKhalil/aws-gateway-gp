@@ -17,8 +17,8 @@ public class TrainingProgramDaoImpl implements TrainingProgramDao {
 
     private final TrainingProgramRepo trainingProgramRepo;
 
-    public TrainingProgramDaoImpl(TrainingProgramRepo trainingProgramRepo){
-        this.trainingProgramRepo=trainingProgramRepo;
+    public TrainingProgramDaoImpl(TrainingProgramRepo trainingProgramRepo) {
+        this.trainingProgramRepo = trainingProgramRepo;
     }
 
     @Override
@@ -49,13 +49,13 @@ public class TrainingProgramDaoImpl implements TrainingProgramDao {
 
     @Override
     public List<TrainingProgram> findAll(int pageNumber, int pageSize) {
-        Page<TrainingProgram> instancePage = trainingProgramRepo.findAll(PageRequest.of(pageNumber,pageSize));
+        Page<TrainingProgram> instancePage = trainingProgramRepo.findAll(PageRequest.of(pageNumber, pageSize));
         return instancePage.toList();
     }
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        Page<C> page = trainingProgramRepo.findBy(PageRequest.of(pageNumber, pageSize),projection);
+        Page<C> page = trainingProgramRepo.findBy(PageRequest.of(pageNumber, pageSize), projection);
         return page.getContent();
     }
 
@@ -68,8 +68,12 @@ public class TrainingProgramDaoImpl implements TrainingProgramDao {
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
-        return trainingProgramRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
+        return trainingProgramRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher), projection);
     }
 
 
+    @Override
+    public <C> List<C> getByBranchId(int branchId, Class<C> projection) {
+        return trainingProgramRepo.findByBranch_Id(branchId, projection);
+    }
 }

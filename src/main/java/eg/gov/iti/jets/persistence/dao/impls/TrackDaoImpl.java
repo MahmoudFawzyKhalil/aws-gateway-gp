@@ -71,4 +71,9 @@ public class TrackDaoImpl implements TrackDao {
         return trackRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher), projection);
 
     }
+
+    @Override
+    public <C> List<C> geAllByTrackId(int intakeId, Class<C> projection) {
+        return trackRepo.findAllByIntake_Id(intakeId,projection);
+    }
 }

@@ -15,4 +15,7 @@ interface TrackRepo extends JpaRepository<Track, Integer> {
     <C> Page<C> findBy(PageRequest pageRequest, Class<C> projection);
 
     <C> List<C> findAllBy(Example<C> example, Class<C> projection);
+
+    <C> List<C> findAllByIntake_Id(int intakeId, Class<C> projection);
+
 }
