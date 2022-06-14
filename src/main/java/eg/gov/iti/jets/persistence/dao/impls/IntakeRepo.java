@@ -9,10 +9,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
 
-interface IntakeRepo extends JpaRepository<Intake,Integer> {
+interface IntakeRepo extends JpaRepository<Intake, Integer> {
     <C> Optional<C> findById(Integer id, Class<C> projection);
 
     <C> Page<C> findBy(PageRequest pageRequest, Class<C> projection);
 
     <C> List<C> findAllBy(Example<C> example, Class<C> projection);
+
+    <C> List<C> findByTrainingProgram_Id(int trainingProgramId, Class<C> projection);
 }
