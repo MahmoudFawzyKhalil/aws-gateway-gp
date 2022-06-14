@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.service.management;
 
+import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.model.UserAdapter;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -29,7 +30,7 @@ public interface UserManagement extends UserDetailsService {
 
     User getUserByName(String username);
 
-    List<User> getUserStudents(User user);
+    List<User> getTrackStudents(Track track);
 
-    List<User> getSupervisorInstructors(User user);
+//    List<User> getSupervisorInstructors(User user);
 }

@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.api.resource.user;
 
 import eg.gov.iti.jets.api.util.Mapper;
+import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.impl.UserManagementImpl;
 import org.springframework.web.bind.annotation.*;
@@ -64,29 +65,29 @@ public class UserController {
         return userManagement.deleteUser( id );
     }
 
-    @GetMapping("/users/{id}/students")
+    @GetMapping("/tracks/{id}/students")
     public UserResponseList getUserStudents(@PathVariable Integer id) {
-        User user = new User();
-        user.setId(id);
+        Track track = new Track();
+        track.setId(id);
         UserResponseList userResponseList = new UserResponseList();
         userResponseList.setUserResponsesList(
-                userManagement.getUserStudents(user)
+                userManagement.getTrackStudents(track)
                         .stream().map(mapper::mapFromUserToUserResponse)
                         .collect(Collectors.toList())
         );
         return userResponseList;
     }
 
-    @GetMapping("/users/{id}/instructors")
-    public UserResponseList getSupervisorInstructors(@PathVariable Integer id) {
-        User user = new User();
-        user.setId(id);
-        UserResponseList userResponseList = new UserResponseList();
-        userResponseList.setUserResponsesList(        userManagement.getSupervisorInstructors(user)
-                .stream().map(mapper::mapFromUserToUserResponse)
-                .collect(Collectors.toList()));
-        return userResponseList;
-    }
+//    @GetMapping("/users/{id}/instructors")
+//    public UserResponseList getSupervisorInstructors(@PathVariable Integer id) {
+//        User user = new User();
+//        user.setId(id);
+//        UserResponseList userResponseList = new UserResponseList();
+//        userResponseList.setUserResponsesList(        userManagement.getSupervisorInstructors(user)
+//                .stream().map(mapper::mapFromUserToUserResponse)
+//                .collect(Collectors.toList()));
+//        return userResponseList;
+//    }
 
     /**
      * todo

@@ -1,33 +1,26 @@
 package eg.gov.iti.jets.service.management.impl;
 
-import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.persistence.dao.RoleDao;
+
 import eg.gov.iti.jets.persistence.dao.UserDao;
+import eg.gov.iti.jets.persistence.entity.Role;
+import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.UserManagement;
-//import org.springframework.security.core.userdetails.User;
 import eg.gov.iti.jets.service.model.UserAdapter;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
+@RequiredArgsConstructor
 public class UserManagementImpl implements UserDetailsService, UserManagement {
-    @Autowired
-    private UserDao userDaoImpl;
-    @Autowired
-    private RoleDao roleDaoImpl;
-    @Autowired
-    private Mapper mapper;
-    @Autowired
-    private UserDao userDao;
+    private final UserDao userDao;
 
     @Transactional
     @Override
@@ -75,17 +68,17 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
 
     @Override
     public User createUser(User user ) {
-         return userDaoImpl.save(user);
+         return userDao.save(user);
     }
 
     @Override
     public User updateUser(User user) {
-        return userDaoImpl.update(user);
+        return userDao.update(user);
     }
 
     @Override
     public List<User> getAllUsers() {
-        List<User> users = userDaoImpl.findAll();
+        List<User> users = userDao.findAll();
         return users;
     }
 
@@ -95,7 +88,7 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
      */
     @Override
     public List<User> getAllStudentUsers() {
-        List<User> users = userDaoImpl.findAll();
+        List<User> users = userDao.findAll();
         List<User> students = new ArrayList<>();
         for(User user : users ){
             if(user.getRole().getName().equals("ROLE_STUDENT")){
@@ -107,12 +100,20 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
 
     @Override
     public User getUserById(int id ) {
-        return userDaoImpl.findById(id).orElseThrow(()->new RuntimeException("User with this id not exists"));
+        return userDao.findById(id).orElseThrow(()->new RuntimeException("User with this id not exists"));
     }
 
     @Override
     public User getUserByName(String username) {
         return null;
+    }
+
+    @Override
+    public List<User> getTrackStudents(Track track) {
+        Role role = new Role();
+        role.setId(1);
+        role.setName("ROLE_STUDENT");
+        return userDao.findAllUsersByTrackAndRole(track, role);
     }
 
     @Override
@@ -122,7 +123,7 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
 
     @Override
     public String deleteUser( int id ) {
-        List<User> users = userDaoImpl.findAll();
+        List<User> users = userDao.findAll();
         for(User user : users){
             if(user.getId() == id){
 //                 userDaoImpl.de
@@ -131,35 +132,36 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
         return null;
     }
 
-    public List<User> getSupervisorInstructors(User user) {
-        return userDao.findAllFollowers(user).stream()
-                .filter(user1 -> user1.getRole().getName().equals("ROLE_INSTRUCTOR")
-                        && !user.getId().equals(user1.getId()))
-                .collect(Collectors.toList());
-    }
+//    public List<User> getSupervisorInstructors(User user) {
+//        return userDao.findAllFollowers(user).stream()
+//                .filter(user1 -> user1.getRole().getName().equals("ROLE_INSTRUCTOR")
+//                        && !user.getId().equals(user1.getId()))
+//                .collect(Collectors.toList());
+//    }
+
 
     /**
      * return students under only instructor & supervisor
      * @param user
      * @return
      */
-    public List<User> getUserStudents(User user) {
-        List<User> students = new ArrayList<>();
-        userDao.findAllFollowers(user).forEach(user1 -> {
-            if(user1.getRole().getName().equals("ROLE_INSTRUCTOR"))
-                students.addAll(getInstructorStudents(user1));
-            else if(user1.getRole().getName().equals("ROLE_STUDENT"))
-                students.add(user1);
-        });
-        return students;
-    }
+//    public List<User> getUserStudents(User user) {
+//        List<User> students = new ArrayList<>();
+//        userDao.findAllFollowers(user).forEach(user1 -> {
+//            if(user1.getRole().getName().equals("ROLE_INSTRUCTOR"))
+//                students.addAll(getInstructorStudents(user1));
+//            else if(user1.getRole().getName().equals("ROLE_STUDENT"))
+//                students.add(user1);
+//        });
+//        return students;
+//    }
 
-    private List<User> getInstructorStudents(User user) {
-        return userDao.findAllFollowers(user).stream()
-                .filter(user1 -> user1.getRole().getName().equals("ROLE_STUDENT")
-                        && !user.getId().equals(user1.getId()))
-                .collect(Collectors.toList());
-    }
+//    private List<User> getInstructorStudents(User user) {
+//        return userDao.findAllFollowers(user).stream()
+//                .filter(user1 -> user1.getRole().getName().equals("ROLE_STUDENT")
+//                        && !user.getId().equals(user1.getId()))
+//                .collect(Collectors.toList());
+//    }
 
 
 }
