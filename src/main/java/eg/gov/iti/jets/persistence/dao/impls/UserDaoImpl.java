@@ -99,5 +99,30 @@ public class UserDaoImpl implements UserDao {
         return userRepo.findAllByManager(user);
     }
 
+    @Override
+    public List<User> getUserByBranchIdAndRoleName(int branchId, String roleName) {
+        return userRepo.getUserByBranchIdAndRoleName(branchId,roleName);
+    }
+
+    @Override
+    public List<User> getUserByTrackIdAndRoleName(int trackId, String roleName) {
+        return userRepo.getUserByTrackIdAndRoleName(trackId,roleName);
+    }
+
+    @Override
+    public List<User> getUserByIntakeIdAndRoleName(int intakeId, String roleName) {
+        return userRepo.getUserByIntakeIdAndRoleName(intakeId,roleName);
+    }
+
+    @Override
+    public List<User> getUserByTrainingIdAndRoleName(int trainingProgramId, String roleName) {
+        return userRepo.getUserByTrainingIdAndRoleName(trainingProgramId,roleName);
+    }
+
+    @Override
+    public Optional<User> getBranchManger(int branchId) {
+        return userRepo.getBranchManger(branchId);
+    }
+
 
 }
