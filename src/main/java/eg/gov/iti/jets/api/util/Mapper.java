@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.api.util;
 
 import eg.gov.iti.jets.api.resource.ami.AmiResponse;
+import eg.gov.iti.jets.api.resource.branch.BranchPutRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.instance.InstanceRequest;
@@ -29,6 +30,7 @@ import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
 import eg.gov.iti.jets.api.resource.user.UpdateUserRequest;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
+import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
