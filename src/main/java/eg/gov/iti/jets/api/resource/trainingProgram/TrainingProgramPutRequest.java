@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrainingProgramPutRequest {
-    private Integer id;
     private String name;
     private Integer branchId;
     private List<Integer> intakeIds;

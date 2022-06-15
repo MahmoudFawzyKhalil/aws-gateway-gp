@@ -329,21 +329,19 @@ public class Mapper {
     }
 
     public List<UserResponse> mapFromListOfUsersToListOfUserResponses( List<User> users ) {
-        List<UserResponse> userResponses =
-                users.stream().map( e -> this.mapFromUserToUserResponse( e ) ).collect( Collectors.toList() );
-        return userResponses;
+        return users.stream().map( e -> this.mapFromUserToUserResponse( e ) ).collect( Collectors.toList() );
     }
 
 
-    public TrainingProgram mapFromTrainingProgramPutRequestToTrainingProgram( TrainingProgramPutRequest trainingProgramPutRequest ) {
-        TrainingProgram trainingProgram = new TrainingProgram();
+    public TrainingProgram mapFromTrainingProgramPutRequestToTrainingProgram( TrainingProgramPutRequest trainingProgramPutRequest , int id ) {
+        TrainingProgram trainingProgram = mapperUtilForApi.getTrainingProgramById( id );
         Branch branch = mapperUtilForApi.getBranchById( trainingProgramPutRequest.getBranchId() );
         trainingProgram.setBranch( branch );
         trainingProgram.setName( trainingProgramPutRequest.getName() );
-        trainingProgram.setId( trainingProgramPutRequest.getId() );
-        if ( trainingProgramPutRequest != null || !trainingProgramPutRequest.getIntakeIds().isEmpty() ) {
-            trainingProgram.setIntakes( mapperUtilForApi.getIntakeList( trainingProgramPutRequest.getIntakeIds() ) );
-        }
+        trainingProgram.setId( id );
+//        if ( trainingProgramPutRequest != null || !trainingProgramPutRequest.getIntakeIds().isEmpty() ) {
+//            trainingProgram.setIntakes( mapperUtilForApi.getIntakeList( trainingProgramPutRequest.getIntakeIds() ) );
+//        }
         return trainingProgram;
     }
 
