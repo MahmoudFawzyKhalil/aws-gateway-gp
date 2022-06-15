@@ -1,7 +1,6 @@
 package eg.gov.iti.jets.persistence.dao.impls;
 
 import eg.gov.iti.jets.persistence.entity.Branch;
-import org.hibernate.criterion.Projection;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;

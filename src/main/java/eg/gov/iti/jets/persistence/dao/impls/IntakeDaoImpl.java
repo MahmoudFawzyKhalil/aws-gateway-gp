@@ -63,4 +63,9 @@ public class IntakeDaoImpl implements IntakeDao {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return intakeRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
+
+    @Override
+    public <C> List<C> getByTrainingProgram(int trainingProgramId, Class<C> projection) {
+        return intakeRepo.findByTrainingProgram_Id(trainingProgramId,projection);
+    }
 }

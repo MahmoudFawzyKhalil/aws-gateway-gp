@@ -1,7 +1,6 @@
 package eg.gov.iti.jets.api.util;
 
 import eg.gov.iti.jets.api.resource.ami.AmiResponse;
-import eg.gov.iti.jets.api.resource.branch.BranchPutRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.instance.InstanceRequest;
@@ -27,13 +26,13 @@ import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramPutRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
+import eg.gov.iti.jets.api.resource.user.UpdateUserRequest;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
-import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import eg.gov.iti.jets.api.resource.user.UserRequest;
+import eg.gov.iti.jets.api.resource.user.CreateUserRequest;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
 import eg.gov.iti.jets.persistence.entity.*;
 import org.springframework.stereotype.Component;
@@ -305,31 +304,38 @@ public class Mapper {
         return role;
     }
 
-    public User mapFromUserRequestToUser( UserRequest userRequest ) {
+    public User createUserRequestToUser(CreateUserRequest userRequest) {
         User user = new User();
-        user.setId( userRequest.getId() );
-        user.setEmail( userRequest.getEmail() );
-        user.setUsername( userRequest.getUsername() );
-        user.setPassword( userRequest.getPassword() );
-        user.setRole( userRequest.getRole() );
+        user.setEmail(userRequest.getEmail());
+        user.setUsername(userRequest.getUsername());
+        user.setPassword(userRequest.getPassword());
+        user.setRole(userRequest.getRole());
         return user;
     }
 
-    public UserResponse mapFromUserToUserResponse( User user ) {
+    public User updateUserRequestToUser(UpdateUserRequest updateUserRequest) {
+        User user = new User();
+        user.setId(updateUserRequest.getId());
+        user.setEmail(updateUserRequest.getEmail());
+        user.setUsername(updateUserRequest.getUsername());
+        user.setPassword(updateUserRequest.getPassword());
+        user.setRole(updateUserRequest.getRole());
+        return user;
+    }
+
+    public UserResponse mapFromUserToUserResponse(User user) {
         UserResponse response = new UserResponse();
-        response.setId( user.getId() );
-        response.setUsername( user.getUsername() );
-        response.setEmail( user.getEmail() );
-        response.setRole( user.getRole().getName() );
-        response.setPassword( user.getPassword() );
-        response.setPrivileges( user.getRole().getPrivileges().stream().map( privilege -> {
-            return privilege.getName().name();
-        } ).collect( Collectors.toList() ) );
+        response.setId(user.getId());
+        response.setUsername(user.getUsername());
+        response.setEmail(user.getEmail());
+        response.setRole(user.getRole().getName());
+        response.setPassword(user.getPassword());
+        response.setPrivileges(user.getRole().getPrivileges().stream().map(privilege -> privilege.getName().name()).collect(Collectors.toList()));
         return response;
     }
 
-    public List<UserResponse> mapFromListOfUsersToListOfUserResponses( List<User> users ) {
-        return users.stream().map( e -> this.mapFromUserToUserResponse( e ) ).collect( Collectors.toList() );
+    public List<UserResponse> mapFromListOfUsersToListOfUserResponses(List<User> users){
+        return users.stream().map(this::mapFromUserToUserResponse).collect(Collectors.toList());
     }
 
 
