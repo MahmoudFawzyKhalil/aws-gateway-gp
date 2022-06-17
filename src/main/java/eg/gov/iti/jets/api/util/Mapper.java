@@ -310,6 +310,11 @@ public class Mapper {
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
 
+        User manager = new User();
+        manager.setId(userRequest.getManagerId());
+
+        user.setManager(manager);
+
         Role role = new Role();
         role.setId( userRequest.getRole().getId());
         role.setName(userRequest.getRole().getName());
@@ -324,6 +329,11 @@ public class Mapper {
         user.setEmail(updateUserRequest.getEmail());
         user.setUsername(updateUserRequest.getUsername());
         user.setPassword(updateUserRequest.getPassword());
+
+        User manager = new User();
+        manager.setId(updateUserRequest.getManagerId());
+
+        user.setManager(manager);
 
         Role role = new Role();
         role.setId( updateUserRequest.getRole().getId());

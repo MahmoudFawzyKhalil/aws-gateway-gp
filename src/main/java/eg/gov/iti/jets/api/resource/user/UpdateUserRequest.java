@@ -13,4 +13,6 @@ public class UpdateUserRequest {
     private String email;
     private String password;
     private RoleType role;
+    private Integer managerId;
+
 }
