@@ -123,4 +123,10 @@ public class MapperUtilForApi {
         }
         return intakes;
     }
+
+
+    public Track getTrackById(int id) {
+        Optional<Track> track = trackDao.findById(id);
+        return track.orElse( null );
+    }
 }
