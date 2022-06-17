@@ -7,9 +7,9 @@ import eg.gov.iti.jets.persistence.entity.User;
 import java.util.List;
 
 public interface RoleManagement {
-    Boolean addRole( Role role );
-    Boolean deleteRole( int id );
+    Role addRole( Role role );
+    Boolean deleteRole( Integer id );
     List<Role> getAllRole();
-    Role getRoleById( int id );
+    Role getRoleById( Integer id );
     Boolean updateRole(Role role);
 }

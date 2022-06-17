@@ -11,14 +11,13 @@ import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeResponse;
 import eg.gov.iti.jets.api.resource.securityGroup.SecurityGroupResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetResponse;
-import eg.gov.iti.jets.api.resource.template.*;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
 import eg.gov.iti.jets.api.resource.privilege.AddPrivilegeRequest;
 import eg.gov.iti.jets.api.resource.privilege.GetPrivilegeResponse;
 import eg.gov.iti.jets.api.resource.role.PrivilegeType;
 import eg.gov.iti.jets.api.resource.role.AddRoleRequest;
-import eg.gov.iti.jets.api.resource.role.GetRoleResponse;
+import eg.gov.iti.jets.api.resource.role.RoleResponse;
 import eg.gov.iti.jets.api.resource.role.UpdateRoleRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
@@ -36,12 +35,10 @@ import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import eg.gov.iti.jets.api.resource.user.CreateUserRequest;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
-import eg.gov.iti.jets.persistence.entity.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -277,8 +274,9 @@ public class Mapper {
         return role;
     }
 
-    public GetRoleResponse roleToGetRoleResponse( Role role ) {
-        GetRoleResponse getRoleResponse = new GetRoleResponse();
+    public RoleResponse roleToRoleResponse(Role role ) {
+        RoleResponse getRoleResponse = new RoleResponse();
+        getRoleResponse.setId(role.getId());
         getRoleResponse.setName( role.getName() );
         getRoleResponse.setPrivileges( role.getPrivileges().stream().map(
                 privilege -> {
@@ -311,7 +309,7 @@ public class Mapper {
         user.setEmail(userRequest.getEmail());
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
-        user.setRole(userRequest.getRole());
+//        user.setRole(userRequest.getRole());
         return user;
     }
 
@@ -321,7 +319,7 @@ public class Mapper {
         user.setEmail(updateUserRequest.getEmail());
         user.setUsername(updateUserRequest.getUsername());
         user.setPassword(updateUserRequest.getPassword());
-        user.setRole(updateUserRequest.getRole());
+//        user.setRole(updateUserRequest.getRole());
         return user;
     }
 

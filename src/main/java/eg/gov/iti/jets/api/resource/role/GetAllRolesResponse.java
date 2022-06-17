@@ -9,5 +9,5 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class GetAllRolesResponse {
-    List<GetRoleResponse> roles;
+    List<RoleResponse> roles;
 }
