@@ -158,8 +158,8 @@ class AwsGatewayImpl implements AwsGateway {
     }
 
     @Override
-    public String startInstance(String instanceId) {
-        StartInstancesRequest request = StartInstancesRequest.builder().instanceIds(instanceId).build();
+    public String startInstance(Instance instance) {
+        StartInstancesRequest request = StartInstancesRequest.builder().instanceIds(instance.getInstanceId()).build();
 
         StartInstancesResponse startInstancesResponse = ec2Client.startInstances(request);
         return startInstancesResponse.startingInstances().get(0).currentState().toString();
@@ -199,7 +199,7 @@ class AwsGatewayImpl implements AwsGateway {
     }
 
     @Override
-    public Instance createInstance(TemplateConfiguration template, String instanceName, KeyPair keyPair ,int timeToLiveInMinutes ) {
+    public Instance createInstance(TemplateConfiguration template, String instanceName, KeyPair keyPair ,Long timeToLiveInMinutes ) {
         Tag tag = Tag.builder()
                 .key("Name")
                 .value(instanceName)
@@ -226,6 +226,7 @@ class AwsGatewayImpl implements AwsGateway {
                 .instanceId(instance.getInstanceId())
                 .build();
         ModifyInstanceAttributeResponse modifyInstanceAttributeResponse = ec2Client.modifyInstanceAttribute(build);
+        instance.setTimeToLiveInMinutes( timeToLiveInMinutes );
         return instance;
     }
 

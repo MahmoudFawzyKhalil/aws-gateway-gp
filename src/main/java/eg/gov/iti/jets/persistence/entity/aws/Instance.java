@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -60,6 +61,7 @@ public class Instance {
     @JoinColumn(name = "template_configuration_id", nullable = false)
     TemplateConfiguration templateConfiguration;
 
-    private Integer ttlInMilliseconds;
+    @Min( 5L )
+    private Long timeToLiveInMinutes;
 
 }

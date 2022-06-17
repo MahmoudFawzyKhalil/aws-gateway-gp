@@ -58,7 +58,9 @@ public class AwsGatewayImplTest {
     @Test
     @Disabled
     void startInstance() {
-        awsGateway.startInstance( "i-064bcb93e8b674643" ) ;
+        Instance instance = new Instance();
+        instance.setInstanceId( "i-064bcb93e8b674643" );
+        awsGateway.startInstance( instance ) ;
     }
 
     @Test
@@ -90,7 +92,7 @@ public class AwsGatewayImplTest {
 
         KeyPair keyPair = new KeyPair();
         keyPair.setKeyName( "key1" );
-        Instance instance = awsGateway.createInstance( templateConfiguration, "fawzy" , keyPair ,1);
+        Instance instance = awsGateway.createInstance( templateConfiguration, "fawzy" , keyPair ,1l);
         assertNotEquals( null , instance );
 
     }

@@ -17,9 +17,8 @@ import software.amazon.awssdk.services.ec2.Ec2Client;
 public class ServiceConfiguration {
     @Bean
     public Ec2Client getEc2Client() {
-        Ec2Client ec2Client = Ec2Client.builder().region( Region.US_EAST_1 ).credentialsProvider( ProfileCredentialsProvider.create() )
-                .build();
-        return ec2Client;
+        return Ec2Client.builder().region( Region.US_EAST_1 ).credentialsProvider( ProfileCredentialsProvider.create() ).build();
+
     }
 
     @Bean
@@ -27,32 +26,12 @@ public class ServiceConfiguration {
         return new StartingTtlCountDownScheduler();
     }
 
-//    @Bean
-//    public ProxyFactoryBean timerProxy() {
-//        ProxyFactoryBean proxyFactoryBean = new ProxyFactoryBean();
-//        proxyFactoryBean.setTargetName( "awsGatewayImpl" );
-//        proxyFactoryBean.setInterceptorNames( "startingTtlCountDownScheduler" );
-//        return proxyFactoryBean;
-//    }
     @Bean
-    public NameMatchMethodPointcut pointcutByName(){
-        NameMatchMethodPointcut nameMatchMethodPointcut = new NameMatchMethodPointcut();
-        nameMatchMethodPointcut.setMappedNames( "createInstance" , "startInstance" );
-        return nameMatchMethodPointcut;
-    }
-    @Bean
-    public DefaultPointcutAdvisor defaultPointcutAdvisor(){
-        DefaultPointcutAdvisor defaultPointcutAdvisor = new DefaultPointcutAdvisor();
-        defaultPointcutAdvisor.setPointcut( pointcutByName() );
-        defaultPointcutAdvisor.setAdvice( startingTtlCountDownSchedulerAdvice() );
-        return defaultPointcutAdvisor;
-    }
-    @Bean
-        public ThreadPoolTaskScheduler threadPoolTaskScheduler(){
+    public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
         ThreadPoolTaskScheduler threadPoolTaskScheduler
                 = new ThreadPoolTaskScheduler();
-        threadPoolTaskScheduler.setPoolSize(8);
-        threadPoolTaskScheduler.setThreadNamePrefix("ThreadPoolTaskScheduler");
+        threadPoolTaskScheduler.setPoolSize( 8 );
+        threadPoolTaskScheduler.setThreadNamePrefix( "ThreadPoolTaskScheduler" );
         return threadPoolTaskScheduler;
     }
 

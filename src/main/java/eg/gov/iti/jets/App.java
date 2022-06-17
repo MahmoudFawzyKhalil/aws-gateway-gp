@@ -6,6 +6,7 @@ import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
+import eg.gov.iti.jets.service.gateway.aws.ec2.scheduler.RunningTasks;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -17,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
-public class App implements CommandLineRunner{
+public class App implements CommandLineRunner {
     @Autowired
     AwsGateway timerProxy;
 
@@ -39,7 +40,29 @@ public class App implements CommandLineRunner{
         templateConfiguration.setSubnetId( "subnet-0ba09c918db78df91" );
         KeyPair keyPair = new KeyPair();
         keyPair.setKeyName( "key1" );
-        Instance instance = timerProxy.createInstance( templateConfiguration, "fawzy" , keyPair , 1);
+
+        //sout map
+        System.out.println( RunningTasks.INSTANCE.toString() );
+        //create instance with time to live 2 min
+        Instance instance = timerProxy.createInstance( templateConfiguration, "samy2" , keyPair , 2l);
+        //sout map
+        System.out.println( RunningTasks.INSTANCE.toString() );
+        // After 1.5 min stop instance
+        Thread.sleep( 90_000 );
+        timerProxy.stopInstance( instance.getInstanceId() );
+        //wait for 30 sec until the instance is stopped
+        Thread.sleep( 30_000 );
+        //sout map
+        System.out.println( RunningTasks.INSTANCE.toString() );
+
+        //start instance
+        timerProxy.startInstance( instance );
+        //sout map
+        System.out.println( RunningTasks.INSTANCE.toString() );
+        // wait for the whole ttl to finish
+        Thread.sleep( 130_000 );
+        //sout map
+        System.out.println( RunningTasks.INSTANCE.toString() );
     }
 }
 

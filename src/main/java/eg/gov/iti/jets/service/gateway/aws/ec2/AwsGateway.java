@@ -39,10 +39,10 @@ public interface AwsGateway {
     List<SecurityGroup> describeSecurityGroupsForNames(List<String> securityGroupNames);
 
     /**
-     * @param instanceId Specify the id of instance you want to start
+     * @param instance Specify the instance you want to start (the instanceId and timeToLive must be provided)
      * @return The current state of that instance
      */
-    String startInstance(String instanceId);
+    String startInstance(Instance instance);
 
     /**
      * @param instanceId Specify the id of instance you want to stop
@@ -62,9 +62,11 @@ public interface AwsGateway {
      *
      * @param template     A predefined template that describes the instance that will be created
      * @param instanceName The name of the instance that will be created
+     * @param keyPair The keyPair attached to the instance
+     * @param timeToLiveInMinutes The maximum time the instance is up before shutting down
      * @return the newly created instance
      */
-    Instance createInstance(TemplateConfiguration template, String instanceName , KeyPair keyPair , int timeToLiveInMinutes);
+    Instance createInstance(TemplateConfiguration template, String instanceName , KeyPair keyPair , Long timeToLiveInMinutes);
 
     /**
      * Describes an already created EC2 instance
