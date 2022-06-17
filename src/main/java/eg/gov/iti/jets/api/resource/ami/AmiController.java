@@ -18,15 +18,14 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/ami")
 public class AmiController {
-
-    final
-    Mapper mapper;
-    final
+    private final
+    AmiMapper amiMapper;
+    private final
     AmiAws amiAws;
 
-    public AmiController( Mapper mapper, AmiAws amiAws ) {
-        this.mapper = mapper;
+    public AmiController(  AmiAws amiAws, AmiMapper amiMapper ) {
         this.amiAws = amiAws;
+        this.amiMapper = amiMapper;
     }
 
     @PostMapping()
@@ -34,7 +33,7 @@ public class AmiController {
         // TODO: 6/17/2022 if bad request  
         Optional<Ami> ami = amiAws.describeAmi( amiRequest.getAmiId() );
         // TODO: 6/17/2022 Error here if Optional return null 
-        AmiViewResponse amiViewResponse = ami.map( value -> new AmiViewResponse( mapper.mapFromAmiToAmiResponse( value ) ) ).orElse( new AmiViewResponse() );
+        AmiViewResponse amiViewResponse = ami.map( value -> new AmiViewResponse( amiMapper.mapFromAmiToAmiResponse( value ) ) ).orElse( new AmiViewResponse() );
         return new ResponseEntity<>(amiViewResponse, HttpStatus.OK);
     }
 

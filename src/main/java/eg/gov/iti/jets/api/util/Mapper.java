@@ -50,56 +50,15 @@ public class Mapper {
     @Autowired
     private MapperUtilForApi mapperUtilForApi;
 
-    // Ami Mapping
-    public AmiResponse mapFromAmiToAmiResponse( Ami ami ) {
-        return new AmiResponse( ami.getImageId(), ami.getImageOwnerAlias(), ami.getArchitecture(), ami.getImageName(), ami.getDescription(), ami.getPlatform() );
-    }
-
-    // InstanceType Mapping
-    public InstanceTypeObjectResponse mapFromInstanceTypeToObjectResponse( List<String> types ) {
-        List<InstanceTypeResponse> list = new ArrayList<>();
-        for ( String type : types ) {
-            list.add( new InstanceTypeResponse( type ) );
-        }
-        return new InstanceTypeObjectResponse( list );
-    }
-
-    // SecurityGroup Mapping
-    public SecurityGroupResponse mapFromSecurityGroupToSecurityGroupResponse( SecurityGroup securityGroup ) {
-        SecurityGroupResponse securityGroupResponse = new SecurityGroupResponse();
-        securityGroupResponse.setId( securityGroup.getId() );
-        securityGroupResponse.setName( securityGroup.getName() );
-        securityGroupResponse.setSecurityGroupId( securityGroup.getSecurityGroupId() );
-        securityGroupResponse.setDescription( securityGroup.getDescription() );
-        securityGroupResponse.setVpcId( securityGroup.getVpcId() );
-        return securityGroupResponse;
-    }
-
-    // template Mapping
-
-
-    public TemplateConfiguration mapFromTemplateRequestToTemplateConfig( TemplateRequest templateRequest , int id) {
-        TemplateConfiguration templateConfiguration = new TemplateConfiguration();
-        templateConfiguration.setAmiId( templateRequest.getAmiId() );
-        templateConfiguration.setCreator( mapperUtilForApi.getUser( id ) );
-        templateConfiguration.setSubnetId( templateRequest.getSubnetId() );
-        templateConfiguration.setInstanceType( templateRequest.getInstanceType() );
-        templateConfiguration.setSecurityGroups( mapperUtilForApi.getSecurityGroups( templateRequest.getSecurityGroups() ) );
-        templateConfiguration.setInstructors( mapperUtilForApi.getUsers(templateRequest.getInstructorIds()) );
-        return templateConfiguration;
-    }
 
 
 
-    public TemplateResponse mapFromTemplateToTemplateResponse( TemplateConfiguration template ) {
-//        TemplateResponse templateResponse = new TemplateResponse();
-//        templateResponse.setId( template.getId() );
-//        templateResponse.setInstanceType( template.getInstanceType() );
-//        templateResponse.setSubnetId( template.getSubnetId() );
-//        templateResponse.setSecurityGroup( mapperUtilForApi.getSecurityGroupsName( template.getSecurityGroups() )  );
-//        templateResponse.setAmi( mapFromAmiToAmiResponse( mapperUtilForApi.getAmiObject( template.getAmiId() ) ) );
-        return null;
-    }
+
+
+
+
+
+
 
 
 

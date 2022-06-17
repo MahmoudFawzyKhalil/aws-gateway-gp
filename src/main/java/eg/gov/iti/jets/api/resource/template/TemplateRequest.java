@@ -19,6 +19,5 @@ public class TemplateRequest {
     private String subnetId;
     private String instanceType;
     private List<String> securityGroups;
-    // TODO: 6/7/2022 Mariam el request hhot feh list of instructor
     private List<Integer> instructorIds;
 }
