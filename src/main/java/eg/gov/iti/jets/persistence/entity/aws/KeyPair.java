@@ -24,7 +24,7 @@ public class KeyPair {
     @Column(name = "key_name" , unique = true)
     private String keyName;
 
-    @Column(name = "key_material")
+    @Column(name = "key_material" , columnDefinition = "TEXT")
     private String keyMaterial;
 
     @Column(name = "key_material_type")

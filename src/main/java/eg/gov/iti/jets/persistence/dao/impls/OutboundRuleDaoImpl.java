@@ -25,12 +25,20 @@ public class OutboundRuleDaoImpl implements OutboundRuleDao {
 
     @Override
     public OutboundRule update(OutboundRule entity) {
+        if (entity == null || entity.getId() == null) {
+            throw new NullPointerException("entity or id can't be null");
+        }
         return outboundRuleRepo.save(entity);
     }
 
     @Override
     public Optional<OutboundRule> findById(Integer id) {
         return outboundRuleRepo.findById(id);
+    }
+
+    @Override
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
+        return outboundRuleRepo.findById(integer,projection);
     }
 
     @Override
@@ -45,8 +53,20 @@ public class OutboundRuleDaoImpl implements OutboundRuleDao {
     }
 
     @Override
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        Page<C> page = outboundRuleRepo.findBy(PageRequest.of(pageNumber, pageSize),projection);
+        return page.getContent();
+    }
+
+    @Override
     public List<OutboundRule> findAllByExample(OutboundRule example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return outboundRuleRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return outboundRuleRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
 }

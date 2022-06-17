@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-public interface InstanceLogsDao extends GenericCrudDao<InstanceLogs, Long> {
+public interface InstanceLogsDao extends GenericCrudDao<InstanceLogs, Integer> {
 
     Optional<InstanceLogs> findLastLogByActionAndInstanceId(UserAction action,int instanceId);
     boolean deleteInstanceLogsBeforeDate(LocalDateTime localDateTime);

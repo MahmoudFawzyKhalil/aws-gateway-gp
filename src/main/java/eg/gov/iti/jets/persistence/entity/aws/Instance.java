@@ -1,10 +1,7 @@
 package eg.gov.iti.jets.persistence.entity.aws;
 
 import eg.gov.iti.jets.persistence.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -16,6 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "instance")
+@ToString
 public class Instance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,14 +51,12 @@ public class Instance {
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User creator;
-    @ManyToMany(mappedBy = "grantedInstances")
-    private List<User> instanceUsers;
     @ManyToMany
-    @JoinTable(name = "instance_security_groups",
+    @JoinTable(name = "user_granted_instances",
             joinColumns = @JoinColumn(name = "instance_id"),
-            inverseJoinColumns = @JoinColumn(name = "security_group_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"instance_id", "security_group_id"}))
-    private List<SecurityGroup> securityGroups;
+            inverseJoinColumns = @JoinColumn(name = "user_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "instance_id"}))
+    private List<User> instanceUsers;
 
     @ManyToOne
     @JoinColumn(name = "template_configuration_id", nullable = false)

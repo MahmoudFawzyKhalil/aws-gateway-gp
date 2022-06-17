@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.persistence.dao.impls;
+package eg.gov.iti.jets.persistence.dao.impls.aws;
 
 import eg.gov.iti.jets.persistence.dao.InstanceLogsDao;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
@@ -29,8 +29,13 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     }
 
     @Override
-    public Optional<InstanceLogs> findById(Long id) {
+    public Optional<InstanceLogs> findById(Integer id) {
         return instanceLogsRepo.findById(id);
+    }
+
+    @Override
+    public <C> Optional<C> findById(Integer integer, Class<C> projection) {
+        return instanceLogsRepo.findById(integer, projection);
     }
 
     @Override
@@ -45,9 +50,21 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     }
 
     @Override
+    public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
+        Page<C> page = instanceLogsRepo.findBy(PageRequest.of(pageNumber, pageSize),projection);
+        return page.getContent();
+    }
+
+    @Override
     public List<InstanceLogs> findAllByExample(InstanceLogs example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return instanceLogsRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
+    }
+
+    @Override
+    public <C> List<C> findAllByExample(C example, Class<C> projection) {
+        ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
+        return instanceLogsRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
 
     @Override
