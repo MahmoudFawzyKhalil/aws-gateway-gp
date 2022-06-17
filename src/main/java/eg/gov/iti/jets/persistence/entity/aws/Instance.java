@@ -4,6 +4,8 @@ import eg.gov.iti.jets.persistence.entity.User;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -61,4 +63,9 @@ public class Instance {
     @ManyToOne
     @JoinColumn(name = "template_configuration_id", nullable = false)
     TemplateConfiguration templateConfiguration;
+
+    @Min( 5L )
+    @NotNull
+    private Long timeToLiveInMinutes; // This must be provided from the frontend
+
 }

@@ -11,10 +11,9 @@ import java.util.List;
 @NoArgsConstructor
 @ToString
 public class InstanceRequest {
-
-    // template
-    private int templateId;
+    private Integer templateId;
     private List<Integer> studentIds;
     private String keyPair;
     private String instanceName;
+    private Long timeToLiveInMinutes;
 }

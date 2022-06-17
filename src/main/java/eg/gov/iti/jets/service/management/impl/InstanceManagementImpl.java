@@ -1,14 +1,11 @@
 package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.persistence.dao.InstanceDao;
-import eg.gov.iti.jets.persistence.dao.KeyPairDao;
-import eg.gov.iti.jets.persistence.dao.TemplateConfigurationDao;
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.InstanceManagement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,111 +13,129 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class InstanceManagementImpl implements InstanceManagement {
 
-    @Autowired
-    InstanceDao instanceDao;
-    @Autowired
-    KeyPairDao keyPairDao;
-    @Autowired
-    UserDao userDao;
-    public final AwsGateway awsGateway;
-    public final TemplateConfigurationDao templateConfigurationDao;
+    private final InstanceDao instanceDao;
+    private final UserDao userDao;
+    private final AwsGateway awsGateway;
+    private static final long DEFAULT_INSTANCE_TTL = 60L;
 
 
-    public InstanceManagementImpl( AwsGateway awsGateway, TemplateConfigurationDao templateConfigurationDao ) {
+    public InstanceManagementImpl(InstanceDao instanceDao, UserDao userDao, AwsGateway awsGateway) {
+        this.instanceDao = instanceDao;
+        this.userDao = userDao;
         this.awsGateway = awsGateway;
-        this.templateConfigurationDao = templateConfigurationDao;
     }
 
-
-
-
-
-
+    @Override
     @Transactional
-    @Override
-    public Instance createInstance(Instance instance){
-        Instance instance1 = awsGateway.createInstance( instance.getTemplateConfiguration(), instance.getName(), instance.getKeyPair() );
-        instance1.setInstanceUsers( instance.getInstanceUsers() );
-        instance1.setCreator( instance.getCreator() );
-        instance1.setTemplateConfiguration( instance.getTemplateConfiguration() );
-        instance1.setCreationDateTime( LocalDateTime.now() );
-        instance1.setState( "Running" );
-        Instance saved = instanceDao.save( instance1 );
-        return saved;
+    public Instance createInstance(Instance instanceToCreate) {
+        setDefaultTimeToLive(instanceToCreate);
+
+        Instance createdInstance = awsGateway.createInstance(
+                instanceToCreate.getTemplateConfiguration(),
+                instanceToCreate.getName(),
+                instanceToCreate.getKeyPair(),
+                instanceToCreate.getTimeToLiveInMinutes());
+
+        createdInstance.setInstanceUsers(instanceToCreate.getInstanceUsers());
+        createdInstance.setCreator(instanceToCreate.getCreator());
+        createdInstance.setTemplateConfiguration(instanceToCreate.getTemplateConfiguration());
+        createdInstance.setCreationDateTime(LocalDateTime.now());
+        return instanceDao.save(createdInstance);
     }
 
-    @Override
-    public String startInstance( String instanceId ) {
-        String s = awsGateway.startInstance( instanceId ).split( "," )[1].split( "=" )[1];;
-
-        Instance instance = new Instance();
-        instance.setInstanceId( instanceId );
-        Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
-        instance1.setState( "Running" );
-
-        instanceDao.update( instance1 );
-        return s;
-    }
-
-    @Override
-    public String stopInstance( String instanceId ) {
-        String s = awsGateway.stopInstance( instanceId ).split( "," )[1].split( "=" )[1];
-
-        Instance instance = new Instance();
-        instance.setInstanceId( instanceId );
-        Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
-        instance1.setState( "Stopped" );
-
-        instanceDao.update( instance1 );
-        return s;
-    }
-
-    @Override
-    public String deleteInstance( String instanceId ) {
-        String s = awsGateway.terminateInstance( instanceId ).split( "," )[1].split( "=" )[1];
-
-        Instance instance = new Instance();
-        instance.setInstanceId( instanceId );
-        Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
-        instance1.setState( "terminated" );
-        System.out.println(instance1);
-        instanceDao.update( instance1 );
-//        instanceDao.( instance1 );
-        return s;
-    }
-
-    @Override
-    public Instance instanceDetails( String instanceId ) {
-        Instance instance = new Instance();
-        instance.setInstanceId( instanceId );
-        Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
-        awsGateway.updateInstanceInfoFromAws( instance1 );
-        // TODO: 6/7/2022 void where is the update
-        return instance1;
-    }
-
-    @Override
-    public List<Instance> getInstancesByUserId( Integer id ) {
-
-        Optional<User> user = userDao.findById( id );
-        List<Instance>  listOfInstance = new ArrayList<>();
-        List<Instance> list = new ArrayList<>();
-        if(user.isPresent()){
-            listOfInstance = user.get().getGrantedInstances();
-            for ( Instance instance : listOfInstance ) {
-                String state = instance.getState();
-                if ( !state.equals( "terminated" ) ){
-                    list.add( instance );
-                }
-            }
+    private void setDefaultTimeToLive(Instance instanceToCreate) {
+        if (instanceToCreate.getTimeToLiveInMinutes() == null) {
+            instanceToCreate.setTimeToLiveInMinutes(DEFAULT_INSTANCE_TTL);
         }
-//        awsGateway.updateInstancesInfoFromAws( listOfInstance );
-        // TODO: 6/8/2022 mahmoud 
-        return list;
+    }
+
+    @Override
+    public String startInstance(String instanceId) {
+        Instance example = new Instance();
+        example.setInstanceId(instanceId);
+
+        var result = instanceDao.findAllByExample(example);
+        if (result.isEmpty())
+            throw new IllegalArgumentException(String.format("No instance exists with the id [%s]", instanceId));
+
+        Instance instance = result.get(0);
+        String instanceState = awsGateway.startInstance(instance);
+        instance.setState(instanceState);
+        instanceDao.update(instance);
+        return instanceState;
+    }
+
+    @Override
+    public String stopInstance(String instanceId) {
+        Instance example = new Instance();
+        example.setInstanceId(instanceId);
+
+        var result = instanceDao.findAllByExample(example);
+        if (result.isEmpty())
+            throw new IllegalArgumentException(String.format("No instance exists with the id [%s]", instanceId));
+
+        Instance instance = result.get(0);
+        String instanceState = awsGateway.stopInstance(instance.getInstanceId());
+        instance.setState(instanceState);
+        instanceDao.update(instance);
+        return instanceState;
+    }
+
+    @Override
+    public String deleteInstance(String instanceId) {
+        Instance example = new Instance();
+        example.setInstanceId(instanceId);
+
+        var result = instanceDao.findAllByExample(example);
+        if (result.isEmpty())
+            throw new IllegalArgumentException(String.format("No instance exists with the id [%s]", instanceId));
+
+        Instance instance = result.get(0);
+        String instanceState = awsGateway.terminateInstance(instance.getInstanceId());
+        instance.setState(instanceState);
+        instanceDao.update(instance);
+        return instanceState;
+    }
+
+    @Override
+    public Instance getInstanceDetails(String instanceId) {
+        System.out.println("heyyyyyy  "+instanceId);
+        Instance example = new Instance();
+        example.setInstanceId(instanceId);
+
+        System.out.println(example);
+
+        List<Instance> result = instanceDao.findAllByExample(example);
+        System.out.println(result);
+        if (result.isEmpty())
+            throw new IllegalArgumentException(String.format("No instance exists with the id [%s]", instanceId));
+        Instance instance = result.get(0);
+
+        awsGateway.updateInstanceInfoFromAws(instance);
+        return instance;
+    }
+
+    @Override
+    public List<Instance> getInstancesByUserId(Integer id) {
+
+        Optional<User> optionalUser = userDao.findById(id);
+
+
+        List<Instance> grantedNonTerminatedInstances = optionalUser
+                .stream()
+                .flatMap(u -> u.getGrantedInstances().stream())
+                .filter(i -> !i.getState().equalsIgnoreCase("terminated")
+                        && !i.getState().equalsIgnoreCase("terminating"))
+                .collect(Collectors.toList());
+
+//        awsGateway.updateInstancesInfoFromAws(grantedNonTerminatedInstances);
+
+        return grantedNonTerminatedInstances;
     }
 
 }
