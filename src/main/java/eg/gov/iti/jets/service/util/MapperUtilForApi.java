@@ -85,8 +85,7 @@ public class MapperUtilForApi {
 
     public List<User> getUsers( List<Integer> studentId ) {
         List<User> listOfUser = new ArrayList<>();
-        for ( Integer id :
-                studentId ) {
+        for ( Integer id : studentId ) {
             listOfUser.add( getUser( id ) );
         }
         return listOfUser;

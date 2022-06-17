@@ -10,6 +10,7 @@ import java.util.Optional;
 
 public interface TemplateManagement {
     List<TemplateConfiguration> getTemplateConfiguration();
+    List<TemplateConfiguration> getTemplateConfigurationById(int id);
     Boolean createTemplate( TemplateConfiguration templateConfiguration);
     Boolean deleteTemplate ( int id );
 
