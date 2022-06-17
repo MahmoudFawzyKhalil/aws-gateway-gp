@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.service.management.impl;
 
+import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.persistence.dao.SecurityGroupDao;
 import eg.gov.iti.jets.persistence.dao.TemplateConfigurationDao;
 import eg.gov.iti.jets.persistence.entity.aws.Ami;
@@ -42,13 +43,9 @@ public class TemplateManagementImpl implements TemplateManagement {
     }
 
     @Override
-    public List<TemplateConfiguration> getTemplateConfigurationById( int id ) {
-        TemplateConfiguration templateConfiguration = new TemplateConfiguration();
-
-        templateConfiguration.setInstructors( new ArrayList<>(id) );
-
-        return templateConfigurationDao.findAllByExample( templateConfiguration );
-
+    public List<TemplateResponse> getTemplateConfigurationById( int id ) {
+        List<TemplateResponse> allByInstructor = templateConfigurationDao.findAllByInstructor( id, TemplateResponse.class );
+        return allByInstructor;
     }
 
     @Transactional

@@ -92,13 +92,13 @@ public class Mapper {
 
 
     public TemplateResponse mapFromTemplateToTemplateResponse( TemplateConfiguration template ) {
-        TemplateResponse templateResponse = new TemplateResponse();
-        templateResponse.setId( template.getId() );
-        templateResponse.setInstanceType( template.getInstanceType() );
-        templateResponse.setSubnetId( template.getSubnetId() );
-        templateResponse.setSecurityGroup( mapperUtilForApi.getSecurityGroupsName( template.getSecurityGroups() )  );
-        templateResponse.setAmi( mapFromAmiToAmiResponse( mapperUtilForApi.getAmiObject( template.getAmiId() ) ) );
-        return templateResponse;
+//        TemplateResponse templateResponse = new TemplateResponse();
+//        templateResponse.setId( template.getId() );
+//        templateResponse.setInstanceType( template.getInstanceType() );
+//        templateResponse.setSubnetId( template.getSubnetId() );
+//        templateResponse.setSecurityGroup( mapperUtilForApi.getSecurityGroupsName( template.getSecurityGroups() )  );
+//        templateResponse.setAmi( mapFromAmiToAmiResponse( mapperUtilForApi.getAmiObject( template.getAmiId() ) ) );
+        return null;
     }
 
 

@@ -39,17 +39,15 @@ public class TemplateController {
 
     @GetMapping
 //    @Secured( "VIEW_TEMPLATES" )
-    // TODO: 6/5/2022 get the Id?
     public ResponseEntity<?> getAllTemplates( @AuthenticationPrincipal UserAdapter userDetails ) {
         List<TemplateResponse> templateResponses = new ArrayList<>();
-        System.out.println("HHEEYYYYYYY "+userDetails.getId());
-        List<TemplateConfiguration> templateConfiguration = templateManagement.getTemplateConfiguration();
-        for ( TemplateConfiguration template :
-                templateConfiguration ) {
-            TemplateResponse templateResponse = mapper.mapFromTemplateToTemplateResponse( template );
-            templateResponses.add( templateResponse );
-        }
-        TemplateViewResponse templateViewResponse = new TemplateViewResponse( templateResponses );
+        List<TemplateResponse> templateConfiguration = templateManagement.getTemplateConfigurationById( userDetails.getId() );
+//        for ( TemplateConfiguration template :
+//                templateConfiguration ) {
+//            TemplateResponse templateResponse = mapper.mapFromTemplateToTemplateResponse( template );
+//            templateResponses.add( templateResponse );
+//        }
+        TemplateViewResponse templateViewResponse = new TemplateViewResponse( templateConfiguration );
         return new ResponseEntity<>( templateViewResponse, HttpStatus.OK );
     }
 

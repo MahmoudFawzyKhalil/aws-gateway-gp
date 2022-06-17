@@ -8,18 +8,14 @@ import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
 
-public class TemplateResponse {
-    private int id;
-    private AmiResponse ami;
-    private String subnetId;
-    private String instanceType;
+public interface TemplateResponse {
+    int getId();
+//    private AmiResponse ami;
+    String getSubnetId();
+    String getInstanceType();
     // TODO: 6/7/2022 SecurityGroup string bs ?? 
-    private List<String> securityGroup;
-    private List<UserTemplateResponse> instructors;
-    private UserTemplateResponse creator; 
+//    private List<String> securityGroup;
+//    private List<UserTemplateResponse> instructors;
+//    private UserTemplateResponse creator;
 }
