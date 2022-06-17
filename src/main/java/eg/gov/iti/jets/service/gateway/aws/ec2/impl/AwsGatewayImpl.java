@@ -162,7 +162,7 @@ class AwsGatewayImpl implements AwsGateway {
         StartInstancesRequest request = StartInstancesRequest.builder().instanceIds(instance.getInstanceId()).build();
 
         StartInstancesResponse startInstancesResponse = ec2Client.startInstances(request);
-        return startInstancesResponse.startingInstances().get(0).currentState().toString();
+        return startInstancesResponse.startingInstances().get(0).currentState().nameAsString();
     }
 
     @Override
@@ -170,7 +170,7 @@ class AwsGatewayImpl implements AwsGateway {
 
         StopInstancesRequest stopInstancesRequest = StopInstancesRequest.builder().instanceIds(instanceId).build();
         StopInstancesResponse stopInstancesResponse = ec2Client.stopInstances(stopInstancesRequest);
-        return stopInstancesResponse.stoppingInstances().get(0).currentState().toString();
+        return stopInstancesResponse.stoppingInstances().get(0).currentState().nameAsString();
     }
 
     @Override
@@ -178,7 +178,7 @@ class AwsGatewayImpl implements AwsGateway {
 
         TerminateInstancesRequest terminateInstancesRequest = TerminateInstancesRequest.builder().instanceIds(instanceId).build();
         TerminateInstancesResponse terminateInstancesResponse = ec2Client.terminateInstances(terminateInstancesRequest);
-        return terminateInstancesResponse.terminatingInstances().get(0).currentState().toString();
+        return terminateInstancesResponse.terminatingInstances().get(0).currentState().nameAsString();
     }
 
 
@@ -193,6 +193,7 @@ class AwsGatewayImpl implements AwsGateway {
         Ami ami = describeAmi( instance.getAmiId() ).get();
         instance.setName(tag.value());
         instance.setSubnetId( awsInstance.subnetId());
+        instance.setState(awsInstance.state().nameAsString());
 
         instance.setPlatform( ami.getPlatform() );
         return instance;

@@ -60,13 +60,13 @@ public interface AwsGateway {
     /**
      * Creates instance according to a predefined template.
      *
-     * @param template     A predefined template that describes the instance that will be created
-     * @param instanceName The name of the instance that will be created
-     * @param keyPair The keyPair attached to the instance
+     * @param template            A predefined template that describes the instance that will be created
+     * @param instanceName        The name of the instance that will be created
+     * @param keyPair             The keyPair attached to the instance
      * @param timeToLiveInMinutes The maximum time the instance is up before shutting down
      * @return the newly created instance
      */
-    Instance createInstance(TemplateConfiguration template, String instanceName , KeyPair keyPair , Long timeToLiveInMinutes);
+    Instance createInstance(TemplateConfiguration template, String instanceName, KeyPair keyPair, Long timeToLiveInMinutes);
 
     /**
      * Describes an already created EC2 instance

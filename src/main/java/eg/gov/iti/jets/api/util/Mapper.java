@@ -255,6 +255,7 @@ public class Mapper {
         instance.setName( instanceRequest.getInstanceName() );
         instance.setInstanceUsers( mapperUtilForApi.getUsers( instanceRequest.getStudentIds() ) );
         instance.setCreator( mapperUtilForApi.getUser( creatorId ) );
+        instance.setTimeToLiveInMinutes(instanceRequest.getTimeToLiveInMinutes());
         return instance;
     }
 

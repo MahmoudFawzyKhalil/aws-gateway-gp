@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -64,6 +65,7 @@ public class Instance {
     TemplateConfiguration templateConfiguration;
 
     @Min( 5L )
-    private Long timeToLiveInMinutes;
+    @NotNull
+    private Long timeToLiveInMinutes = 5L; // This must be provided from the frontend
 
 }
