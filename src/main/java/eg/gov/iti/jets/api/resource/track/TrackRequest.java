@@ -15,9 +15,7 @@ import java.util.List;
 @NoArgsConstructor
 
 public class TrackRequest {
-    private int id;
     private String Name;
-    private Integer IntakeId;
 
 }
 
