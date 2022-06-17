@@ -44,6 +44,7 @@ public class App {
 //                DummyData.populateStaticDataForIsmailiaBranch(instructorRole,trainingMangerRole,supervisorRole,studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
 //
 //            }
+//            templateConfigurationDao.findAllByInstructor("supervisor",TemplateConfiguration.class).forEach(t-> System.out.println(t.getAmiId()));
 //            System.out.println("------------");
 //            for(User user:userDao.getUserByBranchIdAndRoleName(1,"INSTRUCTOR")){
 //                System.out.println(user.getUsername());
@@ -134,7 +135,7 @@ public class App {
 //        var ke2 = keyPairDao.save(new KeyPair(null, "keyPairId2", "keyName2", "keyMaterial2", "keyMaterialType2", superVisorUser));
 //        SecurityGroup securityGroup = new SecurityGroup(null, "secGroupId", "secGroup1", "descriptoon", "vpcId", null, null);
 //        securityGroupDao.save(securityGroup);
-//        TemplateConfiguration templateConfiguration = new TemplateConfiguration(null, "ami1", "subnetId", "instanceType", superVisorUser, null, List.of(securityGroup));
+//        TemplateConfiguration templateConfiguration = new TemplateConfiguration(null, "ami1", "subnetId", "instanceType", superVisorUser, List.of(superVisorUser), List.of(securityGroup));
 //        TemplateConfiguration templateConfiguration2 = new TemplateConfiguration(null, "ami2", "subnetId2", "instanceType2", superVisorUser, null, List.of(securityGroup));
 //        templateConfigurationDao.save(templateConfiguration);
 //        templateConfigurationDao.save(templateConfiguration2);
