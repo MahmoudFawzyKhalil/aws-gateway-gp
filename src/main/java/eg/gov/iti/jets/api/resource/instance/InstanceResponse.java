@@ -25,7 +25,8 @@ public class InstanceResponse {
     private String decryptedPassword;
     private String username;
     private String creationDateTime;
-    private KeyPairInstanceResponse keyPair;
+    private String keyPair;
+    private Long timeToLiveInMinutes;
     private UserInstanceResponse creator;
     private List<UserInstanceResponse> instanceUsers;
     private TemplateConfigurationInstanceResponse templateConfiguration;

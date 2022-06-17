@@ -37,6 +37,7 @@ public class TemplateController {
         }
     }
 
+
     @GetMapping
 //    @Secured( "VIEW_TEMPLATES" )
     public ResponseEntity<?> getAllTemplates( @AuthenticationPrincipal UserAdapter userDetails ) {
