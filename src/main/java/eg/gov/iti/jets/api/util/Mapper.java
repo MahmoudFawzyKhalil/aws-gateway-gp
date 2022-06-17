@@ -103,6 +103,7 @@ public class Mapper {
         intakeResponse.setTrainingProgramId( intake.getTrainingProgram().getId() );
         intakeResponse.setIntakeName( intake.getName() );
         intakeResponse.setIntakeDescription( intake.getDescription() );
+        intakeResponse.setId( intake.getId() );
         return intakeResponse;
     }
 
