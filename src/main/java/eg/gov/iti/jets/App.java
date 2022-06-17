@@ -363,34 +363,34 @@ public class App {
 //                System.out.println( studentRole.getName() + " " + studentRole.getId() );
 //                User supervisorUser = userDao.save(
 //                        new User( null, "ashrf", "ashrf@g.com",
-//                                "1234", supervisorRole, null, null, null ) );
+//                                "1234", supervisorRole, null, null, null, null, null ) );
 //                User adminUser = userDao.save(
 //                        new User( null, "marwa", "m@m.com",
-//                                "1234", instructorRole, null, null, null ) );
+//                                "1234", instructorRole, null, null, null, null, null ) );
 //                User studentUser = userDao.save(
 //                        new User( null, "hesham", "h@h.com",
-//                                "1234", studentRole, null, null, null ) );
+//                                "1234", studentRole, null, null, null, null, null ) );
 //                User studentUser2 = userDao.save(
 //                        new User( null, "hossam", "ho@h.com",
-//                                "1234", studentRole, null, null, null ) );
-////                DummyData.populateStaticDataForSmartBranch(studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
-////                DummyData.populateStaticDataForIsmailiaBranch(studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
-////                DummyData.populateStaticDataForMenofiaBranch(studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
-////
-////
-////                var key = keyPairDao.save(new KeyPair(null, "keyPairId", "keyName", "keyMaterial", "keyMaterialType", superVisorUser));
-////                var ke2 = keyPairDao.save(new KeyPair(null, "keyPairId2", "keyName2", "keyMaterial2", "keyMaterialType2", superVisorUser));
-////                SecurityGroup securityGroup = new SecurityGroup(null, "secGroupId", "secGroup1", "descriptoon", "vpcId", null, null);
-////                securityGroupDao.save(securityGroup);
-////                TemplateConfiguration templateConfiguration = new TemplateConfiguration(null, "ami1", "subnetId", "instanceType", superVisorUser, null, List.of(securityGroup));
-////                TemplateConfiguration templateConfiguration2 = new TemplateConfiguration(null, "ami2", "subnetId2", "instanceType2", superVisorUser, null, List.of(securityGroup));
-////                templateConfigurationDao.save(templateConfiguration);
-////                templateConfigurationDao.save(templateConfiguration2);
-////                Instance instance = instanceDao.save(new Instance(null, "name", "amid", "instanceId", "state", "publicIp", "publicDnsName", "instanceType", "subnetId", "vpcId", "platform", "decryptedPassword", "userName", LocalDateTime.now(), key, superVisorUser, null, templateConfiguration));
-////                Instance instance2 = instanceDao.save(new Instance(null, "name2", "amid2", "instanceId2", "state2", "publicIp2", "publicDnsName2", "instanceType2", "subnetId2", "vpcId2", "platform2", "decryptedPassword2", "userName2", LocalDateTime.now(), key, superVisorUser, null, templateConfiguration2));
-////
-////                instanceDao.save(instance);
-////                instanceDao.save(instance2);
+//                                "1234", studentRole, null, null, null, null, null ) );
+//                DummyData.populateStaticDataForSmartBranch(studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
+//                DummyData.populateStaticDataForIsmailiaBranch(studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
+//                DummyData.populateStaticDataForMenofiaBranch(studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
+//
+//
+//                var key = keyPairDao.save(new KeyPair(null, "keyPairId", "keyName", "keyMaterial", "keyMaterialType", superVisorUser));
+//                var ke2 = keyPairDao.save(new KeyPair(null, "keyPairId2", "keyName2", "keyMaterial2", "keyMaterialType2", superVisorUser));
+//                SecurityGroup securityGroup = new SecurityGroup(null, "secGroupId", "secGroup1", "descriptoon", "vpcId", null, null);
+//                securityGroupDao.save(securityGroup);
+//                TemplateConfiguration templateConfiguration = new TemplateConfiguration(null, "ami1", "subnetId", "instanceType", superVisorUser, null, List.of(securityGroup));
+//                TemplateConfiguration templateConfiguration2 = new TemplateConfiguration(null, "ami2", "subnetId2", "instanceType2", superVisorUser, null, List.of(securityGroup));
+//                templateConfigurationDao.save(templateConfiguration);
+//                templateConfigurationDao.save(templateConfiguration2);
+//                Instance instance = instanceDao.save(new Instance(null, "name", "amid", "instanceId", "state", "publicIp", "publicDnsName", "instanceType", "subnetId", "vpcId", "platform", "decryptedPassword", "userName", LocalDateTime.now(), key, superVisorUser, null, templateConfiguration));
+//                Instance instance2 = instanceDao.save(new Instance(null, "name2", "amid2", "instanceId2", "state2", "publicIp2", "publicDnsName2", "instanceType2", "subnetId2", "vpcId2", "platform2", "decryptedPassword2", "userName2", LocalDateTime.now(), key, superVisorUser, null, templateConfiguration2));
+//
+//                instanceDao.save(instance);
+//                instanceDao.save(instance2);
 ////
 ////                Ami ami1 = amiDao.save(new Ami(null, "imageId", "imagwOwnerAlias", "arch", "imageName", "description", "platform"));
 ////                Ami ami2 = amiDao.save(new Ami(null, "imageId2", "imagwOwnerAlias2", "arch2", "imageName2", "description2", "platform2"));

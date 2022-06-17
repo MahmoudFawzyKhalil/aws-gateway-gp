@@ -60,7 +60,7 @@ public class InstanceManagementImpl implements InstanceManagement {
         Instance instance = new Instance();
         instance.setInstanceId( instanceId );
         Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
-        instance1.setState( s.substring( 0,s.length()-1 ) );
+        instance1.setState( "Running" );
 
         instanceDao.update( instance1 );
         return s;
@@ -73,7 +73,7 @@ public class InstanceManagementImpl implements InstanceManagement {
         Instance instance = new Instance();
         instance.setInstanceId( instanceId );
         Instance instance1 = instanceDao.findAllByExample( instance ).get( 0 );
-        instance1.setState( s.substring( 0,s.length()-1 ) );
+        instance1.setState( "Stopped" );
 
         instanceDao.update( instance1 );
         return s;
@@ -119,6 +119,7 @@ public class InstanceManagementImpl implements InstanceManagement {
             }
         }
 //        awsGateway.updateInstancesInfoFromAws( listOfInstance );
+        // TODO: 6/8/2022 mahmoud 
         return list;
     }
 
