@@ -1,6 +1,9 @@
 package eg.gov.iti.jets.persistence.entity.enums;
 
 public enum PrivilegeName {
-    TEST_PRIVILEGE_1,
-    TEST_PRIVILEGE_2,
+    CREATE_TERMINATE_INSTANCE,
+    READ,
+    VIEW_TEMPLATES,
+    MANAGE_TEMPLATE,
+    START_STOP_INSTANCE,
 }

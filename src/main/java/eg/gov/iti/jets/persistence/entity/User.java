@@ -2,10 +2,7 @@ package eg.gov.iti.jets.persistence.entity;
 
 
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -50,11 +47,7 @@ public class User {
     @OneToMany(mappedBy = "creator" ,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<Instance> createdInstances = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "user_granted_instances",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "instance_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "instance_id"}))
+    @ManyToMany(mappedBy = "instanceUsers")
     private List<Instance> grantedInstances = new ArrayList<>();
 
     @ManyToOne
