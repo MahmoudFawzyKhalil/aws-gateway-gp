@@ -21,6 +21,8 @@ public class InstanceManagementImpl implements InstanceManagement {
     private final InstanceDao instanceDao;
     private final UserDao userDao;
     private final AwsGateway awsGateway;
+    private static final long DEFAULT_INSTANCE_TTL = 60L;
+
 
     public InstanceManagementImpl(InstanceDao instanceDao, UserDao userDao, AwsGateway awsGateway) {
         this.instanceDao = instanceDao;
@@ -31,6 +33,8 @@ public class InstanceManagementImpl implements InstanceManagement {
     @Override
     @Transactional
     public Instance createInstance(Instance instanceToCreate) {
+        setDefaultTimeToLive(instanceToCreate);
+
         Instance createdInstance = awsGateway.createInstance(
                 instanceToCreate.getTemplateConfiguration(),
                 instanceToCreate.getName(),
@@ -42,6 +46,12 @@ public class InstanceManagementImpl implements InstanceManagement {
         createdInstance.setTemplateConfiguration(instanceToCreate.getTemplateConfiguration());
         createdInstance.setCreationDateTime(LocalDateTime.now());
         return instanceDao.save(createdInstance);
+    }
+
+    private void setDefaultTimeToLive(Instance instanceToCreate) {
+        if (instanceToCreate.getTimeToLiveInMinutes() == null) {
+            instanceToCreate.setTimeToLiveInMinutes(DEFAULT_INSTANCE_TTL);
+        }
     }
 
     @Override
@@ -119,7 +129,7 @@ public class InstanceManagementImpl implements InstanceManagement {
                         && !i.getState().equalsIgnoreCase("terminating"))
                 .collect(Collectors.toList());
 
-        awsGateway.updateInstancesInfoFromAws( grantedNonTerminatedInstances );
+        awsGateway.updateInstancesInfoFromAws(grantedNonTerminatedInstances);
 
         return grantedNonTerminatedInstances;
     }
