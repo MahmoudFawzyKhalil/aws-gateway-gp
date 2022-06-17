@@ -8,6 +8,7 @@ import eg.gov.iti.jets.api.resource.instance.InstanceRequest;
 import eg.gov.iti.jets.api.resource.instance.InstanceResponse;
 import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeObjectResponse;
 import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeResponse;
+import eg.gov.iti.jets.api.resource.role.*;
 import eg.gov.iti.jets.api.resource.securityGroup.SecurityGroupResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetResponse;
@@ -15,10 +16,6 @@ import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
 import eg.gov.iti.jets.api.resource.privilege.AddPrivilegeRequest;
 import eg.gov.iti.jets.api.resource.privilege.GetPrivilegeResponse;
-import eg.gov.iti.jets.api.resource.role.PrivilegeType;
-import eg.gov.iti.jets.api.resource.role.AddRoleRequest;
-import eg.gov.iti.jets.api.resource.role.RoleResponse;
-import eg.gov.iti.jets.api.resource.role.UpdateRoleRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.api.resource.track.TrackRequest;
@@ -274,8 +271,8 @@ public class Mapper {
         return role;
     }
 
-    public RoleResponse roleToRoleResponse(Role role ) {
-        RoleResponse getRoleResponse = new RoleResponse();
+    public GetRoleResponse roleToGetRoleResponse(Role role ) {
+        GetRoleResponse getRoleResponse = new GetRoleResponse();
         getRoleResponse.setId(role.getId());
         getRoleResponse.setName( role.getName() );
         getRoleResponse.setPrivileges( role.getPrivileges().stream().map(
@@ -288,6 +285,16 @@ public class Mapper {
         ).collect( Collectors.toList() ) );
         return getRoleResponse;
     }
+
+    public RoleResponse roleToRoleResponse(Role role) {
+        RoleResponse roleResponse = new RoleResponse();
+        roleResponse.setId(role.getId());
+        roleResponse.setPrivileges(
+                role.getPrivileges().stream().map(Privilege::getId).collect(Collectors.toList())
+        );
+        return roleResponse;
+    }
+
 
     public Role updateRoleRequestToRole( UpdateRoleRequest updateRoleRequest ) {
         Role role = new Role();
