@@ -36,7 +36,7 @@ public class InstanceController {
         Integer id = userDetails.getId();
         Instance instance = mapper.mapFromInstanceReqToInstance(instanceRequest, id);
         instanceManagement.createInstance(instance);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(new SuccessResponse(true));
     }
 
     @GetMapping("start/{instanceId}")
@@ -62,6 +62,7 @@ public class InstanceController {
 
     @GetMapping("{instanceId}")
     InstanceResponse getDetails(@PathVariable String instanceId) {
+        System.out.println(instanceId);
         Instance instance = instanceManagement.getInstanceDetails(instanceId);
 
         return mapper.mapFromInstanceToInstanceResponse(instance);

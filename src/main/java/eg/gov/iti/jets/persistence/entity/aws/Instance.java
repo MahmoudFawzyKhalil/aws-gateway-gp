@@ -66,6 +66,6 @@ public class Instance {
 
     @Min( 5L )
     @NotNull
-    private Long timeToLiveInMinutes = 5L; // This must be provided from the frontend
+    private Long timeToLiveInMinutes; // This must be provided from the frontend
 
 }

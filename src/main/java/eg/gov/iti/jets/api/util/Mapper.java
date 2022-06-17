@@ -168,7 +168,7 @@ public class Mapper {
         instanceResponse.setVpcId( instance.getVpcId() );
         instanceResponse.setSubnetId( instance.getSubnetId() );
         instanceResponse.setAmiId( instance.getAmiId() );
-//        instanceResponse.setKeyPair( instance.getKeyPair() );
+        instanceResponse.setKeyPair( instance.getKeyPair().getKeyMaterial() );
         instanceResponse.setPlatform( instance.getPlatform() );
         instanceResponse.setCreationDateTime( instance.getCreationDateTime().toString() );
         instanceResponse.setDecryptedPassword( instance.getDecryptedPassword() );
@@ -176,6 +176,7 @@ public class Mapper {
         instanceResponse.setPublicDnsName( instance.getPublicDnsName() );
         instanceResponse.setUsername( instance.getUsername() );
         instanceResponse.setState( instance.getState() );
+        instanceResponse.setTimeToLiveInMinutes( instance.getTimeToLiveInMinutes() );
         return instanceResponse;
     }
 

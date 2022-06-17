@@ -104,10 +104,14 @@ public class InstanceManagementImpl implements InstanceManagement {
 
     @Override
     public Instance getInstanceDetails(String instanceId) {
+        System.out.println("heyyyyyy  "+instanceId);
         Instance example = new Instance();
         example.setInstanceId(instanceId);
 
-        var result = instanceDao.findAllByExample(example);
+        System.out.println(example);
+
+        List<Instance> result = instanceDao.findAllByExample(example);
+        System.out.println(result);
         if (result.isEmpty())
             throw new IllegalArgumentException(String.format("No instance exists with the id [%s]", instanceId));
         Instance instance = result.get(0);
@@ -129,7 +133,7 @@ public class InstanceManagementImpl implements InstanceManagement {
                         && !i.getState().equalsIgnoreCase("terminating"))
                 .collect(Collectors.toList());
 
-        awsGateway.updateInstancesInfoFromAws(grantedNonTerminatedInstances);
+//        awsGateway.updateInstancesInfoFromAws(grantedNonTerminatedInstances);
 
         return grantedNonTerminatedInstances;
     }
