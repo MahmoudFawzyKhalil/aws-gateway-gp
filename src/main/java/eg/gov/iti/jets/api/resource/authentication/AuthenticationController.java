@@ -2,6 +2,9 @@ package eg.gov.iti.jets.api.resource.authentication;
 
 import eg.gov.iti.jets.api.util.JwtUtil;
 import eg.gov.iti.jets.service.management.UserManagement;
+import eg.gov.iti.jets.service.model.UserAdapter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,14 +25,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/login")
-    public AuthenticationResponse authenticateUser(@RequestBody AuthenticationRequest authReq) {
+    public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest authReq) {
         String jwt = authenticate(authReq.getUsername(), authReq.getPassword());
-        return new AuthenticationResponse(jwt);
-    }
-
-    @GetMapping("/users")
-    public String test() {
-        return "test users read and write authorities";
+        return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.ACCEPTED);
     }
 
     @GetMapping("/admin")
@@ -49,7 +47,7 @@ public class AuthenticationController {
         }catch (BadCredentialsException e){
             throw new RuntimeException("Incorrect username or password", e);
         }
-        UserDetails userDetails = userService.loadUserByUsername(username);
+        UserAdapter userDetails = userService.loadUserByUsername(username);
         return jwtUtil.generateToken(userDetails);
     }
 }

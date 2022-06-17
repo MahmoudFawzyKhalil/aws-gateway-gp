@@ -1,13 +1,15 @@
 package eg.gov.iti.jets.service.management;
 
 import eg.gov.iti.jets.persistence.entity.Branch;
+import eg.gov.iti.jets.persistence.entity.TrainingProgram;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface BranchManagement {
-    Boolean createBranch( Branch branch );
+    Branch createBranch( Branch branch );
     Branch updateBranch( Branch branch );
-    Boolean deleteBranch( int id );
     List<Branch> getAllBranches();
-    Branch getBranchById( int id );
+    Optional<Branch> getBranchById(int id );
+    List<TrainingProgram> getTrainingProgramByBranchId( int branchId );
 }

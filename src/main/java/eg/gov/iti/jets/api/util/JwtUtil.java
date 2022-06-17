@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.api.util;
 
+import eg.gov.iti.jets.service.model.UserAdapter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -39,6 +41,8 @@ public class JwtUtil {
         return extractClaim(token, Claims::getExpiration);
     }
 
+    public List<String> extractRoles(String token){ return (List<String>) extractClaim(token, claims->claims.get(TOKEN_PRIVILEGES));}
+
     public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
@@ -51,10 +55,10 @@ public class JwtUtil {
         return extractExpirationDate(token).before(new Date());
     }
 
-    public String generateToken(UserDetails userDetails) {
+    public String generateToken(UserAdapter userDetails) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(TOKEN_PRIVILEGES, userDetails.getAuthorities().stream().map(GrantedAuthority::getAuthority).collect(Collectors.toList()));
-        claims.put(TOKEN_ID, "dumb id");
+        claims.put(TOKEN_ID, userDetails.getId());
         return createToken(claims, userDetails.getUsername());
     }
 

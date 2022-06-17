@@ -1,71 +1,86 @@
 package eg.gov.iti.jets.api.resource.instance;
 
 
-import eg.gov.iti.jets.service.management.impl.InstanceManagementImpl;
+import eg.gov.iti.jets.api.util.Mapper;
+import eg.gov.iti.jets.persistence.entity.aws.Ami;
+import eg.gov.iti.jets.persistence.entity.aws.Instance;
+import eg.gov.iti.jets.service.management.InstanceManagement;
+import eg.gov.iti.jets.service.model.UserAdapter;
+import eg.gov.iti.jets.service.util.MapperUtilForApi;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("api/instances")
 public class InstanceController {
 
-    private final InstanceManagementImpl instanceManagement;
+    @Autowired
+    MapperUtilForApi mapperUtilForApi;
+    private final InstanceManagement instanceManagement;
 
-    public InstanceController( InstanceManagementImpl instanceManagement) {
+    final Mapper mapper;
+
+    public InstanceController( InstanceManagement instanceManagement, Mapper mapper ) {
         this.instanceManagement = instanceManagement;
+        this.mapper = mapper;
     }
 
-    @PostMapping("create")
-    void createInstances(){
-        instanceManagement.createInstances();
+
+    @PostMapping
+    SuccessResponse createInstance( @RequestBody  InstanceRequest instanceRequest , @AuthenticationPrincipal UserAdapter userDetails){
+        Integer id = userDetails.getId();
+        Instance instance1 = mapper.mapFromInstanceReqToInstance( instanceRequest, id );
+        Instance instance = instanceManagement.createInstance( instance1 );
+        return new SuccessResponse(instance != null);
     }
 
-    @DeleteMapping("delete")
-    void deleteInstances(){
-        instanceManagement.deleteInstances();
+    @GetMapping("start/{instanceId}")
+    SuccessResponse startInstance (@PathVariable String instanceId){
+        String s = instanceManagement.startInstance( instanceId );
+        System.out.println(s);
+        return new SuccessResponse(true);
+    }
+
+
+    @GetMapping("stop/{instanceId}")
+    SuccessResponse stopInstance (@PathVariable String instanceId){
+        String s = instanceManagement.stopInstance( instanceId );
+        return new SuccessResponse(true);
+    }
+
+
+    @DeleteMapping("delete/{instanceId}")
+    SuccessResponse deleteInstance (@PathVariable String instanceId){
+        String s = instanceManagement.deleteInstance( instanceId );
+        return new SuccessResponse(true);
+    }
+
+    @GetMapping("{instanceId}")
+    InstanceResponse getDetails (@PathVariable String instanceId){
+        Instance instance = instanceManagement.instanceDetails( instanceId );
+
+        return mapper.mapFromInstanceToInstanceResponse( instance );
     }
 
     @GetMapping
-    void getAllInstances(){
-        instanceManagement.getAllInstances();
+    InstanceObjectResponse getInstances ( @AuthenticationPrincipal UserAdapter userDetails ){
+        Integer id = userDetails.getId();
+        List<InstanceResponse> list = new ArrayList<>();
+        List<Instance> instancesByUserId = instanceManagement.getInstancesByUserId( id );
+        for ( Instance instance:
+              instancesByUserId ) {
+            list.add( mapper.mapFromInstanceToInstanceResponse( instance ) );
+        }
+        return new InstanceObjectResponse(list);
     }
-
-    @GetMapping("{branchName}")
-    void getAllBranchInstances(@PathVariable String branchName){
-        instanceManagement.getAllBranchInstances(branchName);
-    }
-
-    @GetMapping ("{trackName}")
-    void getAllTrackInstances(@PathVariable String trackName){
-        instanceManagement.getAllTrackInstances(trackName);
-    }
-
-
-    @PostMapping("instnace/assign")
-    void assignInstance(){
-        instanceManagement.assignInstance();
-    }
-
-    @PostMapping("customInstance/create")
-    void createInstanceUsingTemplate(){
-        instanceManagement.createInstanceUsingTemplate();
-    }
-
-    @GetMapping("instance/{id}")
-    void getInstance(@PathVariable String id){
-        instanceManagement.getInstance(id);
-    }
-
-    @GetMapping("instance/start/{id}")
-    void startInstance(@PathVariable String id){
-        instanceManagement.startInstance(id);
-    }
-
-    @GetMapping("instance/stop/{id}")
-    void stopInstance(@PathVariable String id){
-        instanceManagement.stopInstance(id);
-    }
-
-
 
 
 }

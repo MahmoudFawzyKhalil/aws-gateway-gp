@@ -5,9 +5,6 @@ import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
-import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
-import eg.gov.iti.jets.service.gateway.aws.ec2.scheduler.RunningTasks;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -18,53 +15,11 @@ import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
-public class App implements CommandLineRunner {
-    @Autowired
-    AwsGateway timerProxy;
+public class App {
+    public static void main(String[] args) {
 
-    public static void main( String[] args ) {
-
-        SpringApplication.run( App.class, args );
+        SpringApplication.run(App.class, args);
     }
-
-    @Override
-    public void run( String... args ) throws Exception {
-
-        SecurityGroup e1 = new SecurityGroup();
-        e1.setSecurityGroupId( "sg-03dcd9906dcb0a772" );
-
-        TemplateConfiguration templateConfiguration = new TemplateConfiguration();
-        templateConfiguration.setInstanceType( "t2.micro" );
-        templateConfiguration.setAmiId( "ami-0022f774911c1d690" );
-        templateConfiguration.setSecurityGroups( List.of( e1 ) );
-        templateConfiguration.setSubnetId( "subnet-0ba09c918db78df91" );
-        KeyPair keyPair = new KeyPair();
-        keyPair.setKeyName( "key1" );
-
-        //sout map
-        System.out.println( RunningTasks.INSTANCE.toString() );
-        //create instance with time to live 2 min
-        Instance instance = timerProxy.createInstance( templateConfiguration, "samy2" , keyPair , 2l);
-        //sout map
-        System.out.println( RunningTasks.INSTANCE.toString() );
-        // After 1.5 min stop instance
-        Thread.sleep( 90_000 );
-        timerProxy.stopInstance( instance.getInstanceId() );
-        //wait for 30 sec until the instance is stopped
-        Thread.sleep( 30_000 );
-        //sout map
-        System.out.println( RunningTasks.INSTANCE.toString() );
-
-        //start instance
-        timerProxy.startInstance( instance );
-        //sout map
-        System.out.println( RunningTasks.INSTANCE.toString() );
-        // wait for the whole ttl to finish
-        Thread.sleep( 130_000 );
-        //sout map
-        System.out.println( RunningTasks.INSTANCE.toString() );
-    }
-}
 
 //    @Bean
 //    CommandLineRunner commandLineRunner(IntakeDao intakeDao, TrackDao trackDao, TrainingProgramDao trainingProgramDao, BranchDao branchDao, PrivilegeDao privilegeDao, SecurityGroupDao securityGroupDao, RoleDao roleDao, UserDao userDao, KeyPairDao keyPairDao, InstanceDao instanceDao, AmiDao amiDao, TemplateConfigurationDao templateConfigurationDao) {
@@ -73,8 +28,8 @@ public class App implements CommandLineRunner {
 //            if (roleDao.findAllByExample(new Role(null, "STUDENT", null)).isEmpty()) {
 //
 //                // rules and privileges for all branches
-//                Privilege privilege = new Privilege(null, PrivilegeName.TEST_PRIVILEGE_1, null);
-//                Privilege privilege2 = new Privilege(null, PrivilegeName.TEST_PRIVILEGE_2, null);
+//                Privilege privilege = new Privilege(null, PrivilegeName.CREATE_TERMINATE_INSTANCE, null);
+//                Privilege privilege2 = new Privilege(null, PrivilegeName.MANAGE_TEMPLATE, null);
 //                privilege = privilegeDao.save(privilege);
 //                privilege2 = privilegeDao.save(privilege2);
 //
@@ -89,6 +44,7 @@ public class App implements CommandLineRunner {
 //                DummyData.populateStaticDataForIsmailiaBranch(instructorRole,trainingMangerRole,supervisorRole,studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
 //
 //            }
+//            templateConfigurationDao.findAllByInstructor("supervisor",TemplateConfiguration.class).forEach(t-> System.out.println(t.getAmiId()));
 //            System.out.println("------------");
 //            for(User user:userDao.getUserByBranchIdAndRoleName(1,"INSTRUCTOR")){
 //                System.out.println(user.getUsername());
@@ -96,23 +52,23 @@ public class App implements CommandLineRunner {
 //
 //            userDao.getAllByTrackAndRole(1,"STUDENT",User.class).forEach(u -> System.out.println(u.getUsername()));
 //            System.out.println("-------------------------");
-//                //            List<Branch> branches = branchDao.findAllByExample(new Branch(null,"smart",null,null,null));
-//                //            branches.forEach(b-> System.out.println(b.getName()));
-//                //            System.out.println("Finished Inserting");
-//                //            System.out.println("all users students in java track");
-//                //            Optional<Track> javaTrack = trackDao.findById(1);
-//                //            Optional<Role> studentRole = roleDao.findById(3);
-//                //            List<User> users = userDao.findAllUsersByTrackAndRole(javaTrack.get(), studentRole.get());
-//                //            users.forEach(b-> System.out.println(b.getEmail()));
-//                //            System.out.println("all users in track");
-//                //            List<User> allUsers = userDao.findAllUsersByTrack(javaTrack.get());
-//                //            allUsers.forEach(b-> System.out.println(b.getEmail()));
-//                //            Optional<Role> studentRole = roleDao.findById(2);
-//                //            List<User> users = userDao.findAllUsersByRole( studentRole.get());
-//                //            users.forEach(b-> System.out.println(b.getEmail()));
-//                //            Optional<User> userInstructor =  userDao.findById(5);
-//                //            List<User> users = userDao.findAllFollowers(userInstructor.get());
-//                //            users.forEach(b-> System.out.println(b.getEmail()));
+////                            List<Branch> branches = branchDao.findAllByExample(new Branch(null,BranchStatus.ACTIVE,"smart",null,null,null));
+////                            branches.forEach(b-> System.out.println(b.getName()));
+////                            System.out.println("Finished Inserting");
+////                            System.out.println("all users students in java track");
+////                            Optional<Track> javaTrack = trackDao.findById(1);
+////                            Optional<Role> studentRole = roleDao.findById(3);
+////                            List<User> users = userDao.findAllUsersByTrackAndRole(javaTrack.get(), studentRole.get());
+////                            users.forEach(b-> System.out.println(b.getEmail()));
+////                            System.out.println("all users in track");
+////                            List<User> allUsers = userDao.findAllUsersByTrack(javaTrack.get());
+////                            allUsers.forEach(b-> System.out.println(b.getEmail()));
+////                            Optional<Role> studentRole = roleDao.findById(2);
+////                            List<User> users = userDao.findAllUsersByRole( studentRole.get());
+////                            users.forEach(b-> System.out.println(b.getEmail()));
+////                            Optional<User> userInstructor =  userDao.findById(5);
+////                            List<User> users = userDao.findAllFollowers(userInstructor.get());
+////                            users.forEach(b-> System.out.println(b.getEmail()));
 //        };
 //    }
 //
@@ -179,7 +135,7 @@ public class App implements CommandLineRunner {
 //        var ke2 = keyPairDao.save(new KeyPair(null, "keyPairId2", "keyName2", "keyMaterial2", "keyMaterialType2", superVisorUser));
 //        SecurityGroup securityGroup = new SecurityGroup(null, "secGroupId", "secGroup1", "descriptoon", "vpcId", null, null);
 //        securityGroupDao.save(securityGroup);
-//        TemplateConfiguration templateConfiguration = new TemplateConfiguration(null, "ami1", "subnetId", "instanceType", superVisorUser, null, List.of(securityGroup));
+//        TemplateConfiguration templateConfiguration = new TemplateConfiguration(null, "ami1", "subnetId", "instanceType", superVisorUser, List.of(superVisorUser), List.of(securityGroup));
 //        TemplateConfiguration templateConfiguration2 = new TemplateConfiguration(null, "ami2", "subnetId2", "instanceType2", superVisorUser, null, List.of(securityGroup));
 //        templateConfigurationDao.save(templateConfiguration);
 //        templateConfigurationDao.save(templateConfiguration2);
@@ -301,5 +257,5 @@ public class App implements CommandLineRunner {
 //        Track qualityControl = new Track(null, "QA", intake42, List.of(studentUser12, studentUser13));
 //        qualityControl = trackDao.save(qualityControl);
 //    }
-//
-//}
+
+}
