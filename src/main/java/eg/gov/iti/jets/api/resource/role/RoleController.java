@@ -4,6 +4,8 @@ import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.service.management.RoleManagement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.stream.Collectors;
@@ -16,30 +18,32 @@ public class RoleController {
     private final Mapper mapper;
 
     @PostMapping
-    public Boolean addRole(@RequestBody AddRoleRequest roleRequest) {
-        return roleManagement.addRole(mapper.addRoleRequestToRole(roleRequest));
+    public ResponseEntity<RoleResponse> addRole(@RequestBody AddRoleRequest roleRequest) {
+        Role role = roleManagement.addRole(mapper.addRoleRequestToRole(roleRequest));
+        return new ResponseEntity<>(mapper.roleToRoleResponse(role), HttpStatus.CREATED);
     }
 
     @GetMapping
-    public GetAllRolesResponse getAllRoles() {
+    public ResponseEntity<GetAllRolesResponse> getAllRoles() {
         GetAllRolesResponse getRolesResponse = new GetAllRolesResponse();
         getRolesResponse.setRoles(
                 roleManagement.getAllRole().stream()
                         .map(mapper::roleToGetRoleResponse)
                         .collect(Collectors.toList())
         );
-       return getRolesResponse;
+       return new ResponseEntity<>(getRolesResponse, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public GetRoleResponse getRole(@PathVariable("id") int id){
-       return mapper.roleToGetRoleResponse(roleManagement.getRoleById(id));
+    public ResponseEntity<GetRoleResponse> getRole(@PathVariable("id") int id){
+       return new ResponseEntity<>(mapper.roleToGetRoleResponse(roleManagement.getRoleById(id)), HttpStatus.OK);
     }
 
     @PutMapping
-    public Boolean updateRole(@RequestBody UpdateRoleRequest updateRoleRequest) {
+    public ResponseEntity<RoleResponse> updateRole(@RequestBody UpdateRoleRequest updateRoleRequest) {
         Role role = mapper.updateRoleRequestToRole(updateRoleRequest);
-        return roleManagement.updateRole(role);
+        role = roleManagement.updateRole(role);
+        return new ResponseEntity<>(mapper.roleToRoleResponse(role), HttpStatus.OK);
     }
 
 }

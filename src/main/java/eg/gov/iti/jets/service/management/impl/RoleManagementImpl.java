@@ -2,7 +2,8 @@ package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.persistence.dao.RoleDao;
 import eg.gov.iti.jets.persistence.entity.Role;
-import eg.gov.iti.jets.persistence.entity.User;
+import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.RoleManagement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,17 +16,16 @@ public class RoleManagementImpl implements RoleManagement {
     private final RoleDao roleDao;
 
     @Override
-    public Boolean addRole( Role role ) {
+    public Role addRole( Role role ) {
        try {
-           roleDao.save(role);
-           return true;
+           return roleDao.save(role);
        }catch (Exception e) {
-           throw new RuntimeException("Role already exist");
+           throw new ResourceExistException("Role with name " + role.getName() + ", is already exist!");
        }
     }
 
     @Override
-    public Boolean deleteRole( int id ) {
+    public Boolean deleteRole(Integer id ) {
         return null;
     }
 
@@ -35,17 +35,16 @@ public class RoleManagementImpl implements RoleManagement {
     }
 
     @Override
-    public Role getRoleById( int id ) {
-        return roleDao.findById(id).orElseThrow(()->new RuntimeException("Not found role with id"));
+    public Role getRoleById(Integer id ) {
+        return roleDao.findById(id).orElseThrow(()->new ResourceNotFoundException("Role with id " + id + ", is not found"));
     }
 
     @Override
-    public Boolean updateRole(Role role) {
+    public Role updateRole(Role role) {
         try {
-            roleDao.update(role);
-            return true;
+            return roleDao.update(role);
         }catch (Exception e) {
-            throw new RuntimeException("Could not update role with id");
+            throw new ResourceNotFoundException("Could not update role with id " + role.getId());
         }
     }
 }
