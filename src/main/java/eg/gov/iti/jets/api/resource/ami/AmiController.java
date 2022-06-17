@@ -16,10 +16,16 @@ import java.util.Optional;
 @RequestMapping("/api/ami")
 public class AmiController {
 
-    @Autowired
+    final
     Mapper mapper;
-    @Autowired
+    final
     AmiAws amiAws;
+
+    public AmiController( Mapper mapper, AmiAws amiAws ) {
+        this.mapper = mapper;
+        this.amiAws = amiAws;
+    }
+
     @PostMapping()
     public AmiViewResponse getAmi( @RequestBody AmiRequest amiRequest){
         Optional<Ami> ami = amiAws.describeAmi( amiRequest.getAmiId() );

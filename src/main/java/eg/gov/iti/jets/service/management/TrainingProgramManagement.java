@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.service.management;
 
+import eg.gov.iti.jets.persistence.entity.Intake;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
 
 import java.util.List;
@@ -16,5 +17,5 @@ public interface TrainingProgramManagement {
 
     public TrainingProgram getTrainingProgramById( int id );
 
-    List<TrainingProgram> getTrainingProgramByBranchId( int branchId );
+    List<Intake> getIntakeByProgramId( int programId );
 }

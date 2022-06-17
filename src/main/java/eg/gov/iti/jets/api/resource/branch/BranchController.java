@@ -75,11 +75,9 @@ public class BranchController {
 
     @GetMapping("{branchId}/trainingPrograms")
     public ResponseEntity<GetTrainingProgramsResponse> getTrainingProgramsByBranchId( @PathVariable int branchId){
-        List<TrainingProgram> trainingProgramByBranchId = trainingProgramManagement.getTrainingProgramByBranchId( branchId );
+        List<TrainingProgram> trainingProgramByBranchId = branchManagement.getTrainingProgramByBranchId( branchId );
         List<TrainingProgramResponse> trainingProgramResponse = new ArrayList<>();
-        trainingProgramByBranchId.forEach( trainingProgram -> {
-            trainingProgramResponse.add( mapper.mapFromTrainingProgramToTrainingProgramResponse( trainingProgram ) );
-        } );
+        trainingProgramByBranchId.forEach( trainingProgram -> trainingProgramResponse.add( mapper.mapFromTrainingProgramToTrainingProgramResponse( trainingProgram ) ) );
         GetTrainingProgramsResponse trainingProgramsResponse = new GetTrainingProgramsResponse( trainingProgramResponse );
         return new ResponseEntity<>(  trainingProgramsResponse  , HttpStatus.OK);
     }

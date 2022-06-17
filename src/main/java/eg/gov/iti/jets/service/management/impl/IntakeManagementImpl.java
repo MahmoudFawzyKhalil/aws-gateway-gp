@@ -2,9 +2,11 @@ package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.persistence.dao.BranchDao;
 import eg.gov.iti.jets.persistence.dao.IntakeDao;
+import eg.gov.iti.jets.persistence.dao.TrackDao;
 import eg.gov.iti.jets.persistence.dao.TrainingProgramDao;
 import eg.gov.iti.jets.persistence.entity.Branch;
 import eg.gov.iti.jets.persistence.entity.Intake;
+import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
 import eg.gov.iti.jets.service.management.CrudOperations;
 import eg.gov.iti.jets.service.management.IntakeManagement;
@@ -21,6 +23,8 @@ public class IntakeManagementImpl implements IntakeManagement {
     IntakeDao intakeDao;
     @Autowired
     TrainingProgramDao trainingProgramDao;
+    @Autowired
+    TrackDao trackDao;
 
     @Override
     public Intake createIntake(Intake intake) {
@@ -42,14 +46,17 @@ public class IntakeManagementImpl implements IntakeManagement {
         return intakeDao.findById(id);
     }
 
+
+
     @Override
-    public List<Intake> getIntakeByProgramId( int programId ) {
-        Optional<TrainingProgram> trainingProgram = trainingProgramDao.findById( programId );
-        Intake intakeExample = new Intake();
-        trainingProgram.ifPresent( intakeExample::setTrainingProgram );
-        List<Intake> intakes = intakeDao.findAllByExample( intakeExample );
-        return intakes;
+    public List<Track> getTrackByIntakeId( int intakeId ) {
+        Optional<Intake> intake = intakeDao.findById( intakeId );
+        Track track = new Track();
+        intake.ifPresent( track::setIntake );
+        List<Track> listOfTracks = trackDao.findAllByExample( track );
+        return listOfTracks;
     }
+
 
 //    @Override
 //    public Optional<Intake> getUserInIntakeById(int id) {

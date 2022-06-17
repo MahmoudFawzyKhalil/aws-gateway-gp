@@ -1,6 +1,8 @@
 package eg.gov.iti.jets.service.management;
 
 import eg.gov.iti.jets.persistence.entity.Intake;
+import eg.gov.iti.jets.persistence.entity.Track;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -13,5 +15,7 @@ public interface IntakeManagement {
 
     Optional<Intake> getIntakeById(int id);
 
-    List<Intake> getIntakeByProgramId( int programId );
+
+
+    List<Track> getTrackByIntakeId( int intakeId );
 }

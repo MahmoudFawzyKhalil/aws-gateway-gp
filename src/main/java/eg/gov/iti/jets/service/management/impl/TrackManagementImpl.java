@@ -43,12 +43,5 @@ public class TrackManagementImpl implements TrackManagement {
         return trackDao.findById(id);
     }
 
-    @Override
-    public List<Track> getTrackByIntakeId( int intakeId ) {
-        Optional<Intake> intake = intakeDao.findById( intakeId );
-        Track track = new Track();
-        intake.ifPresent( track::setIntake );
-        List<Track> listOfTracks = trackDao.findAllByExample( track );
-        return listOfTracks;
-    }
+
 }

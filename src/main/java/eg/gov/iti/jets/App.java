@@ -29,7 +29,7 @@ public class App {
 //
 //                // rules and privileges for all branches
 //                Privilege privilege = new Privilege(null, PrivilegeName.CREATE_TERMINATE_INSTANCE, null);
-//                Privilege privilege2 = new Privilege(null, PrivilegeName.CREATE_TERMINATE_INSTANCE, null);
+//                Privilege privilege2 = new Privilege(null, PrivilegeName.MANAGE_TEMPLATE, null);
 //                privilege = privilegeDao.save(privilege);
 //                privilege2 = privilegeDao.save(privilege2);
 //
@@ -51,23 +51,23 @@ public class App {
 //
 //            userDao.getAllByTrackAndRole(1,"STUDENT",User.class).forEach(u -> System.out.println(u.getUsername()));
 //            System.out.println("-------------------------");
-//                //            List<Branch> branches = branchDao.findAllByExample(new Branch(null,"smart",null,null,null));
-//                //            branches.forEach(b-> System.out.println(b.getName()));
-//                //            System.out.println("Finished Inserting");
-//                //            System.out.println("all users students in java track");
-//                //            Optional<Track> javaTrack = trackDao.findById(1);
-//                //            Optional<Role> studentRole = roleDao.findById(3);
-//                //            List<User> users = userDao.findAllUsersByTrackAndRole(javaTrack.get(), studentRole.get());
-//                //            users.forEach(b-> System.out.println(b.getEmail()));
-//                //            System.out.println("all users in track");
-//                //            List<User> allUsers = userDao.findAllUsersByTrack(javaTrack.get());
-//                //            allUsers.forEach(b-> System.out.println(b.getEmail()));
-//                //            Optional<Role> studentRole = roleDao.findById(2);
-//                //            List<User> users = userDao.findAllUsersByRole( studentRole.get());
-//                //            users.forEach(b-> System.out.println(b.getEmail()));
-//                //            Optional<User> userInstructor =  userDao.findById(5);
-//                //            List<User> users = userDao.findAllFollowers(userInstructor.get());
-//                //            users.forEach(b-> System.out.println(b.getEmail()));
+////                            List<Branch> branches = branchDao.findAllByExample(new Branch(null,BranchStatus.ACTIVE,"smart",null,null,null));
+////                            branches.forEach(b-> System.out.println(b.getName()));
+////                            System.out.println("Finished Inserting");
+////                            System.out.println("all users students in java track");
+////                            Optional<Track> javaTrack = trackDao.findById(1);
+////                            Optional<Role> studentRole = roleDao.findById(3);
+////                            List<User> users = userDao.findAllUsersByTrackAndRole(javaTrack.get(), studentRole.get());
+////                            users.forEach(b-> System.out.println(b.getEmail()));
+////                            System.out.println("all users in track");
+////                            List<User> allUsers = userDao.findAllUsersByTrack(javaTrack.get());
+////                            allUsers.forEach(b-> System.out.println(b.getEmail()));
+////                            Optional<Role> studentRole = roleDao.findById(2);
+////                            List<User> users = userDao.findAllUsersByRole( studentRole.get());
+////                            users.forEach(b-> System.out.println(b.getEmail()));
+////                            Optional<User> userInstructor =  userDao.findById(5);
+////                            List<User> users = userDao.findAllFollowers(userInstructor.get());
+////                            users.forEach(b-> System.out.println(b.getEmail()));
 //        };
 //    }
 //

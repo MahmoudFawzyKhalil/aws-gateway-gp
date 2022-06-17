@@ -16,5 +16,4 @@ public interface TrackManagement {
 
     Optional<Track> getTrackById(int id);
 
-    List<Track> getTrackByIntakeId( int intakeId );
 }
