@@ -22,6 +22,7 @@ import eg.gov.iti.jets.api.resource.role.GetRoleResponse;
 import eg.gov.iti.jets.api.resource.role.UpdateRoleRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
+import eg.gov.iti.jets.api.resource.track.TrackPutRequest;
 import eg.gov.iti.jets.api.resource.track.TrackRequest;
 import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramPutRequest;
@@ -178,9 +179,6 @@ public class Mapper {
 
     public Track mapFromTrackRequestToTrack( TrackRequest trackRequest ) {
         Track track = new Track();
-        Intake intake = mapperUtilForApi.getIntackById( trackRequest.getIntakeId() );
-        track.setIntake( intake );
-        track.setId( trackRequest.getId() );
         track.setName( trackRequest.getName() );
         return track;
     }
@@ -189,14 +187,21 @@ public class Mapper {
     public TrackResponse mapFromTrackToTrackResponse( Track track ) {
         TrackResponse trackResponse = new TrackResponse();
         trackResponse.setName( track.getName() );
-        trackResponse.setIntakeId( track.getIntake().getId() );
+        trackResponse.setId(track.getId());
         return trackResponse;
     }
+
 
     public List<TrackResponse> mapFromListOfTracksToListOfTrackResponses( List<Track> tracks ) {
         List<TrackResponse> trackResponses =
                 tracks.stream().map( e -> this.mapFromTrackToTrackResponse( e ) ).collect( Collectors.toList() );
         return trackResponses;
+    }
+
+    public Track mapFromTrackPutRequestToBranch(TrackPutRequest trackPutRequest, int id ) {
+        Track track = mapperUtilForApi.getTrackById(id);
+        track.setName( trackPutRequest.getName() );
+        return track;
     }
 
     public Instance mapFromInstanceRequestToInstance( IntakeRequest intakeRequest ) {
