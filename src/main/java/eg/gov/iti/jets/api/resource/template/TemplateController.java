@@ -1,8 +1,6 @@
 package eg.gov.iti.jets.api.resource.template;
 
 import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.persistence.entity.aws.Ami;
-import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import eg.gov.iti.jets.service.management.TemplateManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
@@ -12,8 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.function.Consumer;
 
 @RestController
 @RequestMapping("/api/template")

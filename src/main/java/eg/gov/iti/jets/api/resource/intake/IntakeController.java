@@ -28,14 +28,14 @@ public class IntakeController {
     }
 
     @GetMapping
-    public IntakeResponseList getIntakes(){
+    public ResponseEntity<?> getIntakes(){
         List<Intake> intakes = intakeManagement.getAllIntakes();
         List<IntakeResponse> intakeResponses =  mapper.mapFromListOfIntakesToListOfIntakeResponses(intakes);
         IntakeResponseList intakeResponseList = new IntakeResponseList();
         for(IntakeResponse response : intakeResponses){
             intakeResponseList.getIntakeResponsesList().add(response);
         }
-        return intakeResponseList;
+        return new ResponseEntity<>( intakeResponseList , HttpStatus.OK );
     }
 
 
