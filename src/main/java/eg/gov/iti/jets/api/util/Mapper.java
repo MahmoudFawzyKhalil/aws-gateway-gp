@@ -311,7 +311,12 @@ public class Mapper {
         user.setEmail(userRequest.getEmail());
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
-        user.setRole(userRequest.getRole());
+
+        Role role = new Role();
+        role.setId( userRequest.getRole().getId());
+        role.setName(userRequest.getRole().getName());
+
+        user.setRole(role);
         return user;
     }
 
@@ -321,7 +326,12 @@ public class Mapper {
         user.setEmail(updateUserRequest.getEmail());
         user.setUsername(updateUserRequest.getUsername());
         user.setPassword(updateUserRequest.getPassword());
-        user.setRole(updateUserRequest.getRole());
+
+        Role role = new Role();
+        role.setId( updateUserRequest.getRole().getId());
+        role.setName(updateUserRequest.getRole().getName());
+
+        user.setRole(role);
         return user;
     }
 
