@@ -16,14 +16,10 @@ import org.springframework.stereotype.Component;
 @Component
 public class InstanceLoggingAspect {
 
-    private SecurityContext  securityContext;
 
-    public InstanceLoggingAspect(){
-        this.securityContext=SecurityContextHolder.getContext();
-    }
-
-    @Before( "execution(* eg.gov.iti.jets.service.management.InstanceManagement.createInstance(eg.gov.iti.jets.persistence.entity.aws.Instance))" )
-    public void aroundCreateInstance( JoinPoint joinPoint ) throws Throwable {
+    @Before("execution(* eg.gov.iti.jets.service.management.InstanceManagement.createInstance(eg.gov.iti.jets.persistence.entity.aws.Instance))")
+    public void aroundCreateInstance(JoinPoint joinPoint) throws Throwable {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%");
         var authentication = securityContext.getAuthentication();
         System.out.println(((UserDetails) authentication.getPrincipal()).getUsername());
