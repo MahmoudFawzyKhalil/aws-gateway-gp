@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.service.gateway.aws.ec2.impl;
 
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
+import eg.gov.iti.jets.persistence.entity.aws.KeyPair;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.persistence.entity.aws.Subnet;
 import eg.gov.iti.jets.persistence.entity.aws.Vpc;
@@ -8,10 +9,21 @@ import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.service.exception.AwsGatewayException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.model.*;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.springframework.stereotype.Service;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
+import org.bouncycastle.util.encoders.Base64;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.Cipher;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.io.*;
+import java.nio.charset.Charset;
+import java.security.*;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -270,6 +282,97 @@ class AwsGatewayImpl implements AwsGateway {
         return describeInstancesResponse.hasReservations() && describeInstancesResponse.reservations().get(0).hasInstances()
                 ? getMappedInstances(describeInstancesResponse)
                 : new ArrayList<>();
+    }
+
+    /**
+     * @param ec2Client
+     * @param keyName
+     * @return
+     */
+    @Override
+    public String getKeyMaterialFromKeyPair(Ec2Client ec2Client, String keyName) {
+        CreateKeyPairRequest request = CreateKeyPairRequest.builder()
+                .keyName( keyName )
+                .build();
+        CreateKeyPairResponse keyPair = ec2Client.createKeyPair( request );
+        String keyMaterial = keyPair.keyMaterial();
+        return keyMaterial;
+
+    }
+
+    /**
+     * @param ec2Client
+     * @return
+     */
+    @Override
+    public String createWindowsEc2Instance(Ec2Client ec2Client,String keyName,String ami) {
+
+
+        RunInstancesRequest runRequest = RunInstancesRequest.builder()
+                .imageId(ami)
+                .instanceType(InstanceType.T1_MICRO)
+                .maxCount(1)
+                .minCount(1)
+                .keyName(keyName)
+                .build();
+        RunInstancesResponse runInstancesResponse = ec2Client.runInstances(runRequest);
+
+      //  String encryptedPassword=getInstancePassword(ec2Client,runInstancesResponse.instances().get(0).instanceId());
+       // System.out.println("key material"+keyMaterial);
+      //  System.out.println("enc password"+encryptedPassword);
+        return runInstancesResponse.instances().get(0).instanceId();
+    }
+
+    /**
+     * @param ec2Client
+     * @param instanceId
+     * @return
+     */
+    @Override
+    public void saveInstancePasswordIntoFile(Ec2Client ec2Client, String instanceId) {
+        GetPasswordDataRequest getPasswordDataRequest = GetPasswordDataRequest.builder()
+                .instanceId(instanceId).build();
+        GetPasswordDataResponse passwordData = ec2Client.getPasswordData(getPasswordDataRequest);
+        //saving encrypted password in file
+        try(FileWriter writer=new FileWriter(new File("src/main/resources/encryptedPassword.txt"))){
+            writer.write(passwordData.passwordData());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+
+    /**
+     * @param encryptedPassword
+     * @return
+     */
+    @Override
+    public String decryptPassword(String encryptedPassword) throws NoSuchPaddingException, NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, IllegalBlockSizeException, BadPaddingException {
+        StringBuilder stringBuilder=new StringBuilder();
+        try(var reader=new BufferedReader(new FileReader(new File("src/main/resources/encryptedPassword.txt")))){
+            String str=reader.readLine();
+
+            while (str != null){
+                stringBuilder.append(str);
+                str=reader.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Security.addProvider(new BouncyCastleProvider());
+        byte[] der = Base64.decode(stringBuilder.toString());
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(der);
+        KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+        PrivateKey privateKey = keyFactory.generatePrivate(keySpec);
+        Cipher cipher = Cipher.getInstance("RSA/NONE/PKCS1Padding");
+        cipher.init(Cipher.DECRYPT_MODE, privateKey);
+       // byte[] cipherText = Base64.decode(getInstancePassword(ec2,"i-02919cbc0815edac9"));
+        byte[] cipherText=stringBuilder.toString().getBytes();
+        byte[] plainText = cipher.doFinal(cipherText);
+        String password = new String(plainText, Charset.forName("ASCII"));
+        return password;
     }
 
     private List<Instance> getMappedInstances(DescribeInstancesResponse describeInstancesResponse) {

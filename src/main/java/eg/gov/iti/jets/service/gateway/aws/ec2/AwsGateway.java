@@ -4,7 +4,14 @@ import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.service.model.CreateInstanceCommand;
 import eg.gov.iti.jets.service.model.DescribeSecurityGroupsCommand;
 import eg.gov.iti.jets.service.model.DescribeSubnetsCommand;
+import software.amazon.awssdk.services.ec2.Ec2Client;
 
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.util.List;
 import java.util.Optional;
 
@@ -87,4 +94,13 @@ public interface AwsGateway {
      * @return List of instances
      */
     List<Instance> describeInstances(List<String> instanceIds);
+
+
+    String createWindowsEc2Instance(Ec2Client ec2Client,String keyName,String ami);
+
+    void saveInstancePasswordIntoFile(Ec2Client ec2Client,String instanceId);
+
+    String decryptPassword(String encryptedPassword) throws Exception;
+
+    String getKeyMaterialFromKeyPair(Ec2Client ec2Client,String keyName);
 }
