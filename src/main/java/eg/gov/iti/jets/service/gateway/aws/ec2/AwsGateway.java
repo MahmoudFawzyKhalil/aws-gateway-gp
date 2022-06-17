@@ -1,7 +1,6 @@
 package eg.gov.iti.jets.service.gateway.aws.ec2;
 
 import eg.gov.iti.jets.persistence.entity.aws.*;
-import eg.gov.iti.jets.service.model.CreateInstanceCommand;
 
 import java.util.List;
 import java.util.Optional;
@@ -65,7 +64,7 @@ public interface AwsGateway {
      * @param instanceName The name of the instance that will be created
      * @return the newly created instance
      */
-    Instance createInstance(TemplateConfiguration template, String instanceName , KeyPair keyPair);
+    Instance createInstance(TemplateConfiguration template, String instanceName , KeyPair keyPair , int timeToLiveInMinutes);
 
     /**
      * Describes an already created EC2 instance

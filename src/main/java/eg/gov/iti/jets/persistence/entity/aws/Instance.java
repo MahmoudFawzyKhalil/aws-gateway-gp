@@ -59,4 +59,7 @@ public class Instance {
     @ManyToOne
     @JoinColumn(name = "template_configuration_id", nullable = false)
     TemplateConfiguration templateConfiguration;
+
+    private Integer ttlInMilliseconds;
+
 }

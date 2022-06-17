@@ -42,22 +42,6 @@ class AwsGatewayImpl implements AwsGateway {
         return vpc;
     }
 
-//    @Override
-//    public List<Subnet> describeSubnets(List<String> subnetIds) {
-//        DescribeSubnetsRequest describeSubnetsRequest = DescribeSubnetsRequest.builder()
-//                .subnetIds(subnetIds)
-//                .build();
-//
-//        DescribeSubnetsResponse describeSubnetsResponse = ec2Client.describeSubnets(describeSubnetsRequest);
-//
-//        var subnets = describeSubnetsResponse.subnets();
-//
-//
-//        return subnets.stream().map(this::mapAwsSubnetToModel).collect(toList());
-//
-//
-//    }
-
     private Subnet mapAwsSubnetToModel(software.amazon.awssdk.services.ec2.model.Subnet awsSubnet) {
 
         Subnet subnet = new Subnet();
@@ -215,7 +199,7 @@ class AwsGatewayImpl implements AwsGateway {
     }
 
     @Override
-    public Instance createInstance(TemplateConfiguration template, String instanceName, KeyPair keyPair) {
+    public Instance createInstance(TemplateConfiguration template, String instanceName, KeyPair keyPair ,int timeToLiveInMinutes ) {
         Tag tag = Tag.builder()
                 .key("Name")
                 .value(instanceName)
