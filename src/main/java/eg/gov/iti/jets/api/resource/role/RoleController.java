@@ -24,25 +24,26 @@ public class RoleController {
     }
 
     @GetMapping
-    public GetAllRolesResponse getAllRoles() {
+    public ResponseEntity<GetAllRolesResponse> getAllRoles() {
         GetAllRolesResponse getRolesResponse = new GetAllRolesResponse();
         getRolesResponse.setRoles(
                 roleManagement.getAllRole().stream()
-                        .map(mapper::roleToRoleResponse)
+                        .map(mapper::roleToGetRoleResponse)
                         .collect(Collectors.toList())
         );
-       return getRolesResponse;
+       return new ResponseEntity<>(getRolesResponse, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public RoleResponse getRole(@PathVariable("id") int id){
-       return mapper.roleToRoleResponse(roleManagement.getRoleById(id));
+    public ResponseEntity<GetRoleResponse> getRole(@PathVariable("id") int id){
+       return new ResponseEntity<>(mapper.roleToGetRoleResponse(roleManagement.getRoleById(id)), HttpStatus.OK);
     }
 
     @PutMapping
-    public Boolean updateRole(@RequestBody UpdateRoleRequest updateRoleRequest) {
+    public ResponseEntity<RoleResponse> updateRole(@RequestBody UpdateRoleRequest updateRoleRequest) {
         Role role = mapper.updateRoleRequestToRole(updateRoleRequest);
-        return roleManagement.updateRole(role);
+        role = roleManagement.updateRole(role);
+        return new ResponseEntity<>(mapper.roleToRoleResponse(role), HttpStatus.OK);
     }
 
 }

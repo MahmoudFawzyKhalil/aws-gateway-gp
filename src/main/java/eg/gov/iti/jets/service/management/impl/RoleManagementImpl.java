@@ -2,7 +2,6 @@ package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.persistence.dao.RoleDao;
 import eg.gov.iti.jets.persistence.entity.Role;
-import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.exception.ResourceExistException;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.RoleManagement;
@@ -21,7 +20,7 @@ public class RoleManagementImpl implements RoleManagement {
        try {
            return roleDao.save(role);
        }catch (Exception e) {
-           throw new ResourceExistException("Role with name " + role.getName() + " is already exist!");
+           throw new ResourceExistException("Role with name " + role.getName() + ", is already exist!");
        }
     }
 
@@ -37,16 +36,15 @@ public class RoleManagementImpl implements RoleManagement {
 
     @Override
     public Role getRoleById(Integer id ) {
-        return roleDao.findById(id).orElseThrow(()->new ResourceNotFoundException("Role with id " + id + " not found"));
+        return roleDao.findById(id).orElseThrow(()->new ResourceNotFoundException("Role with id " + id + ", is not found"));
     }
 
     @Override
-    public Boolean updateRole(Role role) {
+    public Role updateRole(Role role) {
         try {
-            roleDao.update(role);
-            return true;
+            return roleDao.update(role);
         }catch (Exception e) {
-            throw new ResourceNotFoundException("Could not update role with id");
+            throw new ResourceNotFoundException("Could not update role with id " + role.getId());
         }
     }
 }
