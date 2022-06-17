@@ -57,7 +57,6 @@ public class TemplateManagementImpl implements TemplateManagement {
             }
         }
         templateConfiguration.setSecurityGroups( saved );
-
         TemplateConfiguration net= templateConfigurationDao.save(templateConfiguration);
         return net != null;
     }

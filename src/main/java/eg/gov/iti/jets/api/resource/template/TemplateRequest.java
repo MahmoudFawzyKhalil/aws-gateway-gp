@@ -20,5 +20,5 @@ public class TemplateRequest {
     private String instanceType;
     private List<String> securityGroups;
     // TODO: 6/7/2022 Mariam el request hhot feh list of instructor
-    private List<Integer> instructors;
+    private List<Integer> instructorId;
 }
