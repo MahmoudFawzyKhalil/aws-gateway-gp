@@ -31,13 +31,13 @@ public class InstanceController {
 
 
     // TODO test to see what gets returned, mahmoud will inform mariem of 200 OK being equivalent to boolean success and that exceptions should get thrown if response is error
-    @PostMapping
-    ResponseEntity<?> createInstance(@RequestBody InstanceRequest instanceRequest, @AuthenticationPrincipal UserAdapter userDetails) {
-        Integer id = userDetails.getId();
-        Instance instance = mapper.mapFromInstanceReqToInstance(instanceRequest, id);
-        instanceManagement.createInstance(instance);
-        return ResponseEntity.ok(new SuccessResponse(true));
-    }
+//    @PostMapping
+//    ResponseEntity<?> createInstance(@RequestBody InstanceRequest instanceRequest, @AuthenticationPrincipal UserAdapter userDetails) {
+//        Integer id = userDetails.getId();
+//        Instance instance = mapper.mapFromInstanceReqToInstance(instanceRequest, id);
+//        instanceManagement.createInstance(instance);
+//        return ResponseEntity.ok(new SuccessResponse(true));
+//    }
 
     @GetMapping("start/{instanceId}")
     SuccessResponse startInstance(@PathVariable String instanceId) {
@@ -68,17 +68,17 @@ public class InstanceController {
         return mapper.mapFromInstanceToInstanceResponse(instance);
     }
 
-    @GetMapping
-    InstanceObjectResponse getInstances(@AuthenticationPrincipal UserAdapter userDetails) {
-        Integer id = userDetails.getId();
-        List<InstanceResponse> list = new ArrayList<>();
-        List<Instance> instancesByUserId = instanceManagement.getInstancesByUserId(id);
-        for (Instance instance :
-                instancesByUserId) {
-            list.add(mapper.mapFromInstanceToInstanceResponse(instance));
-        }
-        return new InstanceObjectResponse(list);
-    }
+//    @GetMapping
+//    InstanceObjectResponse getInstances(@AuthenticationPrincipal UserAdapter userDetails) {
+//        Integer id = userDetails.getId();
+//        List<InstanceResponse> list = new ArrayList<>();
+//        List<Instance> instancesByUserId = instanceManagement.getInstancesByUserId(id);
+//        for (Instance instance :
+//                instancesByUserId) {
+//            list.add(mapper.mapFromInstanceToInstanceResponse(instance));
+//        }
+//        return new InstanceObjectResponse(list);
+//    }
 
 
 }
