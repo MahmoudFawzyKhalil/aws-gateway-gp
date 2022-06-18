@@ -2,6 +2,7 @@ package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.persistence.dao.PrivilegeDao;
 import eg.gov.iti.jets.persistence.entity.Privilege;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.PrivilegeManagement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -34,9 +35,9 @@ public class PrivilegeManagementImpl implements PrivilegeManagement {
     }
 
     @Override
-    public Privilege getPrivilegeById( int id ) {
+    public Privilege getPrivilegeById(Integer id ) {
        return privilegeDao.findById(id).orElseThrow(
-               ()-> new RuntimeException("Not found privilege with id")
+               ()-> new ResourceNotFoundException("Privilege with id " + id + ", is not found")
        );
     }
 }
