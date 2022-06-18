@@ -168,28 +168,7 @@ public class Mapper {
         return null;
     }
 
-    public InstanceResponse mapFromInstanceToInstanceResponse( Instance instance ) {
-        InstanceResponse instanceResponse = new InstanceResponse();
-        instanceResponse.setInstanceId( instance.getInstanceId() );
-        instanceResponse.setInstanceType( instance.getInstanceType() );
-//        instanceResponse.setInstanceUsers( instance.getInstanceUsers() );
-//        instanceResponse.setCreator( instance.getCreator() );
-        instanceResponse.setId( instance.getId() );
-        instanceResponse.setName( instance.getName() );
-        instanceResponse.setVpcId( instance.getVpcId() );
-        instanceResponse.setSubnetId( instance.getSubnetId() );
-        instanceResponse.setAmiId( instance.getAmiId() );
-        instanceResponse.setKeyPair( instance.getKeyPair().getKeyMaterial() );
-        instanceResponse.setPlatform( instance.getPlatform() );
-        instanceResponse.setCreationDateTime( instance.getCreationDateTime().toString() );
-        instanceResponse.setDecryptedPassword( instance.getDecryptedPassword() );
-//        instanceResponse.setTemplateConfiguration( instance.getTemplateConfiguration() );
-        instanceResponse.setPublicDnsName( instance.getPublicDnsName() );
-        instanceResponse.setUsername( instance.getUsername() );
-        instanceResponse.setState( instance.getState() );
-        instanceResponse.setTimeToLiveInMinutes( instance.getTimeToLiveInMinutes() );
-        return instanceResponse;
-    }
+
 
 //    public Instance mapFromInstanceRequestToInstance( InstanceRequest instanceRequest ) {
 //
@@ -213,16 +192,7 @@ public class Mapper {
 
 
 
-    public Instance mapFromInstanceReqToInstance( InstanceRequest instanceRequest, int creatorId ) {
-        Instance instance = new Instance();
-        instance.setTemplateConfiguration( mapperUtilForApi.getTemplateConfigurationById( instanceRequest.getTemplateId() ) );
-        instance.setKeyPair( mapperUtilForApi.getKeyPair( instanceRequest.getKeyPair(), creatorId ) );
-        instance.setName( instanceRequest.getInstanceName() );
-        instance.setInstanceUsers( mapperUtilForApi.getUsers( instanceRequest.getStudentIds() ) );
-        instance.setCreator( mapperUtilForApi.getUser( creatorId ) );
-        instance.setTimeToLiveInMinutes(instanceRequest.getTimeToLiveInMinutes());
-        return instance;
-    }
+
 
     public GetPrivilegeResponse privilegeToGetPrivilegeResponse( Privilege privilege ) {
         return new GetPrivilegeResponse( privilege.getId(), privilege.getName().name() );
