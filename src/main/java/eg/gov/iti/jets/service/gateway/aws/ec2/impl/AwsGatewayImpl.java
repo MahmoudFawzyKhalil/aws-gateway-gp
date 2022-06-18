@@ -284,7 +284,15 @@ class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public void updateInstancesInfoFromAws(List<Instance> instances) {
-        var describeInstancesRequest = DescribeInstancesRequest.builder().instanceIds(instances.stream().map(Instance::getInstanceId).collect(toList())).build();
+        // If list is empty, do nothing.
+        if (instances.isEmpty())
+            return;
+
+        List<String> instanceIds = instances.stream().map(Instance::getInstanceId).collect(toList());
+
+        var describeInstancesRequest = DescribeInstancesRequest.builder()
+                .instanceIds(instanceIds)
+                .build();
         var describeInstancesResponse = ec2Client.describeInstances(describeInstancesRequest);
         var awsInstances = describeInstancesResponse.reservations().get(0).instances();
         for (int i = 0; i < instances.size(); i++) {
