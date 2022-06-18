@@ -294,7 +294,13 @@ class AwsGatewayImpl implements AwsGateway {
                 .instanceIds(instanceIds)
                 .build();
         var describeInstancesResponse = ec2Client.describeInstances(describeInstancesRequest);
-        var awsInstances = describeInstancesResponse.reservations().get(0).instances();
+//        var awsInstances = describeInstancesResponse.reservations().get(0).instances();
+        var awsInstances = describeInstancesResponse
+                .reservations()
+                .stream()
+                .flatMap( r -> r.instances().stream() )
+                .collect( toList() );
+
         for (int i = 0; i < instances.size(); i++) {
             updateInstanceAttributes(instances.get(i), awsInstances.get(i));
         }

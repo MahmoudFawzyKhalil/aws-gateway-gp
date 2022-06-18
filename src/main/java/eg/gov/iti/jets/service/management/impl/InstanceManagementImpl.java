@@ -97,7 +97,7 @@ public class InstanceManagementImpl implements InstanceManagement {
 
         Instance instance = result.get(0);
         String instanceState = awsGateway.terminateInstance(instance.getInstanceId());
-        instance.setState(instanceState);
+        instance.setState("terminated");
         instanceDao.update(instance);
         return instanceState;
     }
@@ -133,7 +133,7 @@ public class InstanceManagementImpl implements InstanceManagement {
                         && !i.getState().equalsIgnoreCase("terminating"))
                 .collect(Collectors.toList());
 
-//        awsGateway.updateInstancesInfoFromAws(grantedNonTerminatedInstances);
+        awsGateway.updateInstancesInfoFromAws(grantedNonTerminatedInstances);
 
         return grantedNonTerminatedInstances;
     }
