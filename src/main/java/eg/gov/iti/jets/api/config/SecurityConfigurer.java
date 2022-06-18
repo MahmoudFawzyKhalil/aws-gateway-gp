@@ -50,7 +50,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-//                .mvcMatchers( "/**"  ).permitAll()
+                .mvcMatchers( "/**"  ).permitAll()
                 .mvcMatchers(HttpMethod.POST,"/api/instances").hasAuthority( PrivilegeName.CREATE_TERMINATE_INSTANCE.name())
                 .mvcMatchers("/api/ami","/api/instnacetype","/api/subnet").hasAuthority(PrivilegeName.MANAGE_TEMPLATE.name())
                 .mvcMatchers("/api/hello").hasAuthority("READ")
