@@ -11,27 +11,29 @@ public enum RunningTasks {
     private final Map<String, ScheduledFuture<?>> tasks = new ConcurrentHashMap<>();
 
 
-    public  Optional<ScheduledFuture<?>> getTaskForInstance(String instanceId) {
-        if ( tasks.containsKey(instanceId)) {
+    public Optional<ScheduledFuture<?>> getTaskForInstance(String instanceId) {
+        if (tasks.containsKey(instanceId)) {
             return Optional.of(tasks.get(instanceId));
-        }else {
+        } else {
             return Optional.empty();
         }
     }
-    public void removeAndCancelTask(String instanceId){
-        if ( tasks.containsKey(instanceId)) {
-            var scheduledFuture = tasks.get( instanceId );
-            scheduledFuture.cancel( true );
-            tasks.remove( instanceId );
+
+    public void removeAndCancelTask(String instanceId) {
+        if (tasks.containsKey(instanceId)) {
+            var scheduledFuture = tasks.get(instanceId);
+            scheduledFuture.cancel(true);
+            tasks.remove(instanceId);
         }
     }
-    public void removeTask(String instanceId){
-        if ( tasks.containsKey(instanceId)) {
-            tasks.remove( instanceId );
-        }
+
+    public void removeTask(String instanceId) {
+        tasks.remove(instanceId);
     }
-    public void addTask(String instanceId,ScheduledFuture<?> future){
-        tasks.put(instanceId , future);
+
+    public void addTask(String instanceId, ScheduledFuture<?> future) {
+        System.out.println("new shutdown task added: " + future);
+        tasks.put(instanceId, future);
     }
 
     @Override

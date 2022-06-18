@@ -113,4 +113,12 @@ public interface AwsGateway {
      * @param instances The instances to be updated
      */
     void updateInstancesInfoFromAws(List<Instance> instances);
+
+    /**
+     * Stops instance Asynchronously
+     *
+     * @param instanceId Specify the id of instance you want to stop
+     */
+    void stopInstanceAsync(String instanceId);
+
 }

@@ -64,7 +64,7 @@ public class Instance {
     @JoinColumn(name = "template_configuration_id", nullable = false)
     TemplateConfiguration templateConfiguration;
 
-    @Min( 5L )
+    @Min( 2L )
     @NotNull
     private Long timeToLiveInMinutes; // This must be provided from the frontend
 
