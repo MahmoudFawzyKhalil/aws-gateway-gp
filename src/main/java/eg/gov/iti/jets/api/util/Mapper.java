@@ -330,9 +330,9 @@ public class Mapper {
         return user;
     }
 
-    public User updateUserRequestToUser(UpdateUserRequest updateUserRequest) {
+    public User updateUserRequestToUser(int id , UpdateUserRequest updateUserRequest) {
         User user = new User();
-        user.setId(updateUserRequest.getId());
+        user.setId(id);
         user.setEmail(updateUserRequest.getEmail());
         user.setUsername(updateUserRequest.getUsername());
         user.setPassword(updateUserRequest.getPassword());

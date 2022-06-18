@@ -73,7 +73,7 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
         try {
             return userDao.save(user);
         }catch (Exception exception) {
-            throw new ResourceExistException("user already exists");
+            throw new ResourceExistException("User with name [ " + user.getUsername() + " ] , already exists !");
         }
     }
 
@@ -82,7 +82,7 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
         try{
             return userDao.update(user);
         }catch (Exception ex){
-            throw new ResourceNotFoundException("user with id not found");
+            throw new ResourceNotFoundException("Could not update User with id [ " + user.getId() + " ] !!");
         }
     }
 
@@ -110,7 +110,8 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
 
     @Override
     public User getUserById(int id ) {
-        return userDao.findById(id).orElseThrow(() ->  new ResourceNotFoundException("user with id not found"));
+        return userDao.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("User with id [ " + id + " ] , not found"));
     }
 
     @Override
