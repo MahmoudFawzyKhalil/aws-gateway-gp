@@ -16,6 +16,7 @@ import java.util.List;
 
 public class TrackRequest {
     private String Name;
+    private int IntakeId;
 
 }
 

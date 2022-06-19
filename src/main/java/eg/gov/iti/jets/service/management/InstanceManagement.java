@@ -11,5 +11,5 @@ public interface InstanceManagement {
     String deleteInstance(String instanceId);
     Instance getInstanceDetails(String instanceId);
 
-    List<Instance> getInstancesByUserId( Integer id );
+//    List<Instance> getInstancesByUserId( Integer id );
 }

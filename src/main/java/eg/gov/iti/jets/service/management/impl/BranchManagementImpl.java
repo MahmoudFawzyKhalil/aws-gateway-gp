@@ -3,7 +3,10 @@ package eg.gov.iti.jets.service.management.impl;
 import eg.gov.iti.jets.persistence.dao.BranchDao;
 import eg.gov.iti.jets.persistence.dao.TrainingProgramDao;
 import eg.gov.iti.jets.persistence.entity.Branch;
+import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
+import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.BranchManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,14 +24,24 @@ public class BranchManagementImpl implements BranchManagement {
 
     @Override
     public Branch createBranch( Branch branch ) {
-        return branchDao.save(branch);
+        try {
+            return branchDao.save(branch);
+        }
+        catch (Exception e) {
+            throw new ResourceExistException("Track" + branch.getName() + ", is already exist!");
+        }
     }
+
 
     @Override
     public Branch updateBranch( Branch branch ) {
-        Branch update = branchDao.update( branch );
-        System.out.println("marwaaa  "+update);
-        return update;
+        try{
+        return branchDao.update( branch );
+        }
+        catch (Exception e) {
+            throw new ResourceNotFoundException("Could not update track with id ");
+        }
+
     }
 
     @Override
@@ -36,10 +49,13 @@ public class BranchManagementImpl implements BranchManagement {
         return branchDao.findAll();
     }
 
+
     @Override
-    public Optional<Branch> getBranchById(int id ) {
-        return branchDao.findById(id);
+    public Branch getBranchById(Integer id ) {
+        return branchDao.findById(id).orElseThrow(()->new ResourceNotFoundException("Branch with id " + id + ", is not found"));
     }
+
+
 
     @Override
     public List<TrainingProgram> getTrainingProgramByBranchId( int branchId ) {

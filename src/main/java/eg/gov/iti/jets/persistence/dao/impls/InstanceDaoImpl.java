@@ -4,7 +4,6 @@ import eg.gov.iti.jets.persistence.dao.InstanceDao;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
@@ -16,8 +15,8 @@ public class InstanceDaoImpl implements InstanceDao {
 
     private InstanceRepo instanceRepo;
 
-    public InstanceDaoImpl(InstanceRepo instanceRepo){
-        this.instanceRepo=instanceRepo;
+    public InstanceDaoImpl(InstanceRepo instanceRepo) {
+        this.instanceRepo = instanceRepo;
     }
 
     @Override
@@ -27,10 +26,10 @@ public class InstanceDaoImpl implements InstanceDao {
 
     @Override
     public Instance update(Instance instance) {
-        if(instance == null || instance.getId()==null){
+        if (instance == null || instance.getId() == null) {
             throw new NullPointerException("instance or id can't be null");
         }
-        return instanceRepo.save(instance) ;
+        return instanceRepo.save(instance);
     }
 
     @Override
@@ -40,7 +39,7 @@ public class InstanceDaoImpl implements InstanceDao {
 
     @Override
     public <C> Optional<C> findById(Integer integer, Class<C> projection) {
-        return instanceRepo.findById(integer,projection);
+        return instanceRepo.findById(integer, projection);
     }
 
     @Override
@@ -50,23 +49,33 @@ public class InstanceDaoImpl implements InstanceDao {
 
     @Override
     public List<Instance> findAll(int pageNumber, int pageSize) {
-        return instanceRepo.findAll(PageRequest.of(pageNumber,pageSize)).getContent();
+        return instanceRepo.findAll(PageRequest.of(pageNumber, pageSize)).getContent();
     }
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        return instanceRepo.findBy(PageRequest.of(pageNumber,pageSize),projection).getContent();
+        return instanceRepo.findBy(PageRequest.of(pageNumber, pageSize), projection).getContent();
     }
 
     @Override
     public List<Instance> findAllByExample(Instance example) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
-        return instanceRepo.findAll(Example.of(example,caseInsensitiveExampleMatcher));
+        return instanceRepo.findAll(Example.of(example, caseInsensitiveExampleMatcher));
     }
 
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
-        return instanceRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
+        return instanceRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher), projection);
+    }
+
+    @Override
+    public <C> List<C> findUserGrantedInstances(int userId, Class<C> projection) {
+        return instanceRepo.findAllByInstanceUsers_id(userId, projection);
+    }
+
+    @Override
+    public <C> List<C> findFollowersUsersGrantedInstances(int userId, Class<C> projection) {
+        return instanceRepo.findAllDistinctByInstanceUsers_manager_id(userId, projection);
     }
 }

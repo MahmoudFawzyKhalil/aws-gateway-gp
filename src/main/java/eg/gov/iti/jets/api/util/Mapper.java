@@ -134,6 +134,8 @@ public class Mapper {
     public Track mapFromTrackRequestToTrack( TrackRequest trackRequest ) {
         Track track = new Track();
         track.setName( trackRequest.getName() );
+        Intake intake = mapperUtilForApi.getIntackById( trackRequest.getIntakeId() );
+        track.setIntake(intake);
         return track;
     }
 
@@ -142,6 +144,7 @@ public class Mapper {
         TrackResponse trackResponse = new TrackResponse();
         trackResponse.setName( track.getName() );
         trackResponse.setId(track.getId());
+        trackResponse.setIntakeId(track.getIntake().getId());
         return trackResponse;
     }
 
@@ -152,11 +155,17 @@ public class Mapper {
         return trackResponses;
     }
 
-    public Track mapFromTrackPutRequestToBranch(TrackPutRequest trackPutRequest, int id ) {
-        Track track = mapperUtilForApi.getTrackById(id);
-        track.setName( trackPutRequest.getName() );
-        return track;
+    public Track mapFromTrackPutRequestToTrack(TrackPutRequest trackPutRequest, int id ) {
+        try {
+            Track track = mapperUtilForApi.getTrackById(id);
+            track.setName(trackPutRequest.getName());
+            return track;
+        }
+        catch (Exception e){
+            throw new ResourceNotFoundException("Could not update track with id "+ id + " because it is not found");
+            }
     }
+
 
     public Instance mapFromInstanceRequestToInstance( IntakeRequest intakeRequest ) {
         return null;
@@ -255,7 +264,6 @@ public class Mapper {
 
     public User createUserRequestToUser(CreateUserRequest userRequest) {
         User user = new User();
-//        user.setId(userRequest.getId());
         user.setEmail(userRequest.getEmail());
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
@@ -312,15 +320,21 @@ public class Mapper {
     }
 
     public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest, int id ) {
-        Branch branch = mapperUtilForApi.getBranchById( id );
-        branch.setAddress( branchPutRequest.getAddress() );
-        branch.setName( branchPutRequest.getName() );
-        if ( branchPutRequest.isBranchStatus() ) {
-            branch.setStatus( BranchStatus.ACTIVE );
-        } else {
-            branch.setStatus( BranchStatus.DE_ACTIVE );
+        try{
+            Branch branch = mapperUtilForApi.getBranchById( id );
+            branch.setAddress( branchPutRequest.getAddress() );
+            branch.setName( branchPutRequest.getName() );
+            if ( branchPutRequest.isBranchStatus() ) {
+                branch.setStatus( BranchStatus.ACTIVE );
+            } else {
+                branch.setStatus( BranchStatus.DE_ACTIVE );
+            }
+            return branch;
         }
-        return branch;
+        catch (Exception e){
+            throw new ResourceNotFoundException("Could not update branch with id "+ id + " because it is not found");
+        }
+
     }
 
     public Branch mapFromBranchPatchRequestToBranch( Boolean branchStatus, int id ) {

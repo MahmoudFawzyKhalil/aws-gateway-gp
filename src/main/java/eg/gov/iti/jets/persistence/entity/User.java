@@ -47,8 +47,9 @@ public class User {
     @OneToMany(mappedBy = "creator" ,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<Instance> createdInstances = new ArrayList<>();
 
-    @ManyToMany(mappedBy = "instanceUsers")
-    private List<Instance> grantedInstances = new ArrayList<>();
+//    @ManyToMany(mappedBy = "instanceUsers")
+    @OneToOne(mappedBy = "instanceUsers")
+    private Instance grantedInstances ;
 
     @ManyToOne
     private User manager;

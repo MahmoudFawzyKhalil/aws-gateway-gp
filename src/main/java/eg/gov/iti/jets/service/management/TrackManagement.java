@@ -12,8 +12,10 @@ public interface TrackManagement {
 
     Track updateTrack( Track track );
 
+    Track getTrackById(Integer id );
+
     List<Track> getAllTracks();
 
-    Optional<Track> getTrackById(int id);
+    //Optional<Track> getTrackById(int id);
 
 }

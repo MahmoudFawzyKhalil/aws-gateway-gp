@@ -11,13 +11,20 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
+import software.amazon.awssdk.services.ec2.Ec2AsyncClient;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 
 @Configuration
 public class ServiceConfiguration {
     @Bean
     public Ec2Client getEc2Client() {
-        return Ec2Client.builder().region( Region.US_EAST_1 ).credentialsProvider( ProfileCredentialsProvider.create() ).build();
+        return Ec2Client.builder().region(Region.US_EAST_1).credentialsProvider(ProfileCredentialsProvider.create()).build();
+
+    }
+
+    @Bean
+    public Ec2AsyncClient getAsyncEc2Client() {
+        return Ec2AsyncClient.builder().region(Region.US_EAST_1).credentialsProvider(ProfileCredentialsProvider.create()).build();
 
     }
 
@@ -28,10 +35,9 @@ public class ServiceConfiguration {
 
     @Bean
     public ThreadPoolTaskScheduler threadPoolTaskScheduler() {
-        ThreadPoolTaskScheduler threadPoolTaskScheduler
-                = new ThreadPoolTaskScheduler();
-        threadPoolTaskScheduler.setPoolSize( 8 );
-        threadPoolTaskScheduler.setThreadNamePrefix( "ThreadPoolTaskScheduler" );
+        ThreadPoolTaskScheduler threadPoolTaskScheduler = new ThreadPoolTaskScheduler();
+        threadPoolTaskScheduler.setPoolSize(8);
+        threadPoolTaskScheduler.setThreadNamePrefix("ThreadPoolTaskScheduler");
         return threadPoolTaskScheduler;
     }
 

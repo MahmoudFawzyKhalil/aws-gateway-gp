@@ -30,10 +30,13 @@ public class App {
                 // rules and privileges for all branches
                 Privilege privilege = new Privilege(null, PrivilegeName.CREATE_TERMINATE_INSTANCE, null);
                 Privilege privilege2 = new Privilege(null, PrivilegeName.MANAGE_TEMPLATE, null);
+                Privilege privilege3 = new Privilege(null, PrivilegeName.START_STOP_INSTANCE , null);
                 privilege = privilegeDao.save(privilege);
                 privilege2 = privilegeDao.save(privilege2);
+                privilege3 = privilegeDao.save( privilege3 );
 
-                Role studentRole = roleDao.save(new Role(null, "STUDENT", List.of(privilege)));
+                Role studentRole = roleDao.save(new Role(null, "STUDENT", List.of(privilege,privilege3)));
+
                 Role supervisorRole = roleDao.save(new Role(null, "TRACK_SUPERVISOR", List.of(privilege, privilege2)));
                 Role instructorRole = roleDao.save(new Role(null, "INSTRUCTOR", List.of(privilege, privilege2)));
                 Role trainingMangerRole = roleDao.save(new Role(null, "TRAINING_MANAGER", List.of(privilege, privilege2)));
@@ -52,7 +55,10 @@ public class App {
 
             userDao.getAllByTrackAndRole(1,"STUDENT",User.class).forEach(u -> System.out.println(u.getUsername()));
             System.out.println("-------------------------");
-//                            List<Branch> branches = branchDao.findAllByExample(new Branch(null,BranchStatus.ACTIVE,"smart",null,null,null));
+            instanceDao.findUserGrantedInstances(1,Instance.class).forEach(i -> System.out.println(i.getInstanceId()));
+            instanceDao.findFollowersUsersGrantedInstances(1,Instance.class).forEach(i -> System.out.println(i.getInstanceId()));
+
+            //                            List<Branch> branches = branchDao.findAllByExample(new Branch(null,BranchStatus.ACTIVE,"smart",null,null,null));
 //                            branches.forEach(b-> System.out.println(b.getName()));
 //                            System.out.println("Finished Inserting");
 //                            System.out.println("all users students in java track");
