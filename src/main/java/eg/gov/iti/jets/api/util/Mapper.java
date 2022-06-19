@@ -123,6 +123,8 @@ public class Mapper {
     public Track mapFromTrackRequestToTrack( TrackRequest trackRequest ) {
         Track track = new Track();
         track.setName( trackRequest.getName() );
+        Intake intake = mapperUtilForApi.getIntackById( trackRequest.getIntakeId() );
+        track.setIntake(intake);
         return track;
     }
 
