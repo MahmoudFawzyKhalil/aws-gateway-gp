@@ -1,6 +1,11 @@
 package eg.gov.iti.jets.service.aop;
 
+import eg.gov.iti.jets.persistence.dao.InstanceLogsDao;
+import eg.gov.iti.jets.persistence.dao.UserDao;
+import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
+import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
+import eg.gov.iti.jets.persistence.entity.enums.UserAction;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
@@ -12,10 +17,16 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
+
 @Aspect
 @Component
 public class InstanceLoggingAspect {
 
+    @Autowired
+    InstanceLogsDao instanceLogsDao;
+    @Autowired
+    UserDao userDao;
 
     @Before("execution(* eg.gov.iti.jets.service.management.InstanceManagement.createInstance(eg.gov.iti.jets.persistence.entity.aws.Instance))")
     public void aroundCreateInstance(JoinPoint joinPoint) throws Throwable {
@@ -23,7 +34,22 @@ public class InstanceLoggingAspect {
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%");
         var authentication = securityContext.getAuthentication();
         System.out.println(((UserDetails) authentication.getPrincipal()).getUsername());
-        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&");
+        String userName = ((UserDetails) authentication.getPrincipal()).getUsername();
+        String password = ((UserDetails) authentication.getPrincipal()).getPassword();
+        System.out.println((joinPoint.getArgs()[0]).toString());
 
+        Instance instance = (Instance) joinPoint.getArgs()[0];
+        User user = userDao.findByUsernameAndPassword(userName,password).orElse(null);
+
+        InstanceLogs instanceLogs = new InstanceLogs();
+        instanceLogs.setInstance(instance);
+        instanceLogs.setDateTime(LocalDateTime.now());
+        instanceLogs.setActionMaker(user);
+        instanceLogs.setAction(UserAction.CREATE_INSTANCE);
+        System.out.println(instanceLogs.toString());
+
+//        instanceLogsDao.save(instanceLogs);
+
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&");
     }
 }
