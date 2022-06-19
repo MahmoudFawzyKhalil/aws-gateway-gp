@@ -152,7 +152,7 @@ public class Mapper {
             return track;
         }
         catch (Exception e){
-                throw new ResourceNotFoundException("Could not update track with id ");
+            throw new ResourceNotFoundException("Could not update track with id "+ id + " because it is not found");
             }
     }
 
@@ -385,15 +385,21 @@ public class Mapper {
     }
 
     public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest, int id ) {
-        Branch branch = mapperUtilForApi.getBranchById( id );
-        branch.setAddress( branchPutRequest.getAddress() );
-        branch.setName( branchPutRequest.getName() );
-        if ( branchPutRequest.isBranchStatus() ) {
-            branch.setStatus( BranchStatus.ACTIVE );
-        } else {
-            branch.setStatus( BranchStatus.DE_ACTIVE );
+        try{
+            Branch branch = mapperUtilForApi.getBranchById( id );
+            branch.setAddress( branchPutRequest.getAddress() );
+            branch.setName( branchPutRequest.getName() );
+            if ( branchPutRequest.isBranchStatus() ) {
+                branch.setStatus( BranchStatus.ACTIVE );
+            } else {
+                branch.setStatus( BranchStatus.DE_ACTIVE );
+            }
+            return branch;
         }
-        return branch;
+        catch (Exception e){
+            throw new ResourceNotFoundException("Could not update branch with id "+ id + " because it is not found");
+        }
+
     }
 
     public Branch mapFromBranchPatchRequestToBranch( Boolean branchStatus, int id ) {
