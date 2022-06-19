@@ -22,12 +22,12 @@ public class TrackManagementImpl implements TrackManagement {
 
     @Override
     public Track createTrack(Track track) {
-
-            return trackDao.save(track);
-
-//    catch (Exception e) {
-//        throw new ResourceExistException("Track" + track.getName() + ", is already exist!");
-//    }
+    try{
+        return trackDao.save(track);
+    }
+    catch (Exception e) {
+        throw new ResourceExistException("Track" + track.getName() + ", is already exist!");
+    }
 }
 
     @Override
@@ -36,7 +36,7 @@ public class TrackManagementImpl implements TrackManagement {
             return trackDao.update(track);
         }
     catch (Exception e) {
-        throw new ResourceNotFoundException("Could not update role with id " + track.getId());
+        throw new ResourceNotFoundException("Could not update track with id " + track.getId());
         }
     }
 
