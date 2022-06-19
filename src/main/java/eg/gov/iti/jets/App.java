@@ -28,23 +28,40 @@ public class App {
             if (roleDao.findAllByExample(new Role(null, "STUDENT", null)).isEmpty()) {
 
                 // rules and privileges for all branches
-                Privilege privilege = new Privilege(null, PrivilegeName.CREATE_TERMINATE_INSTANCE, null);
+                Privilege privilege = new Privilege(null, PrivilegeName.CREATE_TERMINATE_ASSIGN_INSTANCE, null);
                 Privilege privilege2 = new Privilege(null, PrivilegeName.MANAGE_TEMPLATE, null);
-                Privilege privilege3 = new Privilege(null, PrivilegeName.START_STOP_INSTANCE , null);
+                Privilege privilege3 = new Privilege(null, PrivilegeName.MANAGE_BRANCHES, null);
+                Privilege privilege4 = new Privilege(null, PrivilegeName.MANAGE_TRAINING_MANAGERS, null);
+                Privilege privilege5 = new Privilege(null, PrivilegeName.MANAGE_SUPERVISORS, null);
+                Privilege privilege6 = new Privilege(null, PrivilegeName.MANAGE_TRACKS, null);
+                Privilege privilege7 = new Privilege(null, PrivilegeName.MANAGE_INTAKES, null);
+                Privilege privilege8 = new Privilege(null, PrivilegeName.MANAGE_TRAINING_PROGRAMS, null);
+                Privilege privilege9 = new Privilege(null, PrivilegeName.MANAGE_INSTRUCTORS, null);
+                Privilege privilege10 = new Privilege(null, PrivilegeName.MANAGE_STUDENTS, null);
+                Privilege privilege11 = new Privilege(null, PrivilegeName.START_STOP_VIEW_INSTANCE, null);
+                Privilege privilege12 = new Privilege(null, PrivilegeName.VIEW_TEMPLATES, null);
                 privilege = privilegeDao.save(privilege);
                 privilege2 = privilegeDao.save(privilege2);
-                privilege3 = privilegeDao.save( privilege3 );
+                privilege3 = privilegeDao.save(privilege3);
+                privilege4 = privilegeDao.save(privilege4);
+                privilege5 = privilegeDao.save(privilege5);
+                privilege6 = privilegeDao.save(privilege6);
+                privilege7 = privilegeDao.save(privilege7);
+                privilege8 = privilegeDao.save(privilege8);
+                privilege9 = privilegeDao.save(privilege9);
+                privilege10 = privilegeDao.save(privilege10);
+                privilege11 = privilegeDao.save(privilege11);
+                privilege12 = privilegeDao.save(privilege12);
 
-                Role studentRole = roleDao.save(new Role(null, "STUDENT", List.of(privilege,privilege3)));
+                Role studentRole = roleDao.save(new Role(null, "STUDENT", List.of(privilege11)));
+                Role supervisorRole = roleDao.save(new Role(null, "TRACK_SUPERVISOR", List.of(privilege, privilege2 , privilege9, privilege10, privilege11, privilege12)));
+                Role instructorRole = roleDao.save(new Role(null, "INSTRUCTOR", List.of(privilege, privilege12, privilege11)));
+                Role trainingMangerRole = roleDao.save(new Role(null, "TRAINING_MANAGER", List.of(privilege5, privilege6, privilege7, privilege8)));
+                Role SuperAdmin = roleDao.save(new Role(null, "SUPER_ADMIN", List.of(privilege3, privilege4)));
 
-                Role supervisorRole = roleDao.save(new Role(null, "TRACK_SUPERVISOR", List.of(privilege, privilege2)));
-                Role instructorRole = roleDao.save(new Role(null, "INSTRUCTOR", List.of(privilege, privilege2)));
-                Role trainingMangerRole = roleDao.save(new Role(null, "TRAINING_MANAGER", List.of(privilege, privilege2)));
-                Role branchMangerRole = roleDao.save(new Role(null, "BRANCH_MANAGER", List.of(privilege, privilege2)));
 
-
-                DummyData.populateStaticDataForSmartBranch(instructorRole,trainingMangerRole,supervisorRole,studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
-                DummyData.populateStaticDataForIsmailiaBranch(instructorRole,trainingMangerRole,supervisorRole,studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
+                DummyData.populateStaticDataForSmartBranch(instructorRole,trainingMangerRole,supervisorRole,studentRole, SuperAdmin, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
+                DummyData.populateStaticDataForIsmailiaBranch(instructorRole,trainingMangerRole,supervisorRole,studentRole, SuperAdmin, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
 
             }
             templateConfigurationDao.findAllByInstructor("supervisor",TemplateConfiguration.class).forEach(t-> System.out.println(t.getAmiId()));
@@ -55,26 +72,23 @@ public class App {
 
             userDao.getAllByTrackAndRole(1,"STUDENT",User.class).forEach(u -> System.out.println(u.getUsername()));
             System.out.println("-------------------------");
-            instanceDao.findUserGrantedInstances(1,Instance.class).forEach(i -> System.out.println(i.getInstanceId()));
-            instanceDao.findFollowersUsersGrantedInstances(1,Instance.class).forEach(i -> System.out.println(i.getInstanceId()));
-
-            //                            List<Branch> branches = branchDao.findAllByExample(new Branch(null,BranchStatus.ACTIVE,"smart",null,null,null));
-//                            branches.forEach(b-> System.out.println(b.getName()));
-//                            System.out.println("Finished Inserting");
-//                            System.out.println("all users students in java track");
-//                            Optional<Track> javaTrack = trackDao.findById(1);
-//                            Optional<Role> studentRole = roleDao.findById(3);
-//                            List<User> users = userDao.findAllUsersByTrackAndRole(javaTrack.get(), studentRole.get());
-//                            users.forEach(b-> System.out.println(b.getEmail()));
-//                            System.out.println("all users in track");
-//                            List<User> allUsers = userDao.findAllUsersByTrack(javaTrack.get());
-//                            allUsers.forEach(b-> System.out.println(b.getEmail()));
-//                            Optional<Role> studentRole = roleDao.findById(2);
-//                            List<User> users = userDao.findAllUsersByRole( studentRole.get());
-//                            users.forEach(b-> System.out.println(b.getEmail()));
-//                            Optional<User> userInstructor =  userDao.findById(5);
-//                            List<User> users = userDao.findAllFollowers(userInstructor.get());
-//                            users.forEach(b-> System.out.println(b.getEmail()));
+                            List<Branch> branches = branchDao.findAllByExample(new Branch(null,BranchStatus.ACTIVE,"smart",null,null,null));
+                            branches.forEach(b-> System.out.println(b.getName()));
+                            System.out.println("Finished Inserting");
+                            System.out.println("all users students in java track");
+                            Optional<Track> javaTrack = trackDao.findById(1);
+                            Optional<Role> studentRole = roleDao.findById(3);
+                            List<User> users = userDao.findAllUsersByTrackAndRole(javaTrack.get(), studentRole.get());
+                            users.forEach(b-> System.out.println(b.getEmail()));
+                            System.out.println("all users in track");
+                            List<User> allUsers = userDao.findAllUsersByTrack(javaTrack.get());
+                            allUsers.forEach(b-> System.out.println(b.getEmail()));
+                            studentRole = roleDao.findById(2);
+                            users = userDao.findAllUsersByRole( studentRole.get());
+                            users.forEach(b-> System.out.println(b.getEmail()));
+                            Optional<User> userInstructor =  userDao.findById(5);
+                            users = userDao.findAllFollowers(userInstructor.get());
+                            users.forEach(b-> System.out.println(b.getEmail()));
         };
     }
 
