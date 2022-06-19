@@ -23,7 +23,6 @@ public class InstanceTypeController {
 
     @GetMapping()
     ResponseEntity<?> getInstanceTypes(){
-        // TODO: 6/17/2022 hal hena mmkn myrga3sh nhandle haga ??
         InstanceTypeObjectResponse instanceTypeObjectResponse = instanceTypeMapper.mapFromInstanceTypeToObjectResponse( instanceTypeAws.getInstanceTypes() );
         return  new ResponseEntity<>( instanceTypeObjectResponse , HttpStatus.OK );
     }
