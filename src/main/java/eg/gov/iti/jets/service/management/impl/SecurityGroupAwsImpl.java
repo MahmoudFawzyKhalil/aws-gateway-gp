@@ -25,7 +25,6 @@ public class SecurityGroupAwsImpl implements SecurityGroupAws {
     @Override
     public List<SecurityGroup> describeSecurityGroupsForVpc( String vpcId){
         try {
-            System.out.println("44");
          return awsGateway.describeSecurityGroupsForVpc(vpcId);
         }catch (Exception e) {
             throw new ResourceNotFoundException("Security group with id " + vpcId + ", is not found!");
