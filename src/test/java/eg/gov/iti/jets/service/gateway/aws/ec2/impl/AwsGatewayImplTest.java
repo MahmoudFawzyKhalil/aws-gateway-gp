@@ -2,23 +2,16 @@ package eg.gov.iti.jets.service.gateway.aws.ec2.impl;
 
 
 import eg.gov.iti.jets.persistence.entity.aws.*;
-import eg.gov.iti.jets.service.model.CreateInstanceCommand;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider;
 import software.amazon.awssdk.auth.credentials.ProfileCredentialsProvider;
 import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.ec2.Ec2Client;
-import software.amazon.awssdk.services.ec2.model.DescribeVpcsResponse;
-import software.amazon.awssdk.services.ec2.model.InstanceType;
 
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class AwsGatewayImplTest {
@@ -65,7 +58,9 @@ public class AwsGatewayImplTest {
     @Test
     @Disabled
     void startInstance() {
-        awsGateway.startInstance( "i-064bcb93e8b674643" ) ;
+        Instance instance = new Instance();
+        instance.setInstanceId( "i-064bcb93e8b674643" );
+        awsGateway.startInstance( instance ) ;
     }
 
     @Test
@@ -81,7 +76,7 @@ public class AwsGatewayImplTest {
     }
 
     @Test
-    @Disabled
+//    @Disabled
     void createInstance() {
 //        List<String> securityGroupNames = new ArrayList<>();
 //        securityGroupNames.add( "sg-03dcd9906dcb0a772" );
@@ -97,7 +92,7 @@ public class AwsGatewayImplTest {
 
         KeyPair keyPair = new KeyPair();
         keyPair.setKeyName( "key1" );
-        Instance instance = awsGateway.createInstance( templateConfiguration, "fawzy" , keyPair );
+        Instance instance = awsGateway.createInstance( templateConfiguration, "fawzy" , keyPair ,1l);
         assertNotEquals( null , instance );
 
     }

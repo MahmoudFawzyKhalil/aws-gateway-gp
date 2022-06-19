@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.stream.Collectors;
 
 @RestController
@@ -18,7 +19,7 @@ public class RoleController {
     private final Mapper mapper;
 
     @PostMapping
-    public ResponseEntity<RoleResponse> addRole(@RequestBody RoleRequest roleRequest) {
+    public ResponseEntity<RoleResponse> addRole(@Valid @RequestBody RoleRequest roleRequest) {
         Role role = roleManagement.addRole(mapper.roleRequestToRole(roleRequest));
         return new ResponseEntity<>(mapper.roleToRoleResponse(role), HttpStatus.CREATED);
     }
@@ -40,7 +41,7 @@ public class RoleController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RoleResponse> updateRole(@RequestBody RoleRequest roleRequest, @PathVariable("id") Integer id) {
+    public ResponseEntity<RoleResponse> updateRole(@Valid @RequestBody RoleRequest roleRequest, @PathVariable("id") Integer id) {
         Role role = mapper.roleRequestToRole(roleRequest);
         role.setId(id);
         role = roleManagement.updateRole(role);

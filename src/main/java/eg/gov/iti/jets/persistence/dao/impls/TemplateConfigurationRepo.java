@@ -16,4 +16,8 @@ interface TemplateConfigurationRepo extends JpaRepository<TemplateConfiguration,
     <T> Page<T> findBy(PageRequest pageRequest, Class<T> projection);
 
     <T> List<T> findAllBy(Example<T> example, Class<T> projection);
+
+    <T> List<T> findAllByInstructors_id(int id, Class<T> projection);
+
+    <T> List<T> findAllByInstructors_username(String userName, Class<T> projection);
 }

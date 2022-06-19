@@ -1,4 +1,8 @@
 package eg.gov.iti.jets.api.resource.template;
 
-public class UserTemplateResponse {
+public interface UserTemplateResponse {
+    int getId();
+    String getUsername();
+    String getEmail();
+    String getPassword();
 }

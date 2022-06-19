@@ -5,14 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
-import java.util.List;
-
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class DummyResponse {
+public class SecurityGroupTemplateResponse {
 
-    private List<DummyObjectResponse> dummyObjectResponses = new ArrayList<>();
+    Integer id;
+    String securityGroupId;
+    String name;
+    String description;
+    String vpcId;
+
 }

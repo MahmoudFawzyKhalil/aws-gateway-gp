@@ -85,8 +85,7 @@ public class MapperUtilForApi {
 
     public List<User> getUsers( List<Integer> studentId ) {
         List<User> listOfUser = new ArrayList<>();
-        for ( Integer id :
-                studentId ) {
+        for ( Integer id : studentId ) {
             listOfUser.add( getUser( id ) );
         }
         return listOfUser;
@@ -122,5 +121,11 @@ public class MapperUtilForApi {
             trainingProgram.ifPresent( intakes::add );
         }
         return intakes;
+    }
+
+
+    public Track getTrackById(int id) {
+        Optional<Track> track = trackDao.findById(id);
+        return track.orElse( null );
     }
 }

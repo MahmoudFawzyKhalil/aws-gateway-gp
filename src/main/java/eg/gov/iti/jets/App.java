@@ -9,6 +9,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import software.amazon.awssdk.core.exception.SdkClientException;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,7 +18,6 @@ import java.util.Optional;
 @SpringBootApplication
 public class App {
     public static void main(String[] args) {
-
         SpringApplication.run(App.class, args);
     }
 
@@ -44,6 +44,7 @@ public class App {
 //                DummyData.populateStaticDataForIsmailiaBranch(instructorRole,trainingMangerRole,supervisorRole,studentRole, branchMangerRole, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
 //
 //            }
+//            templateConfigurationDao.findAllByInstructor("supervisor",TemplateConfiguration.class).forEach(t-> System.out.println(t.getAmiId()));
 //            System.out.println("------------");
 //            for(User user:userDao.getUserByBranchIdAndRoleName(1,"INSTRUCTOR")){
 //                System.out.println(user.getUsername());
@@ -134,15 +135,15 @@ public class App {
 //        var ke2 = keyPairDao.save(new KeyPair(null, "keyPairId2", "keyName2", "keyMaterial2", "keyMaterialType2", superVisorUser));
 //        SecurityGroup securityGroup = new SecurityGroup(null, "secGroupId", "secGroup1", "descriptoon", "vpcId", null, null);
 //        securityGroupDao.save(securityGroup);
-//        TemplateConfiguration templateConfiguration = new TemplateConfiguration(null, "ami1", "subnetId", "instanceType", superVisorUser, null, List.of(securityGroup));
-//        TemplateConfiguration templateConfiguration2 = new TemplateConfiguration(null, "ami2", "subnetId2", "instanceType2", superVisorUser, null, List.of(securityGroup));
+//        TemplateConfiguration templateConfiguration = new TemplateConfiguration(null, "ami-0022f774911c1d690", "subnetId", "instanceType", superVisorUser, List.of(superVisorUser), List.of(securityGroup));
+////        TemplateConfiguration templateConfiguration2 = new TemplateConfiguration(null, "ami2", "subnetId2", "instanceType2", superVisorUser, null, List.of(securityGroup));
 //        templateConfigurationDao.save(templateConfiguration);
-//        templateConfigurationDao.save(templateConfiguration2);
-//        Instance instance = instanceDao.save(new Instance(null, "name", "amid", "instanceId", "state", "publicIp", "publicDnsName", "instanceType", "subnetId", "vpcId", "platform", "decryptedPassword", "userName", LocalDateTime.now(), key, superVisorUser, null, templateConfiguration));
-//        Instance instance2 = instanceDao.save(new Instance(null, "name2", "amid2", "instanceId2", "state2", "publicIp2", "publicDnsName2", "instanceType2", "subnetId2", "vpcId2", "platform2", "decryptedPassword2", "userName2", LocalDateTime.now(), key, superVisorUser, null, templateConfiguration2));
+////        templateConfigurationDao.save(templateConfiguration2);
+//        Instance instance = instanceDao.save(new Instance(null, "name", "amid", "instanceId", "state", "publicIp", "publicDnsName", "instanceType", "subnetId", "vpcId", "platform", "decryptedPassword", "userName", LocalDateTime.now(), key, superVisorUser, null, templateConfiguration,60L));
+////        Instance instance2 = instanceDao.save(new Instance(null, "name2", "amid2", "instanceId2", "state2", "publicIp2", "publicDnsName2", "instanceType2", "subnetId2", "vpcId2", "platform2", "decryptedPassword2", "userName2", LocalDateTime.now(), key, superVisorUser, null, templateConfiguration2,60L));
 //
 //        instanceDao.save(instance);
-//        instanceDao.save(instance2);
+////        instanceDao.save(instance2);
 //
 //        Ami ami1 = amiDao.save(new Ami(null, "imageId", "imagwOwnerAlias", "arch", "imageName", "description", "platform"));
 //        Ami ami2 = amiDao.save(new Ami(null, "imageId2", "imagwOwnerAlias2", "arch2", "imageName2", "description2", "platform2"));

@@ -18,6 +18,7 @@ import eg.gov.iti.jets.api.resource.privilege.AddPrivilegeRequest;
 import eg.gov.iti.jets.api.resource.privilege.GetPrivilegeResponse;
 import eg.gov.iti.jets.api.resource.template.TemplateRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
+import eg.gov.iti.jets.api.resource.track.TrackPutRequest;
 import eg.gov.iti.jets.api.resource.track.TrackRequest;
 import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramPutRequest;
@@ -42,6 +43,17 @@ import java.util.stream.Collectors;
 public class Mapper {
     @Autowired
     private MapperUtilForApi mapperUtilForApi;
+
+
+
+
+
+
+
+
+
+
+
 
 
     public Branch mapFromBranchRequestToBranch( BranchRequest branchRequest ) {
@@ -96,6 +108,7 @@ public class Mapper {
         intakeResponse.setTrainingProgramId( intake.getTrainingProgram().getId() );
         intakeResponse.setIntakeName( intake.getName() );
         intakeResponse.setIntakeDescription( intake.getDescription() );
+        intakeResponse.setId( intake.getId() );
         return intakeResponse;
     }
 
@@ -120,9 +133,6 @@ public class Mapper {
 
     public Track mapFromTrackRequestToTrack( TrackRequest trackRequest ) {
         Track track = new Track();
-        Intake intake = mapperUtilForApi.getIntackById( trackRequest.getIntakeId() );
-        track.setIntake( intake );
-        track.setId( trackRequest.getId() );
         track.setName( trackRequest.getName() );
         return track;
     }
@@ -131,9 +141,10 @@ public class Mapper {
     public TrackResponse mapFromTrackToTrackResponse( Track track ) {
         TrackResponse trackResponse = new TrackResponse();
         trackResponse.setName( track.getName() );
-        trackResponse.setIntakeId( track.getIntake().getId() );
+        trackResponse.setId(track.getId());
         return trackResponse;
     }
+
 
     public List<TrackResponse> mapFromListOfTracksToListOfTrackResponses( List<Track> tracks ) {
         List<TrackResponse> trackResponses =
@@ -141,31 +152,17 @@ public class Mapper {
         return trackResponses;
     }
 
+    public Track mapFromTrackPutRequestToBranch(TrackPutRequest trackPutRequest, int id ) {
+        Track track = mapperUtilForApi.getTrackById(id);
+        track.setName( trackPutRequest.getName() );
+        return track;
+    }
+
     public Instance mapFromInstanceRequestToInstance( IntakeRequest intakeRequest ) {
         return null;
     }
 
-    public InstanceResponse mapFromInstanceToInstanceResponse( Instance instance ) {
-        InstanceResponse instanceResponse = new InstanceResponse();
-        instanceResponse.setInstanceId( instance.getInstanceId() );
-        instanceResponse.setInstanceType( instance.getInstanceType() );
-//        instanceResponse.setInstanceUsers( instance.getInstanceUsers() );
-//        instanceResponse.setCreator( instance.getCreator() );
-        instanceResponse.setId( instance.getId() );
-        instanceResponse.setName( instance.getName() );
-        instanceResponse.setVpcId( instance.getVpcId() );
-        instanceResponse.setSubnetId( instance.getSubnetId() );
-        instanceResponse.setAmiId( instance.getAmiId() );
-//        instanceResponse.setKeyPair( instance.getKeyPair() );
-        instanceResponse.setPlatform( instance.getPlatform() );
-        instanceResponse.setCreationDateTime( instance.getCreationDateTime().toString() );
-        instanceResponse.setDecryptedPassword( instance.getDecryptedPassword() );
-//        instanceResponse.setTemplateConfiguration( instance.getTemplateConfiguration() );
-        instanceResponse.setPublicDnsName( instance.getPublicDnsName() );
-        instanceResponse.setUsername( instance.getUsername() );
-        instanceResponse.setState( instance.getState() );
-        return instanceResponse;
-    }
+
 
 //    public Instance mapFromInstanceRequestToInstance( InstanceRequest instanceRequest ) {
 //
@@ -186,65 +183,10 @@ public class Mapper {
         return subnetObjectResponse;
     }
 
-    public TemplateConfiguration mapFromTemplateRequestToTemplateConfig( TemplateRequest templateRequest, int id ) {
-        TemplateConfiguration templateConfiguration = new TemplateConfiguration();
-        templateConfiguration.setAmiId( templateRequest.getAmiId() );
-        templateConfiguration.setCreator( mapperUtilForApi.getUser( id ) );
-        templateConfiguration.setSubnetId( templateRequest.getSubnetId() );
-        templateConfiguration.setInstanceType( templateRequest.getInstanceType() );
-        templateConfiguration.setInstructors( null );
-        templateConfiguration.setSecurityGroups( mapperUtilForApi.getSecurityGroups( templateRequest.getSecurityGroups() ) );
-        return templateConfiguration;
-    }
-
-    public SecurityGroupResponse mapFromSecurityGroupToSecurityGroupResponse( SecurityGroup securityGroup ) {
-        SecurityGroupResponse securityGroupResponse = new SecurityGroupResponse();
-        securityGroupResponse.setId( securityGroup.getId() );
-        securityGroupResponse.setName( securityGroup.getName() );
-        securityGroupResponse.setSecurityGroupId( securityGroup.getSecurityGroupId() );
-        securityGroupResponse.setDescription( securityGroup.getDescription() );
-        securityGroupResponse.setVpcId( securityGroup.getVpcId() );
-        return securityGroupResponse;
-
-    }
 
 
-    public TemplateResponse mapFromTemplateToTemplateResponse( TemplateConfiguration template ) {
-        TemplateResponse templateResponse = new TemplateResponse();
-        templateResponse.setId( template.getId() );
-        templateResponse.setInstanceType( template.getInstanceType() );
-        templateResponse.setSubnetId( template.getSubnetId() );
-        templateResponse.setSecurityGroup( mapperUtilForApi.getSecurityGroupsName( template.getSecurityGroups() ) );
-        templateResponse.setAmi( mapFromAmiToAmiResponse( mapperUtilForApi.getAmiObject( template.getAmiId() ) ) );
-        return templateResponse;
-    }
 
-    public AmiResponse mapFromAmiToAmiResponse( Ami ami ) {
-        AmiResponse amiResponse = new AmiResponse( ami.getImageId(), ami.getImageOwnerAlias(), ami.getArchitecture(), ami.getImageName(), ami.getDescription(), ami.getPlatform() );
-        return amiResponse;
-    }
 
-    public InstanceTypeObjectResponse mapFromInstanceTypeToObjectResponse( List<String> types ) {
-        List<InstanceTypeResponse> list = new ArrayList<>();
-        for ( String type :
-                types ) {
-            InstanceTypeResponse instanceType = new InstanceTypeResponse( type );
-            list.add( instanceType );
-        }
-
-        InstanceTypeObjectResponse instanceTypeObjectResponse = new InstanceTypeObjectResponse( list );
-        return instanceTypeObjectResponse;
-    }
-
-    public Instance mapFromInstanceReqToInstance( InstanceRequest instanceRequest, int creatorId ) {
-        Instance instance = new Instance();
-        instance.setTemplateConfiguration( mapperUtilForApi.getTemplateConfigurationById( instanceRequest.getTemplateId() ) );
-        instance.setKeyPair( mapperUtilForApi.getKeyPair( instanceRequest.getKeyPair(), creatorId ) );
-        instance.setName( instanceRequest.getInstanceName() );
-        instance.setInstanceUsers( mapperUtilForApi.getUsers( instanceRequest.getStudentIds() ) );
-        instance.setCreator( mapperUtilForApi.getUser( creatorId ) );
-        return instance;
-    }
 
     public GetPrivilegeResponse privilegeToGetPrivilegeResponse( Privilege privilege ) {
         return new GetPrivilegeResponse( privilege.getId(), privilege.getName().name() );
@@ -298,6 +240,7 @@ public class Mapper {
 
     public User createUserRequestToUser(CreateUserRequest userRequest) {
         User user = new User();
+//        user.setId(userRequest.getId());
         user.setEmail(userRequest.getEmail());
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());

@@ -71,4 +71,14 @@ public class TemplateConfigurationDaoImpl implements TemplateConfigurationDao {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return templateConfigurationRepo.findAllBy(Example.of(example,caseInsensitiveExampleMatcher),projection);
     }
+
+    @Override
+    public <T> List<T> findAllByInstructor(int id, Class<T> projection) {
+        return templateConfigurationRepo.findAllByInstructors_id(id,projection);
+    }
+
+    @Override
+    public <T> List<T> findAllByInstructor(String userName, Class<T> projection) {
+        return templateConfigurationRepo.findAllByInstructors_username(userName,projection);
+    }
 }
