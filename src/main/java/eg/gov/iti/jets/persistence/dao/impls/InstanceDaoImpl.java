@@ -4,7 +4,6 @@ import eg.gov.iti.jets.persistence.dao.InstanceDao;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Repository;
 
@@ -73,5 +72,10 @@ public class InstanceDaoImpl implements InstanceDao {
     @Override
     public <C> List<C> findUserGrantedInstances(int userId, Class<C> projection) {
         return instanceRepo.findAllByInstanceUsers_id(userId, projection);
+    }
+
+    @Override
+    public <C> List<C> findFollowersUsersGrantedInstances(int userId, Class<C> projection) {
+        return instanceRepo.findAllDistinctByInstanceUsers_manager_id(userId, projection);
     }
 }

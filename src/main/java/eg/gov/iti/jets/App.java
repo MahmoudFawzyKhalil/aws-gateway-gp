@@ -56,7 +56,9 @@ public class App {
             userDao.getAllByTrackAndRole(1,"STUDENT",User.class).forEach(u -> System.out.println(u.getUsername()));
             System.out.println("-------------------------");
             instanceDao.findUserGrantedInstances(1,Instance.class).forEach(i -> System.out.println(i.getInstanceId()));
-//                            List<Branch> branches = branchDao.findAllByExample(new Branch(null,BranchStatus.ACTIVE,"smart",null,null,null));
+            instanceDao.findFollowersUsersGrantedInstances(1,Instance.class).forEach(i -> System.out.println(i.getInstanceId()));
+
+            //                            List<Branch> branches = branchDao.findAllByExample(new Branch(null,BranchStatus.ACTIVE,"smart",null,null,null));
 //                            branches.forEach(b-> System.out.println(b.getName()));
 //                            System.out.println("Finished Inserting");
 //                            System.out.println("all users students in java track");
