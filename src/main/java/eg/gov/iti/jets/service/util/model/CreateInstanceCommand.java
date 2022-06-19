@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.service.model;
+package eg.gov.iti.jets.service.util.model;
 
 import eg.gov.iti.jets.persistence.entity.aws.KeyPair;
 import lombok.*;
