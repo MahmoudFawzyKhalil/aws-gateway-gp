@@ -22,7 +22,10 @@ public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+
+    @Column(unique = true)
     private String name;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "role_privileges",
             joinColumns = @JoinColumn(name = "role_id"),

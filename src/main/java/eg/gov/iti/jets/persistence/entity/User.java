@@ -2,10 +2,7 @@ package eg.gov.iti.jets.persistence.entity;
 
 
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -37,22 +34,27 @@ public class User {
     @JoinColumn(name = "role_id")
     private Role role;
 
-    @ManyToMany
+    /*@ManyToMany
     @JoinTable(name = "user_tracks",
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "track_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "track_id"}))
+            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "track_id"}))*/
+    @ManyToMany(mappedBy = "users" )
+
     private List<Track> tracks;
 
 
-    @OneToMany(mappedBy = "creator")
+    @OneToMany(mappedBy = "creator" ,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     private List<Instance> createdInstances = new ArrayList<>();
 
-    @ManyToMany
-    @JoinTable(name = "user_granted_instances",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "instance_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "instance_id"}))
-    private List<Instance> grantedInstances = new ArrayList<>();
+//    @ManyToMany(mappedBy = "instanceUsers")
+    @OneToOne(mappedBy = "instanceUsers")
+    private Instance grantedInstances ;
+
+    @ManyToOne
+    private User manager;
+
+    @OneToMany(mappedBy="manager")
+    private List<User> followers;
 
 }

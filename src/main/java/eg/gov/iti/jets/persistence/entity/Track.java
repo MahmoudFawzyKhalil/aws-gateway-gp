@@ -29,7 +29,13 @@ public class Track {
     @JoinColumn(name = "intake_id",nullable = false)
     private Intake intake;
 
-    @ManyToMany(mappedBy = "tracks")
+
+    @ManyToMany
+    @JoinTable(name = "user_tracks",
+            joinColumns =  @JoinColumn(name = "track_id"),
+            inverseJoinColumns =@JoinColumn(name = "user_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"track_id", "user_id"}))
+//    @ManyToMany(mappedBy = "tracks" )
     private List<User> users = new ArrayList<>();
 
 

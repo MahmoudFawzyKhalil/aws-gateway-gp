@@ -1,11 +1,11 @@
 package eg.gov.iti.jets.persistence.entity.aws;
 
 import eg.gov.iti.jets.persistence.entity.User;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -15,6 +15,7 @@ import java.util.List;
 @AllArgsConstructor
 @Entity
 @Table(name = "instance")
+@ToString
 public class Instance {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +28,7 @@ public class Instance {
     @Column(name = "aws_instance_id", unique = true)
     private String instanceId;
     @Column(name = "state")
-    private String state; // TODO this has been changed from Enum to String -- this todo is just to let you know ♥
-    @Column(name = "instance_keymaterial")
-    private String keyMaterial;
+    private String state;
     @Column(name = "instance_publicip")
     private String publicIp;
     @Column(name = "instance_public_dns_name")
@@ -40,6 +39,8 @@ public class Instance {
     private String subnetId;
     @Column(name = "vpc_id")
     private String vpcId;
+    @Column(name = "platform")
+    private String platform; // windows or linux
     @Column(name = "instance_password")
     private String decryptedPassword;
     @Column(name = "instance_username")
@@ -52,12 +53,23 @@ public class Instance {
     @ManyToOne
     @JoinColumn(name = "creator_id")
     private User creator;
-    @ManyToMany(mappedBy = "grantedInstances")
-    private List<User> instanceUsers;
-    @ManyToMany
-    @JoinTable(name = "instance_security_groups",
-            joinColumns = @JoinColumn(name = "instance_id"),
-            inverseJoinColumns = @JoinColumn(name = "security_group_id"),
-            uniqueConstraints = @UniqueConstraint(columnNames = {"instance_id", "security_group_id"}))
-    private List<SecurityGroup> securityGroups;
+
+//    @ManyToMany
+//    @JoinTable(name = "user_granted_instances",
+//            joinColumns = @JoinColumn(name = "instance_id"),
+//            inverseJoinColumns = @JoinColumn(name = "user_id"),
+//            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "instance_id"}))
+
+    @OneToOne
+    @JoinColumn(name = "user_granted_id")
+    private User instanceUsers;
+
+    @ManyToOne
+    @JoinColumn(name = "template_configuration_id", nullable = false)
+    TemplateConfiguration templateConfiguration;
+
+    @Min( 2L )
+    @NotNull
+    private Long timeToLiveInMinutes; // This must be provided from the frontend
+
 }

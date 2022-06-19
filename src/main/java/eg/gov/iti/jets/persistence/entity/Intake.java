@@ -30,7 +30,7 @@ public class Intake {
     @JoinColumn(name = "training_program_id",nullable = false)
     private TrainingProgram trainingProgram;
 
-    @OneToMany(mappedBy = "intake")
+    @OneToMany(mappedBy = "intake" )
     private List<Track> tracks = new ArrayList<>();
 
     @Column(name = "intake_description")
