@@ -22,21 +22,22 @@ public class TrackManagementImpl implements TrackManagement {
 
     @Override
     public Track createTrack(Track track) {
-    try{
-        return trackDao.save(track);
+        try{
+            return trackDao.save(track);
+        }
+        catch (Exception e) {
+            throw new ResourceExistException("Track" + track.getName() + ", is already exist!");
+        }
     }
-    catch (Exception e) {
-        throw new ResourceExistException("Track" + track.getName() + ", is already exist!");
-    }
-}
+
 
     @Override
     public Track updateTrack(Track track) {
         try {
             return trackDao.update(track);
         }
-    catch (Exception e) {
-        throw new ResourceNotFoundException("Could not update track with id ");
+        catch (Exception e) {
+            throw new ResourceNotFoundException("Could not update track with id ");
         }
     }
 
