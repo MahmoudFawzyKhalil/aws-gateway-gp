@@ -5,6 +5,7 @@ package eg.gov.iti.jets.service.management.impl;
 import eg.gov.iti.jets.persistence.dao.SecurityGroupDao;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.SecurityGroupAws;
 import org.springframework.stereotype.Service;
@@ -25,7 +26,11 @@ public class SecurityGroupAwsImpl implements SecurityGroupAws {
 
     @Override
     public List<SecurityGroup> describeSecurityGroupsForVpc( String vpcId){
-        return awsGateway.describeSecurityGroupsForVpc(vpcId);
+        try {
+         return awsGateway.describeSecurityGroupsForVpc(vpcId);
+        }catch (Exception e) {
+            throw new ResourceNotFoundException("Security group with id " + vpcId + ", is not found!");
+        }
     }
 
     @Override
