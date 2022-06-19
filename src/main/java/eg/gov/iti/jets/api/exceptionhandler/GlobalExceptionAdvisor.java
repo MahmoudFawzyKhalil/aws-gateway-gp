@@ -30,10 +30,7 @@ public class GlobalExceptionAdvisor {
     public ResponseEntity<?> handleException(AwsGatewayException exception) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMsg(exception.getMessage());
-        /**
-         * set your error code
-         * and your response entity
-         */
-        return null;
+        errorResponse.setErrorCode(500);
+        return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }

@@ -8,6 +8,7 @@ import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.service.exception.AwsGatewayException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
 
@@ -267,8 +268,12 @@ class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public Optional<Ami> describeAmi(String amiId) {
-        var describeImagesResponse = ec2Client.describeImages(DescribeImagesRequest.builder().imageIds(amiId).build());
-        return describeImagesResponse.hasImages() ? mapToCustomAmi(describeImagesResponse.images().get(0)) : Optional.empty();
+        try {
+            var describeImagesResponse = ec2Client.describeImages(DescribeImagesRequest.builder().imageIds(amiId).build());
+            return describeImagesResponse.hasImages() ? mapToCustomAmi(describeImagesResponse.images().get(0)) : Optional.empty();
+        }catch (SdkClientException e){
+            throw new AwsGatewayException(e.getMessage());
+        }
     }
 
     private Optional<Ami> mapToCustomAmi(Image image) {
