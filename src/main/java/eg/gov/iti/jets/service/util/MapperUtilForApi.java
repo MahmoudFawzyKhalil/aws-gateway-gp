@@ -6,6 +6,7 @@ import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.KeyPair;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -125,8 +126,14 @@ public class MapperUtilForApi {
     }
 
 
+//    public Track getTrackById(int id) {
+//        Optional<Track> track = trackDao.findById(id);
+//        return track.orElse( null );
+//    }
+
     public Track getTrackById(int id) {
         Optional<Track> track = trackDao.findById(id);
         return track.orElse( null );
+
     }
 }

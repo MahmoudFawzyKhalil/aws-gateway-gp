@@ -8,5 +8,5 @@ public interface PrivilegeManagement {
     Boolean addPrivilege( Privilege privilege );
     Boolean deletePrivilege( int id );
     List<Privilege> getAllPrivilege();
-    Privilege getPrivilegeById( int id );
+    Privilege getPrivilegeById(Integer id );
 }

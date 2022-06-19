@@ -41,6 +41,8 @@ public class InstanceManagementImpl implements InstanceManagement {
                 instanceToCreate.getKeyPair(),
                 instanceToCreate.getTimeToLiveInMinutes());
 
+        System.out.println(createdInstance.getInstanceId());
+
         createdInstance.setInstanceUsers(instanceToCreate.getInstanceUsers());
         createdInstance.setCreator(instanceToCreate.getCreator());
         createdInstance.setTemplateConfiguration(instanceToCreate.getTemplateConfiguration());
@@ -120,22 +122,21 @@ public class InstanceManagementImpl implements InstanceManagement {
         return instance;
     }
 
-    @Override
-    public List<Instance> getInstancesByUserId(Integer id) {
-
-        Optional<User> optionalUser = userDao.findById(id);
-
-
-        List<Instance> grantedNonTerminatedInstances = optionalUser
-                .stream()
-                .flatMap(u -> u.getGrantedInstances().stream())
-                .filter(i -> !i.getState().equalsIgnoreCase("terminated")
-                        && !i.getState().equalsIgnoreCase("terminating"))
-                .collect(Collectors.toList());
-
-        awsGateway.updateInstancesInfoFromAws(grantedNonTerminatedInstances);
-
-        return grantedNonTerminatedInstances;
-    }
+//    @Override
+//    public List<Instance> getInstancesByUserId(Integer id) {
+//
+//        Optional<User> optionalUser = userDao.findById(id);
+//
+//        List<Instance> grantedNonTerminatedInstances = optionalUser
+//                .stream()
+//                .flatMap(u -> u.getGrantedInstances().stream())
+//                .filter(i -> !i.getState().equalsIgnoreCase("terminated")
+//                        && !i.getState().equalsIgnoreCase("terminating"))
+//                .collect(Collectors.toList());
+//
+//        awsGateway.updateInstancesInfoFromAws(grantedNonTerminatedInstances);
+//
+//        return grantedNonTerminatedInstances;
+//    }
 
 }
