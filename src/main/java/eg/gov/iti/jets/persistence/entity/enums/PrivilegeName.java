@@ -6,4 +6,5 @@ public enum PrivilegeName {
     VIEW_TEMPLATES,
     MANAGE_TEMPLATE,
     START_STOP_INSTANCE,
+    VIEW_INSTANCE
 }
