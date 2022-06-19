@@ -74,23 +74,23 @@ public class InstanceController {
     @GetMapping("{instanceId}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTANCE.name())")
     InstanceResponse getDetails (@PathVariable String instanceId){
-        Instance instance = instanceManagement.instanceDetails( instanceId );
+        Instance instance = instanceManagement.getInstanceDetails( instanceId );
 
         return mapper.mapFromInstanceToInstanceResponse( instance );
     }
 
-    @GetMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTANCE.name())")
-    InstanceObjectResponse getInstances ( @AuthenticationPrincipal UserAdapter userDetails ){
-        Integer id = userDetails.getId();
-        List<InstanceResponse> list = new ArrayList<>();
-        List<Instance> instancesByUserId = instanceManagement.getInstancesByUserId( id );
-        for ( Instance instance:
-              instancesByUserId ) {
-            list.add( mapper.mapFromInstanceToInstanceResponse( instance ) );
-        }
-        return new InstanceObjectResponse(list);
-    }
+//    @GetMapping
+//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTANCE.name())")
+//    InstanceObjectResponse getInstances ( @AuthenticationPrincipal UserAdapter userDetails ){
+//        Integer id = userDetails.getId();
+//        List<InstanceResponse> list = new ArrayList<>();
+//        List<Instance> instancesByUserId = instanceManagement.getInstanceDetails( "fdf" );
+//        for ( Instance instance:
+//              instancesByUserId ) {
+//            list.add( mapper.mapFromInstanceToInstanceResponse( instance ) );
+//        }
+//        return new InstanceObjectResponse(list);
+//    }
 
 
 }
