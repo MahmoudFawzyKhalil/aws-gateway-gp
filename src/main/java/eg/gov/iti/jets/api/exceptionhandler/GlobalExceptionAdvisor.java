@@ -13,24 +13,33 @@ public class GlobalExceptionAdvisor {
     @ExceptionHandler(ResourceNotFoundException.class)
     public ResponseEntity<?> handleException(ResourceNotFoundException exception){
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setErrorMsg(exception.getMessage());
-        errorResponse.setErrorCode(404);
+        errorResponse.setTimestamp(new Date());
+        errorResponse.setCode(404);
+        errorResponse.setError(HttpStatus.NOT_FOUND.getReasonPhrase());
+        errorResponse.setMsg(exception.getMessage());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
     @ExceptionHandler(ResourceExistException.class)
     public ResponseEntity<?> handleException(ResourceExistException exception) {
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setErrorMsg(exception.getMessage());
-        errorResponse.setErrorCode(406);
+        errorResponse.setTimestamp(new Date());
+        errorResponse.setCode(406);
+        errorResponse.setMsg(exception.getMessage());
+        errorResponse.setError(HttpStatus.NOT_ACCEPTABLE.getReasonPhrase());
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler(AwsGatewayException.class)
     public ResponseEntity<?> handleException(AwsGatewayException exception) {
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setErrorMsg(exception.getMessage());
-        errorResponse.setErrorCode(500);
+        errorResponse.setMsg(exception.getMessage());
+        /**
+         * set your error code
+         * and your response entity
+         */
+        return null;
+        errorResponse.setCode(500);
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
