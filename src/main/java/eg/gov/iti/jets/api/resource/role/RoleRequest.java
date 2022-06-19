@@ -9,8 +9,7 @@ import java.util.List;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateRoleRequest {
-    private int id;
+public class RoleRequest {
     private String name;
     private List<Integer> privileges;
 }

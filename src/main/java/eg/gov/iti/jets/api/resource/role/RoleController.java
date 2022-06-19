@@ -18,8 +18,8 @@ public class RoleController {
     private final Mapper mapper;
 
     @PostMapping
-    public ResponseEntity<RoleResponse> addRole(@RequestBody AddRoleRequest roleRequest) {
-        Role role = roleManagement.addRole(mapper.addRoleRequestToRole(roleRequest));
+    public ResponseEntity<RoleResponse> addRole(@RequestBody RoleRequest roleRequest) {
+        Role role = roleManagement.addRole(mapper.roleRequestToRole(roleRequest));
         return new ResponseEntity<>(mapper.roleToRoleResponse(role), HttpStatus.CREATED);
     }
 
@@ -35,13 +35,14 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<GetRoleResponse> getRole(@PathVariable("id") int id){
+    public ResponseEntity<GetRoleResponse> getRole(@PathVariable("id") Integer id){
        return new ResponseEntity<>(mapper.roleToGetRoleResponse(roleManagement.getRoleById(id)), HttpStatus.OK);
     }
 
-    @PutMapping
-    public ResponseEntity<RoleResponse> updateRole(@RequestBody UpdateRoleRequest updateRoleRequest) {
-        Role role = mapper.updateRoleRequestToRole(updateRoleRequest);
+    @PutMapping("/{id}")
+    public ResponseEntity<RoleResponse> updateRole(@RequestBody RoleRequest roleRequest, @PathVariable("id") Integer id) {
+        Role role = mapper.roleRequestToRole(roleRequest);
+        role.setId(id);
         role = roleManagement.updateRole(role);
         return new ResponseEntity<>(mapper.roleToRoleResponse(role), HttpStatus.OK);
     }

@@ -258,11 +258,11 @@ public class Mapper {
         return privilege;
     }
 
-    public Role addRoleRequestToRole( AddRoleRequest addRoleRequest ) {
+    public Role roleRequestToRole(RoleRequest roleRequest ) {
         Role role = new Role();
-        role.setName( addRoleRequest.getName() );
+        role.setName( roleRequest.getName() );
         role.setPrivileges(
-                addRoleRequest.getPrivileges().stream().map( id -> {
+                roleRequest.getPrivileges().stream().map( id -> {
                     Privilege privilege = new Privilege();
                     privilege.setId( id );
                     return privilege;
@@ -293,22 +293,6 @@ public class Mapper {
                 role.getPrivileges().stream().map(Privilege::getId).collect(Collectors.toList())
         );
         return roleResponse;
-    }
-
-
-    public Role updateRoleRequestToRole( UpdateRoleRequest updateRoleRequest ) {
-        Role role = new Role();
-        role.setId( updateRoleRequest.getId() );
-        role.setName( updateRoleRequest.getName() );
-        role.setPrivileges(
-                updateRoleRequest.getPrivileges().stream().map(
-                        privilegeId -> {
-                            Privilege privilege = new Privilege();
-                            privilege.setId( privilegeId );
-                            return privilege;
-                        }
-                ).collect( Collectors.toList() ) );
-        return role;
     }
 
     public User createUserRequestToUser(CreateUserRequest userRequest) {
