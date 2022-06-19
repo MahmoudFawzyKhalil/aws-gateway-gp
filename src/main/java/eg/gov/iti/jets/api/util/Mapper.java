@@ -249,16 +249,29 @@ public class Mapper {
         return instanceTypeObjectResponse;
     }
 
-//    public Instance mapFromInstanceReqToInstance( InstanceRequest instanceRequest, int creatorId ) {
-//        Instance instance = new Instance();
-//        instance.setTemplateConfiguration( mapperUtilForApi.getTemplateConfigurationById( instanceRequest.getTemplateId() ) );
-//        instance.setKeyPair( mapperUtilForApi.getKeyPair( instanceRequest.getKeyPair(), creatorId ) );
-//        instance.setName( instanceRequest.getInstanceName() );
-//        instance.setInstanceUsers( mapperUtilForApi.getUsers( instanceRequest.getStudentIds() ) );
-//        instance.setCreator( mapperUtilForApi.getUser( creatorId ) );
-//        instance.setTimeToLiveInMinutes(instanceRequest.getTimeToLiveInMinutes());
-//        return instance;
-//    }
+    public Instance mapFromInstanceReqToInstance( InstanceRequest instanceRequest , int studentId, int creatorId ) {
+        Instance instance = new Instance();
+        System.out.println("************************************************** Before template");
+        instance.setTemplateConfiguration( mapperUtilForApi.getTemplateConfigurationById( instanceRequest.getTemplateId() ) );
+        System.out.println("************************************************** After template");
+        System.out.println("************************************************** Before key");
+
+        instance.setKeyPair( mapperUtilForApi.getKeyPair( instanceRequest.getKeyPair(), creatorId ) );
+        System.out.println("************************************************** After key");
+
+        instance.setName( instanceRequest.getInstanceName() );
+        System.out.println("************************************************** Before student");
+
+        instance.setInstanceUsers( mapperUtilForApi.getUser( studentId ));
+        System.out.println("************************************************** After student");
+        System.out.println("************************************************** Before creater");
+
+        instance.setCreator( mapperUtilForApi.getUser( creatorId ) );
+        System.out.println("************************************************** After student");
+
+        instance.setTimeToLiveInMinutes(instanceRequest.getTimeToLiveInMinutes());
+        return instance;
+    }
 
     public GetPrivilegeResponse privilegeToGetPrivilegeResponse( Privilege privilege ) {
         return new GetPrivilegeResponse( privilege.getId(), privilege.getName().name() );

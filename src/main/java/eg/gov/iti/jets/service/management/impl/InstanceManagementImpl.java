@@ -41,6 +41,8 @@ public class InstanceManagementImpl implements InstanceManagement {
                 instanceToCreate.getKeyPair(),
                 instanceToCreate.getTimeToLiveInMinutes());
 
+        System.out.println(createdInstance.getInstanceId());
+
         createdInstance.setInstanceUsers(instanceToCreate.getInstanceUsers());
         createdInstance.setCreator(instanceToCreate.getCreator());
         createdInstance.setTemplateConfiguration(instanceToCreate.getTemplateConfiguration());
