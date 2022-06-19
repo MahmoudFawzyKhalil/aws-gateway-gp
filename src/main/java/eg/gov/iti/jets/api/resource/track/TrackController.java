@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.api.resource.track;
 
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
+import eg.gov.iti.jets.api.resource.role.GetRoleResponse;
 import eg.gov.iti.jets.api.resource.role.RoleResponse;
 import eg.gov.iti.jets.api.resource.role.UpdateRoleRequest;
 import eg.gov.iti.jets.api.util.Mapper;
@@ -39,14 +40,19 @@ public class TrackController {
         return new ResponseEntity<>( trackResponseList , HttpStatus.OK );
     }
 
+//    @GetMapping("/{id}")
+//    public ResponseEntity<TrackResponse> getTrackById(@PathVariable int id){
+//        Optional<Track> track = trackManagement.getTrackById(id);
+//        TrackResponse trackResponse = new TrackResponse();
+//        if(track.isPresent()){
+//            trackResponse = mapper.mapFromTrackToTrackResponse( track.get() );
+//        }
+//        return new ResponseEntity<>( trackResponse ,HttpStatus.OK );
+//    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<TrackResponse> getTrackById(@PathVariable int id){
-        Optional<Track> track = trackManagement.getTrackById(id);
-        TrackResponse trackResponse = new TrackResponse();
-        if(track.isPresent()){
-            trackResponse = mapper.mapFromTrackToTrackResponse( track.get() );
-        }
-        return new ResponseEntity<>( trackResponse ,HttpStatus.OK );
+    public ResponseEntity<TrackResponse> getTrackById(@PathVariable("id") int id){
+        return new ResponseEntity<>(mapper.mapFromTrackToTrackResponse(trackManagement.getTrackById(id)), HttpStatus.OK);
     }
 
     @PostMapping

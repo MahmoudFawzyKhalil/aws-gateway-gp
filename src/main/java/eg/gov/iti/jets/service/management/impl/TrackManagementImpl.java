@@ -46,14 +46,10 @@ public class TrackManagementImpl implements TrackManagement {
         return trackDao.findAll();
     }
 
+
     @Override
-    public Optional<Track> getTrackById(int id) {
-        try {
-            return trackDao.findById(id);
-        }
-        catch (Exception e) {
-            throw new ResourceNotFoundException("Could not update Track with id "+ id +" because its not found");
-        }
+    public Track getTrackById(Integer id ) {
+        return trackDao.findById(id).orElseThrow(()->new ResourceNotFoundException("Track with id " + id + ", is not found"));
     }
 
 

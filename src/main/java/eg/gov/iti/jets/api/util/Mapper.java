@@ -29,6 +29,7 @@ import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import eg.gov.iti.jets.api.resource.user.CreateUserRequest;
@@ -133,6 +134,7 @@ public class Mapper {
         TrackResponse trackResponse = new TrackResponse();
         trackResponse.setName( track.getName() );
         trackResponse.setId(track.getId());
+        trackResponse.setIntakeId(track.getIntake().getId());
         return trackResponse;
     }
 
@@ -144,11 +146,17 @@ public class Mapper {
     }
 
     public Track mapFromTrackPutRequestToTrack(TrackPutRequest trackPutRequest, int id ) {
-        Track track = mapperUtilForApi.getTrackById(id);
-        Track track1 = new Track();
-        track1.setName( trackPutRequest.getName() );
-        return track;
+        try {
+            Track track = mapperUtilForApi.getTrackById(id);
+            track.setName(trackPutRequest.getName());
+            //track.setIntake(mapperUtilForApi.getIntackById( trackPutRequest.getIntakeId() ));
+            return track;
+        }
+        catch (Exception e){
+                throw new ResourceNotFoundException("Could not update track with id ");
+            }
     }
+
 
     public Instance mapFromInstanceRequestToInstance( IntakeRequest intakeRequest ) {
         return null;
