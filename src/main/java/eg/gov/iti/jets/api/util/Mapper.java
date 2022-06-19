@@ -144,9 +144,9 @@ public class Mapper {
     }
 
     public Track mapFromTrackPutRequestToTrack(TrackPutRequest trackPutRequest, int id ) {
-//        Track track = mapperUtilForApi.getTrackById(id);
-        Track track = new Track();
-        track.setName( trackPutRequest.getName() );
+        Track track = mapperUtilForApi.getTrackById(id);
+        Track track1 = new Track();
+        track1.setName( trackPutRequest.getName() );
         return track;
     }
 
