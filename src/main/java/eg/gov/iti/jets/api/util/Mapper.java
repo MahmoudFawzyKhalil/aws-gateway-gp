@@ -200,11 +200,11 @@ public class Mapper {
         return privilege;
     }
 
-    public Role addRoleRequestToRole( AddRoleRequest addRoleRequest ) {
+    public Role roleRequestToRole(RoleRequest roleRequest ) {
         Role role = new Role();
-        role.setName( addRoleRequest.getName() );
+        role.setName( roleRequest.getName() );
         role.setPrivileges(
-                addRoleRequest.getPrivileges().stream().map( id -> {
+                roleRequest.getPrivileges().stream().map( id -> {
                     Privilege privilege = new Privilege();
                     privilege.setId( id );
                     return privilege;
@@ -237,28 +237,17 @@ public class Mapper {
         return roleResponse;
     }
 
-
-    public Role updateRoleRequestToRole( UpdateRoleRequest updateRoleRequest ) {
-        Role role = new Role();
-        role.setId( updateRoleRequest.getId() );
-        role.setName( updateRoleRequest.getName() );
-        role.setPrivileges(
-                updateRoleRequest.getPrivileges().stream().map(
-                        privilegeId -> {
-                            Privilege privilege = new Privilege();
-                            privilege.setId( privilegeId );
-                            return privilege;
-                        }
-                ).collect( Collectors.toList() ) );
-        return role;
-    }
-
     public User createUserRequestToUser(CreateUserRequest userRequest) {
         User user = new User();
 //        user.setId(userRequest.getId());
         user.setEmail(userRequest.getEmail());
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
+
+        User manager = new User();
+        manager.setId(userRequest.getManagerId());
+
+        user.setManager(manager);
 
         Role role = new Role();
         role.setId( userRequest.getRole().getId());
@@ -268,12 +257,17 @@ public class Mapper {
         return user;
     }
 
-    public User updateUserRequestToUser(UpdateUserRequest updateUserRequest) {
+    public User updateUserRequestToUser(int id , UpdateUserRequest updateUserRequest) {
         User user = new User();
-        user.setId(updateUserRequest.getId());
+        user.setId(id);
         user.setEmail(updateUserRequest.getEmail());
         user.setUsername(updateUserRequest.getUsername());
         user.setPassword(updateUserRequest.getPassword());
+
+        User manager = new User();
+        manager.setId(updateUserRequest.getManagerId());
+
+        user.setManager(manager);
 
         Role role = new Role();
         role.setId( updateUserRequest.getRole().getId());

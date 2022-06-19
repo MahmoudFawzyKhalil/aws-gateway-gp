@@ -36,9 +36,9 @@ public class UserController {
         return ResponseEntity.ok(response);
     }
 
-    @PutMapping("/users")
-    public ResponseEntity<UserResponse> updateUser (@RequestBody UpdateUserRequest userRequest){
-        User user = mapper.updateUserRequestToUser(userRequest);
+    @PutMapping("/users/{id}")
+    public ResponseEntity<UserResponse> updateUser (@PathVariable int id , @RequestBody UpdateUserRequest userRequest){
+        User user = mapper.updateUserRequestToUser(id,userRequest);
         return ResponseEntity.ok(mapper.mapFromUserToUserResponse(userManagement.updateUser(user)));
     }
 
