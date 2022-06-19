@@ -135,9 +135,13 @@ class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public List<SecurityGroup> describeSecurityGroupsForVpc(String vpcId) {
-        DescribeSecurityGroupsRequest build = DescribeSecurityGroupsRequest.builder().filters(Filter.builder().name("vpc-id").values(vpcId).build()).build();
-        var securityGroupsResponse = ec2Client.describeSecurityGroups(build);
-        return securityGroupsResponse.securityGroups().stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
+        try {
+            DescribeSecurityGroupsRequest build = DescribeSecurityGroupsRequest.builder().filters(Filter.builder().name("vpc-id").values(vpcId).build()).build();
+            var securityGroupsResponse = ec2Client.describeSecurityGroups(build);
+            return securityGroupsResponse.securityGroups().stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
+        }catch (SdkClientException sdkClientException) {
+            throw new AwsGatewayException(sdkClientException.getMessage());
+        }
     }
 
     @Override

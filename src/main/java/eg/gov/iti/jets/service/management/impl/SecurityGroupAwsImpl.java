@@ -4,6 +4,7 @@ package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.persistence.dao.SecurityGroupDao;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
+import eg.gov.iti.jets.service.exception.ResourceExistException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.SecurityGroupAws;
 import org.springframework.stereotype.Service;
@@ -29,7 +30,11 @@ public class SecurityGroupAwsImpl implements SecurityGroupAws {
 
     @Override
     public SecurityGroup createSecurityGroup(SecurityGroup securityGroup) {
-        return securityGroupDao.save( securityGroup );
+        try {
+            return securityGroupDao.save( securityGroup );
+        }catch (Exception e) {
+            throw new ResourceExistException("Security group with id or name, is already exist!");
+        }
     }
 
 

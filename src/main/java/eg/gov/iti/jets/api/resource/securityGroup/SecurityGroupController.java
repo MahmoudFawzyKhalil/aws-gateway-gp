@@ -31,6 +31,7 @@ public class SecurityGroupController {
         // TODO: 6/17/2022 lw null aw msh sah error??
     ResponseEntity<?> getSecurityGroups( @PathVariable String vpcId){
         // TODO: 6/17/2022 mmkn hena myrga3sh haga ??
+        // TODO: if yes then no exception handling needed
         List<SecurityGroup> securityGroups= securityGroupAws.describeSecurityGroupsForVpc(vpcId);
         List<SecurityGroupResponse> securityGroupResponseList = securityGroups.stream().map( securityGroupMapper::mapFromSecurityGroupToSecurityGroupResponse ).collect( Collectors.toList() );
         SecurityGroupObjectResponse securityGroupObjectResponse = new SecurityGroupObjectResponse( securityGroupResponseList );
