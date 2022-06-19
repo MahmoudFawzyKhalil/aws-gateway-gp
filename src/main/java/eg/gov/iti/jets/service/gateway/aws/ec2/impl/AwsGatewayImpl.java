@@ -58,9 +58,12 @@ class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public List<Subnet> describeAllSubnets() {
-        var awsSubnets = ec2Client.describeSubnets();
-        return awsSubnets.subnets().stream().map(this::mapAwsSubnetToModel).collect(toList());
-
+        try {
+            var awsSubnets = ec2Client.describeSubnets();
+            return awsSubnets.subnets().stream().map(this::mapAwsSubnetToModel).collect(toList());
+        }catch (Exception e) {
+            throw new AwsGatewayException(e.getMessage());
+        }
     }
 
     @Override

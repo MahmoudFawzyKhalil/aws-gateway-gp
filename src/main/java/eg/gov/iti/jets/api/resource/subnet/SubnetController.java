@@ -25,9 +25,7 @@ public class SubnetController {
 
     @GetMapping()
     ResponseEntity<?> getAllSubnet(){
-        // TODO: 6/17/2022 hena mmkn ydrab haga ??
         SubnetObjectResponse subnetObjectResponse = mapper.mapFromSubnetToSubnetResponse( subnetAws.getAllSubnets() );
         return new ResponseEntity<>(subnetObjectResponse , HttpStatus.OK) ;
-
     }
 }
