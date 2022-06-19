@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.util.Date;
+
 @ControllerAdvice
 public class GlobalExceptionAdvisor {
     @ExceptionHandler(ResourceNotFoundException.class)
@@ -33,13 +35,10 @@ public class GlobalExceptionAdvisor {
     @ExceptionHandler(AwsGatewayException.class)
     public ResponseEntity<?> handleException(AwsGatewayException exception) {
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setMsg(exception.getMessage());
-        /**
-         * set your error code
-         * and your response entity
-         */
-        return null;
+        errorResponse.setTimestamp(new Date());
         errorResponse.setCode(500);
+        errorResponse.setMsg(exception.getMessage());
+        errorResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
