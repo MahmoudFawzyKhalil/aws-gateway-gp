@@ -18,4 +18,5 @@ interface InstanceRepo extends JpaRepository<Instance, Integer> {
     <T> List<T> findAllBy(Example<T> example, Class<T> projection);
 
     <T> List<T> findAllByInstanceUsers_id(int userId, Class<T> projection);
+    <T> List<T> findAllDistinctByInstanceUsers_manager_id(int userId, Class<T> projection);
 }
