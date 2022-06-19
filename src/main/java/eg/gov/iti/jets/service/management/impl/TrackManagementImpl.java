@@ -36,20 +36,9 @@ public class TrackManagementImpl implements TrackManagement {
             return trackDao.update(track);
         }
     catch (Exception e) {
-        throw new ResourceNotFoundException("Could not update track with id " + track.getId());
+        throw new ResourceNotFoundException("Could not update track with id ");
         }
     }
-
-//    @Override
-//    public Track updateTrack(int id ) {
-//        try {
-//            Optional<Track> track = trackDao.findById(id);
-//
-//        }
-//        catch (Exception e) {
-//            throw new ResourceNotFoundException("Could not update role with id " + track.getId());
-//        }
-//    }
 
 
     @Override

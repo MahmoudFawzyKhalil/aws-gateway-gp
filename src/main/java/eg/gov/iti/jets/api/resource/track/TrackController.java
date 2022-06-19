@@ -60,7 +60,7 @@ public class TrackController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TrackResponse> updateTrack (@PathVariable int id , @RequestBody TrackPutRequest trackPutRequsert){
-        Track track = trackManagement.updateTrack( mapper.mapFromTrackPutRequestToBranch(trackPutRequsert , id) );
+        Track track = trackManagement.updateTrack( mapper. mapFromTrackPutRequestToTrack(trackPutRequsert , id) );
         TrackResponse trackResponse = mapper.mapFromTrackToTrackResponse( track );
         return new ResponseEntity<>( trackResponse, HttpStatus.OK );
     }

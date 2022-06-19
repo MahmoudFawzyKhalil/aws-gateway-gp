@@ -143,8 +143,9 @@ public class Mapper {
         return trackResponses;
     }
 
-    public Track mapFromTrackPutRequestToBranch(TrackPutRequest trackPutRequest, int id ) {
-        Track track = mapperUtilForApi.getTrackById(id);
+    public Track mapFromTrackPutRequestToTrack(TrackPutRequest trackPutRequest, int id ) {
+//        Track track = mapperUtilForApi.getTrackById(id);
+        Track track = new Track();
         track.setName( trackPutRequest.getName() );
         return track;
     }
