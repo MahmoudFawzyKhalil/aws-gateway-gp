@@ -14,10 +14,8 @@ import java.util.List;
 
 @Service
 public class SecurityGroupAwsImpl implements SecurityGroupAws {
-    final
-    AwsGateway awsGateway;
-    final
-    SecurityGroupDao securityGroupDao;
+    private final AwsGateway awsGateway;
+    private final SecurityGroupDao securityGroupDao;
 
     public SecurityGroupAwsImpl( AwsGateway awsGateway, SecurityGroupDao securityGroupDao ) {
         this.awsGateway = awsGateway;
