@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 
@@ -29,8 +30,7 @@ public class AmiController {
     }
 
     @PostMapping()
-    public ResponseEntity<?> getAmi( @RequestBody AmiRequest amiRequest){
-        // TODO: 6/17/2022 if bad request  
+    public ResponseEntity<?> getAmi(@Valid @RequestBody AmiRequest amiRequest){
         Ami ami = amiAws.describeAmi( amiRequest.getAmiId() );
         AmiViewResponse amiViewResponse = new AmiViewResponse(amiMapper.mapFromAmiToAmiResponse(ami));
 //        AmiViewResponse amiViewResponse = ami.map( value -> new AmiViewResponse( amiMapper.mapFromAmiToAmiResponse( value ) ) ).orElse( new AmiViewResponse() );

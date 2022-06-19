@@ -5,10 +5,14 @@ import eg.gov.iti.jets.service.exception.ResourceExistException;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionAdvisor {
@@ -40,5 +44,21 @@ public class GlobalExceptionAdvisor {
         errorResponse.setMsg(exception.getMessage());
         errorResponse.setError(HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase());
         return new ResponseEntity<>(errorResponse, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<?> handleException(MethodArgumentNotValidException e) {
+        Map<String, String> errors = new HashMap<>();
+        ErrorResponse errorResponse = new ErrorResponse();
+        e.getBindingResult().getAllErrors().forEach((error) -> {
+            String fieldName = ((FieldError) error).getField();
+            String errorMessage = error.getDefaultMessage();
+            errors.put(fieldName, errorMessage);
+        });
+        errorResponse.setTimestamp(new Date());
+        errorResponse.setCode(400);
+        errorResponse.setMsg(errors.toString());
+        errorResponse.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
+        return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
 }
