@@ -12,6 +12,6 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AmiRequest {
-    @NotBlank(message = "id must not be empty or null")
+    @NotBlank(message = "must not be empty or null")
     private String amiId;
 }
