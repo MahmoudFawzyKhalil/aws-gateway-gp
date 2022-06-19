@@ -289,6 +289,7 @@ public class Mapper {
     public RoleResponse roleToRoleResponse(Role role) {
         RoleResponse roleResponse = new RoleResponse();
         roleResponse.setId(role.getId());
+        roleResponse.setName(role.getName());
         roleResponse.setPrivileges(
                 role.getPrivileges().stream().map(Privilege::getId).collect(Collectors.toList())
         );
