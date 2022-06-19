@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,8 +29,7 @@ public class SecurityGroupController {
 
 
     @GetMapping("{vpcId}")
-        // TODO: 6/17/2022 lw null aw msh sah error??
-    ResponseEntity<?> getSecurityGroups( @PathVariable String vpcId){
+    ResponseEntity<?> getSecurityGroups(@PathVariable String vpcId){
         List<SecurityGroup> securityGroups= securityGroupAws.describeSecurityGroupsForVpc(vpcId);
         List<SecurityGroupResponse> securityGroupResponseList = securityGroups.stream().map( securityGroupMapper::mapFromSecurityGroupToSecurityGroupResponse ).collect( Collectors.toList() );
         SecurityGroupObjectResponse securityGroupObjectResponse = new SecurityGroupObjectResponse( securityGroupResponseList );
