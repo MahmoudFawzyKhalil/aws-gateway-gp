@@ -1,6 +1,11 @@
 package eg.gov.iti.jets.api.resource.track;
 
+import eg.gov.iti.jets.api.resource.branch.BranchResponse;
+import eg.gov.iti.jets.api.resource.role.RoleResponse;
+import eg.gov.iti.jets.api.resource.role.UpdateRoleRequest;
 import eg.gov.iti.jets.api.util.Mapper;
+import eg.gov.iti.jets.persistence.entity.Branch;
+import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.service.management.impl.TrackManagementImpl;
 import org.springframework.http.HttpStatus;
@@ -53,7 +58,6 @@ public class TrackController {
     }
 
 
-
     @PutMapping("/{id}")
     public ResponseEntity<TrackResponse> updateTrack (@PathVariable int id , @RequestBody TrackPutRequest trackPutRequsert){
         Track track = trackManagement.updateTrack( mapper.mapFromTrackPutRequestToBranch(trackPutRequsert , id) );
@@ -61,6 +65,15 @@ public class TrackController {
         return new ResponseEntity<>( trackResponse, HttpStatus.OK );
     }
 
+//    @PutMapping("/{id}")
+//    public ResponseEntity<TrackResponse> updateTrack (@PathVariable int id , @RequestBody TrackPutRequest trackPutRequsert){
+//        Optional<Track> track = trackManagement.getTrackById(id);
+//        TrackResponse trackResponse = new TrackResponse();
+//        if(track.isPresent()){
+//            trackResponse = mapper.mapFromTrackToTrackResponse( track.get() );
+//        }
+//        return new ResponseEntity<>( trackResponse ,HttpStatus.OK );
+//    }
 
 
 }
