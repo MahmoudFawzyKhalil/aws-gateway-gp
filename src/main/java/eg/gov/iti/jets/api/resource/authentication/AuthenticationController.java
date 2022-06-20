@@ -30,15 +30,15 @@ public class AuthenticationController {
         return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.ACCEPTED);
     }
 
-    @GetMapping("/admin")
-//    @Secured("WRITE")          //security worked only after using this annotation not using authorities in security configurer
-    public String testWrite() {
-        return "test write";
-    }
-    @GetMapping("/hello")
-    public String hello() {
-        return "test hello";
-    }
+//    @GetMapping("/admin")
+////    @Secured("WRITE")          //security worked only after using this annotation not using authorities in security configurer
+//    public String testWrite() {
+//        return "test write";
+//    }
+//    @GetMapping("/hello")
+//    public String hello() {
+//        return "test hello";
+//    }
 
     private String authenticate(String username, String password){
         try {

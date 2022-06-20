@@ -32,7 +32,7 @@ public class InstanceController {
 
     // TODO test to see what gets returned, mahmoud will inform mariem of 200 OK being equivalent to boolean success and that exceptions should get thrown if response is error
     @PostMapping
-//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_INSTANCE.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_ASSIGN_INSTANCE.name())")
     ResponseEntity<?> createInstance(@RequestBody InstanceRequest instanceRequest, @AuthenticationPrincipal UserAdapter userDetails) {
         Integer creatorId = userDetails.getId();
         for ( Integer id :
@@ -40,12 +40,11 @@ public class InstanceController {
             Instance instance = instanceMapper.mapFromInstanceReqToInstance(instanceRequest ,id, creatorId);
             instanceManagement.createInstance(instance);
         }
-
         return ResponseEntity.ok().build();
     }
 
     @GetMapping("start/{instanceId}")
-//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_INSTANCE.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_VIEW_INSTANCE.name())")
     ResponseEntity<?> startInstance(@PathVariable String instanceId) {
         String instanceState = instanceManagement.startInstance(instanceId);
         return new ResponseEntity<>( instanceState, HttpStatus.OK );
@@ -53,7 +52,7 @@ public class InstanceController {
 
 
     @GetMapping("stop/{instanceId}")
-//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_INSTANCE.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_VIEW_INSTANCE.name())")
     ResponseEntity<?> stopInstance(@PathVariable String instanceId) {
         String instanceState = instanceManagement.stopInstance(instanceId);
         return new ResponseEntity<>( instanceState, HttpStatus.OK );
@@ -61,14 +60,14 @@ public class InstanceController {
 
 
     @DeleteMapping("delete/{instanceId}")
-//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_INSTANCE.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_ASSIGN_INSTANCE.name())")
     ResponseEntity<?> deleteInstance(@PathVariable String instanceId) {
         String instanceState = instanceManagement.deleteInstance(instanceId);
         return new ResponseEntity<>( instanceState , HttpStatus.OK );
     }
 
     @GetMapping("{instanceId}")
-//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTANCE.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_VIEW_INSTANCE.name())")
     ResponseEntity<?> getDetails(@PathVariable String instanceId) {
         Instance instance = instanceManagement.getInstanceDetails(instanceId);
         InstanceResponse instanceResponse = instanceMapper.mapFromInstanceToInstanceResponse( instance );
@@ -77,7 +76,7 @@ public class InstanceController {
 
 
     @GetMapping
-//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTANCE.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_VIEW_INSTANCE.name())")
     ResponseEntity<?> getInstances(@AuthenticationPrincipal UserAdapter userDetails) {
         Integer userId = userDetails.getId();
         var instances = instanceManagement.getInstancesByUserId(userId);
