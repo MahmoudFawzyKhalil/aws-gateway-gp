@@ -70,4 +70,13 @@ public class IntakeController {
         return new ResponseEntity<>(  trackResponseList  , HttpStatus.OK);
     }
 
+    // TODO: 6/20/2022 add in Dao 
+    
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity deleteIntake(@PathVariable int id){
+//        Intake intake = intakeManagement.deleteIntake(id);
+//        return new ResponseEntity<>(true,HttpStatus.OK);
+//
+//    }
+
 }

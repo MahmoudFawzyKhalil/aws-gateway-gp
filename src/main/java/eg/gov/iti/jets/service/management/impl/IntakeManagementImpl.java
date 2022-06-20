@@ -72,5 +72,7 @@ public class IntakeManagementImpl implements IntakeManagement {
 //        return null;
 //    }
 
-
+//public void deleteIntake(int id){
+//        intakeDao.remove(id);
+//}
 }
