@@ -48,8 +48,10 @@ public class User {
     private List<Instance> createdInstances = new ArrayList<>();
 
 //    @ManyToMany(mappedBy = "instanceUsers")
-    @OneToOne(mappedBy = "instanceUsers")
-    private Instance grantedInstances ;
+//    @OneToOne(mappedBy = "instanceUsers")
+
+    @OneToMany(mappedBy = "instanceUsers")
+    private List<Instance> grantedInstances ;
 
     @ManyToOne
     private User manager;
