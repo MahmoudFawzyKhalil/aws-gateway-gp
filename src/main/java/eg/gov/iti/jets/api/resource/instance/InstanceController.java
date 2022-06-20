@@ -45,7 +45,7 @@ public class InstanceController {
     }
 
     @GetMapping("start/{instanceId}")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_INSTANCE.name())")
+//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_INSTANCE.name())")
     ResponseEntity<?> startInstance(@PathVariable String instanceId) {
         String instanceState = instanceManagement.startInstance(instanceId);
         return new ResponseEntity<>( instanceState, HttpStatus.OK );
@@ -53,7 +53,7 @@ public class InstanceController {
 
 
     @GetMapping("stop/{instanceId}")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_INSTANCE.name())")
+//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_INSTANCE.name())")
     ResponseEntity<?> stopInstance(@PathVariable String instanceId) {
         String instanceState = instanceManagement.stopInstance(instanceId);
         return new ResponseEntity<>( instanceState, HttpStatus.OK );
@@ -61,14 +61,14 @@ public class InstanceController {
 
 
     @DeleteMapping("delete/{instanceId}")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_INSTANCE.name())")
+//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_INSTANCE.name())")
     ResponseEntity<?> deleteInstance(@PathVariable String instanceId) {
         String instanceState = instanceManagement.deleteInstance(instanceId);
         return new ResponseEntity<>( instanceState , HttpStatus.OK );
     }
 
     @GetMapping("{instanceId}")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTANCE.name())")
+//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTANCE.name())")
     ResponseEntity<?> getDetails(@PathVariable String instanceId) {
         Instance instance = instanceManagement.getInstanceDetails(instanceId);
         InstanceResponse instanceResponse = instanceMapper.mapFromInstanceToInstanceResponse( instance );

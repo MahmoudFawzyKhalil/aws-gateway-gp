@@ -143,12 +143,14 @@ public class InstanceManagementImpl implements InstanceManagement {
         List<List<Instance>> studentsInstructorsInstances = instructors.stream().map( follower -> instanceDao.findFollowersUsersGrantedInstances( follower.getId() ) ).collect( Collectors.toList() );
 
         List<Instance> studentsInstructorsInstancesFlatten = studentsInstructorsInstances.stream().flatMap( Collection::stream ).collect( Collectors.toList() );
-        List<Instance> allSupervisorInstance = Stream.concat(supervisorInstances.stream(),
-                        instructorsSupervisorInstances.stream())
-                .collect(Collectors.toList());
-        List<Instance> all = Stream.concat(allSupervisorInstance.stream(),
-                        studentsInstructorsInstancesFlatten.stream())
-                .collect(Collectors.toList());
+        List<Instance> allSupervisorInstance = Stream.concat( supervisorInstances.stream(),
+                        instructorsSupervisorInstances.stream() )
+                .collect( Collectors.toList() );
+        List<Instance> all = Stream.concat( allSupervisorInstance.stream(),
+                        studentsInstructorsInstancesFlatten.stream() )
+                .collect( Collectors.toList() );
+        all = all.stream().filter( i -> !i.getState().equals( "terminated" ) ).collect( Collectors.toList() );
+
         awsGateway.updateInstancesInfoFromAws( all );
         return all;
     }
@@ -156,14 +158,18 @@ public class InstanceManagementImpl implements InstanceManagement {
     private List<Instance> getInstructorInstance( Integer id ) {
         List<Instance> instructorInstances = instanceDao.findUserGrantedInstances( id );
         List<Instance> studentsInstructorInstances = instanceDao.findFollowersUsersGrantedInstances( id );
-        List<Instance> allInstructorInstance = Stream.concat(instructorInstances.stream(), studentsInstructorInstances.stream())
-                .collect(Collectors.toList());
+        List<Instance> allInstructorInstance = Stream.concat( instructorInstances.stream(), studentsInstructorInstances.stream() )
+                .collect( Collectors.toList() );
+        allInstructorInstance = allInstructorInstance.stream().filter( i -> !i.getState().equals( "terminated" ) ).collect( Collectors.toList() );
+
         awsGateway.updateInstancesInfoFromAws( allInstructorInstance );
         return allInstructorInstance;
     }
 
     private List<Instance> getStudentInstances( Integer id ) {
         List<Instance> studentInstance = instanceDao.findUserGrantedInstances( id );
+
+        studentInstance = studentInstance.stream().filter( i -> !i.getState().equals( "terminated" ) ).collect( Collectors.toList() );
         awsGateway.updateInstancesInfoFromAws( studentInstance );
         return studentInstance;
     }
