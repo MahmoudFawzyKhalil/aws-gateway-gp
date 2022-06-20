@@ -21,6 +21,7 @@ import java.util.List;
 public class InstanceController {
 
     private final InstanceManagement instanceManagement;
+    private final InstanceMapper instanceMapper;
 
     public InstanceController( InstanceManagement instanceManagement, InstanceMapper instanceMapper ) {
         this.instanceManagement = instanceManagement;
@@ -33,8 +34,12 @@ public class InstanceController {
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_INSTANCE.name())")
     ResponseEntity<?> createInstance(@RequestBody InstanceRequest instanceRequest, @AuthenticationPrincipal UserAdapter userDetails) {
         Integer creatorId = userDetails.getId();
-        Instance instance = instanceMapper.mapFromInstanceReqToInstance(instanceRequest, creatorId);
-        instanceManagement.createInstance(instance);
+        for ( Integer id :
+                instanceRequest.getStudentIds() ) {
+            Instance instance = instanceMapper.mapFromInstanceReqToInstance(instanceRequest ,id, creatorId);
+            instanceManagement.createInstance(instance);
+        }
+
         return ResponseEntity.ok().build();
     }
 
@@ -73,12 +78,12 @@ public class InstanceController {
     @GetMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTANCE.name())")
     ResponseEntity<?> getInstances(@AuthenticationPrincipal UserAdapter userDetails) {
-        Integer userId = userDetails.getId();
-        var instances = instanceManagement.getInstancesByUserId(userId);
-        var instanceResponses = instances.stream().map( instanceMapper::mapFromInstanceToInstanceResponse ).collect( Collectors.toList() );
-        var instanceObjectResponse = new InstanceObjectResponse( instanceResponses );
-
-        return new ResponseEntity<>( instanceObjectResponse , HttpStatus.OK );
+//        Integer userId = userDetails.getId();
+//        var instances = instanceManagement.getInstancesByUserId(userId);
+//        var instanceResponses = instances.stream().map( instanceMapper::mapFromInstanceToInstanceResponse ).collect( Collectors.toList() );
+//        var instanceObjectResponse = new InstanceObjectResponse( instanceResponses );
+//        new ResponseEntity<>( instanceObjectResponse , HttpStatus.OK );
+        return new ResponseEntity<>( HttpStatus.OK );
     }
 
 

@@ -122,21 +122,16 @@ public class InstanceManagementImpl implements InstanceManagement {
         return instance;
     }
 
-//    @Override
-//    public List<Instance> getInstancesByUserId(Integer id) {
+    @Override
+    public List<Instance> getInstancesByUserId(Integer id) {
+
+        Optional<User> optionalUser = userDao.findById(id);
 //
-//        Optional<User> optionalUser = userDao.findById(id);
-//
-//        List<Instance> grantedNonTerminatedInstances = optionalUser
-//                .stream()
-//                .flatMap(u -> u.getGrantedInstances().stream())
-//                .filter(i -> !i.getState().equalsIgnoreCase("terminated")
-//                        && !i.getState().equalsIgnoreCase("terminating"))
-//                .collect(Collectors.toList());
+//        instanceDao.findUserGrantedInstances(  )
 //
 //        awsGateway.updateInstancesInfoFromAws(grantedNonTerminatedInstances);
-//
-//        return grantedNonTerminatedInstances;
-//    }
+
+        return null;
+    }
 
 }
