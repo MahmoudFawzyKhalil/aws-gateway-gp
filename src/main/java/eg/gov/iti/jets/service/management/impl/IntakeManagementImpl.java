@@ -8,6 +8,7 @@ import eg.gov.iti.jets.persistence.entity.Branch;
 import eg.gov.iti.jets.persistence.entity.Intake;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.CrudOperations;
 import eg.gov.iti.jets.service.management.IntakeManagement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,8 +33,11 @@ public class IntakeManagementImpl implements IntakeManagement {
     }
 
     @Override
-    public Intake updateIntake(Intake intake) {
-        return intakeDao.update(intake);
+    public Intake updateIntake(Intake intake)
+    {
+        return intakeDao.update(intakeDao.findById(intake.getId()).orElseThrow(()->new ResourceNotFoundException("Intake with id " + intake.getId() + ", is not found")));
+
+
     }
 
     @Override
@@ -42,19 +46,16 @@ public class IntakeManagementImpl implements IntakeManagement {
     }
 
     @Override
-    public Optional<Intake> getIntakeById(int id) {
-        return intakeDao.findById(id);
+    public Intake getIntakeById(int id) {
+        return intakeDao.findById(id).orElseThrow(()->new ResourceNotFoundException("Intake with id " + id + ", is not found"));
     }
-
 
 
     @Override
     public List<Track> getTrackByIntakeId( int intakeId ) {
         Optional<Intake> intake = intakeDao.findById( intakeId );
-        Track track = new Track();
-        intake.ifPresent( track::setIntake );
-        List<Track> listOfTracks = trackDao.findAllByExample( track );
-        return listOfTracks;
+        return  intake.map(intake1 -> intake1.getTracks()).orElseThrow(()->new ResourceNotFoundException("There is no tracks for that intake with id " + intakeId));
+
     }
 
 
