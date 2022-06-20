@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class UserManagementImpl implements UserDetailsService, UserManagement {
     private final UserDao userDao;
 
-    @Transactional
+    @Transactional //(readOnly = true)
     @Override
     public UserAdapter loadUserByUsername(String username) throws UsernameNotFoundException {
         /**

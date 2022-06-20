@@ -70,12 +70,12 @@ public class InstanceDaoImpl implements InstanceDao {
     }
 
     @Override
-    public <C> List<C> findUserGrantedInstances(int userId, Class<C> projection) {
-        return instanceRepo.findAllByInstanceUsers_id(userId, projection);
+    public List<Instance> findUserGrantedInstances(int userId) {
+        return instanceRepo.findAllByInstanceUsers_id(userId);
     }
 
     @Override
-    public <C> List<C> findFollowersUsersGrantedInstances(int userId, Class<C> projection) {
-        return instanceRepo.findAllDistinctByInstanceUsers_manager_id(userId, projection);
+    public List<Instance> findFollowersUsersGrantedInstances(int userId) {
+        return instanceRepo.findAllDistinctByInstanceUsers_manager_id(userId);
     }
 }
