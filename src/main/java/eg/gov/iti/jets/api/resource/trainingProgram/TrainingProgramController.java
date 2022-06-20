@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping( "/api/trainingPrograms" )
+@RequestMapping( "/api/trainingprograms" )
 public class TrainingProgramController {
     final
     TrainingProgramManagement trainingProgramManagement;
@@ -50,7 +50,6 @@ public class TrainingProgramController {
 
     @PutMapping( "/{id}" )
     public ResponseEntity<TrainingProgramResponse> updateTrainingProgram( @RequestBody TrainingProgramPutRequest trainingProgramPutRequest, @PathVariable int id ) {
-        System.out.println( "hey`" );
         TrainingProgram trainingProgram = trainingProgramManagement.updateTrainingProgram( mapper.mapFromTrainingProgramPutRequestToTrainingProgram( trainingProgramPutRequest, id ) );
         TrainingProgramResponse trainingProgramResponse = mapper.mapFromTrainingProgramToTrainingProgramResponse( trainingProgram );
         return new ResponseEntity<>( trainingProgramResponse, HttpStatus.OK );
