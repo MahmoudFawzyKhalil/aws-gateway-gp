@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.service.aop;
 
+import eg.gov.iti.jets.persistence.dao.InstanceDao;
 import eg.gov.iti.jets.persistence.dao.InstanceLogsDao;
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.User;
@@ -7,8 +8,6 @@ import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
 import eg.gov.iti.jets.persistence.entity.enums.UserAction;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +26,12 @@ public class InstanceLoggingAspect {
     InstanceLogsDao instanceLogsDao;
     @Autowired
     UserDao userDao;
+    @Autowired
+    InstanceDao instanceDao;
+
 
     @Before("execution(* eg.gov.iti.jets.service.management.InstanceManagement.createInstance(eg.gov.iti.jets.persistence.entity.aws.Instance))")
-    public void aroundCreateInstance(JoinPoint joinPoint) throws Throwable {
+    public void beforeCreateInstance(JoinPoint joinPoint) throws Throwable {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%");
         var authentication = securityContext.getAuthentication();
@@ -50,6 +52,36 @@ public class InstanceLoggingAspect {
 
 //        instanceLogsDao.save(instanceLogs);
 
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&");
+    }
+
+
+    @Before("execution(* eg.gov.iti.jets.service.management.InstanceManagement.startInstance(..))")
+    public void beforeStartInstance(JoinPoint joinPoint) throws Throwable {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        var authentication = securityContext.getAuthentication();
+        System.out.println(((UserDetails) authentication.getPrincipal()).getUsername());
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&");
+    }
+
+
+    @Before("execution(* eg.gov.iti.jets.service.management.InstanceManagement.stopInstance(..))")
+    public void beforeStopInstance(JoinPoint joinPoint) throws Throwable {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        var authentication = securityContext.getAuthentication();
+        System.out.println(((UserDetails) authentication.getPrincipal()).getUsername());
+        System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&");
+    }
+
+
+    @Before("execution(* eg.gov.iti.jets.service.management.InstanceManagement.deleteInstance(..))")
+    public void beforeDeletenstance(JoinPoint joinPoint) throws Throwable {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%");
+        var authentication = securityContext.getAuthentication();
+        System.out.println(((UserDetails) authentication.getPrincipal()).getUsername());
         System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&");
     }
 }
