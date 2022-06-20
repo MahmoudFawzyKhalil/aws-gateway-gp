@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/instances")
@@ -31,7 +32,7 @@ public class InstanceController {
 
     // TODO test to see what gets returned, mahmoud will inform mariem of 200 OK being equivalent to boolean success and that exceptions should get thrown if response is error
     @PostMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_INSTANCE.name())")
+//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_INSTANCE.name())")
     ResponseEntity<?> createInstance(@RequestBody InstanceRequest instanceRequest, @AuthenticationPrincipal UserAdapter userDetails) {
         Integer creatorId = userDetails.getId();
         for ( Integer id :
@@ -76,14 +77,13 @@ public class InstanceController {
 
 
     @GetMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTANCE.name())")
+//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTANCE.name())")
     ResponseEntity<?> getInstances(@AuthenticationPrincipal UserAdapter userDetails) {
-//        Integer userId = userDetails.getId();
-//        var instances = instanceManagement.getInstancesByUserId(userId);
-//        var instanceResponses = instances.stream().map( instanceMapper::mapFromInstanceToInstanceResponse ).collect( Collectors.toList() );
-//        var instanceObjectResponse = new InstanceObjectResponse( instanceResponses );
-//        new ResponseEntity<>( instanceObjectResponse , HttpStatus.OK );
-        return new ResponseEntity<>( HttpStatus.OK );
+        Integer userId = userDetails.getId();
+        var instances = instanceManagement.getInstancesByUserId(userId);
+        var instanceResponses = instances.stream().map( instanceMapper::mapFromInstanceToInstanceResponse ).collect( Collectors.toList() );
+        var instanceObjectResponse = new InstanceObjectResponse( instanceResponses );
+        return  new ResponseEntity<>( instanceObjectResponse , HttpStatus.OK );
     }
 
 

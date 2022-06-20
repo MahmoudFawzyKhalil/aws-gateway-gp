@@ -78,10 +78,16 @@ public class MapperUtilForApi {
     }
 
     public KeyPair getKeyPair( String keyPair , int id) {
-        KeyPair keyPair1 = awsGateway.createKeyPair( keyPair );
-        keyPair1.setCreator( getUser( id ) );
-        keyPairDao.save( keyPair1 );
-        return keyPair1;
+        KeyPair example = new KeyPair();
+        example.setKeyName( keyPair );
+        List<KeyPair> keyPairList = keyPairDao.findAllByExample( example );
+        if (keyPairList.isEmpty()){
+            KeyPair keyPair1 = awsGateway.createKeyPair( keyPair );
+            keyPair1.setCreator( getUser( id ) );
+            keyPairDao.save( keyPair1 );
+            return keyPair1;
+        }
+        return keyPairList.get( 0 );
     }
 
     public List<User> getUsers( List<Integer> studentId ) {
