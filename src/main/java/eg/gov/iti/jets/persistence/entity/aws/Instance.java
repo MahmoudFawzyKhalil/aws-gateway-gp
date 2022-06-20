@@ -7,7 +7,6 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Setter
 @Getter
@@ -59,8 +58,11 @@ public class Instance {
 //            joinColumns = @JoinColumn(name = "instance_id"),
 //            inverseJoinColumns = @JoinColumn(name = "user_id"),
 //            uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "instance_id"}))
+//
+//    @OneToOne
+//    @JoinColumn(name = "user_granted_id")
 
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "user_granted_id")
     private User instanceUsers;
 
