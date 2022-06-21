@@ -101,12 +101,12 @@ public class MapperUtilForApi {
 
     public TrainingProgram getTrainingProgramById(int id) {
         Optional<TrainingProgram> trainingProgram = trainingProgramDao.findById(id);
-        return trainingProgram.orElse( null );
+        return trainingProgram.orElseThrow( ()->new ResourceNotFoundException("Could not update TrainingProgram with that id  " + id ) );
     }
 
-    public Intake getIntackById(int id) {
+    public Intake getIntakeById(int id) {
         Optional<Intake> intake = intakeDao.findById(id);
-        return intake.orElse( null );
+        return intake.orElseThrow( ()->new ResourceNotFoundException("Intake with id " + id + ", is not found") );
     }
 
 
