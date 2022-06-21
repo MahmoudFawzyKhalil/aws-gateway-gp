@@ -10,6 +10,7 @@ import eg.gov.iti.jets.service.management.BranchManagement;
 import eg.gov.iti.jets.service.management.TrainingProgramManagement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -31,6 +32,7 @@ public class BranchController {
 
 
     @GetMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
     public ResponseEntity<BranchResponseList> getBranches(){
         List<Branch> branches = branchManagement.getAllBranches();
         List<BranchResponse> branchResponses =  mapper.mapFromListOfBranchToListOfBranchResponses(branches);
@@ -52,11 +54,13 @@ public class BranchController {
 //    }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
     public ResponseEntity<BranchResponse> getBranchById(@PathVariable("id") int id){
         return new ResponseEntity<>(mapper.mapFromBranchToBranchResponse(branchManagement.getBranchById(id)), HttpStatus.OK);
     }
 
     @PostMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
     public ResponseEntity<BranchResponse> createBranch(@RequestBody BranchRequest branchRequest){
         Branch branch = branchManagement.createBranch( mapper.mapFromBranchRequestToBranch( branchRequest ) );
         BranchResponse branchResponse = mapper.mapFromBranchToBranchResponse( branch );
@@ -66,6 +70,7 @@ public class BranchController {
 
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
     public ResponseEntity<BranchResponse> updateBranch (@PathVariable int id , @RequestBody BranchPutRequest branchPutRequest){
         Branch branch = branchManagement.updateBranch( mapper.mapFromBranchPutRequestToBranch(branchPutRequest , id) );
         BranchResponse branchResponse = mapper.mapFromBranchToBranchResponse( branch );
@@ -73,6 +78,7 @@ public class BranchController {
     }
 
     @PatchMapping  ("/{id}")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
     public ResponseEntity<BranchResponse> changeStatus (@PathVariable int id , @RequestParam boolean branchStatus){
         Branch branch = branchManagement.updateBranch( mapper.mapFromBranchPatchRequestToBranch(branchStatus , id) );
         BranchResponse branchResponse = mapper.mapFromBranchToBranchResponse( branch );
@@ -80,6 +86,7 @@ public class BranchController {
     }
 
     @GetMapping("{branchId}/trainingPrograms")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
     public ResponseEntity<GetTrainingProgramsResponse> getTrainingProgramsByBranchId( @PathVariable int branchId){
         List<TrainingProgram> trainingProgramByBranchId = branchManagement.getTrainingProgramByBranchId( branchId );
         List<TrainingProgramResponse> trainingProgramResponse = new ArrayList<>();
