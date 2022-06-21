@@ -5,6 +5,7 @@ import eg.gov.iti.jets.service.management.SubnetAws;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,6 +25,7 @@ public class SubnetController {
     }
 
     @GetMapping()
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
     ResponseEntity<?> getAllSubnet(){
         // TODO: 6/17/2022 hena mmkn ydrab haga ??
         SubnetObjectResponse subnetObjectResponse = mapper.mapFromSubnetToSubnetResponse( subnetAws.getAllSubnets() );

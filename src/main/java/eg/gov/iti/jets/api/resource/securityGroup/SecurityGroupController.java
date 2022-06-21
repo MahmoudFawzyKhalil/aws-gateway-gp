@@ -4,6 +4,7 @@ import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.service.management.SecurityGroupAws;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ public class SecurityGroupController {
 
     @GetMapping("{vpcId}")
         // TODO: 6/17/2022 lw null aw msh sah error??
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
     ResponseEntity<?> getSecurityGroups( @PathVariable String vpcId){
         // TODO: 6/17/2022 mmkn hena myrga3sh haga ??
         List<SecurityGroup> securityGroups= securityGroupAws.describeSecurityGroupsForVpc(vpcId);

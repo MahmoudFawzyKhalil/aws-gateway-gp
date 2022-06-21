@@ -5,6 +5,7 @@ import eg.gov.iti.jets.service.model.UserAdapter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,7 +24,7 @@ public class TemplateController {
     }
 
     @PostMapping
-    @Secured( "MANAGE_TEMPLATE" )
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
     public ResponseEntity<?> createTemplate( @RequestBody TemplateRequest templateRequest, @AuthenticationPrincipal UserAdapter userDetails ) {
         Integer creatorId = userDetails.getId();
         Boolean template = templateManagement.createTemplate( templateMapper.mapFromTemplateRequestToTemplateConfig( templateRequest, creatorId ) );
@@ -36,7 +37,7 @@ public class TemplateController {
 
 
     @GetMapping
-//    @Secured( "VIEW_TEMPLATES" )
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_TEMPLATES.name())")
     public ResponseEntity<?> getAllTemplates( @AuthenticationPrincipal UserAdapter userDetails ) {
         List<TemplateResponse> templateConfiguration = templateManagement.getTemplateConfigurationById( userDetails.getId() );
         TemplateViewResponse templateViewResponse = new TemplateViewResponse( templateConfiguration );
