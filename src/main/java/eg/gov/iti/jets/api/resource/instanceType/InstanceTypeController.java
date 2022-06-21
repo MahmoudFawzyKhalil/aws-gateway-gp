@@ -25,7 +25,6 @@ public class InstanceTypeController {
     @GetMapping()
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
     ResponseEntity<?> getInstanceTypes(){
-        // TODO: 6/17/2022 hal hena mmkn myrga3sh nhandle haga ??
         InstanceTypeObjectResponse instanceTypeObjectResponse = instanceTypeMapper.mapFromInstanceTypeToObjectResponse( instanceTypeAws.getInstanceTypes() );
         return  new ResponseEntity<>( instanceTypeObjectResponse , HttpStatus.OK );
     }
