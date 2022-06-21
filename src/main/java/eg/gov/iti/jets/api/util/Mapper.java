@@ -88,7 +88,7 @@ public class Mapper {
         Branch branch = mapperUtilForApi.getBranchById( trainingProgramRequest.getBranchId() );
         trainingProgram.setBranch( branch );
         trainingProgram.setName( trainingProgramRequest.getName() );
-        if ( trainingProgramRequest != null || trainingProgramRequest.getIntakeIds().isEmpty() ) {
+        if ( trainingProgramRequest != null && trainingProgramRequest.getIntakeIds().isEmpty() ) {
             trainingProgram.setIntakes( mapperUtilForApi.getIntakeList( trainingProgramRequest.getIntakeIds() ) );
         }
         return trainingProgram;
@@ -135,7 +135,7 @@ public class Mapper {
     public Track mapFromTrackRequestToTrack( TrackRequest trackRequest ) {
         Track track = new Track();
         track.setName( trackRequest.getName() );
-        Intake intake = mapperUtilForApi.getIntackById( trackRequest.getIntakeId() );
+        Intake intake = mapperUtilForApi.getIntakeById( trackRequest.getIntakeId() );
         track.setIntake(intake);
         return track;
     }
@@ -308,9 +308,9 @@ public class Mapper {
         trainingProgram.setBranch( branch );
         trainingProgram.setName( trainingProgramPutRequest.getName() );
         trainingProgram.setId( id );
-//        if ( trainingProgramPutRequest != null || !trainingProgramPutRequest.getIntakeIds().isEmpty() ) {
-//            trainingProgram.setIntakes( mapperUtilForApi.getIntakeList( trainingProgramPutRequest.getIntakeIds() ) );
-//        }
+        if ( trainingProgramPutRequest != null && trainingProgramPutRequest.getIntakeIds() !=null ) {
+            trainingProgram.setIntakes( mapperUtilForApi.getIntakeList( trainingProgramPutRequest.getIntakeIds() ) );
+        }
         return trainingProgram;
     }
 
