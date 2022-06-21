@@ -96,7 +96,8 @@ public class Mapper {
 
     public IntakeResponse mapFromIntakeToIntakeResponse( Intake intake ) {
         IntakeResponse intakeResponse = new IntakeResponse();
-        intakeResponse.setTrainingProgramId( intake.getTrainingProgram().getId() );
+        TrainingProgram trainingProgram = mapperUtilForApi.getTrainingProgramById( intake.getTrainingProgram().getId());
+        intakeResponse.setTrainingProgram(trainingProgram.getName() );
         intakeResponse.setIntakeName( intake.getName() );
         intakeResponse.setIntakeDescription( intake.getDescription() );
         intakeResponse.setId( intake.getId() );
@@ -108,7 +109,7 @@ public class Mapper {
         Intake intake = new Intake();
         TrainingProgram trainingProgram = mapperUtilForApi.getTrainingProgramById( intakeRequest.getTrainingProgramId() );
         intake.setTrainingProgram( trainingProgram );
-        intake.setId( intakeRequest.getId() );
+//        intake.setId( intakeRequest.getId() );
         intake.setDescription( intakeRequest.getIntakeDescription() );
         intake.setName( intakeRequest.getIntakeName() );
         return intake;
