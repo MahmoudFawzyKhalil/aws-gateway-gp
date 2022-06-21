@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 
@@ -23,18 +24,17 @@ public class AmiController {
     AmiMapper amiMapper;
     private final
     AmiAws amiAws;
+
     public AmiController(  AmiAws amiAws, AmiMapper amiMapper ) {
         this.amiAws = amiAws;
         this.amiMapper = amiMapper;
     }
 
     @PostMapping()
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
-    public ResponseEntity<?> getAmi( @RequestBody AmiRequest amiRequest){
-        // TODO: 6/17/2022 if bad request  
-        Optional<Ami> ami = amiAws.describeAmi( amiRequest.getAmiId() );
-        // TODO: 6/17/2022 Error here if Optional return null 
-        AmiViewResponse amiViewResponse = ami.map( value -> new AmiViewResponse( amiMapper.mapFromAmiToAmiResponse( value ) ) ).orElse( new AmiViewResponse() );
+    public ResponseEntity<?> getAmi(@Valid @RequestBody AmiRequest amiRequest){
+        Ami ami = amiAws.describeAmi( amiRequest.getAmiId() );
+        AmiViewResponse amiViewResponse = new AmiViewResponse(amiMapper.mapFromAmiToAmiResponse(ami));
+//        AmiViewResponse amiViewResponse = ami.map( value -> new AmiViewResponse( amiMapper.mapFromAmiToAmiResponse( value ) ) ).orElse( new AmiViewResponse() );
         return new ResponseEntity<>(amiViewResponse, HttpStatus.OK);
     }
 
