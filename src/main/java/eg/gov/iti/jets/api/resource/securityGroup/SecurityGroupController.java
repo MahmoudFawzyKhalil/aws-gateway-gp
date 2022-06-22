@@ -31,7 +31,7 @@ public class SecurityGroupController {
 
     @GetMapping("{vpcId}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
-    ResponseEntity<?> getSecurityGroups( @PathVariable String vpcId){yGroups(@PathVariable String vpcId){
+    ResponseEntity<?> getSecurityGroups( @PathVariable String vpcId){
         List<SecurityGroup> securityGroups= securityGroupAws.describeSecurityGroupsForVpc(vpcId);
         List<SecurityGroupResponse> securityGroupResponseList = securityGroups.stream().map( securityGroupMapper::mapFromSecurityGroupToSecurityGroupResponse ).collect( Collectors.toList() );
         SecurityGroupObjectResponse securityGroupObjectResponse = new SecurityGroupObjectResponse( securityGroupResponseList );
