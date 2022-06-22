@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.api.resource.branch;
 
+import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.GetTrainingProgramsResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
 import eg.gov.iti.jets.api.util.Mapper;
@@ -40,14 +41,19 @@ public class BranchController {
         return new ResponseEntity<>( branchResponseList , HttpStatus.OK );
     }
 
+//    @GetMapping("/{id}")
+//    public ResponseEntity<BranchResponse> getBranchById(@PathVariable int id){
+//        Optional<Branch> branch = branchManagement.getBranchById(id);
+//        BranchResponse branchResponse = new BranchResponse();
+//        if(branch.isPresent()){
+//            branchResponse = mapper.mapFromBranchToBranchResponse( branch.get() );
+//        }
+//        return new ResponseEntity<>( branchResponse ,HttpStatus.OK );
+//    }
+
     @GetMapping("/{id}")
-    public ResponseEntity<BranchResponse> getBranchById(@PathVariable int id){
-        Optional<Branch> branch = branchManagement.getBranchById(id);
-        BranchResponse branchResponse = new BranchResponse();
-        if(branch.isPresent()){
-            branchResponse = mapper.mapFromBranchToBranchResponse( branch.get() );
-        }
-        return new ResponseEntity<>( branchResponse ,HttpStatus.OK );
+    public ResponseEntity<BranchResponse> getBranchById(@PathVariable("id") int id){
+        return new ResponseEntity<>(mapper.mapFromBranchToBranchResponse(branchManagement.getBranchById(id)), HttpStatus.OK);
     }
 
     @PostMapping

@@ -17,5 +17,6 @@ import java.util.List;
 public class TrackResponse {
     private int id;
     private String Name;
+    private int IntakeId;
 
 }

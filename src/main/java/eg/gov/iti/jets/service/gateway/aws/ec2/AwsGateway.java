@@ -1,7 +1,6 @@
 package eg.gov.iti.jets.service.gateway.aws.ec2;
 
 import eg.gov.iti.jets.persistence.entity.aws.*;
-import eg.gov.iti.jets.service.model.CreateInstanceCommand;
 
 import java.util.List;
 import java.util.Optional;
@@ -40,10 +39,10 @@ public interface AwsGateway {
     List<SecurityGroup> describeSecurityGroupsForNames(List<String> securityGroupNames);
 
     /**
-     * @param instanceId Specify the id of instance you want to start
+     * @param instance Specify the instance you want to start (the instanceId and timeToLive must be provided)
      * @return The current state of that instance
      */
-    String startInstance(String instanceId);
+    String startInstance(Instance instance);
 
     /**
      * @param instanceId Specify the id of instance you want to stop
@@ -61,11 +60,13 @@ public interface AwsGateway {
     /**
      * Creates instance according to a predefined template.
      *
-     * @param template     A predefined template that describes the instance that will be created
-     * @param instanceName The name of the instance that will be created
+     * @param template            A predefined template that describes the instance that will be created
+     * @param instanceName        The name of the instance that will be created
+     * @param keyPair             The keyPair attached to the instance
+     * @param timeToLiveInMinutes The maximum time the instance is up before shutting down
      * @return the newly created instance
      */
-    Instance createInstance(TemplateConfiguration template, String instanceName , KeyPair keyPair);
+    Instance createInstance(TemplateConfiguration template, String instanceName, KeyPair keyPair, Long timeToLiveInMinutes);
 
     /**
      * Describes an already created EC2 instance
@@ -112,4 +113,12 @@ public interface AwsGateway {
      * @param instances The instances to be updated
      */
     void updateInstancesInfoFromAws(List<Instance> instances);
+
+    /**
+     * Stops instance Asynchronously
+     *
+     * @param instanceId Specify the id of instance you want to stop
+     */
+    void stopInstanceAsync(String instanceId);
+
 }

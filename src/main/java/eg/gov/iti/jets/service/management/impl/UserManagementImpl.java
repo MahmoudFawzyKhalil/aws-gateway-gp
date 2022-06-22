@@ -23,7 +23,7 @@ import java.util.stream.Collectors;
 public class UserManagementImpl implements UserDetailsService, UserManagement {
     private final UserDao userDao;
 
-    @Transactional
+    @Transactional //(readOnly = true)
     @Override
     public UserAdapter loadUserByUsername(String username) throws UsernameNotFoundException {
         /**
@@ -101,7 +101,7 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
 
     @Override
     public User getUserById(int id ) {
-        return userDao.findById(id).orElseThrow(ResourceNotFoundException::new);
+        return userDao.findById(id).orElseThrow(() ->  new ResourceNotFoundException("resource with id not found"));
     }
 
     @Override

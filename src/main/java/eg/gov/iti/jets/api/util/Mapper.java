@@ -8,18 +8,14 @@ import eg.gov.iti.jets.api.resource.instance.InstanceRequest;
 import eg.gov.iti.jets.api.resource.instance.InstanceResponse;
 import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeObjectResponse;
 import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeResponse;
+import eg.gov.iti.jets.api.resource.role.*;
 import eg.gov.iti.jets.api.resource.securityGroup.SecurityGroupResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetResponse;
-import eg.gov.iti.jets.api.resource.template.*;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
 import eg.gov.iti.jets.api.resource.privilege.AddPrivilegeRequest;
 import eg.gov.iti.jets.api.resource.privilege.GetPrivilegeResponse;
-import eg.gov.iti.jets.api.resource.role.PrivilegeType;
-import eg.gov.iti.jets.api.resource.role.AddRoleRequest;
-import eg.gov.iti.jets.api.resource.role.GetRoleResponse;
-import eg.gov.iti.jets.api.resource.role.UpdateRoleRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.api.resource.track.TrackPutRequest;
@@ -33,16 +29,15 @@ import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import eg.gov.iti.jets.api.resource.user.CreateUserRequest;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
-import eg.gov.iti.jets.persistence.entity.*;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -129,6 +124,8 @@ public class Mapper {
     public Track mapFromTrackRequestToTrack( TrackRequest trackRequest ) {
         Track track = new Track();
         track.setName( trackRequest.getName() );
+        Intake intake = mapperUtilForApi.getIntackById( trackRequest.getIntakeId() );
+        track.setIntake(intake);
         return track;
     }
 
@@ -137,6 +134,7 @@ public class Mapper {
         TrackResponse trackResponse = new TrackResponse();
         trackResponse.setName( track.getName() );
         trackResponse.setId(track.getId());
+        trackResponse.setIntakeId(track.getIntake().getId());
         return trackResponse;
     }
 
@@ -147,11 +145,17 @@ public class Mapper {
         return trackResponses;
     }
 
-    public Track mapFromTrackPutRequestToBranch(TrackPutRequest trackPutRequest, int id ) {
-        Track track = mapperUtilForApi.getTrackById(id);
-        track.setName( trackPutRequest.getName() );
-        return track;
+    public Track mapFromTrackPutRequestToTrack(TrackPutRequest trackPutRequest, int id ) {
+        try {
+            Track track = mapperUtilForApi.getTrackById(id);
+            track.setName(trackPutRequest.getName());
+            return track;
+        }
+        catch (Exception e){
+            throw new ResourceNotFoundException("Could not update track with id "+ id + " because it is not found");
+            }
     }
+
 
     public Instance mapFromInstanceRequestToInstance( IntakeRequest intakeRequest ) {
         return null;
@@ -168,7 +172,7 @@ public class Mapper {
         instanceResponse.setVpcId( instance.getVpcId() );
         instanceResponse.setSubnetId( instance.getSubnetId() );
         instanceResponse.setAmiId( instance.getAmiId() );
-//        instanceResponse.setKeyPair( instance.getKeyPair() );
+        instanceResponse.setKeyPair( instance.getKeyPair().getKeyMaterial() );
         instanceResponse.setPlatform( instance.getPlatform() );
         instanceResponse.setCreationDateTime( instance.getCreationDateTime().toString() );
         instanceResponse.setDecryptedPassword( instance.getDecryptedPassword() );
@@ -176,6 +180,7 @@ public class Mapper {
         instanceResponse.setPublicDnsName( instance.getPublicDnsName() );
         instanceResponse.setUsername( instance.getUsername() );
         instanceResponse.setState( instance.getState() );
+        instanceResponse.setTimeToLiveInMinutes( instance.getTimeToLiveInMinutes() );
         return instanceResponse;
     }
 
@@ -248,13 +253,27 @@ public class Mapper {
         return instanceTypeObjectResponse;
     }
 
-    public Instance mapFromInstanceReqToInstance( InstanceRequest instanceRequest, int creatorId ) {
+    public Instance mapFromInstanceReqToInstance( InstanceRequest instanceRequest , int studentId, int creatorId ) {
         Instance instance = new Instance();
+        System.out.println("************************************************** Before template");
         instance.setTemplateConfiguration( mapperUtilForApi.getTemplateConfigurationById( instanceRequest.getTemplateId() ) );
+        System.out.println("************************************************** After template");
+        System.out.println("************************************************** Before key");
+
         instance.setKeyPair( mapperUtilForApi.getKeyPair( instanceRequest.getKeyPair(), creatorId ) );
+        System.out.println("************************************************** After key");
+
         instance.setName( instanceRequest.getInstanceName() );
-        instance.setInstanceUsers( mapperUtilForApi.getUsers( instanceRequest.getStudentIds() ) );
+        System.out.println("************************************************** Before student");
+
+        instance.setInstanceUsers( mapperUtilForApi.getUser( studentId ));
+        System.out.println("************************************************** After student");
+        System.out.println("************************************************** Before creater");
+
         instance.setCreator( mapperUtilForApi.getUser( creatorId ) );
+        System.out.println("************************************************** After student");
+
+        instance.setTimeToLiveInMinutes(instanceRequest.getTimeToLiveInMinutes());
         return instance;
     }
 
@@ -283,8 +302,9 @@ public class Mapper {
         return role;
     }
 
-    public GetRoleResponse roleToGetRoleResponse( Role role ) {
+    public GetRoleResponse roleToGetRoleResponse(Role role ) {
         GetRoleResponse getRoleResponse = new GetRoleResponse();
+        getRoleResponse.setId(role.getId());
         getRoleResponse.setName( role.getName() );
         getRoleResponse.setPrivileges( role.getPrivileges().stream().map(
                 privilege -> {
@@ -296,6 +316,16 @@ public class Mapper {
         ).collect( Collectors.toList() ) );
         return getRoleResponse;
     }
+
+    public RoleResponse roleToRoleResponse(Role role) {
+        RoleResponse roleResponse = new RoleResponse();
+        roleResponse.setId(role.getId());
+        roleResponse.setPrivileges(
+                role.getPrivileges().stream().map(Privilege::getId).collect(Collectors.toList())
+        );
+        return roleResponse;
+    }
+
 
     public Role updateRoleRequestToRole( UpdateRoleRequest updateRoleRequest ) {
         Role role = new Role();
@@ -317,7 +347,12 @@ public class Mapper {
         user.setEmail(userRequest.getEmail());
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
-        user.setRole(userRequest.getRole());
+
+        Role role = new Role();
+        role.setId( userRequest.getRole().getId());
+        role.setName(userRequest.getRole().getName());
+
+        user.setRole(role);
         return user;
     }
 
@@ -327,7 +362,12 @@ public class Mapper {
         user.setEmail(updateUserRequest.getEmail());
         user.setUsername(updateUserRequest.getUsername());
         user.setPassword(updateUserRequest.getPassword());
-        user.setRole(updateUserRequest.getRole());
+
+        Role role = new Role();
+        role.setId( updateUserRequest.getRole().getId());
+        role.setName(updateUserRequest.getRole().getName());
+
+        user.setRole(role);
         return user;
     }
 
@@ -360,15 +400,21 @@ public class Mapper {
     }
 
     public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest, int id ) {
-        Branch branch = mapperUtilForApi.getBranchById( id );
-        branch.setAddress( branchPutRequest.getAddress() );
-        branch.setName( branchPutRequest.getName() );
-        if ( branchPutRequest.isBranchStatus() ) {
-            branch.setStatus( BranchStatus.ACTIVE );
-        } else {
-            branch.setStatus( BranchStatus.DE_ACTIVE );
+        try{
+            Branch branch = mapperUtilForApi.getBranchById( id );
+            branch.setAddress( branchPutRequest.getAddress() );
+            branch.setName( branchPutRequest.getName() );
+            if ( branchPutRequest.isBranchStatus() ) {
+                branch.setStatus( BranchStatus.ACTIVE );
+            } else {
+                branch.setStatus( BranchStatus.DE_ACTIVE );
+            }
+            return branch;
         }
-        return branch;
+        catch (Exception e){
+            throw new ResourceNotFoundException("Could not update branch with id "+ id + " because it is not found");
+        }
+
     }
 
     public Branch mapFromBranchPatchRequestToBranch( Boolean branchStatus, int id ) {

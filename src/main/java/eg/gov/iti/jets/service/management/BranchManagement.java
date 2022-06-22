@@ -10,6 +10,7 @@ public interface BranchManagement {
     Branch createBranch( Branch branch );
     Branch updateBranch( Branch branch );
     List<Branch> getAllBranches();
-    Optional<Branch> getBranchById(int id );
+    //Optional<Branch> getBranchById(int id );
+    Branch getBranchById(Integer id );
     List<TrainingProgram> getTrainingProgramByBranchId( int branchId );
 }
