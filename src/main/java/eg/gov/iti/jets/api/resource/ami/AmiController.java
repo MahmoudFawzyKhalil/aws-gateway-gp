@@ -23,6 +23,7 @@ public class AmiController {
     AmiMapper amiMapper;
     private final
     AmiAws amiAws;
+
     public AmiController(  AmiAws amiAws, AmiMapper amiMapper ) {
         this.amiAws = amiAws;
         this.amiMapper = amiMapper;
@@ -32,10 +33,10 @@ public class AmiController {
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
     public ResponseEntity<?> getAmi( @RequestBody AmiRequest amiRequest){
         // TODO: 6/17/2022 if bad request  
-        Optional<Ami> ami = amiAws.describeAmi( amiRequest.getAmiId() );
-        // TODO: 6/17/2022 Error here if Optional return null 
-        AmiViewResponse amiViewResponse = ami.map( value -> new AmiViewResponse( amiMapper.mapFromAmiToAmiResponse( value ) ) ).orElse( new AmiViewResponse() );
-        return new ResponseEntity<>(amiViewResponse, HttpStatus.OK);
+        Ami ami = amiAws.describeAmi( amiRequest.getAmiId() );
+        // TODO: 6/17/2022 Error here if Optional return null
+        AmiResponse amiResponse = amiMapper.mapFromAmiToAmiResponse( ami );
+        return new ResponseEntity<>(amiResponse, HttpStatus.OK);
     }
 
 }

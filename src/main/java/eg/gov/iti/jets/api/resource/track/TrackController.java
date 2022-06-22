@@ -3,7 +3,6 @@ package eg.gov.iti.jets.api.resource.track;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.role.GetRoleResponse;
 import eg.gov.iti.jets.api.resource.role.RoleResponse;
-import eg.gov.iti.jets.api.resource.role.UpdateRoleRequest;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.Branch;
 import eg.gov.iti.jets.persistence.entity.Role;

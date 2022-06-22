@@ -27,9 +27,7 @@ public class SubnetController {
     @GetMapping()
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
     ResponseEntity<?> getAllSubnet(){
-        // TODO: 6/17/2022 hena mmkn ydrab haga ??
         SubnetObjectResponse subnetObjectResponse = mapper.mapFromSubnetToSubnetResponse( subnetAws.getAllSubnets() );
         return new ResponseEntity<>(subnetObjectResponse , HttpStatus.OK) ;
-
     }
 }
