@@ -16,6 +16,8 @@ interface UserRepo extends JpaRepository<User, Integer> {
 
     Optional<User> findByUsernameAndPassword(String userName, String password);
 
+    Optional<User> findByUsername(String userName);
+
     <C> Optional<C> findById(Integer id, Class<C> projection);
 
     <C> Page<C> findBy(PageRequest pageRequest, Class<C> projection);

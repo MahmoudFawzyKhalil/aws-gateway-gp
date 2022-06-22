@@ -12,6 +12,8 @@ public interface UserDao extends GenericCrudDao<User, Integer> {
 
     Optional<User> findByUsernameAndPassword(String userName, String password);
 
+    Optional<User> findByUsername(String userName);
+
 
     //Add the track and role to return users in that track with the role provided
     List<User> findAllUsersByTrackAndRole(Track track, Role role);

@@ -77,6 +77,11 @@ public class UserDaoImpl implements UserDao {
         return userRepo.findByUsernameAndPassword(userName, password);
     }
 
+    @Override
+    public Optional<User> findByUsername(String userName) {
+        return userRepo.findByUsername(userName);
+    }
+
 
     @Override
     public List<User> findAllUsersByTrackAndRole(Track track, Role role) {
