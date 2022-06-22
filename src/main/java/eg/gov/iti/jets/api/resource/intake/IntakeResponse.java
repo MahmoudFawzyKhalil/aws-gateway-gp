@@ -13,5 +13,5 @@ public class IntakeResponse {
     private int id;
     private String intakeDescription;
     private String intakeName;
-    private Integer trainingProgramId;
+    private String trainingProgram;
 }
