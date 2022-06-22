@@ -40,6 +40,8 @@ public class App {
                 Privilege privilege10 = new Privilege(null, PrivilegeName.MANAGE_STUDENTS, null);
                 Privilege privilege11 = new Privilege(null, PrivilegeName.START_STOP_VIEW_INSTANCE, null);
                 Privilege privilege12 = new Privilege(null, PrivilegeName.VIEW_TEMPLATES, null);
+                Privilege privilege13 = new Privilege(null, PrivilegeName.MANAGE_ROLES, null);
+                Privilege privilege14 = new Privilege(null, PrivilegeName.MANAGE_PRIVILEGES, null);
                 privilege = privilegeDao.save(privilege);
                 privilege2 = privilegeDao.save(privilege2);
                 privilege3 = privilegeDao.save(privilege3);
@@ -52,12 +54,15 @@ public class App {
                 privilege10 = privilegeDao.save(privilege10);
                 privilege11 = privilegeDao.save(privilege11);
                 privilege12 = privilegeDao.save(privilege12);
+                privilege13 = privilegeDao.save(privilege13);
+                privilege14 = privilegeDao.save(privilege14);
+
 
                 Role studentRole = roleDao.save(new Role(null, "STUDENT", List.of(privilege11)));
                 Role supervisorRole = roleDao.save(new Role(null, "TRACK_SUPERVISOR", List.of(privilege, privilege2 , privilege9, privilege10, privilege11, privilege12)));
                 Role instructorRole = roleDao.save(new Role(null, "INSTRUCTOR", List.of(privilege, privilege12, privilege11)));
                 Role trainingMangerRole = roleDao.save(new Role(null, "TRAINING_MANAGER", List.of(privilege5, privilege6, privilege7, privilege8)));
-                Role SuperAdmin = roleDao.save(new Role(null, "SUPER_ADMIN", List.of(privilege3, privilege4)));
+                Role SuperAdmin = roleDao.save(new Role(null, "SUPER_ADMIN", List.of(privilege3, privilege4, privilege13, privilege14)));
 
 
                 DummyData.populateStaticDataForSmartBranch(instructorRole,trainingMangerRole,supervisorRole,studentRole, SuperAdmin, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
