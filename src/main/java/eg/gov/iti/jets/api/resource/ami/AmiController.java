@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.Optional;
 
 
@@ -32,7 +33,7 @@ public class AmiController {
     @PostMapping()
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
     public ResponseEntity<?> getAmi( @RequestBody AmiRequest amiRequest){
-        // TODO: 6/17/2022 if bad request  
+        // TODO: 6/17/2022 if bad request
         Ami ami = amiAws.describeAmi( amiRequest.getAmiId() );
         // TODO: 6/17/2022 Error here if Optional return null
         AmiResponse amiResponse = amiMapper.mapFromAmiToAmiResponse( ami );
