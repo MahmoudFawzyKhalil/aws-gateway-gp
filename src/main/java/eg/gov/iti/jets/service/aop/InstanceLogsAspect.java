@@ -8,9 +8,9 @@ import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
 import eg.gov.iti.jets.persistence.entity.enums.UserAction;
 import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,29 +20,32 @@ import java.time.LocalDateTime;
 
 @Aspect
 @Component
-public class InstanceLoggingAspect {
+public class InstanceLogsAspect {
 
-    @Autowired
-    InstanceLogsDao instanceLogsDao;
-    @Autowired
-    UserDao userDao;
-    @Autowired
-    InstanceDao instanceDao;
+    private final InstanceLogsDao instanceLogsDao;
+    private final UserDao userDao;
+
+    private final InstanceDao instanceDao;
+
+    public InstanceLogsAspect(InstanceLogsDao instanceLogsDao, UserDao userDao, InstanceDao instanceDao) {
+        this.instanceLogsDao = instanceLogsDao;
+        this.userDao = userDao;
+        this.instanceDao = instanceDao;
+    }
 
 
-    @Before("execution(* eg.gov.iti.jets.service.management.InstanceManagement.createInstance(eg.gov.iti.jets.persistence.entity.aws.Instance))")
-    public void beforeCreateInstance(JoinPoint joinPoint) throws Throwable {
+//    @AfterReturning("execution(* eg.gov.iti.jets.service.management.InstanceManagement.createInstance(eg.gov.iti.jets.persistence.entity.aws.Instance)), returning = instance")
+
+    @AfterReturning(
+            pointcut = "execution(* eg.gov.iti.jets.service.management.InstanceManagement.createInstance(eg.gov.iti.jets.persistence.entity.aws.Instance))",
+            returning = "returnedInstance")
+    public void afterCreateInstance(JoinPoint joinPoint, Object returnedInstance) throws Throwable {
         SecurityContext securityContext = SecurityContextHolder.getContext();
         System.out.println("%%%%%%%%%%%%%%%%%%%%%%%%%%");
-        var authentication = securityContext.getAuthentication();
-        System.out.println(((UserDetails) authentication.getPrincipal()).getUsername());
-        String userName = ((UserDetails) authentication.getPrincipal()).getUsername();
-        String password = ((UserDetails) authentication.getPrincipal()).getPassword();
-        System.out.println((joinPoint.getArgs()[0]).toString());
-
-        Instance instance = (Instance) joinPoint.getArgs()[0];
-        User user = userDao.findByUsernameAndPassword(userName,password).orElse(null);
-
+        UserDetails userDetails = (UserDetails) securityContext.getAuthentication().getPrincipal();
+        String userName = userDetails.getUsername();
+        User user = userDao.findByUsername(userName).orElse(null);
+        Instance instance = (Instance) returnedInstance;
         InstanceLogs instanceLogs = new InstanceLogs();
         instanceLogs.setInstance(instance);
         instanceLogs.setDateTime(LocalDateTime.now());
@@ -50,7 +53,7 @@ public class InstanceLoggingAspect {
         instanceLogs.setAction(UserAction.CREATE_INSTANCE);
         System.out.println(instanceLogs.toString());
 
-//        instanceLogsDao.save(instanceLogs);
+        instanceLogsDao.save(instanceLogs);
 
         System.out.println("&&&&&&&&&&&&&&&&&&&&&&&&");
     }
