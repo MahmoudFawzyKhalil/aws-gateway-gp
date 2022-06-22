@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.persistence.dao.impls.aws;
 
+import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
 import eg.gov.iti.jets.persistence.entity.enums.UserAction;
 import org.springframework.data.domain.Example;
@@ -16,7 +17,7 @@ import java.util.Optional;
 
 interface InstanceLogsRepo extends JpaRepository<InstanceLogs, Integer> {
 
-    Optional<InstanceLogs> findFirstByActionAndInstance_IdOrderByDateTimeDesc(UserAction action,int id);
+    Optional<InstanceLogs> findFirstByActionAndInstance_IdOrderByDateTimeDesc(UserAction action, int id);
 
     boolean deleteLogsByDateTimeLessThan(LocalDateTime startDate);
 
@@ -26,8 +27,11 @@ interface InstanceLogsRepo extends JpaRepository<InstanceLogs, Integer> {
 
     <C> Optional<C> findById(Integer id, Class<C> projection);
 
+    <C> Page<C> findAllByActionMaker_Id(Integer userId, Pageable pageable, Class<C> projection);
 
-    <C> Page<C> findBy(PageRequest pageRequest, Class<C> projection);
+    <C> Page<C> findAllByActionMaker_IdAndDateTimeBetween(Integer userId, LocalDateTime dateTime1, LocalDateTime dateTime2, Pageable pageable, Class<C> projection);
+
+    <C> Page<C> findBy(Pageable pageable, Class<C> projection);
 
     <C> List<C> findAllBy(Example<C> example, Class<C> projection);
 
