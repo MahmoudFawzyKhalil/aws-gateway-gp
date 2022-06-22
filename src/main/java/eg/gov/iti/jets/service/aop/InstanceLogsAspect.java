@@ -8,10 +8,8 @@ import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import eg.gov.iti.jets.persistence.entity.aws.InstanceLogs;
 import eg.gov.iti.jets.persistence.entity.enums.UserAction;
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,70 +35,58 @@ public class InstanceLogsAspect {
             pointcut = "execution(* eg.gov.iti.jets.service.management.InstanceManagement.createInstance(eg.gov.iti.jets.persistence.entity.aws.Instance))",
             returning = "returnedInstance")
     public void afterCreateInstance(JoinPoint joinPoint, Object returnedInstance) throws Throwable {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        UserDetails userDetails = (UserDetails) securityContext.getAuthentication().getPrincipal();
-        String userName = userDetails.getUsername();
-        User user = userDao.findByUsername(userName).orElse(null);
+        User user = getCurrUser();
         Instance instance = (Instance) returnedInstance;
-        InstanceLogs instanceLogs = new InstanceLogs();
-        instanceLogs.setInstance(instance);
-        instanceLogs.setDateTime(LocalDateTime.now());
-        instanceLogs.setActionMaker(user);
-        instanceLogs.setAction(UserAction.CREATE_INSTANCE);
+        InstanceLogs instanceLogs = getCurrentLog(instance, user, UserAction.CREATE_INSTANCE);
         instanceLogsDao.save(instanceLogs);
     }
 
 
     @AfterReturning("execution(* eg.gov.iti.jets.service.management.InstanceManagement.startInstance(java.lang.String))")
     public void afterStartInstance(JoinPoint joinPoint) throws Throwable {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        UserDetails userDetails = (UserDetails) securityContext.getAuthentication().getPrincipal();
-        String userName = userDetails.getUsername();
-        User user = userDao.findByUsername(userName).orElse(null);
+        User user = getCurrUser();
         Instance example = new Instance();
         example.setInstanceId((String) joinPoint.getArgs()[0]);
         Instance instance = instanceDao.findAllByExample(example).get(0);
-        InstanceLogs instanceLogs = new InstanceLogs();
-        instanceLogs.setInstance(instance);
-        instanceLogs.setDateTime(LocalDateTime.now());
-        instanceLogs.setActionMaker(user);
-        instanceLogs.setAction(UserAction.START_INSTANCE);
+        InstanceLogs instanceLogs = getCurrentLog(instance, user, UserAction.START_INSTANCE);
         instanceLogsDao.save(instanceLogs);
     }
 
 
     @AfterReturning("execution(* eg.gov.iti.jets.service.management.InstanceManagement.stopInstance(java.lang.String))")
     public void afterStopInstance(JoinPoint joinPoint) throws Throwable {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        UserDetails userDetails = (UserDetails) securityContext.getAuthentication().getPrincipal();
-        String userName = userDetails.getUsername();
-        User user = userDao.findByUsername(userName).orElse(null);
+        User user = getCurrUser();
         Instance example = new Instance();
         example.setInstanceId((String) joinPoint.getArgs()[0]);
         Instance instance = instanceDao.findAllByExample(example).get(0);
-        InstanceLogs instanceLogs = new InstanceLogs();
-        instanceLogs.setInstance(instance);
-        instanceLogs.setDateTime(LocalDateTime.now());
-        instanceLogs.setActionMaker(user);
-        instanceLogs.setAction(UserAction.STOP_INSTANCE);
+        InstanceLogs instanceLogs = getCurrentLog(instance, user, UserAction.STOP_INSTANCE);
         instanceLogsDao.save(instanceLogs);
     }
 
 
     @AfterReturning("execution(* eg.gov.iti.jets.service.management.InstanceManagement.deleteInstance(java.lang.String))")
-    public void afterDeletenstance(JoinPoint joinPoint) throws Throwable {
-        SecurityContext securityContext = SecurityContextHolder.getContext();
-        UserDetails userDetails = (UserDetails) securityContext.getAuthentication().getPrincipal();
-        String userName = userDetails.getUsername();
-        User user = userDao.findByUsername(userName).orElse(null);
+    public void afterDeleteInstance(JoinPoint joinPoint) throws Throwable {
+        User user = getCurrUser();
         Instance example = new Instance();
         example.setInstanceId((String) joinPoint.getArgs()[0]);
         Instance instance = instanceDao.findAllByExample(example).get(0);
+        InstanceLogs instanceLogs = getCurrentLog(instance, user, UserAction.TERMINATE_INSTANCE);
+        instanceLogsDao.save(instanceLogs);
+    }
+
+    private User getCurrUser() {
+        SecurityContext securityContext = SecurityContextHolder.getContext();
+        UserDetails userDetails = (UserDetails) securityContext.getAuthentication().getPrincipal();
+        String userName = userDetails.getUsername();
+        return userDao.findByUsername(userName).orElse(null);
+    }
+
+    private InstanceLogs getCurrentLog(Instance instance, User user, UserAction userAction) {
         InstanceLogs instanceLogs = new InstanceLogs();
         instanceLogs.setInstance(instance);
         instanceLogs.setDateTime(LocalDateTime.now());
         instanceLogs.setActionMaker(user);
-        instanceLogs.setAction(UserAction.TERMINATE_INSTANCE);
-        instanceLogsDao.save(instanceLogs);
+        instanceLogs.setAction(userAction);
+        return instanceLogs;
     }
 }
