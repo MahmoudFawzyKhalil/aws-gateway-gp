@@ -4,9 +4,15 @@ import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.impl.UserManagementImpl;
+import eg.gov.iti.jets.service.model.UserAdapter;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
+import javax.validation.Valid;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,17 +22,18 @@ public class UserController {
     private final UserManagementImpl userManagement;
     private final Mapper mapper;
 
-    public UserController(UserManagementImpl userManagement , Mapper mapper ){
+    public UserController(UserManagementImpl userManagement , Mapper mapper){
         this.userManagement = userManagement;
         this.mapper = mapper;
     }
 
     @PostMapping("/users")
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest userRequest){
-        User user = mapper.createUserRequestToUser(userRequest);
+    public ResponseEntity<UserResponse> createUser(@AuthenticationPrincipal UserAdapter userAdapter ,
+                                                   @Valid @RequestBody CreateUserRequest userRequest){
+        int currentLoggedUserId = userAdapter.getId();
+        User user = mapper.createUserRequestToUser(currentLoggedUserId,userRequest);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(mapper.mapFromUserToUserResponse(userManagement.createUser(user)));
-
     }
 
     @GetMapping("/users/{id}")
@@ -37,8 +44,11 @@ public class UserController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<UserResponse> updateUser (@PathVariable int id , @RequestBody UpdateUserRequest userRequest){
-        User user = mapper.updateUserRequestToUser(id,userRequest);
+    public ResponseEntity<UserResponse> updateUser (@PathVariable int id ,
+                                                    @Valid @RequestBody UpdateUserRequest userRequest ,
+                                                    @AuthenticationPrincipal UserAdapter userAdapter){
+        int currentLoggedUserId= userAdapter.getId();
+        User user = mapper.updateUserRequestToUser(currentLoggedUserId,id,userRequest);
         return ResponseEntity.ok(mapper.mapFromUserToUserResponse(userManagement.updateUser(user)));
     }
 

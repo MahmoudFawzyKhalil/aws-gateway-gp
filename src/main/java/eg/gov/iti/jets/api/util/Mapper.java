@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.api.util;
 
 import eg.gov.iti.jets.api.resource.ami.AmiResponse;
+import eg.gov.iti.jets.service.model.UserAdapter;
 import eg.gov.iti.jets.api.resource.branch.BranchPutRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
@@ -33,16 +34,32 @@ import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import eg.gov.iti.jets.api.resource.user.CreateUserRequest;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
+import org.springframework.context.annotation.Lazy;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
 public class Mapper {
     @Autowired
     private MapperUtilForApi mapperUtilForApi;
+
+
+
+    //Object principal = SecurityContextHolder. getContext(). getAuthentication(). getPrincipal();
+   // Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    Mapper(){
+     //   System.out.println(auth.getPrincipal());
+    }
 
 
 
@@ -238,15 +255,14 @@ public class Mapper {
         return roleResponse;
     }
 
-    public User createUserRequestToUser(CreateUserRequest userRequest) {
+    public User createUserRequestToUser(int currentLoggedUserId, CreateUserRequest userRequest) {
         User user = new User();
-//        user.setId(userRequest.getId());
         user.setEmail(userRequest.getEmail());
         user.setUsername(userRequest.getUsername());
         user.setPassword(userRequest.getPassword());
 
         User manager = new User();
-        manager.setId(userRequest.getManagerId());
+        manager.setId(currentLoggedUserId);
 
         user.setManager(manager);
 
@@ -258,7 +274,9 @@ public class Mapper {
         return user;
     }
 
-    public User updateUserRequestToUser(int id , UpdateUserRequest updateUserRequest) {
+
+    public User updateUserRequestToUser( int currentLoggedUserId , int id , UpdateUserRequest updateUserRequest) {
+
         User user = new User();
         user.setId(id);
         user.setEmail(updateUserRequest.getEmail());
@@ -266,8 +284,7 @@ public class Mapper {
         user.setPassword(updateUserRequest.getPassword());
 
         User manager = new User();
-        manager.setId(updateUserRequest.getManagerId());
-
+        manager.setId(currentLoggedUserId);
         user.setManager(manager);
 
         Role role = new Role();
