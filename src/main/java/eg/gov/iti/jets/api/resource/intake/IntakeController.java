@@ -6,23 +6,22 @@ import eg.gov.iti.jets.api.resource.track.TrackResponseList;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.Intake;
 import eg.gov.iti.jets.persistence.entity.Track;
-import eg.gov.iti.jets.service.management.impl.IntakeManagementImpl;
+import eg.gov.iti.jets.service.management.IntakeManagement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/intakes")
 public class IntakeController {
-    final IntakeManagementImpl intakeManagement;
+    final IntakeManagement intakeManagement;
     final Mapper mapper;
 
 
-    public IntakeController( IntakeManagementImpl intakeManagement , Mapper mapper){
+    public IntakeController( IntakeManagement intakeManagement , Mapper mapper){
         this.intakeManagement=intakeManagement ;
         this.mapper=mapper;
     }
@@ -40,23 +39,23 @@ public class IntakeController {
 
 
     @GetMapping("/{id}")
-    public IntakeViewResponse getIntakeById(@PathVariable int id){
-        Optional<Intake> intake = intakeManagement.getIntakeById(id);
-        return intake.map( value -> new IntakeViewResponse( true, mapper.mapFromIntakeToIntakeResponse(value))).orElseGet( () -> new IntakeViewResponse( false, null ) );
+    public ResponseEntity<IntakeResponse> getIntakeById(@PathVariable int id){
+        Intake intake = intakeManagement.getIntakeById(id);
+        return new ResponseEntity<>(mapper.mapFromIntakeToIntakeResponse(intake),HttpStatus.OK);
     }
 
 
     @PostMapping
-    public IntakeResponse createIntake( @RequestBody IntakeRequest intakeRequest){
+    public ResponseEntity<IntakeResponse> createIntake( @RequestBody IntakeRequest intakeRequest){
         Intake intake = intakeManagement.createIntake( mapper.mapFromIntakeRequestToIntake( intakeRequest )  );
-        return mapper.mapFromIntakeToIntakeResponse(intake);
+        return new ResponseEntity<>(mapper.mapFromIntakeToIntakeResponse(intake),HttpStatus.CREATED);
     }
 
 
-    @PutMapping
-    public IntakeResponse updateIntake (@RequestBody IntakeRequest intakeRequest){
-        Intake intake = intakeManagement.updateIntake( mapper.mapFromIntakeRequestToIntake( intakeRequest ) );
-        return mapper.mapFromIntakeToIntakeResponse( intake );
+    @PutMapping("/{id}")
+    public ResponseEntity<IntakeResponse> updateIntake (@PathVariable int id , @RequestBody IntakePutRequest intakeRequest){
+        Intake intake = intakeManagement.updateIntake( mapper.mapFromIntakePutRequestToIntake( id, intakeRequest ) );
+        return new ResponseEntity<>(mapper.mapFromIntakeToIntakeResponse( intake ),HttpStatus.OK);
     }
 
 
@@ -69,5 +68,14 @@ public class IntakeController {
         TrackResponseList trackResponseList = new TrackResponseList( tracksResponse );
         return new ResponseEntity<>(  trackResponseList  , HttpStatus.OK);
     }
+
+    // TODO: 6/20/2022 add in Dao 
+    
+//    @DeleteMapping("/{id}")
+//    public ResponseEntity deleteIntake(@PathVariable int id){
+//        Intake intake = intakeManagement.deleteIntake(id);
+//        return new ResponseEntity<>(true,HttpStatus.OK);
+//
+//    }
 
 }

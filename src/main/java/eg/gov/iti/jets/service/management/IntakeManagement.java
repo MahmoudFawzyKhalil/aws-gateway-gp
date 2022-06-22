@@ -13,7 +13,7 @@ public interface IntakeManagement {
 
     List<Intake> getAllIntakes();
 
-    Optional<Intake> getIntakeById(int id);
+    Intake getIntakeById(int id);
 
 
 
