@@ -11,7 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 
 public class TrackPutRequest {
-    private int id;
     private String Name;
-    private int IntakeId;
 }

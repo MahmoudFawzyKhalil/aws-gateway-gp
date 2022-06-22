@@ -1,24 +1,16 @@
 package eg.gov.iti.jets.api.util;
 
-import eg.gov.iti.jets.api.resource.ami.AmiResponse;
 import eg.gov.iti.jets.api.resource.branch.BranchPutRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
-import eg.gov.iti.jets.api.resource.instance.InstanceRequest;
-import eg.gov.iti.jets.api.resource.instance.InstanceResponse;
-import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeObjectResponse;
-import eg.gov.iti.jets.api.resource.instanceType.InstanceTypeResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakePutRequest;
 import eg.gov.iti.jets.api.resource.role.*;
-import eg.gov.iti.jets.api.resource.securityGroup.SecurityGroupResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
 import eg.gov.iti.jets.api.resource.privilege.AddPrivilegeRequest;
 import eg.gov.iti.jets.api.resource.privilege.GetPrivilegeResponse;
-import eg.gov.iti.jets.api.resource.template.TemplateRequest;
-import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.api.resource.track.TrackPutRequest;
 import eg.gov.iti.jets.api.resource.track.TrackRequest;
 import eg.gov.iti.jets.api.resource.track.TrackResponse;
@@ -45,17 +37,6 @@ import java.util.stream.Collectors;
 public class Mapper {
     @Autowired
     private MapperUtilForApi mapperUtilForApi;
-
-
-
-
-
-
-
-
-
-
-
 
 
     public Branch mapFromBranchRequestToBranch( BranchRequest branchRequest ) {
@@ -89,9 +70,6 @@ public class Mapper {
         Branch branch = mapperUtilForApi.getBranchById( trainingProgramRequest.getBranchId() );
         trainingProgram.setBranch( branch );
         trainingProgram.setName( trainingProgramRequest.getName() );
-        if ( trainingProgramRequest != null && trainingProgramRequest.getIntakeIds().isEmpty() ) {
-            trainingProgram.setIntakes( mapperUtilForApi.getIntakeList( trainingProgramRequest.getIntakeIds() ) );
-        }
         return trainingProgram;
     }
 
@@ -100,15 +78,15 @@ public class Mapper {
         trainingProgramResponse.setBranchName( trainingProgram.getBranch().getName() );
         trainingProgramResponse.setName( trainingProgram.getName() );
         trainingProgramResponse.setId( trainingProgram.getId() );
-        trainingProgramResponse.setIntakeNames( trainingProgram.getIntakes().stream().map( Intake::getName ).collect( Collectors.toList() ) );
+
         return trainingProgramResponse;
     }
 
 
     public IntakeResponse mapFromIntakeToIntakeResponse( Intake intake ) {
         IntakeResponse intakeResponse = new IntakeResponse();
-        TrainingProgram trainingProgram = mapperUtilForApi.getTrainingProgramById( intake.getTrainingProgram().getId());
-        intakeResponse.setTrainingProgram(trainingProgram.getName() );
+        TrainingProgram trainingProgram = mapperUtilForApi.getTrainingProgramById( intake.getTrainingProgram().getId() );
+        intakeResponse.setTrainingProgram( trainingProgram.getName() );
         intakeResponse.setIntakeName( intake.getName() );
         intakeResponse.setIntakeDescription( intake.getDescription() );
         intakeResponse.setId( intake.getId() );
@@ -126,14 +104,13 @@ public class Mapper {
         return intake;
     }
 
-    public Intake mapFromIntakePutRequestToIntake( int id , IntakePutRequest intakePutRequest) {
-         Intake intake = new Intake();
-            TrainingProgram trainingProgram = mapperUtilForApi.getTrainingProgramById( intakePutRequest.getTrainingProgramId() );
-            intake.setTrainingProgram( trainingProgram );
-            intake.setId( id);
-            intake.setDescription( intakePutRequest.getIntakeDescription() );
-            intake.setName( intakePutRequest.getIntakeName() );
-            return intake;
+    public Intake mapFromIntakePutRequestToIntake( int id, IntakePutRequest intakePutRequest ) {
+        Intake intake = mapperUtilForApi.getIntakeById( id );
+        TrainingProgram trainingProgram = mapperUtilForApi.getTrainingProgramById( intakePutRequest.getTrainingProgramId() );
+        intake.setTrainingProgram( trainingProgram );
+        intake.setDescription( intakePutRequest.getIntakeDescription() );
+        intake.setName( intakePutRequest.getIntakeName() );
+        return intake;
     }
 
 
@@ -148,7 +125,7 @@ public class Mapper {
         Track track = new Track();
         track.setName( trackRequest.getName() );
         Intake intake = mapperUtilForApi.getIntakeById( trackRequest.getIntakeId() );
-        track.setIntake(intake);
+        track.setIntake( intake );
         return track;
     }
 
@@ -156,8 +133,8 @@ public class Mapper {
     public TrackResponse mapFromTrackToTrackResponse( Track track ) {
         TrackResponse trackResponse = new TrackResponse();
         trackResponse.setName( track.getName() );
-        trackResponse.setId(track.getId());
-        trackResponse.setIntakeId(track.getIntake().getId());
+        trackResponse.setId( track.getId() );
+        trackResponse.setIntakeId( track.getIntake().getId() );
         return trackResponse;
     }
 
@@ -168,22 +145,20 @@ public class Mapper {
         return trackResponses;
     }
 
-    public Track mapFromTrackPutRequestToTrack(TrackPutRequest trackPutRequest, int id ) {
+    public Track mapFromTrackPutRequestToTrack( TrackPutRequest trackPutRequest, int id ) {
         try {
-            Track track = mapperUtilForApi.getTrackById(id);
-            track.setName(trackPutRequest.getName());
+            Track track = mapperUtilForApi.getTrackById( id );
+            track.setName( trackPutRequest.getName() );
             return track;
+        } catch ( Exception e ) {
+            throw new ResourceNotFoundException( "Could not update track with id " + id + " because it is not found" );
         }
-        catch (Exception e){
-            throw new ResourceNotFoundException("Could not update track with id "+ id + " because it is not found");
-            }
     }
 
 
     public Instance mapFromInstanceRequestToInstance( IntakeRequest intakeRequest ) {
         return null;
     }
-
 
 
 //    public Instance mapFromInstanceRequestToInstance( InstanceRequest instanceRequest ) {
@@ -206,10 +181,6 @@ public class Mapper {
     }
 
 
-
-
-
-
     public GetPrivilegeResponse privilegeToGetPrivilegeResponse( Privilege privilege ) {
         return new GetPrivilegeResponse( privilege.getId(), privilege.getName().name() );
     }
@@ -222,7 +193,7 @@ public class Mapper {
         return privilege;
     }
 
-    public Role roleRequestToRole(RoleRequest roleRequest ) {
+    public Role roleRequestToRole( RoleRequest roleRequest ) {
         Role role = new Role();
         role.setName( roleRequest.getName() );
         role.setPrivileges(
@@ -235,9 +206,9 @@ public class Mapper {
         return role;
     }
 
-    public GetRoleResponse roleToGetRoleResponse(Role role ) {
+    public GetRoleResponse roleToGetRoleResponse( Role role ) {
         GetRoleResponse getRoleResponse = new GetRoleResponse();
-        getRoleResponse.setId(role.getId());
+        getRoleResponse.setId( role.getId() );
         getRoleResponse.setName( role.getName() );
         getRoleResponse.setPrivileges( role.getPrivileges().stream().map(
                 privilege -> {
@@ -250,85 +221,82 @@ public class Mapper {
         return getRoleResponse;
     }
 
-    public RoleResponse roleToRoleResponse(Role role) {
+    public RoleResponse roleToRoleResponse( Role role ) {
         RoleResponse roleResponse = new RoleResponse();
-        roleResponse.setId(role.getId());
-        roleResponse.setName(role.getName());
+        roleResponse.setId( role.getId() );
+        roleResponse.setName( role.getName() );
         roleResponse.setPrivileges(
-                role.getPrivileges().stream().map(Privilege::getId).collect(Collectors.toList())
+                role.getPrivileges().stream().map( Privilege::getId ).collect( Collectors.toList() )
         );
         return roleResponse;
     }
 
-    public User createUserRequestToUser(CreateUserRequest userRequest) {
+    public User createUserRequestToUser( CreateUserRequest userRequest ) {
         User user = new User();
-        user.setEmail(userRequest.getEmail());
-        user.setUsername(userRequest.getUsername());
-        user.setPassword(userRequest.getPassword());
+        user.setEmail( userRequest.getEmail() );
+        user.setUsername( userRequest.getUsername() );
+        user.setPassword( userRequest.getPassword() );
 
         User manager = new User();
-        manager.setId(userRequest.getManagerId());
+        manager.setId( userRequest.getManagerId() );
 
-        user.setManager(manager);
+        user.setManager( manager );
 
         Role role = new Role();
-        role.setId( userRequest.getRole().getId());
-        role.setName(userRequest.getRole().getName());
+        role.setId( userRequest.getRole().getId() );
+        role.setName( userRequest.getRole().getName() );
 
-        user.setRole(role);
+        user.setRole( role );
         return user;
     }
 
-    public User updateUserRequestToUser(int id , UpdateUserRequest updateUserRequest) {
+    public User updateUserRequestToUser( int id, UpdateUserRequest updateUserRequest ) {
         User user = new User();
-        user.setId(id);
-        user.setEmail(updateUserRequest.getEmail());
-        user.setUsername(updateUserRequest.getUsername());
-        user.setPassword(updateUserRequest.getPassword());
+        user.setId( id );
+        user.setEmail( updateUserRequest.getEmail() );
+        user.setUsername( updateUserRequest.getUsername() );
+        user.setPassword( updateUserRequest.getPassword() );
 
         User manager = new User();
-        manager.setId(updateUserRequest.getManagerId());
+        manager.setId( updateUserRequest.getManagerId() );
 
-        user.setManager(manager);
+        user.setManager( manager );
 
         Role role = new Role();
-        role.setId( updateUserRequest.getRole().getId());
-        role.setName(updateUserRequest.getRole().getName());
+        role.setId( updateUserRequest.getRole().getId() );
+        role.setName( updateUserRequest.getRole().getName() );
 
-        user.setRole(role);
+        user.setRole( role );
         return user;
     }
 
-    public UserResponse mapFromUserToUserResponse(User user) {
+    public UserResponse mapFromUserToUserResponse( User user ) {
         UserResponse response = new UserResponse();
-        response.setId(user.getId());
-        response.setUsername(user.getUsername());
-        response.setEmail(user.getEmail());
-        response.setRole(user.getRole().getName());
-        response.setPassword(user.getPassword());
-        response.setPrivileges(user.getRole().getPrivileges().stream().map(privilege -> privilege.getName().name()).collect(Collectors.toList()));
+        response.setId( user.getId() );
+        response.setUsername( user.getUsername() );
+        response.setEmail( user.getEmail() );
+        response.setRole( user.getRole().getName() );
+        response.setPassword( user.getPassword() );
+        response.setPrivileges( user.getRole().getPrivileges().stream().map( privilege -> privilege.getName().name() ).collect( Collectors.toList() ) );
         return response;
     }
 
-    public List<UserResponse> mapFromListOfUsersToListOfUserResponses(List<User> users){
-        return users.stream().map(this::mapFromUserToUserResponse).collect(Collectors.toList());
+    public List<UserResponse> mapFromListOfUsersToListOfUserResponses( List<User> users ) {
+        return users.stream().map( this::mapFromUserToUserResponse ).collect( Collectors.toList() );
     }
 
 
-    public TrainingProgram mapFromTrainingProgramPutRequestToTrainingProgram( TrainingProgramPutRequest trainingProgramPutRequest , int id ) {
+    public TrainingProgram mapFromTrainingProgramPutRequestToTrainingProgram( TrainingProgramPutRequest trainingProgramPutRequest, int id ) {
         TrainingProgram trainingProgram = mapperUtilForApi.getTrainingProgramById( id );
         Branch branch = mapperUtilForApi.getBranchById( trainingProgramPutRequest.getBranchId() );
         trainingProgram.setBranch( branch );
         trainingProgram.setName( trainingProgramPutRequest.getName() );
-        trainingProgram.setId( id );
-        if ( trainingProgramPutRequest != null && trainingProgramPutRequest.getIntakeIds() !=null ) {
-            trainingProgram.setIntakes( mapperUtilForApi.getIntakeList( trainingProgramPutRequest.getIntakeIds() ) );
-        }
+
         return trainingProgram;
     }
 
     public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest, int id ) {
-        try{
+        try {
             Branch branch = mapperUtilForApi.getBranchById( id );
             branch.setAddress( branchPutRequest.getAddress() );
             branch.setName( branchPutRequest.getName() );
@@ -338,9 +306,8 @@ public class Mapper {
                 branch.setStatus( BranchStatus.DE_ACTIVE );
             }
             return branch;
-        }
-        catch (Exception e){
-            throw new ResourceNotFoundException("Could not update branch with id "+ id + " because it is not found");
+        } catch ( Exception e ) {
+            throw new ResourceNotFoundException( "Could not update branch with id " + id + " because it is not found" );
         }
 
     }

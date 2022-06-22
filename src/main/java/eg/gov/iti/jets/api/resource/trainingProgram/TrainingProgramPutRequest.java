@@ -14,5 +14,4 @@ import java.util.List;
 public class TrainingProgramPutRequest {
     private String name;
     private Integer branchId;
-    private List<Integer> intakeIds;
 }

@@ -42,15 +42,7 @@ public class TrackController {
         return new ResponseEntity<>( trackResponseList , HttpStatus.OK );
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<TrackResponse> getTrackById(@PathVariable int id){
-//        Optional<Track> track = trackManagement.getTrackById(id);
-//        TrackResponse trackResponse = new TrackResponse();
-//        if(track.isPresent()){
-//            trackResponse = mapper.mapFromTrackToTrackResponse( track.get() );
-//        }
-//        return new ResponseEntity<>( trackResponse ,HttpStatus.OK );
-//    }
+
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TRACKS.name())")
@@ -76,15 +68,6 @@ public class TrackController {
         return new ResponseEntity<>( trackResponse, HttpStatus.OK );
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<TrackResponse> updateTrack (@PathVariable int id , @RequestBody TrackPutRequest trackPutRequsert){
-//        Optional<Track> track = trackManagement.getTrackById(id);
-//        TrackResponse trackResponse = new TrackResponse();
-//        if(track.isPresent()){
-//            trackResponse = mapper.mapFromTrackToTrackResponse( track.get() );
-//        }
-//        return new ResponseEntity<>( trackResponse ,HttpStatus.OK );
-//    }
 
 
 }

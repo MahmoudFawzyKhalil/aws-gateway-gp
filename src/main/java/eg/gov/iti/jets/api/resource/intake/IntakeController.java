@@ -6,23 +6,22 @@ import eg.gov.iti.jets.api.resource.track.TrackResponseList;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.Intake;
 import eg.gov.iti.jets.persistence.entity.Track;
-import eg.gov.iti.jets.service.management.impl.IntakeManagementImpl;
+import eg.gov.iti.jets.service.management.IntakeManagement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/intakes")
 public class IntakeController {
-    final IntakeManagementImpl intakeManagement;
+    final IntakeManagement intakeManagement;
     final Mapper mapper;
 
 
-    public IntakeController( IntakeManagementImpl intakeManagement , Mapper mapper){
+    public IntakeController( IntakeManagement intakeManagement , Mapper mapper){
         this.intakeManagement=intakeManagement ;
         this.mapper=mapper;
     }
