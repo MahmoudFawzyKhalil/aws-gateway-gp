@@ -39,16 +39,32 @@ public class Mapper {
     @Autowired
     private MapperUtilForApi mapperUtilForApi;
 
+    public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest, int id ) {
+        try {
+            Branch branch = mapperUtilForApi.getBranchById( id );
+            branch.setAddress( branchPutRequest.getAddress() );
+            branch.setName( branchPutRequest.getName() );
+            if ( branchPutRequest.isBranchStatus() ) {
+                branch.setStatus( BranchStatus.ACTIVE );
+            } else {
+                branch.setStatus( BranchStatus.DE_ACTIVE );
+            }
+            return branch;
+        } catch ( Exception e ) {
+            throw new ResourceNotFoundException( "Could not update branch with id " + id + " because it is not found" );
+        }
 
+    }
 
-
-
-
-
-
-
-
-
+    public Branch mapFromBranchPatchRequestToBranch( Boolean branchStatus, int id ) {
+        Branch branch = mapperUtilForApi.getBranchById( id );
+        if ( branchStatus ) {
+            branch.setStatus( BranchStatus.ACTIVE );
+        } else {
+            branch.setStatus( BranchStatus.DE_ACTIVE );
+        }
+        return branch;
+    }
 
     public Branch mapFromBranchRequestToBranch( BranchRequest branchRequest ) {
         Branch branch = new Branch();
@@ -263,4 +279,25 @@ public class Mapper {
 
         return trainingProgram;
     }
+
+    public List<StudentResponse> mapFromListOfStudentToListOfStudentResponses( List<User> users ) {
+        List<StudentResponse> studentResponses =
+                users.stream().map( e -> this.mapFromStudentToStudentResponse(e) ).collect( Collectors.toList() );
+        return studentResponses;
+    }
+
+    public StudentResponse mapFromStudentToStudentResponse( User user ) {
+        StudentResponse response = new StudentResponse();
+        response.setUserName(user.getUsername());
+        response.setPassword(user.getPassword());
+        response.setId(user.getId());
+        response.setRole(user.getRole().getName());
+        response.setEmail(user.getEmail());
+        response.setTrack(user.getTracks().get(0).getName());
+        return response;
+    }
+
+
+
+
 }

@@ -15,7 +15,6 @@ public class UserRequest {
 
  //   private String role ;
 
-    private RoleType role;
 //
 //    private List<Track> tracks;
 //

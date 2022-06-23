@@ -209,6 +209,6 @@ public class StudentManagementImpl implements UserDetailsService, StudentManagem
 
     @Override
     public List<User> getAllStudent() {
-        return userDao.findUserByRollName("Student");
+        return userDao.findUsersByRoleName("Student",User.class);
     }
 }
