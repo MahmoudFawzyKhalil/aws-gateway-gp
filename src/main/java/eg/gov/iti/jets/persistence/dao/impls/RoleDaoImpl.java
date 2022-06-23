@@ -67,4 +67,9 @@ public class RoleDaoImpl implements RoleDao {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return roleRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
     }
+
+    @Override
+    public Optional<Role> findRoleByName(String name) {
+        return roleRepo.findRoleByName(name);
+    }
 }
