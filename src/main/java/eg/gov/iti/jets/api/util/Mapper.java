@@ -1,27 +1,23 @@
 package eg.gov.iti.jets.api.util;
 
-import eg.gov.iti.jets.api.resource.ami.AmiResponse;
 import eg.gov.iti.jets.api.resource.branch.BranchPutRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakePutRequest;
 import eg.gov.iti.jets.api.resource.role.*;
-import eg.gov.iti.jets.api.resource.securityGroup.SecurityGroupResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
 import eg.gov.iti.jets.api.resource.privilege.AddPrivilegeRequest;
 import eg.gov.iti.jets.api.resource.privilege.GetPrivilegeResponse;
-import eg.gov.iti.jets.api.resource.template.TemplateRequest;
-import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.api.resource.track.TrackPutRequest;
 import eg.gov.iti.jets.api.resource.track.TrackRequest;
 import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramPutRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
-import eg.gov.iti.jets.api.resource.user.UpdateUserRequest;
+import eg.gov.iti.jets.api.resource.student.UpdateUserRequest;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
@@ -29,20 +25,12 @@ import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import eg.gov.iti.jets.api.resource.user.CreateUserRequest;
+import eg.gov.iti.jets.api.resource.student.CreateUserRequest;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
-import org.springframework.context.annotation.Lazy;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.GetMapping;
 
-import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -253,53 +241,11 @@ public class Mapper {
         return roleResponse;
     }
 
-    public User createUserRequestToUser(int currentLoggedUserId, CreateUserRequest userRequest) {
-        User user = new User();
-        user.setEmail(userRequest.getEmail());
-        user.setUsername(userRequest.getUsername());
-        user.setPassword(userRequest.getPassword());
-
-        User manager = new User();
-        manager.setId(currentLoggedUserId);
-
-        user.setManager(manager);
-
-        Role role = new Role();
-        role.setId( userRequest.getRole().getId());
-        role.setName(userRequest.getRole().getName());
-
-        user.setRole(role);
-        return user;
-    }
-
-    public User updateUserRequestToUser( int currentLoggedUserId , int id , UpdateUserRequest updateUserRequest) {
-
-        User user = new User();
-        user.setId(id);
-        user.setEmail(updateUserRequest.getEmail());
-        user.setUsername(updateUserRequest.getUsername());
-        user.setPassword(updateUserRequest.getPassword());
-
-        User manager = new User();
-        manager.setId(currentLoggedUserId);
-        user.setManager(manager);
-
-        Role role = new Role();
-        role.setId( updateUserRequest.getRole().getId() );
-        role.setName( updateUserRequest.getRole().getName() );
-
-        user.setRole( role );
-        return user;
-    }
-
     public UserResponse mapFromUserToUserResponse( User user ) {
         UserResponse response = new UserResponse();
-        response.setId( user.getId() );
         response.setUsername( user.getUsername() );
         response.setEmail( user.getEmail() );
         response.setRole( user.getRole().getName() );
-        response.setPassword( user.getPassword() );
-        response.setPrivileges( user.getRole().getPrivileges().stream().map( privilege -> privilege.getName().name() ).collect( Collectors.toList() ) );
         return response;
     }
 

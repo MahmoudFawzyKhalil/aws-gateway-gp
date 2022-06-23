@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.api.resource.user;
+package eg.gov.iti.jets.api.resource.student;
 
 import lombok.Data;
 
