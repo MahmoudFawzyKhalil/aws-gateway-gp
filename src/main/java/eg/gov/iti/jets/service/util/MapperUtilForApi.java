@@ -78,16 +78,21 @@ public class MapperUtilForApi {
     }
 
     public KeyPair getKeyPair( String keyPair , int id) {
-        KeyPair keyPair1 = awsGateway.createKeyPair( keyPair );
-        keyPair1.setCreator( getUser( id ) );
-        keyPairDao.save( keyPair1 );
-        return keyPair1;
+        KeyPair example = new KeyPair();
+        example.setKeyName( keyPair );
+        List<KeyPair> keyPairList = keyPairDao.findAllByExample( example );
+        if (keyPairList.isEmpty()){
+            KeyPair keyPair1 = awsGateway.createKeyPair( keyPair );
+            keyPair1.setCreator( getUser( id ) );
+            keyPairDao.save( keyPair1 );
+            return keyPair1;
+        }
+        return keyPairList.get( 0 );
     }
 
     public List<User> getUsers( List<Integer> studentId ) {
         List<User> listOfUser = new ArrayList<>();
-        for ( Integer id :
-                studentId ) {
+        for ( Integer id : studentId ) {
             listOfUser.add( getUser( id ) );
         }
         return listOfUser;
@@ -96,12 +101,12 @@ public class MapperUtilForApi {
 
     public TrainingProgram getTrainingProgramById(int id) {
         Optional<TrainingProgram> trainingProgram = trainingProgramDao.findById(id);
-        return trainingProgram.orElse( null );
+        return trainingProgram.orElseThrow( ()->new ResourceNotFoundException("Could not update TrainingProgram with that id  " + id ) );
     }
 
-    public Intake getIntackById(int id) {
+    public Intake getIntakeById(int id) {
         Optional<Intake> intake = intakeDao.findById(id);
-        return intake.orElse( null );
+        return intake.orElseThrow( ()->new ResourceNotFoundException("Intake with id " + id + ", is not found") );
     }
 
 

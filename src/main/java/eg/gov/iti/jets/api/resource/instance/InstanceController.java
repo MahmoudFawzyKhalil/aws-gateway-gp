@@ -7,80 +7,83 @@ import eg.gov.iti.jets.service.management.InstanceManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/instances")
 public class InstanceController {
 
-    @Autowired
-    MapperUtilForApi mapperUtilForApi;
     private final InstanceManagement instanceManagement;
+    private final InstanceMapper instanceMapper;
 
-    final Mapper mapper;
-
-    public InstanceController(InstanceManagement instanceManagement, Mapper mapper) {
+    public InstanceController( InstanceManagement instanceManagement, InstanceMapper instanceMapper ) {
         this.instanceManagement = instanceManagement;
-        this.mapper = mapper;
+        this.instanceMapper = instanceMapper;
     }
 
 
     // TODO test to see what gets returned, mahmoud will inform mariem of 200 OK being equivalent to boolean success and that exceptions should get thrown if response is error
     @PostMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_ASSIGN_INSTANCE.name())")
     ResponseEntity<?> createInstance(@RequestBody InstanceRequest instanceRequest, @AuthenticationPrincipal UserAdapter userDetails) {
         Integer creatorId = userDetails.getId();
-        for ( Integer studentId : instanceRequest.getStudentIds() ) {
-            Instance instance = mapper.mapFromInstanceReqToInstance(instanceRequest , studentId, creatorId);
+        for ( Integer id :
+                instanceRequest.getStudentIds() ) {
+            Instance instance = instanceMapper.mapFromInstanceReqToInstance(instanceRequest ,id, creatorId);
             instanceManagement.createInstance(instance);
         }
-        return ResponseEntity.ok(new SuccessResponse(true));
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("start/{instanceId}")
-    SuccessResponse startInstance(@PathVariable String instanceId) {
-        String s = instanceManagement.startInstance(instanceId);
-        System.out.println(s);
-        return new SuccessResponse(true);
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_VIEW_INSTANCE.name())")
+    ResponseEntity<?> startInstance(@PathVariable String instanceId) {
+        String instanceState = instanceManagement.startInstance(instanceId);
+        return new ResponseEntity<>( instanceState, HttpStatus.OK );
     }
 
 
     @GetMapping("stop/{instanceId}")
-    SuccessResponse stopInstance(@PathVariable String instanceId) {
-        String s = instanceManagement.stopInstance(instanceId);
-        return new SuccessResponse(true);
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_VIEW_INSTANCE.name())")
+    ResponseEntity<?> stopInstance(@PathVariable String instanceId) {
+        String instanceState = instanceManagement.stopInstance(instanceId);
+        return new ResponseEntity<>( instanceState, HttpStatus.OK );
     }
 
 
     @DeleteMapping("delete/{instanceId}")
-    SuccessResponse deleteInstance(@PathVariable String instanceId) {
-        String s = instanceManagement.deleteInstance(instanceId);
-        return new SuccessResponse(true);
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_ASSIGN_INSTANCE.name())")
+    ResponseEntity<?> deleteInstance(@PathVariable String instanceId) {
+        String instanceState = instanceManagement.deleteInstance(instanceId);
+        return new ResponseEntity<>( instanceState , HttpStatus.OK );
     }
 
     @GetMapping("{instanceId}")
-    InstanceResponse getDetails(@PathVariable String instanceId) {
-        System.out.println(instanceId);
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_VIEW_INSTANCE.name())")
+    ResponseEntity<?> getDetails(@PathVariable String instanceId) {
         Instance instance = instanceManagement.getInstanceDetails(instanceId);
-
-        return mapper.mapFromInstanceToInstanceResponse(instance);
+        InstanceResponse instanceResponse = instanceMapper.mapFromInstanceToInstanceResponse( instance );
+        return new ResponseEntity<>( instanceResponse ,  HttpStatus.OK );
     }
 
-//    @GetMapping
-//    InstanceObjectResponse getInstances(@AuthenticationPrincipal UserAdapter userDetails) {
-//        Integer id = userDetails.getId();
-//        List<InstanceResponse> list = new ArrayList<>();
-//        List<Instance> instancesByUserId = instanceManagement.getInstancesByUserId(id);
-//        for (Instance instance :
-//                instancesByUserId) {
-//            list.add(mapper.mapFromInstanceToInstanceResponse(instance));
-//        }
-//        return new InstanceObjectResponse(list);
-//    }
+
+    @GetMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_VIEW_INSTANCE.name())")
+    ResponseEntity<?> getInstances(@AuthenticationPrincipal UserAdapter userDetails) {
+        Integer userId = userDetails.getId();
+        var instances = instanceManagement.getInstancesByUserId(userId);
+        var instanceResponses = instances.stream().map( instanceMapper::mapFromInstanceToInstanceResponse ).collect( Collectors.toList() );
+        var instanceObjectResponse = new InstanceObjectResponse( instanceResponses );
+        return  new ResponseEntity<>( instanceObjectResponse , HttpStatus.OK );
+    }
 
 
 }

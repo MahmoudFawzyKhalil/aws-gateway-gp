@@ -1,56 +1,47 @@
 package eg.gov.iti.jets.api.resource.template;
 
-import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import eg.gov.iti.jets.service.management.TemplateManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/template")
+@RequestMapping( "/api/templates" )
 public class TemplateController {
 
-    final TemplateManagement templateManagement;
-    final Mapper mapper;
+    private final TemplateManagement templateManagement;
+    private final TemplateMapper templateMapper;
 
-    public TemplateController( TemplateManagement templateManagement, Mapper mapper ) {
+    public TemplateController( TemplateManagement templateManagement, TemplateMapper templateMapper ) {
         this.templateManagement = templateManagement;
-        this.mapper = mapper;
+        this.templateMapper = templateMapper;
     }
 
     @PostMapping
-    @Secured("MANAGE_TEMPLATE")
-    public SuccessResponse createTemplate(@RequestBody TemplateRequest templateRequest , @AuthenticationPrincipal UserAdapter userDetails ){
-        Integer id = userDetails.getId();
-        return new SuccessResponse(templateManagement.createTemplate(mapper.mapFromTemplateRequestToTemplateConfig(templateRequest , id)));
-    }
-
-    @DeleteMapping("/{id}")
-    @Secured("MANAGE_TEMPLATE")
-    public SuccessResponse deleteTemplate ( @PathVariable int id ){
-        return new SuccessResponse(templateManagement.deleteTemplate( id )) ;
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
+    public ResponseEntity<?> createTemplate( @RequestBody TemplateRequest templateRequest, @AuthenticationPrincipal UserAdapter userDetails ) {
+        Integer creatorId = userDetails.getId();
+        Boolean template = templateManagement.createTemplate( templateMapper.mapFromTemplateRequestToTemplateConfig( templateRequest, creatorId ) );
+        if ( template ) {
+            return new ResponseEntity<>(  HttpStatus.CREATED );
+        } else {
+            return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
+        }
     }
 
 
     @GetMapping
-//    @Secured("VIEW_TEMPLATES")
-    // TODO: 6/5/2022 get the Id
-    //  ?
-    public TemplateViewResponse getAllTemplates(@AuthenticationPrincipal UserAdapter userDetails){
-        List<TemplateResponse> templateResponses = new ArrayList<>();
-        List<TemplateConfiguration> templateConfiguration = templateManagement.getTemplateConfiguration();
-        for ( TemplateConfiguration template :
-                templateConfiguration ) {
-            TemplateResponse templateResponse = mapper.mapFromTemplateToTemplateResponse( template );
-            templateResponses.add( templateResponse );
-        }
-
-        return new TemplateViewResponse(templateResponses);
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_TEMPLATES.name())")
+    public ResponseEntity<?> getAllTemplates( @AuthenticationPrincipal UserAdapter userDetails ) {
+        List<TemplateResponse> templateConfiguration = templateManagement.getTemplateConfigurationById( userDetails.getId() );
+        TemplateViewResponse templateViewResponse = new TemplateViewResponse( templateConfiguration );
+        return new ResponseEntity<>( templateViewResponse, HttpStatus.OK );
     }
 
 

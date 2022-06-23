@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.api.filters;
+package eg.gov.iti.jets.service.dao.filters;
 
 import eg.gov.iti.jets.api.util.JwtUtil;
 import eg.gov.iti.jets.persistence.entity.User;

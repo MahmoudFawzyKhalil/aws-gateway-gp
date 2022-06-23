@@ -7,6 +7,7 @@ import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
+import eg.gov.iti.jets.service.exception.ResourceExistException;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.UserManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
@@ -42,12 +43,20 @@ public class UserManagementImpl implements UserManagement {
 
     @Override
     public User createUser(User user ) {
-         return userDao.save(user);
+        try {
+            return userDao.save(user);
+        }catch (Exception exception) {
+            throw new ResourceExistException("User with name [ " + user.getUsername() + " ] , already exists !");
+        }
     }
 
     @Override
     public User updateUser(User user) {
-        return userDao.update(user);
+        try{
+            return userDao.update(user);
+        }catch (Exception ex){
+            throw new ResourceNotFoundException("Could not update User with id [ " + user.getId() + " ] !!");
+        }
     }
 
     @Override
@@ -74,7 +83,8 @@ public class UserManagementImpl implements UserManagement {
 
     @Override
     public User getUserById(int id ) {
-        return userDao.findById(id).orElseThrow(() ->  new ResourceNotFoundException("resource with id not found"));
+        return userDao.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("User with id [ " + id + " ] , not found"));
     }
 
     @Override
