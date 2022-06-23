@@ -4,6 +4,8 @@ import eg.gov.iti.jets.persistence.dao.InstanceDao;
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.persistence.entity.aws.*;
+import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.InstanceManagement;
 import org.springframework.stereotype.Service;
@@ -39,14 +41,16 @@ public class InstanceManagementImpl implements InstanceManagement {
                 instanceToCreate.getName(),
                 instanceToCreate.getKeyPair(),
                 instanceToCreate.getTimeToLiveInMinutes() );
-
         System.out.println( createdInstance.getInstanceId() );
-
-        createdInstance.setInstanceUsers( instanceToCreate.getInstanceUsers() );
-        createdInstance.setCreator( instanceToCreate.getCreator() );
-        createdInstance.setTemplateConfiguration( instanceToCreate.getTemplateConfiguration() );
-        createdInstance.setCreationDateTime( LocalDateTime.now() );
-        return instanceDao.save( createdInstance );
+        try {
+            createdInstance.setInstanceUsers( instanceToCreate.getInstanceUsers() );
+            createdInstance.setCreator( instanceToCreate.getCreator() );
+            createdInstance.setTemplateConfiguration( instanceToCreate.getTemplateConfiguration() );
+            createdInstance.setCreationDateTime( LocalDateTime.now() );
+            return instanceDao.save( createdInstance );
+        }catch (Exception e) {
+            throw new ResourceExistException("Instance with id " + instanceToCreate.getInstanceId() + ", is already exist!");
+        }
     }
 
     private void setDefaultTimeToLive( Instance instanceToCreate ) {
@@ -62,7 +66,7 @@ public class InstanceManagementImpl implements InstanceManagement {
 
         var result = instanceDao.findAllByExample( example );
         if ( result.isEmpty() )
-            throw new IllegalArgumentException( String.format( "No instance exists with the id [%s]", instanceId ) );
+            throw new ResourceNotFoundException( String.format( "No instance exists with the id [%s]", instanceId ) );
 
         Instance instance = result.get( 0 );
         String instanceState = awsGateway.startInstance( instance );
@@ -78,7 +82,7 @@ public class InstanceManagementImpl implements InstanceManagement {
 
         var result = instanceDao.findAllByExample( example );
         if ( result.isEmpty() )
-            throw new IllegalArgumentException( String.format( "No instance exists with the id [%s]", instanceId ) );
+            throw new ResourceNotFoundException( String.format( "No instance exists with the id [%s]", instanceId ) );
 
         Instance instance = result.get( 0 );
         String instanceState = awsGateway.stopInstance( instance.getInstanceId() );
@@ -94,7 +98,7 @@ public class InstanceManagementImpl implements InstanceManagement {
 
         var result = instanceDao.findAllByExample( example );
         if ( result.isEmpty() )
-            throw new IllegalArgumentException( String.format( "No instance exists with the id [%s]", instanceId ) );
+            throw new ResourceNotFoundException( String.format( "No instance exists with the id [%s]", instanceId ) );
 
         Instance instance = result.get( 0 );
         String instanceState = awsGateway.terminateInstance( instance.getInstanceId() );
@@ -109,7 +113,7 @@ public class InstanceManagementImpl implements InstanceManagement {
         example.setInstanceId( instanceId );
         List<Instance> result = instanceDao.findAllByExample( example );
         if ( result.isEmpty() )
-            throw new IllegalArgumentException( String.format( "No instance exists with the id [%s]", instanceId ) );
+            throw new ResourceNotFoundException( String.format( "No instance exists with the id [%s]", instanceId ) );
         Instance instance = result.get( 0 );
         awsGateway.updateInstanceInfoFromAws( instance );
         return instance;

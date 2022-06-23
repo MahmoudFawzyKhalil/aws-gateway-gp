@@ -7,6 +7,7 @@ import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.persistence.entity.aws.Subnet;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
+import eg.gov.iti.jets.service.exception.ResourceExistException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.TemplateManagement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,10 +52,14 @@ public class TemplateManagementImpl implements TemplateManagement {
     @Transactional
     @Override
     public Boolean createTemplate( TemplateConfiguration templateConfiguration ) {
-        List<SecurityGroup> securityGroups = saveSecurityGroup( templateConfiguration.getSecurityGroups() );
-        templateConfiguration.setSecurityGroups( securityGroups );
-        TemplateConfiguration templateConfigurationAfterSaving = templateConfigurationDao.save( templateConfiguration );
-        return templateConfigurationAfterSaving != null;
+        try {
+            List<SecurityGroup> securityGroups = saveSecurityGroup( templateConfiguration.getSecurityGroups() );
+            templateConfiguration.setSecurityGroups( securityGroups );
+            TemplateConfiguration templateConfigurationAfterSaving = templateConfigurationDao.save( templateConfiguration );
+            return templateConfigurationAfterSaving != null;
+        }catch (Exception e) {
+            throw new ResourceExistException("Could not create template!");
+        }
     }
 
     @Transactional
