@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.api.resource.authentication;
 
 import eg.gov.iti.jets.api.util.JwtUtil;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.UserManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
 import org.springframework.http.HttpStatus;
@@ -44,8 +45,8 @@ public class AuthenticationController {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password));
-        }catch (BadCredentialsException e){
-            throw new RuntimeException("Incorrect username or password", e);
+        }catch (Exception e){
+            throw new ResourceNotFoundException("Incorrect username or password", e);
         }
         UserAdapter userDetails = userService.loadUserByUsername(username);
         return jwtUtil.generateToken(userDetails);
