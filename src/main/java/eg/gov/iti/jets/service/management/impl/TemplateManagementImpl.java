@@ -56,7 +56,7 @@ public class TemplateManagementImpl implements TemplateManagement {
                 case "INSTRUCTOR":
                     return getTemplateResponses( id );
                 case "TRACK_SUPERVISOR":
-                    return getTemplateResponseList( user.get() );
+                    return getTemplateResponseList( id );
                 default:
                     throw new IllegalStateException( "Unexpected value: " + role );
             }
@@ -70,8 +70,8 @@ public class TemplateManagementImpl implements TemplateManagement {
         return allByInstructor;
     }
 
-    private List<TemplateResponse> getTemplateResponseList( User user ) {
-        List<TemplateResponse> allTemplateCreatedBySuperVisor = userDao.findAllTemplateCreatedBySuperVisor( user, TemplateResponse.class );
+    private List<TemplateResponse> getTemplateResponseList( int id ) {
+        List<TemplateResponse> allTemplateCreatedBySuperVisor = templateConfigurationDao.findAllTemplateByCreatorId( id, TemplateResponse.class );
         return allTemplateCreatedBySuperVisor;
     }
 

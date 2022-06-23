@@ -85,6 +85,6 @@ public class TemplateConfigurationDaoImpl implements TemplateConfigurationDao {
 
     @Override
     public <T> List<T> findAllTemplateByCreatorId(int id, Class<T> projection) {
-        return templateConfigurationRepo.findAllByInstructors_id(id,projection);
+        return templateConfigurationRepo.findAllByCreator_id(id,projection);
     }
 }
