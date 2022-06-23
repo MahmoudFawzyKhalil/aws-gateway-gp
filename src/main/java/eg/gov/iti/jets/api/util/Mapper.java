@@ -301,7 +301,7 @@ public class Mapper {
     }
 
     public List<User> mapFromStudentListRequestToStudentList(StudentListRequest students){
-        User student = new User();
+
         List<User> studentList = new ArrayList<>();
         List<Track> tracks =new ArrayList<>();
         List<StudentRequest> studentsRequests = students.getStudents();
@@ -309,13 +309,14 @@ public class Mapper {
         Role role = mapperUtilForApi.getRole("STUDENT");
 
         for (StudentRequest studentRequest:studentsRequests) {
+            User student = new User();
             student.setPassword("student");
             student.setUsername(studentRequest.getUsername());
             student.setEmail(studentRequest.getEmail());
             student.setRole(role);
             student.setTracks(tracks);
+            studentList.add(student);
         }
-
         return studentList;
     }
 
