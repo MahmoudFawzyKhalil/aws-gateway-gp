@@ -16,4 +16,6 @@ interface RoleRepo extends JpaRepository<Role,Integer> {
     <C> Page<C> findBy(PageRequest pageRequest, Class<C> projection);
 
     <C> List<C> findAllBy(Example<C> example, Class<C> projection);
+
+    Optional<Role> findRoleByName(String name);
 }
