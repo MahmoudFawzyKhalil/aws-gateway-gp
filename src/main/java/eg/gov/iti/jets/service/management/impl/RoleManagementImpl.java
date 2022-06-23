@@ -41,10 +41,14 @@ public class RoleManagementImpl implements RoleManagement {
 
     @Override
     public Role updateRole(Role role) {
+        roleDao.findById(role.getId()).orElseThrow(
+                () -> new ResourceNotFoundException("Role with id " + role.getId() + ", is not found!")
+        );
         try {
             return roleDao.update(role);
         }catch (Exception e) {
-            throw new ResourceNotFoundException("Could not update role with id " + role.getId());
+            e.printStackTrace();
+            throw new ResourceExistException("Could not update role with id " + role.getId());
         }
     }
 }
