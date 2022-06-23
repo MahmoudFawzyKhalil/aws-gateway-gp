@@ -25,7 +25,7 @@ public class StudentController {
     private final StudentManagementImpl studentManagement;
     private final Mapper mapper;
 
-    public StudentController(StudentManagement studentManagement , Mapper mapper){
+    public StudentController(StudentManagementImpl studentManagement , Mapper mapper){
         this.studentManagement = studentManagement;
         this.mapper = mapper;
     }
@@ -40,6 +40,71 @@ public class StudentController {
         }
         return new ResponseEntity<>( studentResponseList , HttpStatus.OK );
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @PostMapping
+    public ResponseEntity addStudent(@RequestBody StudentListRequest studentListRequest){
+       // studentManagement.addStudent();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+
+
 
 
 }

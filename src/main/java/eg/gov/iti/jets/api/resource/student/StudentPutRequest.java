@@ -21,5 +21,4 @@ public class StudentPutRequest {
     private String email;
     @NotBlank(message = "Password should not be empty or null")
     private String password;
-    private RoleType role;
 }

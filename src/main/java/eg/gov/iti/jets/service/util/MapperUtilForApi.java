@@ -141,7 +141,7 @@ public class MapperUtilForApi {
 
     }
 //    public int getRoleId(String roleName) {
-//      return roleDao.findByName
+//      return userDao.
 //
 //    }
 }
