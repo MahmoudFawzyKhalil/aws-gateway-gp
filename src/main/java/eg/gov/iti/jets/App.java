@@ -40,6 +40,8 @@ public class App {
                 Privilege privilege10 = new Privilege(null, PrivilegeName.MANAGE_STUDENTS, null);
                 Privilege privilege11 = new Privilege(null, PrivilegeName.START_STOP_VIEW_INSTANCE, null);
                 Privilege privilege12 = new Privilege(null, PrivilegeName.VIEW_TEMPLATES, null);
+                Privilege privilege13 = new Privilege(null, PrivilegeName.VIEW_INSTANCE_LOGS, null);
+
                 privilege = privilegeDao.save(privilege);
                 privilege2 = privilegeDao.save(privilege2);
                 privilege3 = privilegeDao.save(privilege3);
@@ -52,16 +54,17 @@ public class App {
                 privilege10 = privilegeDao.save(privilege10);
                 privilege11 = privilegeDao.save(privilege11);
                 privilege12 = privilegeDao.save(privilege12);
+                privilege13 = privilegeDao.save(privilege13);
 
                 Role studentRole = roleDao.save(new Role(null, "STUDENT", List.of(privilege11)));
-                Role supervisorRole = roleDao.save(new Role(null, "TRACK_SUPERVISOR", List.of(privilege, privilege2 , privilege9, privilege10, privilege11, privilege12)));
+                Role supervisorRole = roleDao.save(new Role(null, "TRACK_SUPERVISOR", List.of(privilege, privilege2, privilege9, privilege10, privilege11, privilege12,privilege13)));
                 Role instructorRole = roleDao.save(new Role(null, "INSTRUCTOR", List.of(privilege, privilege12, privilege11)));
                 Role trainingMangerRole = roleDao.save(new Role(null, "TRAINING_MANAGER", List.of(privilege5, privilege6, privilege7, privilege8)));
-                Role SuperAdmin = roleDao.save(new Role(null, "SUPER_ADMIN", List.of(privilege3, privilege4)));
+                Role SuperAdmin = roleDao.save(new Role(null, "SUPER_ADMIN", List.of(privilege3, privilege4, privilege13)));
 
 
-                DummyData.populateStaticDataForSmartBranch(instructorRole,trainingMangerRole,supervisorRole,studentRole, SuperAdmin, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
-                DummyData.populateStaticDataForIsmailiaBranch(instructorRole,trainingMangerRole,supervisorRole,studentRole, SuperAdmin, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
+                DummyData.populateStaticDataForSmartBranch(instructorRole, trainingMangerRole, supervisorRole, studentRole, SuperAdmin, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
+                DummyData.populateStaticDataForIsmailiaBranch(instructorRole, trainingMangerRole, supervisorRole, studentRole, SuperAdmin, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
 
             }
             templateConfigurationDao.findAllByInstructor("supervisor", TemplateConfiguration.class).forEach(t -> System.out.println(t.getAmiId()));
@@ -75,23 +78,23 @@ public class App {
             instanceDao.findUserGrantedInstances(1).forEach(i -> System.out.println(i.getInstanceId()));
             instanceDao.findFollowersUsersGrantedInstances(1).forEach(i -> System.out.println(i.getInstanceId()));
 
-            List<Branch> branches = branchDao.findAllByExample(new Branch(null,BranchStatus.ACTIVE,"smart",null,null,null));
-                            branches.forEach(b-> System.out.println(b.getName()));
-                            System.out.println("Finished Inserting");
-                            System.out.println("all users students in java track");
-                            Optional<Track> javaTrack = trackDao.findById(1);
-                            Optional<Role> studentRole = roleDao.findById(3);
-                            List<User> users = userDao.findAllUsersByTrackAndRole(javaTrack.get(), studentRole.get());
-                            users.forEach(b-> System.out.println(b.getEmail()));
-                            System.out.println("all users in track");
-                            List<User> allUsers = userDao.findAllUsersByTrack(javaTrack.get());
-                            allUsers.forEach(b-> System.out.println(b.getEmail()));
-                            studentRole = roleDao.findById(2);
-                            users = userDao.findAllUsersByRole( studentRole.get());
-                            users.forEach(b-> System.out.println(b.getEmail()));
-                            Optional<User> userInstructor =  userDao.findById(5);
-                            users = userDao.findAllFollowers(userInstructor.get());
-                            users.forEach(b-> System.out.println(b.getEmail()));
+            List<Branch> branches = branchDao.findAllByExample(new Branch(null, BranchStatus.ACTIVE, "smart", null, null, null));
+            branches.forEach(b -> System.out.println(b.getName()));
+            System.out.println("Finished Inserting");
+            System.out.println("all users students in java track");
+            Optional<Track> javaTrack = trackDao.findById(1);
+            Optional<Role> studentRole = roleDao.findById(3);
+            List<User> users = userDao.findAllUsersByTrackAndRole(javaTrack.get(), studentRole.get());
+            users.forEach(b -> System.out.println(b.getEmail()));
+            System.out.println("all users in track");
+            List<User> allUsers = userDao.findAllUsersByTrack(javaTrack.get());
+            allUsers.forEach(b -> System.out.println(b.getEmail()));
+            studentRole = roleDao.findById(2);
+            users = userDao.findAllUsersByRole(studentRole.get());
+            users.forEach(b -> System.out.println(b.getEmail()));
+            Optional<User> userInstructor = userDao.findById(5);
+            users = userDao.findAllFollowers(userInstructor.get());
+            users.forEach(b -> System.out.println(b.getEmail()));
         };
     }
 
