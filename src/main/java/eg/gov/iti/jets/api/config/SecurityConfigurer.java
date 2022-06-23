@@ -1,7 +1,7 @@
 package eg.gov.iti.jets.api.config;
 
+import eg.gov.iti.jets.api.filters.JwtFilter;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
-import eg.gov.iti.jets.service.dao.filters.JwtFilter;
 import eg.gov.iti.jets.service.management.UserManagement;
 import eg.gov.iti.jets.service.management.impl.UserManagementImpl;
 import org.springframework.beans.factory.annotation.Autowired;
