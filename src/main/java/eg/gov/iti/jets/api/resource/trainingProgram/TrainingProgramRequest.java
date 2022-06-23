@@ -19,5 +19,6 @@ import java.util.List;
 public class TrainingProgramRequest {
     @NotBlank(message = "must not be empty or null")
     private String name;
+    @NotBlank(message = "must not be empty or null")
     private Integer branchId;
 }
