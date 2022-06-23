@@ -40,7 +40,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "track_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "track_id"}))*/
     @ManyToMany(mappedBy = "users" )
-
     private List<Track> tracks;
 
 

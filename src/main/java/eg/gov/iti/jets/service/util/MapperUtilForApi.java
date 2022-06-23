@@ -40,6 +40,9 @@ public class MapperUtilForApi {
     TrackDao trackDao;
 
     @Autowired
+    RoleDao roleDao;
+
+    @Autowired
     TemplateConfigurationDao templateConfigurationDao;
 
     public List<SecurityGroup> getSecurityGroups(List<String> ids){
@@ -131,14 +134,14 @@ public class MapperUtilForApi {
     }
 
 
-//    public Track getTrackById(int id) {
-//        Optional<Track> track = trackDao.findById(id);
-//        return track.orElse( null );
-//    }
 
     public Track getTrackById(int id) {
         Optional<Track> track = trackDao.findById(id);
-        return track.orElse( null );
+        return track.orElseThrow( ()->new ResourceNotFoundException("Track with id " + id + ", is not found") );
 
     }
+//    public int getRoleId(String roleName) {
+//      return roleDao.findByName
+//
+//    }
 }

@@ -5,6 +5,7 @@ import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakePutRequest;
 import eg.gov.iti.jets.api.resource.role.*;
+import eg.gov.iti.jets.api.resource.student.StudentRequest;
 import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
@@ -286,5 +287,22 @@ public class Mapper {
             branch.setStatus( BranchStatus.DE_ACTIVE );
         }
         return branch;
+    }
+
+    public User mapFromStudentRequestToStudent(StudentRequest studentRequest){
+        User user = new User();
+        Role role = new Role();
+        Track track = new Track();
+        List tracks = new ArrayList<>();
+       // role.setId();
+        role.setName("STUDENT");
+        track=mapperUtilForApi.getTrackById(studentRequest.getTrackId());
+        tracks.add(track);
+        user.setUsername(studentRequest.getUsername());
+        user.setRole(role);
+        user.setEmail(studentRequest.getEmail());
+        user.setPassword("student");
+        user.setTracks(tracks);
+        return user;
     }
 }
