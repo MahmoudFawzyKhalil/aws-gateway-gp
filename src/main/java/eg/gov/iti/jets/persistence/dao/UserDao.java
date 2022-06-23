@@ -3,6 +3,7 @@ package eg.gov.iti.jets.persistence.dao;
 import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
+import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -31,14 +32,15 @@ public interface UserDao extends GenericCrudDao<User, Integer> {
 
     List<User>getUserByBranchIdAndRoleName(int branchId,String roleName);
 
-
     List<User>getUserByIntakeIdAndRoleName(int intakeId,String roleName);
 
     List<User>getUserByTrainingIdAndRoleName(int trainingProgramId,String roleName);
 
     Optional<User>getBranchManger(int branchId);
 
-
     <C> List<C> getAllByTrackAndRole(int trackId, String roleName, Class<C> projection);
+
+    <T> List<T> findAllTemplateCreatedBySuperVisor( User user, Class<T> projection);
+
 
 }

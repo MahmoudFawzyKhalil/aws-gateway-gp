@@ -117,19 +117,19 @@ class DummyData {
                                                         TemplateConfigurationDao templateConfigurationDao) {
 
 
-        User smartBranchMangerUser = userDao.save(new User(null, "smartBranchManger", "smartBranchManger", "smartBranchManger", branchMangerRole, null, null, null, null, null));
-        User trainingMangerUser = userDao.save(new User(null, "trainingManger", "trainingManger", "trainingManger", trainingMangerRole, null, null, null, smartBranchMangerUser, null));
-        User superVisorUser = userDao.save(new User(null, "supervisor", "supervisor", "supervisor", supervisorRole, null, null, null, trainingMangerUser, null));
+        User smartBranchMangerUser = userDao.save(new User(null, "smartBranchManger", "smartBranchManger", "smartBranchManger", branchMangerRole, null, null, null, null, null,null));
+        User trainingMangerUser = userDao.save(new User(null, "trainingManger", "trainingManger", "trainingManger", trainingMangerRole, null, null, null, smartBranchMangerUser, null,null));
+        User superVisorUser = userDao.save(new User(null, "supervisor", "supervisor", "supervisor", supervisorRole, null, null, null, trainingMangerUser, null,null));
 
-        User instructorUserForJava = userDao.save(new User(null, "instructorJava", "instructorJava", "instructorJava", instructorRole, null, null, null, superVisorUser, null));
-        User instructorUserForPHP = userDao.save(new User(null, "instructorPHP", "instructorPHP", "instructorPHP", instructorRole, null, null, null, superVisorUser, null));
+        User instructorUserForJava = userDao.save(new User(null, "instructorJava", "instructorJava", "instructorJava", instructorRole, null, null, null, superVisorUser, null,null));
+        User instructorUserForPHP = userDao.save(new User(null, "instructorPHP", "instructorPHP", "instructorPHP", instructorRole, null, null, null, superVisorUser, null,null));
 
-        User studentUser = userDao.save(new User(null, "student", "student", "student", studentRole, null, null, null, instructorUserForJava, null));
-        User studentUser1 = userDao.save(new User(null, "student1", "student1", "student1", studentRole, null, null, null, instructorUserForJava, null));
-        User studentUser2 = userDao.save(new User(null, "student2", "student2", "student2", studentRole, null, null, null, instructorUserForJava, null));
-        User studentUser3 = userDao.save(new User(null, "student3", "student3", "student3", studentRole, null, null, null, instructorUserForPHP, null));
-        User studentUser4 = userDao.save(new User(null, "student4", "student4", "student4", studentRole, null, null, null, instructorUserForPHP, null));
-        User studentUser5 = userDao.save(new User(null, "student5", "student5", "student5", studentRole, null, null, null, instructorUserForPHP, null));
+        User studentUser = userDao.save(new User(null, "student", "student", "student", studentRole, null, null, null, instructorUserForJava, null,null));
+        User studentUser1 = userDao.save(new User(null, "student1", "student1", "student1", studentRole, null, null, null, instructorUserForJava, null,null));
+        User studentUser2 = userDao.save(new User(null, "student2", "student2", "student2", studentRole, null, null, null, instructorUserForJava, null,null));
+        User studentUser3 = userDao.save(new User(null, "student3", "student3", "student3", studentRole, null, null, null, instructorUserForPHP, null,null));
+        User studentUser4 = userDao.save(new User(null, "student4", "student4", "student4", studentRole, null, null, null, instructorUserForPHP, null,null));
+        User studentUser5 = userDao.save(new User(null, "student5", "student5", "student5", studentRole, null, null, null, instructorUserForPHP, null,null));
 
 
         Branch smartBranch = new Branch(null, BranchStatus.ACTIVE, "Smart", "October", smartBranchMangerUser, null);
@@ -189,21 +189,21 @@ class DummyData {
                                                            AmiDao amiDao,
                                                            TemplateConfigurationDao templateConfigurationDao) {
 
-        User IsmailiaBranchMangerUser = userDao.save(new User(null, "ismailiaBranchMangerUser", "IsmailiaBranchMangerUser@iti.com", "ismailiaBranchMangerUser", branchMangerRole, null, null, null, null, null));
+        User IsmailiaBranchMangerUser = userDao.save(new User(null, "ismailiaBranchMangerUser", "IsmailiaBranchMangerUser@iti.com", "ismailiaBranchMangerUser", branchMangerRole, null, null, null, null, null,null));
 
-        User trainingMangerUser = userDao.save(new User(null, "trainingManger1", "trainingManger1", "trainingManger1", trainingMangerRole, null, null, null, IsmailiaBranchMangerUser, null));
-        User superVisorUser = userDao.save(new User(null, "supervisor1", "supervisor1", "supervisor1", supervisorRole, null, null, null, trainingMangerUser, null));
+        User trainingMangerUser = userDao.save(new User(null, "trainingManger1", "trainingManger1", "trainingManger1", trainingMangerRole, null, null, null, IsmailiaBranchMangerUser, null,null));
+        User superVisorUser = userDao.save(new User(null, "supervisor1", "supervisor1", "supervisor1", supervisorRole, null, null, null, trainingMangerUser, null,null));
 
-        User instructorUserForQA = userDao.save(new User(null, "instructorQA", "instructorQA", "instructorQA", instructorRole, null, null, null, superVisorUser, null));
-        User instructorUserForTesting = userDao.save(new User(null, "instructorTesting ", "instructorTesting ", "instructorTesting ", instructorRole, null, null, null, superVisorUser, null));
-        User instructorUserForMobileApplication = userDao.save(new User(null, "instructorMobileApplication ", "instructorMobileApplication ", "instructorMobileApplication ", instructorRole, null, null, null, superVisorUser, null));
+        User instructorUserForQA = userDao.save(new User(null, "instructorQA", "instructorQA", "instructorQA", instructorRole, null, null, null, superVisorUser, null,null));
+        User instructorUserForTesting = userDao.save(new User(null, "instructorTesting ", "instructorTesting ", "instructorTesting ", instructorRole, null, null, null, superVisorUser, null,null));
+        User instructorUserForMobileApplication = userDao.save(new User(null, "instructorMobileApplication ", "instructorMobileApplication ", "instructorMobileApplication ", instructorRole, null, null, null, superVisorUser, null,null));
 
-        User studentUser6 = userDao.save(new User(null, "student6", "student6", "student6", studentRole, null, null, null, instructorUserForQA, null));
-        User studentUser7 = userDao.save(new User(null, "student7", "student7", "student7", studentRole, null, null, null, instructorUserForQA, null));
-        User studentUser8 = userDao.save(new User(null, "student8", "student8", "student8", studentRole, null, null, null, instructorUserForTesting, null));
-        User studentUser9 = userDao.save(new User(null, "student9", "student9", "student9", studentRole, null, null, null, instructorUserForTesting, null));
-        User studentUser10 = userDao.save(new User(null, "student10", "student10", "student10", studentRole, null, null, null, instructorUserForMobileApplication, null));
-        User studentUser11 = userDao.save(new User(null, "student11", "student11", "student11", studentRole, null, null, null, instructorUserForMobileApplication, null));
+        User studentUser6 = userDao.save(new User(null, "student6", "student6", "student6", studentRole, null, null, null, instructorUserForQA, null,null));
+        User studentUser7 = userDao.save(new User(null, "student7", "student7", "student7", studentRole, null, null, null, instructorUserForQA, null,null));
+        User studentUser8 = userDao.save(new User(null, "student8", "student8", "student8", studentRole, null, null, null, instructorUserForTesting, null,null));
+        User studentUser9 = userDao.save(new User(null, "student9", "student9", "student9", studentRole, null, null, null, instructorUserForTesting, null,null));
+        User studentUser10 = userDao.save(new User(null, "student10", "student10", "student10", studentRole, null, null, null, instructorUserForMobileApplication, null,null));
+        User studentUser11 = userDao.save(new User(null, "student11", "student11", "student11", studentRole, null, null, null, instructorUserForMobileApplication, null,null));
 
 
         Branch ismailiaBranch = new Branch(null, BranchStatus.ACTIVE, "Ismailia", "Ismailia", IsmailiaBranchMangerUser, null);
@@ -243,15 +243,15 @@ class DummyData {
                                                           AmiDao amiDao,
                                                           TemplateConfigurationDao templateConfigurationDao) {
 
-        User menofiaBranchMangerUser = userDao.save(new User(null, "menofiaBranchMangerUser", "menofiaBranchMangerUser@iti.com", "menofiaBranchMangerUser", branchMangerRole, null, null, null, null, null));
+        User menofiaBranchMangerUser = userDao.save(new User(null, "menofiaBranchMangerUser", "menofiaBranchMangerUser@iti.com", "menofiaBranchMangerUser", branchMangerRole, null, null, null, null, null,null));
 
 
-        User studentUser12 = userDao.save(new User(null, "student12", "student12", "student12", studentRole, null, null, null, null, null));
-        User studentUser13 = userDao.save(new User(null, "student13", "student13", "student13", studentRole, null, null, null, null, null));
-        User studentUser14 = userDao.save(new User(null, "student14", "student14", "student14", studentRole, null, null, null, null, null));
-        User studentUser15 = userDao.save(new User(null, "student15", "student15", "student15", studentRole, null, null, null, null, null));
-        User studentUser16 = userDao.save(new User(null, "student16", "student16", "student16", studentRole, null, null, null, null, null));
-        User studentUser17 = userDao.save(new User(null, "student17", "student17", "student17", studentRole, null, null, null, null, null));
+        User studentUser12 = userDao.save(new User(null, "student12", "student12", "student12", studentRole, null, null, null, null, null,null));
+        User studentUser13 = userDao.save(new User(null, "student13", "student13", "student13", studentRole, null, null, null, null, null,null));
+        User studentUser14 = userDao.save(new User(null, "student14", "student14", "student14", studentRole, null, null, null, null, null,null));
+        User studentUser15 = userDao.save(new User(null, "student15", "student15", "student15", studentRole, null, null, null, null, null,null));
+        User studentUser16 = userDao.save(new User(null, "student16", "student16", "student16", studentRole, null, null, null, null, null,null));
+        User studentUser17 = userDao.save(new User(null, "student17", "student17", "student17", studentRole, null, null, null, null, null,null));
 
 
         Branch menofiaBranch = new Branch(null, BranchStatus.ACTIVE, "menofia", "menofia", menofiaBranchMangerUser, null);

@@ -3,6 +3,7 @@ package eg.gov.iti.jets.persistence.dao.impls;
 import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
+import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -51,4 +52,6 @@ interface UserRepo extends JpaRepository<User, Integer> {
     <C> List<C> findAllByTracks_idAndRole_NameLike(int trackId, String roleName, Class<C> projection);
 
 
+
+    <C> List<C>  findAllByTemplateConfigurations( User user, Class<C> projection);
 }
