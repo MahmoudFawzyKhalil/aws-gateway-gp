@@ -247,6 +247,7 @@ class AwsGatewayImpl implements AwsGateway {
         return instance;
     }
 
+    // need to handle exception here
     @Override
     public Instance createInstance(TemplateConfiguration template, String instanceName, KeyPair keyPair ,Long timeToLiveInMinutes ) {
         Tag tag = Tag.builder()
