@@ -10,8 +10,10 @@ import eg.gov.iti.jets.service.management.IntakeManagement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -50,7 +52,7 @@ public class IntakeController {
 
     @PostMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INTAKES.name())")
-    public ResponseEntity<IntakeResponse> createIntake( @RequestBody IntakeRequest intakeRequest){
+    public ResponseEntity<IntakeResponse> createIntake( @Valid @RequestBody IntakeRequest intakeRequest){
         Intake intake = intakeManagement.createIntake( mapper.mapFromIntakeRequestToIntake( intakeRequest )  );
         return new ResponseEntity<>(mapper.mapFromIntakeToIntakeResponse(intake),HttpStatus.CREATED);
     }
@@ -58,7 +60,7 @@ public class IntakeController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INTAKES.name())")
-    public ResponseEntity<IntakeResponse> updateIntake (@PathVariable int id , @RequestBody IntakePutRequest intakeRequest){
+    public ResponseEntity<IntakeResponse> updateIntake (@PathVariable int id , @Valid @RequestBody IntakePutRequest intakeRequest){
         Intake intake = intakeManagement.updateIntake( mapper.mapFromIntakePutRequestToIntake( id, intakeRequest ) );
         return new ResponseEntity<>(mapper.mapFromIntakeToIntakeResponse( intake ),HttpStatus.OK);
     }
