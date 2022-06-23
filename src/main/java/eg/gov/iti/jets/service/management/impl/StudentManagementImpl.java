@@ -1,18 +1,18 @@
 package eg.gov.iti.jets.service.management.impl;
 
-import eg.gov.iti.jets.persistence.dao.TrackDao;
 import eg.gov.iti.jets.persistence.dao.UserDao;
-import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.StudentManagement;
-import eg.gov.iti.jets.service.management.UserManagement;
-import eg.gov.iti.jets.service.model.UserAdapter;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+@Service
+@RequiredArgsConstructor
 
 public class StudentManagementImpl implements UserDetailsService, StudentManagement {
 
@@ -26,6 +26,6 @@ public class StudentManagementImpl implements UserDetailsService, StudentManagem
 
     @Override
     public List<User> getAllStudent() {
-        return userDao.findAll();
+        return userDao.findUserByRollName("Student");
     }
 }
