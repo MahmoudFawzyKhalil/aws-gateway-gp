@@ -11,8 +11,10 @@ import eg.gov.iti.jets.service.management.TrainingProgramManagement;
 import eg.gov.iti.jets.service.management.impl.TrainingProgramManagementImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -31,7 +33,8 @@ public class TrainingProgramController {
     }
 
     @PostMapping
-    public ResponseEntity<?> createTrainingProgram( @RequestBody TrainingProgramRequest trainingProgramRequest ) {
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TRAINING_PROGRAMS.name())")
+    public ResponseEntity<?> createTrainingProgram(@Valid @RequestBody TrainingProgramRequest trainingProgramRequest ) {
 
         TrainingProgram trainingProgram = mapper.mapFromTrainingProgramRequestToTrainingProgram( trainingProgramRequest );
         Boolean program = trainingProgramManagement.createTrainingProgram( trainingProgram );
@@ -43,7 +46,8 @@ public class TrainingProgramController {
     }
 
     @PutMapping( "/{id}" )
-    public ResponseEntity<?> updateTrainingProgram( @RequestBody TrainingProgramPutRequest trainingProgramPutRequest, @PathVariable int id ) {
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TRAINING_PROGRAMS.name())")
+    public ResponseEntity<?> updateTrainingProgram(@Valid @RequestBody TrainingProgramPutRequest trainingProgramPutRequest, @PathVariable int id ) {
         TrainingProgram trainingProgram = trainingProgramManagement.updateTrainingProgram( mapper.mapFromTrainingProgramPutRequestToTrainingProgram( trainingProgramPutRequest, id ) );
         TrainingProgramResponse trainingProgramResponse = mapper.mapFromTrainingProgramToTrainingProgramResponse( trainingProgram );
         return new ResponseEntity<>( trainingProgramResponse, HttpStatus.OK );
@@ -51,6 +55,7 @@ public class TrainingProgramController {
 
 //    @
     @GetMapping( "/{id}" )
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TRAINING_PROGRAMS.name())")
     public ResponseEntity<?> getTrainingProgramById( @PathVariable int id ) {
         TrainingProgram trainingProgram = trainingProgramManagement.getTrainingProgramById( id );
         TrainingProgramResponse trainingProgramResponse = mapper.mapFromTrainingProgramToTrainingProgramResponse( trainingProgram );
@@ -58,6 +63,7 @@ public class TrainingProgramController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TRAINING_PROGRAMS.name())")
     public ResponseEntity<?> getTrainingPrograms() {
         GetTrainingProgramsResponse getTrainingProgramsResponse = new GetTrainingProgramsResponse();
         getTrainingProgramsResponse.setTrainingPrograms( trainingProgramManagement.getAllTrainingPrograms()
@@ -68,6 +74,7 @@ public class TrainingProgramController {
     }
 
     @GetMapping( "{trainingProgramId}/intakes" )
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TRAINING_PROGRAMS.name())")
     public ResponseEntity<?> getIntakesByTrainingProgramId( @PathVariable int trainingProgramId ) {
         List<Intake> intakes = trainingProgramManagement.getIntakeByProgramId( trainingProgramId );
         List<IntakeResponse> intakeResponse = new ArrayList<>();
