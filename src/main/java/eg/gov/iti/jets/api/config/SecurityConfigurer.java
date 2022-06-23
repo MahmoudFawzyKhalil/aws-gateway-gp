@@ -29,17 +29,17 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
-    private final UserManagement userService;
+    private final CustomUserDetailsManager customUserDetailsManager;
     private final JwtFilter jwtFilter;
 
-    public SecurityConfigurer( UserManagement userService, JwtFilter jwtFilter ) {
-        this.userService = userService;
+    public SecurityConfigurer( CustomUserDetailsManager customUserDetailsManager, JwtFilter jwtFilter ) {
+        this.customUserDetailsManager = customUserDetailsManager;
         this.jwtFilter = jwtFilter;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-       auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+       auth.userDetailsService(customUserDetailsManager).passwordEncoder(passwordEncoder());
     }
 
     @Override

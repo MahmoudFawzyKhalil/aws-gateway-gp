@@ -15,4 +15,5 @@ public enum PrivilegeName {
     MANAGE_BRANCHES,
     MANAGE_ROLES,
     MANAGE_PRIVILEGES;
+    VIEW_INSTANCE_LOGS;
 }

@@ -16,18 +16,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/")
 public class AuthenticationController {
     private final UserManagement userService;
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
 
-    public AuthenticationController( UserManagement userService, AuthenticationManager authenticationManager, JwtUtil jwtUtil ) {
+    public AuthenticationController( UserManagement userService) {
         this.userService = userService;
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest authReq) {
-        String jwt = authenticate(authReq.getUsername(), authReq.getPassword());
+        String jwt = userService.authenticate(authReq.getUsername(), authReq.getPassword()); //todo userService injection to authenticate
+//        String jwt = authenticate(authReq.getUsername(), authReq.getPassword());
         return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.ACCEPTED);
     }
 

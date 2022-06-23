@@ -1,6 +1,8 @@
 package eg.gov.iti.jets.service.management.impl;
 
 
+import eg.gov.iti.jets.api.config.CustomUserDetailsManager;
+import eg.gov.iti.jets.api.util.JwtUtil;
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.Track;
@@ -10,7 +12,12 @@ import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.UserManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -21,52 +28,18 @@ import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
-public class UserManagementImpl implements UserDetailsService, UserManagement {
+public class UserManagementImpl implements UserManagement {
+
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtUtil jwtUtil;
+    @Autowired
+    private CustomUserDetailsManager customUserDetailsManager;
+
     private final UserDao userDao;
 
-    @Transactional //(readOnly = true)
-    @Override
-    public UserAdapter loadUserByUsername(String username) throws UsernameNotFoundException {
-        /**
-         * todo
-         * first talk with repo to load user
-         * user userAdapter to convert user entity to user details
-         */
-        User user = new User();
-        user.setUsername(username);
-        List<User> resultList = userDao.findAllByExample(user);
-        user = resultList == null ? null : resultList.get(0);
 
-//        switch (username){
-//            case "hesham":
-//                User user = new User();
-//                user.setId(1);
-//                user.setUsername("hesham");
-//                user.setPassword("1234");
-////                Privilege privilege = new Privilege();
-////                privilege.setName("WRITE");
-////                Role role = new Role();
-////                role.setPrivileges(List.of(privilege));
-////                user.setRole(role);
-//                return new UserAdapter(user, AuthorityUtils.createAuthorityList("WRITE"));
-//            default:
-//                User user1 = new User();
-//                user1.setId(2);
-//                user1.setUsername("ashrf");
-//                user1.setPassword("1234");
-////                Privilege privilege1 = new Privilege();
-////                privilege1.setName("READ");
-////                Role role1 = new Role();
-////                role1.setPrivileges(List.of(privilege1));
-////                user1.setRole(role1);
-//                return new UserAdapter(user1,AuthorityUtils.createAuthorityList("READ"));
-//        }
-        return user == null ? null : new UserAdapter(user, user.getRole()
-                .getPrivileges()
-                .stream().map(privilege -> privilege.getName().name())
-                .map(SimpleGrantedAuthority::new)
-                .collect(Collectors.toList()));
-    }
 
     @Override
     public User createUser(User user ) {
@@ -141,6 +114,18 @@ public class UserManagementImpl implements UserDetailsService, UserManagement {
             }
         }
         return null;
+    }
+
+    @Override
+    public String authenticate(String username, String password){
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password));
+        }catch (BadCredentialsException e){
+            throw new RuntimeException("Incorrect username or password", e);
+        }
+        UserAdapter userDetails = customUserDetailsManager.loadUserByUsername(username);
+        return jwtUtil.generateToken(userDetails);
     }
 
 //    public List<User> getSupervisorInstructors(User user) {
