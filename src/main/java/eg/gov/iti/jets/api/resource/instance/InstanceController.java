@@ -59,7 +59,7 @@ public class InstanceController {
     }
 
 
-    @PostMapping("delete/{instanceId}")
+    @DeleteMapping("delete/{instanceId}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_ASSIGN_INSTANCE.name())")
     ResponseEntity<?> deleteInstance(@PathVariable String instanceId) {
         String instanceState = instanceManagement.deleteInstance(instanceId);
