@@ -14,5 +14,5 @@ public class StudentResponse {
    private String userName;
    private String email;
    private String role;
-   private int id;
+   private Integer id;
 }

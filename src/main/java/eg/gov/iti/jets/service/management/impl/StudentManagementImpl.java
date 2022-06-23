@@ -75,13 +75,13 @@ public class StudentManagementImpl implements UserDetailsService, StudentManagem
 
 
     public void addStudents(List<User> users){
-        try {
-            for (User user:users) {
+        for (User user:users) {
+            try {
                 userDao.save(user);
             }
-        }
-        catch (Exception e) {
-            throw new ResourceExistException("There is duplicate in email ");
+            catch (Exception e) {
+                throw new ResourceExistException("There is duplicate in Student [ "+ user.getUsername());
+            }
         }
     }
 

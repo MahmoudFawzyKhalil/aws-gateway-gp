@@ -302,13 +302,16 @@ public class Mapper {
         return response;
     }
 
-    public List<User> mapFromStudentListRequestToStudentList(StudentListRequest students){
+    public List<User> mapFromStudentListRequestToStudentList(int currentLoggedUserId, StudentListRequest students){
 
         List<User> studentList = new ArrayList<>();
         List<Track> tracks =new ArrayList<>();
         List<StudentRequest> studentsRequests = students.getStudents();
+        System.out.println(studentsRequests);
         tracks.add(mapperUtilForApi.getTrackById(studentsRequests.get(0).getTrackId()));
         Role role = mapperUtilForApi.getRole("STUDENT");
+        User manager = new User();
+        manager.setId(currentLoggedUserId);
 
         for (StudentRequest studentRequest:studentsRequests) {
             User student = new User();
@@ -317,6 +320,7 @@ public class Mapper {
             student.setEmail(studentRequest.getEmail());
             student.setRole(role);
             student.setTracks(tracks);
+            student.setManager(manager);
             studentList.add(student);
         }
         return studentList;

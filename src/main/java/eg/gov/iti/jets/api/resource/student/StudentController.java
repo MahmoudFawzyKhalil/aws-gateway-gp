@@ -1,21 +1,19 @@
 package eg.gov.iti.jets.api.resource.student;
 
-import eg.gov.iti.jets.api.resource.track.TrackResponse;
-import eg.gov.iti.jets.api.resource.track.TrackResponseList;
-import eg.gov.iti.jets.api.resource.user.UserResponse;
-import eg.gov.iti.jets.api.resource.user.UserResponseList;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.service.management.impl.StudentManagementImpl;
-import eg.gov.iti.jets.service.management.impl.UserManagementImpl;
+import eg.gov.iti.jets.service.model.UserAdapter;
 import eg.gov.iti.jets.persistence.entity.User;
-import eg.gov.iti.jets.service.management.StudentManagement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.validation.Valid;
 import java.util.List;
 
 
@@ -43,8 +41,10 @@ public class StudentController {
 
 
     @PostMapping
-    public ResponseEntity createStudents(@RequestBody StudentListRequest studentListRequest){
-        studentManagement.addStudents(mapper.mapFromStudentListRequestToStudentList(studentListRequest));
+    public ResponseEntity createStudents( @AuthenticationPrincipal UserAdapter userAdapter ,
+                                          @Valid @RequestBody StudentListRequest studentListRequest){
+        int currentLoggedUserId = userAdapter.getId();
+        studentManagement.addStudents(mapper.mapFromStudentListRequestToStudentList(currentLoggedUserId,studentListRequest));
         return new ResponseEntity("Students Inserted Successfully",HttpStatus.CREATED);
     }
 

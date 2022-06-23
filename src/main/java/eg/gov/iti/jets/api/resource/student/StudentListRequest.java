@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -13,5 +14,5 @@ import java.util.List;
 @AllArgsConstructor
 public class StudentListRequest {
 
-    List<StudentRequest> students;
+    List<StudentRequest> students= new ArrayList<>();
 }
