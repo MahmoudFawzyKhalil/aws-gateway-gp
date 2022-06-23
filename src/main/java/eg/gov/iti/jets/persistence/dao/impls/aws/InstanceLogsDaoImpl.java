@@ -51,7 +51,7 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        Page<C> page = instanceLogsRepo.findBy(PageRequest.of(pageNumber, pageSize), projection);
+        Page<C> page = instanceLogsRepo.findByOrderByDateTimeDesc(PageRequest.of(pageNumber, pageSize), projection);
         return page.getContent();
     }
 
@@ -64,7 +64,7 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
-        return instanceLogsRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher), projection);
+        return instanceLogsRepo.findAllByOrderByDateTimeDesc(Example.of(example, caseInsensitiveExampleMatcher), projection);
     }
 
     @Override
@@ -79,26 +79,26 @@ public class InstanceLogsDaoImpl implements InstanceLogsDao {
 
     @Override
     public List<InstanceLogs> findAllByInstanceId(int id, int pageNumber, int pageSize) {
-        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAllByInstanceId(id, PageRequest.of(pageNumber, pageSize));
+        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAllByInstanceIdOrderByDateTimeDesc(id, PageRequest.of(pageNumber, pageSize));
         return instanceLogPage.getContent();
     }
 
     @Override
     public List<InstanceLogs> findAllByActionMakerIdAndAction(int id, UserAction userAction, int pageNumber, int pageSize) {
-        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAllByActionMaker_IdAndAction(id, userAction, PageRequest.of(pageNumber, pageSize));
+        Page<InstanceLogs> instanceLogPage = instanceLogsRepo.findAllByActionMaker_IdAndActionOrderByDateTimeDesc(id, userAction, PageRequest.of(pageNumber, pageSize));
         return instanceLogPage.getContent();
     }
 
     @Override
     public <C> List<C> findAllByActionMaker(Integer userId, int pageNumber, int pageSize, Class<C> projection) {
-        Page<C> instanceLogPage = instanceLogsRepo.findAllByActionMaker_Id(userId, PageRequest.of(pageNumber, pageSize), projection);
+        Page<C> instanceLogPage = instanceLogsRepo.findAllByActionMaker_IdOrderByDateTimeDesc(userId, PageRequest.of(pageNumber, pageSize), projection);
 
         return instanceLogPage.getContent();
     }
 
     @Override
     public <C> List<C> findAllByActionMakerAndDateTime(Integer userId, LocalDateTime dateTime1, LocalDateTime dateTime2, int pageNumber, int pageSize, Class<C> projection) {
-        Page<C> instanceLogPage = instanceLogsRepo.findAllByActionMaker_IdAndDateTimeBetween(userId, dateTime1, dateTime2, PageRequest.of(pageNumber, pageSize), projection);
+        Page<C> instanceLogPage = instanceLogsRepo.findAllByActionMaker_IdAndDateTimeBetweenOrderByDateTimeDesc(userId, dateTime1, dateTime2, PageRequest.of(pageNumber, pageSize), projection);
 
         return instanceLogPage.getContent();
     }
