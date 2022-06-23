@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Getter
@@ -15,6 +16,7 @@ import java.util.List;
 @NoArgsConstructor
 
 public class TrackRequest {
+    @NotBlank(message = "must not be empty or null data")
     private String Name;
     private int IntakeId;
 

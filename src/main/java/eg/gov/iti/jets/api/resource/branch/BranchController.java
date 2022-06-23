@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -61,7 +62,7 @@ public class BranchController {
 
     @PostMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
-    public ResponseEntity<?> createBranch(@RequestBody BranchRequest branchRequest){
+    public ResponseEntity<?> createBranch(@Valid @RequestBody BranchRequest branchRequest){
         Branch branch = branchManagement.createBranch( mapper.mapFromBranchRequestToBranch( branchRequest ) );
         BranchResponse branchResponse = mapper.mapFromBranchToBranchResponse( branch );
         return new ResponseEntity<>(branchResponse , HttpStatus.CREATED ) ;
@@ -71,7 +72,7 @@ public class BranchController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
-    public ResponseEntity<?> updateBranch (@PathVariable int id , @RequestBody BranchPutRequest branchPutRequest){
+    public ResponseEntity<?> updateBranch (@PathVariable int id , @Valid @RequestBody BranchPutRequest branchPutRequest){
         Branch branch = branchManagement.updateBranch( mapper.mapFromBranchPutRequestToBranch(branchPutRequest , id) );
         BranchResponse branchResponse = mapper.mapFromBranchToBranchResponse( branch );
         return new ResponseEntity<>( branchResponse , HttpStatus.OK );
