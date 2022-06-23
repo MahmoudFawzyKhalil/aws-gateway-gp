@@ -4,6 +4,7 @@ import eg.gov.iti.jets.api.resource.ResponseMessage;
 import eg.gov.iti.jets.persistence.dao.InstanceLogsDao;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDateTime;
@@ -11,6 +12,8 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/instancelogs")
+@PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTANCE_LOGS.name())")
+
 public class InstanceLogController {
     private final InstanceLogsDao instanceLogsDao;
 
