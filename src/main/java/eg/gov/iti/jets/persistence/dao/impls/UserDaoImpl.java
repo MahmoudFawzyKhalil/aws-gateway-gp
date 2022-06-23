@@ -129,5 +129,15 @@ public class UserDaoImpl implements UserDao {
         return userRepo.findAllByTracks_idAndRole_NameLike(trackId, roleName, projection);
     }
 
+    @Override
+    public List<User> findUserByRollName(String userRoll) {
+        return userRepo.findUserByRole_Name(userRoll);
+    }
+
+    @Override
+    public Optional<User> findUserByIDAndRollName(Integer id, String rollName) {
+        return userRepo.findUserByIdAndRole_Name(id, rollName);
+    }
+
 
 }
