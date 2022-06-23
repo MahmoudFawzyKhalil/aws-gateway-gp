@@ -24,7 +24,6 @@ public class UserResponse {
 
     private List<String> privileges;
 
-    private List<TrackType> tracks;
 
     private List<Instance> createdInstances = new ArrayList<>();
 
