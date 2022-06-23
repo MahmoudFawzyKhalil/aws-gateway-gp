@@ -8,6 +8,7 @@ import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,32 +16,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 @Service
 public class MapperUtilForApi {
-
-    @Autowired
-    private SecurityGroupDao securityGroupDao;
-    @Autowired
-    UserDao userDao;
-
-    @Autowired
-    IntakeDao intakeDao;
-
-    @Autowired
-    private BranchDao branchDao;
-
-    @Autowired
-    private TrainingProgramDao trainingProgramDao;
-    @Autowired
-    AwsGateway awsGateway;
-
-    @Autowired
-    KeyPairDao keyPairDao;
-    @Autowired
-    TrackDao trackDao;
-
-    @Autowired
-    TemplateConfigurationDao templateConfigurationDao;
+    private final SecurityGroupDao securityGroupDao;
+    private final UserDao userDao;
+    private final IntakeDao intakeDao;
+    private final BranchDao branchDao;
+    private final TrainingProgramDao trainingProgramDao;
+    private final AwsGateway awsGateway;
+    private final KeyPairDao keyPairDao;
+    private final TrackDao trackDao;
+    private final TemplateConfigurationDao templateConfigurationDao;
 
     public List<SecurityGroup> getSecurityGroups(List<String> ids){
         return  awsGateway.describeSecurityGroupsForIds( ids );
@@ -57,24 +44,25 @@ public class MapperUtilForApi {
 
     public User getUser( int id){
         Optional<User> byId = userDao.findById( id );
-        return byId.orElse( null );
+        return byId.orElseThrow(()->new ResourceNotFoundException("User with id " + id + ", is not found!"));
     }
 
 
     public Ami getAmiObject( String amiId){
         Optional<Ami> ami = awsGateway.describeAmi( amiId );
-        return ami.orElse( null );
+        return ami.orElseThrow(()->new ResourceNotFoundException("Ami with id " + amiId + ", is not found!"));
     }
 
 
     public Branch getBranchById(int id) {
         Optional<Branch> branch = branchDao.findById(id);
-        return branch.orElse( null );
+        return branch.orElseThrow(() -> new ResourceNotFoundException("Branch with id " + branch + ", is not found!"));
+
     }
 
     public TemplateConfiguration getTemplateConfigurationById( int id) {
         Optional<TemplateConfiguration> templateConfigurationDaoById = templateConfigurationDao.findById( id );
-        return templateConfigurationDaoById.orElse( null );
+        return templateConfigurationDaoById.orElseThrow(()->new ResourceNotFoundException("Template with id " + id + ", is not found!"));
     }
 
     public KeyPair getKeyPair( String keyPair , int id) {
@@ -138,7 +126,6 @@ public class MapperUtilForApi {
 
     public Track getTrackById(int id) {
         Optional<Track> track = trackDao.findById(id);
-        return track.orElse( null );
-
+        return track.orElseThrow(() -> new ResourceNotFoundException("Track with id " + id + ", is not found!"));
     }
 }

@@ -11,6 +11,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import java.nio.file.AccessDeniedException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,4 +63,14 @@ public class GlobalExceptionAdvisor {
         errorResponse.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+//    @ExceptionHandler(AccessDeniedException.class)
+//    public  ResponseEntity<?> handleException(AccessDeniedException e) {
+//        ErrorResponse errorResponse = new ErrorResponse();
+//        errorResponse.setTimestamp(new Date());
+//        errorResponse.setCode(403);
+//        errorResponse.setMsg(e.getMessage());
+//        errorResponse.setError(HttpStatus.FORBIDDEN.getReasonPhrase());
+//        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+//    }
 }

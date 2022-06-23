@@ -39,7 +39,7 @@ public class BranchManagementImpl implements BranchManagement {
         return branchDao.update( branch );
         }
         catch (Exception e) {
-            throw new ResourceNotFoundException("Could not update track with id ");
+            throw new ResourceNotFoundException("Could not update branch with id ");
         }
 
     }
