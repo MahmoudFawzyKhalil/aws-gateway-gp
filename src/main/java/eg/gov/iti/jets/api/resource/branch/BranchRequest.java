@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @Getter
@@ -13,6 +14,7 @@ import java.util.List;
 @AllArgsConstructor
 
 public class BranchRequest {
+    @NotBlank(message = "must not be empty or null data")
     private String address;
     private String name;
     private boolean branchStatus;
