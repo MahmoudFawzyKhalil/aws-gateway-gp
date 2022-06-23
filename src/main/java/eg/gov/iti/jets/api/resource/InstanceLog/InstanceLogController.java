@@ -2,7 +2,6 @@ package eg.gov.iti.jets.api.resource.InstanceLog;
 
 import eg.gov.iti.jets.api.resource.ResponseMessage;
 import eg.gov.iti.jets.persistence.dao.InstanceLogsDao;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
