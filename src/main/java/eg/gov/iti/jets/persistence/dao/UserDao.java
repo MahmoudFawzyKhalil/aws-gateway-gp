@@ -41,8 +41,8 @@ public interface UserDao extends GenericCrudDao<User, Integer> {
 
     <C> List<C> getAllByTrackAndRole(int trackId, String roleName, Class<C> projection);
 
-    <C> List<C> findUserByRollName(String userRoll,Class<C> projection);
+    <C> List<C> findUsersByRoleName(String userRoll,Class<C> projection);
 
-    Optional<User> findUserByIDAndRollName(Integer id, String rollName);
+    Optional<User> findUserByIDAndRoleName(Integer id, String rollName);
 
 }
