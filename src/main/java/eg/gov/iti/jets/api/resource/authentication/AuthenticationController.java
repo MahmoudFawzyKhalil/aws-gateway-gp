@@ -45,7 +45,7 @@ public class AuthenticationController {
         try {
             authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(username, password));
-        }catch (BadCredentialsException e){
+        }catch (Exception e){
             throw new ResourceNotFoundException("Incorrect username or password", e);
         }
         UserAdapter userDetails = userService.loadUserByUsername(username);
