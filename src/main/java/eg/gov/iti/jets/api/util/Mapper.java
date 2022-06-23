@@ -31,6 +31,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -262,64 +263,4 @@ public class Mapper {
 
         return trainingProgram;
     }
-
-    public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest, int id ) {
-        try {
-            Branch branch = mapperUtilForApi.getBranchById( id );
-            branch.setAddress( branchPutRequest.getAddress() );
-            branch.setName( branchPutRequest.getName() );
-            if ( branchPutRequest.isBranchStatus() ) {
-                branch.setStatus( BranchStatus.ACTIVE );
-            } else {
-                branch.setStatus( BranchStatus.DE_ACTIVE );
-            }
-            return branch;
-        } catch ( Exception e ) {
-            throw new ResourceNotFoundException( "Could not update branch with id " + id + " because it is not found" );
-        }
-
-    }
-
-    public Branch mapFromBranchPatchRequestToBranch( Boolean branchStatus, int id ) {
-        Branch branch = mapperUtilForApi.getBranchById( id );
-        if ( branchStatus ) {
-            branch.setStatus( BranchStatus.ACTIVE );
-        } else {
-            branch.setStatus( BranchStatus.DE_ACTIVE );
-        }
-        return branch;
-    }
-
-    public List<StudentResponse> mapFromListOfStudentToListOfStudentResponses(List<User> users ) {
-        return users.stream().map( this::mapFromStudentToStudentResponse ).collect( Collectors.toList() );
-    }
-
-    public StudentResponse mapFromStudentToStudentResponse( User user ) {
-        StudentResponse response = new StudentResponse();
-        response.setEmail(user.getEmail());
-        response.setId(user.getId());
-        response.setUserName(user.getUsername());
-        response.setTrack(user.getTracks().get(0).getName());
-        response.setPassword(user.getPassword());
-        response.setRole(user.getRole().getName());
-        return response;
-    }
-
-    public User mapFromStudentRequestToStudent(StudentRequest studentRequest){
-        User user = new User();
-        Role role = new Role();
-        Track track = new Track();
-        List tracks = new ArrayList<>();
-       // role.setId();
-        role.setName("STUDENT");
-        track=mapperUtilForApi.getTrackById(studentRequest.getTrackId());
-        tracks.add(track);
-        user.setUsername(studentRequest.getUsername());
-        user.setRole(role);
-        user.setEmail(studentRequest.getEmail());
-        user.setPassword("student");
-        user.setTracks(tracks);
-        return user;
-    }
 }
-
