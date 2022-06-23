@@ -290,7 +290,6 @@ public class Mapper {
     public StudentResponse mapFromStudentToStudentResponse( User user ) {
         StudentResponse response = new StudentResponse();
         response.setUserName(user.getUsername());
-        response.setPassword(user.getPassword());
         response.setId(user.getId());
         response.setRole(user.getRole().getName());
         response.setEmail(user.getEmail());

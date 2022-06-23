@@ -13,7 +13,6 @@ public class StudentResponse {
    private String track;
    private String userName;
    private String email;
-   private String password;
    private String role;
    private int id;
 }
