@@ -13,7 +13,7 @@ import javax.validation.constraints.NotBlank;
 @NoArgsConstructor
 
 public class IntakeRequest {
-    @NotBlank(message = "must not be empty or null")
+
     private String intakeDescription;
     @NotBlank(message = "must not be empty or null")
     private String intakeName;
