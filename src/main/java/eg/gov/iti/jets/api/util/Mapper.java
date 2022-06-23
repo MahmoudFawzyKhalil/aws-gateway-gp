@@ -17,7 +17,6 @@ import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramPutRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
-import eg.gov.iti.jets.api.resource.student.UpdateUserRequest;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
@@ -25,7 +24,6 @@ import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import eg.gov.iti.jets.api.resource.student.CreateUserRequest;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
 import org.springframework.stereotype.Component;
 
