@@ -3,6 +3,11 @@ package eg.gov.iti.jets.service.management.impl;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.persistence.dao.SecurityGroupDao;
 import eg.gov.iti.jets.persistence.dao.TemplateConfigurationDao;
+import eg.gov.iti.jets.persistence.entity.aws.Ami;
+import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
+import eg.gov.iti.jets.persistence.entity.aws.Subnet;
+import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
+import eg.gov.iti.jets.service.exception.ResourceExistException;
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.User;
@@ -78,10 +83,14 @@ public class TemplateManagementImpl implements TemplateManagement {
     @Transactional
     @Override
     public Boolean createTemplate( TemplateConfiguration templateConfiguration ) {
-        List<SecurityGroup> securityGroups = saveSecurityGroup( templateConfiguration.getSecurityGroups() );
-        templateConfiguration.setSecurityGroups( securityGroups );
-        TemplateConfiguration templateConfigurationAfterSaving = templateConfigurationDao.save( templateConfiguration );
-        return templateConfigurationAfterSaving != null;
+        try {
+            List<SecurityGroup> securityGroups = saveSecurityGroup( templateConfiguration.getSecurityGroups() );
+            templateConfiguration.setSecurityGroups( securityGroups );
+            TemplateConfiguration templateConfigurationAfterSaving = templateConfigurationDao.save( templateConfiguration );
+            return templateConfigurationAfterSaving != null;
+        }catch (Exception e) {
+            throw new ResourceExistException("Could not create template!");
+        }
     }
 
     @Transactional
