@@ -23,8 +23,6 @@ import java.util.List;
 
 @Component
 public class JwtFilter extends OncePerRequestFilter {
-    @Autowired
-    private UserManagement userService;
 
     @Autowired
     private JwtUtil jwtUtil;
