@@ -43,7 +43,7 @@ public class InstanceController {
         return ResponseEntity.ok().build();
     }
 
-    @GetMapping("start/{instanceId}")
+    @PostMapping("start/{instanceId}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_VIEW_INSTANCE.name())")
     ResponseEntity<?> startInstance(@PathVariable String instanceId) {
         String instanceState = instanceManagement.startInstance(instanceId);
@@ -51,7 +51,7 @@ public class InstanceController {
     }
 
 
-    @GetMapping("stop/{instanceId}")
+    @PostMapping("stop/{instanceId}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).START_STOP_VIEW_INSTANCE.name())")
     ResponseEntity<?> stopInstance(@PathVariable String instanceId) {
         String instanceState = instanceManagement.stopInstance(instanceId);
@@ -59,7 +59,7 @@ public class InstanceController {
     }
 
 
-    @DeleteMapping("delete/{instanceId}")
+    @PostMapping("delete/{instanceId}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_ASSIGN_INSTANCE.name())")
     ResponseEntity<?> deleteInstance(@PathVariable String instanceId) {
         String instanceState = instanceManagement.deleteInstance(instanceId);
