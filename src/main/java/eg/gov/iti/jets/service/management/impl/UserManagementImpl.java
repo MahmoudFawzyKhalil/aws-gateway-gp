@@ -47,4 +47,16 @@ public class UserManagementImpl implements UserManagement {
         return users;
     }
 
+    @Override
+    public String authenticate(String username, String password){
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(username, password));
+        }catch (BadCredentialsException e){
+            throw new RuntimeException("Incorrect username or password", e);
+        }
+        UserAdapter userDetails = customUserDetailsManager.loadUserByUsername(username);
+        return jwtUtil.generateToken(userDetails);
+    }
+
 }
