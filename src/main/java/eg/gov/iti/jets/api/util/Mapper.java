@@ -5,6 +5,7 @@ import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakePutRequest;
 import eg.gov.iti.jets.api.resource.role.*;
+import eg.gov.iti.jets.api.resource.student.StudentResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
@@ -287,4 +288,20 @@ public class Mapper {
         }
         return branch;
     }
+
+    public List<StudentResponse> mapFromListOfStudentToListOfStudentResponses(List<User> users ) {
+        return users.stream().map( this::mapFromStudentToStudentResponse ).collect( Collectors.toList() );
+    }
+
+    public StudentResponse mapFromStudentToStudentResponse( User user ) {
+        StudentResponse response = new StudentResponse();
+        response.setEmail(user.getEmail());
+        response.setId(user.getId());
+        response.setUserName(user.getUsername());
+        response.setTrack(user.getTracks().get(0).getName());
+        response.setPassword(user.getPassword());
+        response.setRole(user.getRole().getName());
+        return response;
+    }
 }
+
