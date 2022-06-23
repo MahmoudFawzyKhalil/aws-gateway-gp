@@ -9,12 +9,12 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
 @RequestMapping( "/api/templates" )
 public class TemplateController {
-
     private final TemplateManagement templateManagement;
     private final TemplateMapper templateMapper;
 
@@ -25,14 +25,10 @@ public class TemplateController {
 
     @PostMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
-    public ResponseEntity<?> createTemplate( @RequestBody TemplateRequest templateRequest, @AuthenticationPrincipal UserAdapter userDetails ) {
+    public ResponseEntity<?> createTemplate(@Valid @RequestBody TemplateRequest templateRequest, @AuthenticationPrincipal UserAdapter userDetails ) {
         Integer creatorId = userDetails.getId();
         Boolean template = templateManagement.createTemplate( templateMapper.mapFromTemplateRequestToTemplateConfig( templateRequest, creatorId ) );
-        if ( template ) {
-            return new ResponseEntity<>(  HttpStatus.CREATED );
-        } else {
-            return new ResponseEntity<>( HttpStatus.BAD_REQUEST );
-        }
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
 
