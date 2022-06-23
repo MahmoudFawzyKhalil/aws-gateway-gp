@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.api.resource.authentication;
 
 import eg.gov.iti.jets.api.util.JwtUtil;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.UserManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
 import org.springframework.http.HttpStatus;
@@ -15,18 +16,15 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("api/")
 public class AuthenticationController {
     private final UserManagement userService;
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
 
-    public AuthenticationController( UserManagement userService, AuthenticationManager authenticationManager, JwtUtil jwtUtil ) {
+    public AuthenticationController( UserManagement userService) {
         this.userService = userService;
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login")
     public ResponseEntity<AuthenticationResponse> authenticateUser(@RequestBody AuthenticationRequest authReq) {
-        String jwt = authenticate(authReq.getUsername(), authReq.getPassword());
+        String jwt = userService.authenticate(authReq.getUsername(), authReq.getPassword()); //todo userService injection to authenticate
+//        String jwt = authenticate(authReq.getUsername(), authReq.getPassword());
         return new ResponseEntity<>(new AuthenticationResponse(jwt), HttpStatus.ACCEPTED);
     }
 
@@ -40,14 +38,14 @@ public class AuthenticationController {
 //        return "test hello";
 //    }
 
-    private String authenticate(String username, String password){
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password));
-        }catch (BadCredentialsException e){
-            throw new RuntimeException("Incorrect username or password", e);
-        }
-        UserAdapter userDetails = userService.loadUserByUsername(username);
-        return jwtUtil.generateToken(userDetails);
-    }
+//    private String authenticate(String username, String password){
+//        try {
+//            authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(username, password));
+//        }catch (Exception e){
+//            throw new ResourceNotFoundException("Incorrect username or password", e);
+//        }
+//        UserAdapter userDetails = userService.loadUserByUsername(username);
+//        return jwtUtil.generateToken(userDetails);
+//    }
 }

@@ -173,6 +173,8 @@ public class Mapper {
         return trackResponses;
     }
 
+
+
     public Track mapFromTrackPutRequestToTrack( TrackPutRequest trackPutRequest, int id ) {
         try {
             Track track = mapperUtilForApi.getTrackById( id );
@@ -221,7 +223,7 @@ public class Mapper {
         return privilege;
     }
 
-    public Role roleRequestToRole( RoleRequest roleRequest ) {
+    public Role roleRequestToRole(RoleRequest roleRequest ) {
         Role role = new Role();
         role.setName( roleRequest.getName() );
         role.setPrivileges(
@@ -319,10 +321,5 @@ public class Mapper {
         }
         return studentList;
     }
-
-
-
-
-
 
 }
