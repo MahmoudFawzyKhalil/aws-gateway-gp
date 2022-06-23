@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.api.exceptionhandler;
 
 import eg.gov.iti.jets.service.exception.AwsGatewayException;
+import eg.gov.iti.jets.service.exception.ResourceConstraintsViolationException;
 import eg.gov.iti.jets.service.exception.ResourceExistException;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
@@ -27,8 +28,8 @@ public class GlobalExceptionAdvisor {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(ResourceExistException.class)
-    public ResponseEntity<?> handleException(ResourceExistException exception) {
+    @ExceptionHandler({ResourceExistException.class, ResourceConstraintsViolationException.class})
+    public ResponseEntity<?> handleException(Exception exception) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setTimestamp(new Date());
         errorResponse.setCode(406);

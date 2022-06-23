@@ -20,12 +20,14 @@ public class RoleController {
     private final Mapper mapper;
 
     @PostMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_ROLES.name())")
     public ResponseEntity<RoleResponse> addRole(@Valid @RequestBody RoleRequest roleRequest) {
         Role role = roleManagement.addRole(mapper.roleRequestToRole(roleRequest));
         return new ResponseEntity<>(mapper.roleToRoleResponse(role), HttpStatus.CREATED);
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_ROLES.name())")
     public ResponseEntity<GetAllRolesResponse> getAllRoles() {
         GetAllRolesResponse getRolesResponse = new GetAllRolesResponse();
         getRolesResponse.setRoles(
@@ -37,11 +39,13 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_ROLES.name())")
     public ResponseEntity<GetRoleResponse> getRole(@PathVariable("id") Integer id){
        return new ResponseEntity<>(mapper.roleToGetRoleResponse(roleManagement.getRoleById(id)), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_ROLES.name())")
     public ResponseEntity<RoleResponse> updateRole(@Valid @RequestBody RoleRequest roleRequest, @PathVariable("id") Integer id) {
         Role role = mapper.roleRequestToRole(roleRequest);
         role.setId(id);

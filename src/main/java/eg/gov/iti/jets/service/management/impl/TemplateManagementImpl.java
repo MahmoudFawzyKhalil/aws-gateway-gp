@@ -7,6 +7,11 @@ import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.persistence.entity.aws.Subnet;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
+import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.persistence.dao.UserDao;
+import eg.gov.iti.jets.persistence.entity.Role;
+import eg.gov.iti.jets.persistence.entity.User;
+import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.TemplateManagement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +21,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @Service
 public class TemplateManagementImpl implements TemplateManagement {
@@ -25,11 +32,14 @@ public class TemplateManagementImpl implements TemplateManagement {
     TemplateConfigurationDao templateConfigurationDao;
     final
     AwsGateway awsGateway;
+    final
+    UserDao userDao;
 
-    public TemplateManagementImpl( TemplateConfigurationDao templateConfigurationDao, AwsGateway awsGateway, SecurityGroupDao securityGroupDao ) {
+    public TemplateManagementImpl( TemplateConfigurationDao templateConfigurationDao, AwsGateway awsGateway, SecurityGroupDao securityGroupDao, UserDao userDao ) {
         this.templateConfigurationDao = templateConfigurationDao;
         this.awsGateway = awsGateway;
         this.securityGroupDao = securityGroupDao;
+        this.userDao = userDao;
     }
 
     public Boolean deleteTemplate( int id ) {
@@ -44,17 +54,43 @@ public class TemplateManagementImpl implements TemplateManagement {
 
     @Override
     public List<TemplateResponse> getTemplateConfigurationById( int id ) {
+        Optional<User> user = userDao.findById( id );
+        if(user.isPresent()){
+            String role = user.get().getRole().getName();
+            switch ( role ){
+                case "INSTRUCTOR":
+                    return getTemplateResponses( id );
+                case "TRACK_SUPERVISOR":
+                    return getTemplateResponseList( user.get() );
+                default:
+                    throw new IllegalStateException( "Unexpected value: " + role );
+            }
+        }else {
+            throw new IllegalStateException( "Unexpected value: " );
+        }
+    }
+
+    private List<TemplateResponse> getTemplateResponses( int id ) {
         List<TemplateResponse> allByInstructor = templateConfigurationDao.findAllByInstructor( id, TemplateResponse.class );
         return allByInstructor;
+    }
+
+    private List<TemplateResponse> getTemplateResponseList( User user ) {
+        List<TemplateResponse> allTemplateCreatedBySuperVisor = userDao.findAllTemplateCreatedBySuperVisor( user, TemplateResponse.class );
+        return allTemplateCreatedBySuperVisor;
     }
 
     @Transactional
     @Override
     public Boolean createTemplate( TemplateConfiguration templateConfiguration ) {
-        List<SecurityGroup> securityGroups = saveSecurityGroup( templateConfiguration.getSecurityGroups() );
-        templateConfiguration.setSecurityGroups( securityGroups );
-        TemplateConfiguration templateConfigurationAfterSaving = templateConfigurationDao.save( templateConfiguration );
-        return templateConfigurationAfterSaving != null;
+        try {
+            List<SecurityGroup> securityGroups = saveSecurityGroup( templateConfiguration.getSecurityGroups() );
+            templateConfiguration.setSecurityGroups( securityGroups );
+            TemplateConfiguration templateConfigurationAfterSaving = templateConfigurationDao.save( templateConfiguration );
+            return templateConfigurationAfterSaving != null;
+        }catch (Exception e) {
+            throw new ResourceExistException("Could not create template!");
+        }
     }
 
     @Transactional
