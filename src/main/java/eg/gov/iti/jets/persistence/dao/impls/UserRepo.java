@@ -51,6 +51,10 @@ interface UserRepo extends JpaRepository<User, Integer> {
 
     <C> List<C> findAllByTracks_idAndRole_NameLike(int trackId, String roleName, Class<C> projection);
 
+    <C> List<C> findUserByRole_Name(String rollName, Class<C> projection);
+
+    Optional<User> findUserByIdAndRole_Name(Integer id, String rollName);
+
 
 
     <C> List<C>  findAllByTemplateConfigurations( User user, Class<C> projection);

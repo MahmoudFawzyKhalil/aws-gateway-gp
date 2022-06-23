@@ -3,7 +3,6 @@ package eg.gov.iti.jets.persistence.dao;
 import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
-import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
@@ -30,17 +29,20 @@ public interface UserDao extends GenericCrudDao<User, Integer> {
     //Add the User you want to get all followers bellow it
     List<User> findAllFollowers(User user);
 
-    List<User>getUserByBranchIdAndRoleName(int branchId,String roleName);
+    List<User> getUserByBranchIdAndRoleName(int branchId, String roleName);
 
-    List<User>getUserByIntakeIdAndRoleName(int intakeId,String roleName);
 
-    List<User>getUserByTrainingIdAndRoleName(int trainingProgramId,String roleName);
+    List<User> getUserByIntakeIdAndRoleName(int intakeId, String roleName);
 
-    Optional<User>getBranchManger(int branchId);
+    List<User> getUserByTrainingIdAndRoleName(int trainingProgramId, String roleName);
+
+    Optional<User> getBranchManger(int branchId);
+
 
     <C> List<C> getAllByTrackAndRole(int trackId, String roleName, Class<C> projection);
 
-    <T> List<T> findAllTemplateCreatedBySuperVisor( User user, Class<T> projection);
+    <C> List<C> findUsersByRoleName(String userRoll,Class<C> projection);
 
+    Optional<User> findUserByIDAndRoleName(Integer id, String rollName);
 
 }

@@ -21,5 +21,5 @@ interface TemplateConfigurationRepo extends JpaRepository<TemplateConfiguration,
 
     <T> List<T> findAllByInstructors_username(String userName, Class<T> projection);
 
-   //<T> List<T> findByCreator(int id, Class<T> projection);
+    <T> List<T> findAllByCreator_id(int id, Class<T> projection);
 }
