@@ -38,14 +38,14 @@ public class AuthenticationController {
 //        return "test hello";
 //    }
 
-    private String authenticate(String username, String password){
-        try {
-            authenticationManager.authenticate(
-                    new UsernamePasswordAuthenticationToken(username, password));
-        }catch (Exception e){
-            throw new ResourceNotFoundException("Incorrect username or password", e);
-        }
-        UserAdapter userDetails = userService.loadUserByUsername(username);
-        return jwtUtil.generateToken(userDetails);
-    }
+//    private String authenticate(String username, String password){
+//        try {
+//            authenticationManager.authenticate(
+//                    new UsernamePasswordAuthenticationToken(username, password));
+//        }catch (Exception e){
+//            throw new ResourceNotFoundException("Incorrect username or password", e);
+//        }
+//        UserAdapter userDetails = userService.loadUserByUsername(username);
+//        return jwtUtil.generateToken(userDetails);
+//    }
 }
