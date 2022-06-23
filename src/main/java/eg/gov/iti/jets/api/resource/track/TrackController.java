@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,7 +53,7 @@ public class TrackController {
 
     @PostMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TRACKS.name())")
-    public ResponseEntity<TrackResponse> createTrack(@RequestBody TrackRequest trackRequest){
+    public ResponseEntity<TrackResponse> createTrack(@Valid @RequestBody TrackRequest trackRequest){
         Track track = trackManagement.createTrack( mapper.mapFromTrackRequestToTrack( trackRequest ) );
 
         TrackResponse trackResponse = mapper.mapFromTrackToTrackResponse( track );
@@ -62,7 +63,7 @@ public class TrackController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TRACKS.name())")
-    public ResponseEntity<TrackResponse> updateTrack (@PathVariable int id , @RequestBody TrackPutRequest trackPutRequsert){
+    public ResponseEntity<TrackResponse> updateTrack (@PathVariable int id , @Valid @RequestBody TrackPutRequest trackPutRequsert){
         Track track = trackManagement.updateTrack( mapper. mapFromTrackPutRequestToTrack(trackPutRequsert , id) );
         TrackResponse trackResponse = mapper.mapFromTrackToTrackResponse( track );
         return new ResponseEntity<>( trackResponse, HttpStatus.OK );

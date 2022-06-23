@@ -4,6 +4,7 @@ import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
+import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -128,6 +129,12 @@ public class UserDaoImpl implements UserDao {
     public <C> List<C> getAllByTrackAndRole(int trackId, String roleName, Class<C> projection) {
         return userRepo.findAllByTracks_idAndRole_NameLike(trackId, roleName, projection);
     }
+
+    @Override
+    public  <C> List<C> findAllTemplateCreatedBySuperVisor( User user, Class<C> projection ) {
+        return userRepo.findAllByTemplateConfigurations(user,projection);
+    }
+
 
 
 }
