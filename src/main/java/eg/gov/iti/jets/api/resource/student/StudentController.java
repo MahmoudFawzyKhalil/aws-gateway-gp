@@ -43,7 +43,7 @@ public class StudentController {
 
 
     @PostMapping
-    public ResponseEntity addStudents(@RequestBody StudentListRequest studentListRequest){
+    public ResponseEntity createStudents(@RequestBody StudentListRequest studentListRequest){
         //studentManagement.addStudents(studentListRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
