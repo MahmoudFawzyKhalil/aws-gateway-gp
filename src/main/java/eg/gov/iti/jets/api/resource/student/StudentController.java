@@ -42,64 +42,9 @@ public class StudentController {
     }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     @PostMapping
-    public ResponseEntity addStudent(@RequestBody StudentListRequest studentListRequest){
-       // studentManagement.addStudent();
+    public ResponseEntity addStudents(@RequestBody StudentListRequest studentListRequest){
+        //studentManagement.addStudents(studentListRequest);
         return new ResponseEntity<>(HttpStatus.OK);
     }
 

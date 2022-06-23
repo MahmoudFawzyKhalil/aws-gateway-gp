@@ -5,6 +5,7 @@ import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakePutRequest;
 import eg.gov.iti.jets.api.resource.role.*;
+import eg.gov.iti.jets.api.resource.student.StudentListRequest;
 import eg.gov.iti.jets.api.resource.student.StudentResponse;
 import eg.gov.iti.jets.api.resource.student.StudentRequest;
 import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
@@ -296,6 +297,21 @@ public class Mapper {
         response.setTrack(user.getTracks().get(0).getName());
         return response;
     }
+
+    public List<User> mapFromStudentListRequestToStudentList(List<StudentRequest> students){
+        User student = new User();
+        List<User> studentList = new ArrayList<>();
+        Role role = mapperUtilForApi.getRole("STUDENT");
+        for (StudentRequest studentRequest:students) {
+            student.setPassword("student");
+            student.setUsername(studentRequest.getUsername());
+            student.setEmail(studentRequest.getEmail());
+
+        }
+        return null;
+    }
+
+
 
 
 

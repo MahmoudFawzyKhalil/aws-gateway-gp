@@ -140,8 +140,8 @@ public class MapperUtilForApi {
         return track.orElseThrow( ()->new ResourceNotFoundException("Track with id " + id + ", is not found") );
 
     }
-//    public int getRoleId(String roleName) {
-//      return userDao.
-//
-//    }
+    public Role getRole(String roleName) {
+
+return null;
+    }
 }
