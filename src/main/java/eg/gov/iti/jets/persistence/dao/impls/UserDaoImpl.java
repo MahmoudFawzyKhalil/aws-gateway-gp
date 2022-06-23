@@ -130,8 +130,8 @@ public class UserDaoImpl implements UserDao {
     }
 
     @Override
-    public List<User> findUserByRollName(String userRoll) {
-        return userRepo.findUserByRole_Name(userRoll);
+    public <C> List<C> findUserByRollName(String userRoll, Class<C> projection) {
+        return userRepo.findUserByRole_Name(userRoll, projection);
     }
 
     @Override
