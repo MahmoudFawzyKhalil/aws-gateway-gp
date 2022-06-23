@@ -11,7 +11,7 @@ import javax.validation.constraints.Size;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateUserRequest {
+public class StudentPutRequest {
 
     @NotBlank(message = "Username should not be empty or null")
     @Size(min = 3, max = 25 , message = "User name length should be between 3 and 25 characters")
