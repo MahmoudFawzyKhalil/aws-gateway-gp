@@ -141,7 +141,7 @@ public class MapperUtilForApi {
 
     }
     public Role getRole(String roleName) {
-
-return null;
+        Optional<Role> role = roleDao.findRoleByName(roleName);
+        return role.orElseThrow( ()->new ResourceNotFoundException("Role with name " + roleName + ", is not found") );
     }
 }

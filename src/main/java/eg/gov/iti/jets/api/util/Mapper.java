@@ -298,17 +298,23 @@ public class Mapper {
         return response;
     }
 
-    public List<User> mapFromStudentListRequestToStudentList(List<StudentRequest> students){
+    public List<User> mapFromStudentListRequestToStudentList(StudentListRequest students){
         User student = new User();
         List<User> studentList = new ArrayList<>();
+        List<Track> tracks =new ArrayList<>();
+        List<StudentRequest> studentsRequests = students.getStudents();
+        tracks.add(mapperUtilForApi.getTrackById(studentsRequests.get(0).getTrackId()));
         Role role = mapperUtilForApi.getRole("STUDENT");
-        for (StudentRequest studentRequest:students) {
+
+        for (StudentRequest studentRequest:studentsRequests) {
             student.setPassword("student");
             student.setUsername(studentRequest.getUsername());
             student.setEmail(studentRequest.getEmail());
-
+            student.setRole(role);
+            student.setTracks(tracks);
         }
-        return null;
+
+        return studentList;
     }
 
 

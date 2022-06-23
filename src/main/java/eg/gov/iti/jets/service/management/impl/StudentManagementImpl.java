@@ -73,7 +73,11 @@ public class StudentManagementImpl implements UserDetailsService, StudentManagem
 
 
     public void addStudents(List<User> users){
-        //userDao.save(user);
+        for (User user:users
+             ) {
+            userDao.save(user);
+        }
+
     }
 
     @Override

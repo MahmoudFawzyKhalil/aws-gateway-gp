@@ -44,8 +44,8 @@ public class StudentController {
 
     @PostMapping
     public ResponseEntity createStudents(@RequestBody StudentListRequest studentListRequest){
-        //studentManagement.addStudents(studentListRequest);
-        return new ResponseEntity<>(HttpStatus.OK);
+        studentManagement.addStudents(mapper.mapFromStudentListRequestToStudentList(studentListRequest));
+        return new ResponseEntity("Students Inserted Successfully",HttpStatus.CREATED);
     }
 
 
