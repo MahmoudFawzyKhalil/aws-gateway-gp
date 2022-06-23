@@ -261,9 +261,12 @@ public class Mapper {
 
     public UserResponse mapFromUserToUserResponse( User user ) {
         UserResponse response = new UserResponse();
+        response.setId( user.getId() );
         response.setUsername( user.getUsername() );
         response.setEmail( user.getEmail() );
         response.setRole( user.getRole().getName() );
+        response.setTracks(user.getTracks().stream().map(e -> e.getName()).collect(Collectors.toList()));
+//        response.setPrivileges( user.getRole().getPrivileges().stream().map( privilege -> privilege.getName().name() ).collect( Collectors.toList() ) );
         return response;
     }
 
