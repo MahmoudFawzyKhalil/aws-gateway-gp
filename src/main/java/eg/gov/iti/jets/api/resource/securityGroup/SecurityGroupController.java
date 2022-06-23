@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/securityGroup")
+@RequestMapping("/api/securityGroups")
 // TODO: 6/17/2022 Ashraf dh keda bado supervisor
 public class SecurityGroupController {
     private final SecurityGroupMapper securityGroupMapper;
