@@ -81,4 +81,9 @@ public class TemplateConfigurationDaoImpl implements TemplateConfigurationDao {
     public <T> List<T> findAllByInstructor(String userName, Class<T> projection) {
         return templateConfigurationRepo.findAllByInstructors_username(userName,projection);
     }
+
+    @Override
+    public <T> List<T> findAllTemplateCreatedBySuperVisor(int id, Class<T> projection) {
+        return templateConfigurationRepo.findAllByCreator(id,projection);
+    }
 }

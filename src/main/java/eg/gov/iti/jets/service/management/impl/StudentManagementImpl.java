@@ -15,19 +15,19 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 import java.util.stream.Collectors;
-
+import java.util.List;
 @Service
 @RequiredArgsConstructor
+
+
 public class StudentManagementImpl implements UserDetailsService, StudentManagement {
 
     @Autowired
     UserDao userDao;
 
-    private final UserDao userDao;
     @Transactional //(readOnly = true)
     @Override
     public UserAdapter loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -211,6 +211,6 @@ public class StudentManagementImpl implements UserDetailsService, StudentManagem
 
     @Override
     public List<User> getAllStudent() {
-        return userDao.findAll();
+        return userDao.findUserByRollName("Student");
     }
 }
