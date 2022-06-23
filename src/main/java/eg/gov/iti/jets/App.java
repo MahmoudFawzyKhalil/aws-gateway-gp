@@ -43,7 +43,7 @@ public class App {
                 Privilege privilege13 = new Privilege(null, PrivilegeName.MANAGE_ROLES, null);
                 Privilege privilege14 = new Privilege(null, PrivilegeName.MANAGE_PRIVILEGES, null);
 
-                Privilege privilege13 = new Privilege(null, PrivilegeName.VIEW_INSTANCE_LOGS, null);
+                Privilege privilege15 = new Privilege(null, PrivilegeName.VIEW_INSTANCE_LOGS, null);
 
                 privilege = privilegeDao.save(privilege);
                 privilege2 = privilegeDao.save(privilege2);
@@ -59,6 +59,8 @@ public class App {
                 privilege12 = privilegeDao.save(privilege12);
                 privilege13 = privilegeDao.save(privilege13);
                 privilege14 = privilegeDao.save(privilege14);
+                privilege15 = privilegeDao.save(privilege15);
+
 
 
                 Role studentRole = roleDao.save(new Role(null, "STUDENT", List.of(privilege11)));
@@ -67,7 +69,7 @@ public class App {
                 Role trainingMangerRole = roleDao.save(new Role(null, "TRAINING_MANAGER", List.of(privilege5, privilege6, privilege7, privilege8)));
                 Role SuperAdmin = roleDao.save(new Role(null, "SUPER_ADMIN", List.of(privilege3, privilege4, privilege13, privilege14)));
 
-                Role SuperAdmin = roleDao.save(new Role(null, "SUPER_ADMIN", List.of(privilege3, privilege4, privilege13)));
+//                Role SuperAdmin = roleDao.save(new Role(null, "SUPER_ADMIN", List.of(privilege3, privilege4, privilege13)));
 
 
                 DummyData.populateStaticDataForSmartBranch(instructorRole, trainingMangerRole, supervisorRole, studentRole, SuperAdmin, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
