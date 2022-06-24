@@ -65,6 +65,15 @@ public class MapperUtilForApi {
         Optional<TemplateConfiguration> templateConfigurationDaoById = templateConfigurationDao.findById( id );
         return templateConfigurationDaoById.orElseThrow(()->new ResourceNotFoundException("Template with id " + id + ", is not found!"));
     }
+    public List<TemplateConfiguration> getTemplateConfigurationsByIds( List<Integer> templateConfIds) {
+        List<TemplateConfiguration> templateConfigurations = new ArrayList<>();
+        for ( Integer templateCongId :
+                templateConfIds ) {
+            Optional<TemplateConfiguration> templateConfiguration = templateConfigurationDao.findById( templateCongId );
+            templateConfiguration.ifPresent( templateConfigurations::add );
+        }
+        return templateConfigurations;
+    }
 
     public KeyPair getKeyPair( String keyPair , int id) {
         KeyPair example = new KeyPair();

@@ -79,6 +79,7 @@ public class App {
                 ADD_EDIT_DELETE_INTAKES = privilegeDao.save(ADD_EDIT_DELETE_INTAKES);
                 ADD_EDIT_DELETE_TRACKS = privilegeDao.save(ADD_EDIT_DELETE_TRACKS);
                 ADD_EDIT_DELETE_BRANCHES = privilegeDao.save(ADD_EDIT_DELETE_BRANCHES);
+                VIEW_INSTANCE_LOGS = privilegeDao.save( VIEW_INSTANCE_LOGS );
 
 
                 Role studentRole = roleDao.save(new Role(null, "STUDENT", List.of(START_STOP_VIEW_INSTANCE)));

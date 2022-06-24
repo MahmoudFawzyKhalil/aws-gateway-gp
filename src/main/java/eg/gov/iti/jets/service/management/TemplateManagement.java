@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.service.management;
 
+import eg.gov.iti.jets.api.resource.template.TemplateAssignRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
@@ -16,6 +17,5 @@ public interface TemplateManagement {
     Boolean deleteTemplate ( int id );
 
 
-
-
+    void assignTemplates( TemplateAssignRequest templateAssignRequest );
 }
