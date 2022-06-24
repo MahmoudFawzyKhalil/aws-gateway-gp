@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.persistence.dao.impls;
 
 import eg.gov.iti.jets.persistence.entity.Privilege;
+import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -16,4 +17,6 @@ interface PrivilegeRepo extends JpaRepository<Privilege,Integer> {
     <C> Page<C> findBy(PageRequest pageRequest, Class<C> projection);
 
     <C> List<C> findAllBy(Example<C> example, Class<C> projection);
+
+    Optional<Privilege> findByName(PrivilegeName privilegeName);
 }
