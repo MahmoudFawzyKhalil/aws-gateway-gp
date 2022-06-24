@@ -3,27 +3,20 @@ package eg.gov.iti.jets.service.management.impl;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.persistence.dao.SecurityGroupDao;
 import eg.gov.iti.jets.persistence.dao.TemplateConfigurationDao;
-import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
-import eg.gov.iti.jets.persistence.entity.aws.Subnet;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
-import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
 import eg.gov.iti.jets.persistence.dao.UserDao;
-import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.User;
-import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.TemplateManagement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 @Service
 public class TemplateManagementImpl implements TemplateManagement {
@@ -90,7 +83,7 @@ public class TemplateManagementImpl implements TemplateManagement {
             TemplateConfiguration templateConfigurationAfterSaving = templateConfigurationDao.save( templateConfiguration );
             return templateConfigurationAfterSaving != null;
         }catch (Exception e) {
-            throw new ResourceExistException("Could not create template!");
+            throw new ResourceAlreadyExistException("Could not create template!");
         }
     }
 
@@ -104,7 +97,6 @@ public class TemplateManagementImpl implements TemplateManagement {
             } else {
                 securityGroupList.add( securityGroupFromDao.get( 0 ) );
             }
-
         }
         return securityGroupList;
     }

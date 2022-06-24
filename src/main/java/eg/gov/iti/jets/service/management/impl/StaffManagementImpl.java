@@ -2,7 +2,7 @@ package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.User;
-import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.StaffManagement;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +26,7 @@ public class StaffManagementImpl implements StaffManagement {
         try {
             return userDao.save(user);
         }catch (Exception exception) {
-            throw new ResourceExistException("Staff with name [ " + user.getUsername() + " ] , already exists !");
+            throw new ResourceAlreadyExistException("Staff with name [ " + user.getUsername() + " ] , already exists !");
         }
     }
 

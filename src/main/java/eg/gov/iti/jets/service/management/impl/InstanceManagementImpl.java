@@ -4,8 +4,7 @@ import eg.gov.iti.jets.persistence.dao.InstanceDao;
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.persistence.entity.aws.*;
-import eg.gov.iti.jets.service.exception.ResourceExistException;
-import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
+import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.InstanceManagement;
@@ -50,7 +49,7 @@ public class InstanceManagementImpl implements InstanceManagement {
             createdInstance.setCreationDateTime( LocalDateTime.now() );
             return instanceDao.save( createdInstance );
         }catch (Exception e) {
-            throw new ResourceExistException("Instance with id " + instanceToCreate.getInstanceId() + ", is already exist!");
+            throw new ResourceAlreadyExistException("Instance with id " + instanceToCreate.getInstanceId() + ", is already exist!");
         }
     }
 

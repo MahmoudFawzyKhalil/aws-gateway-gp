@@ -3,9 +3,8 @@ package eg.gov.iti.jets.service.management.impl;
 import eg.gov.iti.jets.persistence.dao.BranchDao;
 import eg.gov.iti.jets.persistence.dao.TrainingProgramDao;
 import eg.gov.iti.jets.persistence.entity.Branch;
-import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
-import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.BranchManagement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class BranchManagementImpl implements BranchManagement {
             return branchDao.save(branch);
         }
         catch (Exception e) {
-            throw new ResourceExistException("Track" + branch.getName() + ", is already exist!");
+            throw new ResourceAlreadyExistException("Track" + branch.getName() + ", is already exist!");
         }
     }
 

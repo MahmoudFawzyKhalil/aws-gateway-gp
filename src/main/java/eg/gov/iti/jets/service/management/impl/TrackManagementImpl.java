@@ -3,7 +3,7 @@ package eg.gov.iti.jets.service.management.impl;
 import eg.gov.iti.jets.persistence.dao.TrackDao;
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.*;
-import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.TrackManagement;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class TrackManagementImpl implements TrackManagement {
         try {
             return trackDao.save(track);
         } catch (Exception e) {
-            throw new ResourceExistException("Track" + track.getName() + ", is already exist!");
+            throw new ResourceAlreadyExistException("Track" + track.getName() + ", is already exist!");
         }
     }
 

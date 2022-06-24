@@ -1,22 +1,15 @@
 package eg.gov.iti.jets.service.management.impl;
 
-import eg.gov.iti.jets.persistence.dao.TrackDao;
-import eg.gov.iti.jets.persistence.dao.UserDao;
-import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.User;
-import eg.gov.iti.jets.service.exception.ResourceExistException;
-import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
+import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
 import eg.gov.iti.jets.service.management.StudentManagement;
-import eg.gov.iti.jets.service.management.UserManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.stereotype.Service;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.stream.Collectors;
@@ -80,7 +73,7 @@ public class StudentManagementImpl implements UserDetailsService, StudentManagem
                 userDao.save(user);
             }
             catch (Exception e) {
-                throw new ResourceExistException("There is duplicate in Student [ "+ user.getUsername());
+                throw new ResourceAlreadyExistException("There is duplicate in Student [ "+ user.getUsername());
             }
         }
     }

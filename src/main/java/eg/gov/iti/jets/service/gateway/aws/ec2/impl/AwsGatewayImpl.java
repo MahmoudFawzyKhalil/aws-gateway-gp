@@ -40,7 +40,7 @@ class AwsGatewayImpl implements AwsGateway {
             DescribeVpcsResponse describeVpcsResponse = ec2Client.describeVpcs();
             var awsVpcs = describeVpcsResponse.vpcs();
             return awsVpcs.stream().map(this::mapAwsVpcToModel).collect(toList());
-        }catch (SdkClientException e) {
+        }catch (Exception e) {
             throw new AwsGatewayException(e.getMessage());
         }
     }
@@ -86,7 +86,7 @@ class AwsGatewayImpl implements AwsGateway {
             keyPair.setKeyName(keyPairResponse.keyName());
             keyPair.setKeyMaterial(keyPairResponse.keyMaterial());
             return keyPair;
-        }catch (SdkClientException e) {
+        }catch (Exception e) {
             throw new AwsGatewayException(e.getMessage());
         }
     }
@@ -156,7 +156,7 @@ class AwsGatewayImpl implements AwsGateway {
             DescribeSecurityGroupsRequest build = DescribeSecurityGroupsRequest.builder().filters(Filter.builder().name("vpc-id").values(vpcId).build()).build();
             var securityGroupsResponse = ec2Client.describeSecurityGroups(build);
             return securityGroupsResponse.securityGroups().stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
-        }catch ( SdkClientException sdkClientException) {
+        }catch ( Exception sdkClientException) {
             throw new AwsGatewayException(sdkClientException.getMessage());
         }
     }
@@ -169,7 +169,7 @@ class AwsGatewayImpl implements AwsGateway {
         try {
             var securityGroupsResponse = ec2Client.describeSecurityGroups(build);
             return securityGroupsResponse.securityGroups().stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
-        }catch (SdkClientException e) {
+        }catch (Exception e) {
             throw new AwsGatewayException(e.getMessage());
         }
     }
@@ -182,7 +182,7 @@ class AwsGatewayImpl implements AwsGateway {
         try {
             var securityGroupsResponse = ec2Client.describeSecurityGroups(build);
             return securityGroupsResponse.securityGroups().stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
-        }catch (SdkClientException s) {
+        }catch (Exception s) {
             throw new AwsGatewayException(s.getMessage());
         }
     }
@@ -193,7 +193,7 @@ class AwsGatewayImpl implements AwsGateway {
         try {
             StartInstancesResponse startInstancesResponse = ec2Client.startInstances(request);
             return startInstancesResponse.startingInstances().get(0).currentState().nameAsString();
-        }catch (SdkClientException e) {
+        }catch (Exception e) {
             throw new AwsGatewayException(e.getMessage());
         }
     }
@@ -204,7 +204,7 @@ class AwsGatewayImpl implements AwsGateway {
         try {
             StopInstancesResponse stopInstancesResponse = ec2Client.stopInstances(stopInstancesRequest);
             return stopInstancesResponse.stoppingInstances().get(0).currentState().nameAsString();
-        }catch (SdkClientException e) {
+        }catch (Exception e) {
             throw new AwsGatewayException(e.getMessage());
         }
     }
@@ -213,7 +213,7 @@ class AwsGatewayImpl implements AwsGateway {
         StopInstancesRequest stopInstancesRequest = StopInstancesRequest.builder().instanceIds(instanceId).build();
         try {
             CompletableFuture<StopInstancesResponse> stopInstancesResponse = ec2AsyncClient.stopInstances(stopInstancesRequest);
-        }catch (SdkClientException e) {
+        }catch (Exception e) {
             throw new AwsGatewayException(e.getMessage());
         }
     }
@@ -224,7 +224,7 @@ class AwsGatewayImpl implements AwsGateway {
         try {
             TerminateInstancesResponse terminateInstancesResponse = ec2Client.terminateInstances(terminateInstancesRequest);
             return terminateInstancesResponse.terminatingInstances().get(0).currentState().nameAsString();
-        }catch (SdkClientException e) {
+        }catch (Exception e) {
             throw new AwsGatewayException(e.getMessage());
         }
     }
@@ -290,7 +290,7 @@ class AwsGatewayImpl implements AwsGateway {
                 var awsInstance = response.reservations().get(0).instances().get(0);
                 return Optional.of(mapDescribeInstanceProperties(awsInstance));
             }
-        }catch (SdkClientException e) {
+        }catch (Exception e) {
             throw new AwsGatewayException(e.getMessage());
         }
         return Optional.empty();
@@ -312,7 +312,7 @@ class AwsGatewayImpl implements AwsGateway {
             var describeInstancesRequest = DescribeInstancesRequest.builder().instanceIds(instanceIds).build();
             var describeInstancesResponse = this.ec2Client.describeInstances(describeInstancesRequest);
             return describeInstancesResponse.hasReservations() && describeInstancesResponse.reservations().get(0).hasInstances() ? getMappedInstances(describeInstancesResponse) : new ArrayList<>();
-        }catch (SdkClientException e) {
+        }catch (Exception e) {
             throw new AwsGatewayException(e.getMessage());
         }
     }
@@ -327,7 +327,7 @@ class AwsGatewayImpl implements AwsGateway {
         try {
             var describeImagesResponse = ec2Client.describeImages(DescribeImagesRequest.builder().imageIds(amiId).build());
             return describeImagesResponse.hasImages() ? mapToCustomAmi(describeImagesResponse.images().get(0)) : Optional.empty();
-        }catch (SdkClientException e){
+        }catch (Exception e){
             throw new AwsGatewayException(e.getMessage());
         }
     }
@@ -351,7 +351,7 @@ class AwsGatewayImpl implements AwsGateway {
             var describeInstancesResponse = ec2Client.describeInstances(describeInstancesRequest);
             var awsInstance = describeInstancesResponse.reservations().get(0).instances().get(0);
             updateInstanceAttributes(instance, awsInstance);
-        }catch (SdkClientException e) {
+        }catch (Exception e) {
             throw new AwsGatewayException(e.getMessage());
         }
 
@@ -380,7 +380,7 @@ class AwsGatewayImpl implements AwsGateway {
             for (int i = 0; i < instances.size(); i++) {
                 updateInstanceAttributes(instances.get(i), awsInstances.get(i));
             }
-        }catch (SdkClientException e) {
+        }catch (Exception e) {
             throw new AwsGatewayException(e.getMessage());
         }
 
