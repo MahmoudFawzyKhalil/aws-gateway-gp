@@ -9,8 +9,11 @@ import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.service.management.IntakeManagement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,6 +30,7 @@ public class IntakeController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INTAKES.name())")
     public ResponseEntity<?> getIntakes(){
         List<Intake> intakes = intakeManagement.getAllIntakes();
         List<IntakeResponse> intakeResponses =  mapper.mapFromListOfIntakesToListOfIntakeResponses(intakes);
@@ -39,6 +43,7 @@ public class IntakeController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INTAKES.name())")
     public ResponseEntity<IntakeResponse> getIntakeById(@PathVariable int id){
         Intake intake = intakeManagement.getIntakeById(id);
         return new ResponseEntity<>(mapper.mapFromIntakeToIntakeResponse(intake),HttpStatus.OK);
@@ -46,14 +51,16 @@ public class IntakeController {
 
 
     @PostMapping
-    public ResponseEntity<IntakeResponse> createIntake( @RequestBody IntakeRequest intakeRequest){
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INTAKES.name())")
+    public ResponseEntity<IntakeResponse> createIntake( @Valid @RequestBody IntakeRequest intakeRequest){
         Intake intake = intakeManagement.createIntake( mapper.mapFromIntakeRequestToIntake( intakeRequest )  );
         return new ResponseEntity<>(mapper.mapFromIntakeToIntakeResponse(intake),HttpStatus.CREATED);
     }
 
 
     @PutMapping("/{id}")
-    public ResponseEntity<IntakeResponse> updateIntake (@PathVariable int id , @RequestBody IntakePutRequest intakeRequest){
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INTAKES.name())")
+    public ResponseEntity<IntakeResponse> updateIntake (@PathVariable int id , @Valid @RequestBody IntakePutRequest intakeRequest){
         Intake intake = intakeManagement.updateIntake( mapper.mapFromIntakePutRequestToIntake( id, intakeRequest ) );
         return new ResponseEntity<>(mapper.mapFromIntakeToIntakeResponse( intake ),HttpStatus.OK);
     }
@@ -61,6 +68,7 @@ public class IntakeController {
 
 
     @GetMapping("{intakeId}/tracks")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INTAKES.name())")
     public ResponseEntity<TrackResponseList> getTrackByIntakeId( @PathVariable int intakeId){
         List<Track> tracks = intakeManagement.getTrackByIntakeId( intakeId );
         List<TrackResponse> tracksResponse = new ArrayList<>();
@@ -69,13 +77,5 @@ public class IntakeController {
         return new ResponseEntity<>(  trackResponseList  , HttpStatus.OK);
     }
 
-    // TODO: 6/20/2022 add in Dao 
-    
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity deleteIntake(@PathVariable int id){
-//        Intake intake = intakeManagement.deleteIntake(id);
-//        return new ResponseEntity<>(true,HttpStatus.OK);
-//
-//    }
 
 }

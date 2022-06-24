@@ -12,5 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrainingProgramPutRequest {
+    @NotBlank(message = "must not be empty or null")
     private String name;
 }
