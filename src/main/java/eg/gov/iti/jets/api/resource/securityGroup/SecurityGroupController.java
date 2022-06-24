@@ -1,6 +1,7 @@
 package eg.gov.iti.jets.api.resource.securityGroup;
 
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.SecurityGroupAws;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -33,6 +34,9 @@ public class SecurityGroupController {
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
     ResponseEntity<?> getSecurityGroups( @PathVariable String vpcId){
         List<SecurityGroup> securityGroups= securityGroupAws.describeSecurityGroupsForVpc(vpcId);
+        if(securityGroups.isEmpty()){
+            throw  new ResourceNotFoundException( "Wrong vpc id" );
+        }
         List<SecurityGroupResponse> securityGroupResponseList = securityGroups.stream().map( securityGroupMapper::mapFromSecurityGroupToSecurityGroupResponse ).collect( Collectors.toList() );
         SecurityGroupObjectResponse securityGroupObjectResponse = new SecurityGroupObjectResponse( securityGroupResponseList );
         return new ResponseEntity<>( securityGroupObjectResponse , HttpStatus.OK );
