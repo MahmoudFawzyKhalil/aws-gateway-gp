@@ -13,5 +13,4 @@ import java.util.List;
 @AllArgsConstructor
 public class TrainingProgramPutRequest {
     private String name;
-    private Integer branchId;
 }
