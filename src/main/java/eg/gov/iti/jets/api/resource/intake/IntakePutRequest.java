@@ -11,5 +11,5 @@ import lombok.Setter;
 public class IntakePutRequest {
     private String intakeDescription;
     private String intakeName;
-    private Integer trainingProgramId;
+
 }
