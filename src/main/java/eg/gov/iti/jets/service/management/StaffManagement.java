@@ -17,7 +17,7 @@ public interface StaffManagement {
 
     User getStaffById(int id);
 
-    User updateStaff(User user);
+    void updateStaff(User user);
 
 
 

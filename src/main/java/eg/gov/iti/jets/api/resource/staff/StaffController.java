@@ -43,9 +43,17 @@ public class StaffController {
         return new ResponseEntity("Staff Inserted Successfully", HttpStatus.CREATED);
     }
 
-    //    @PutMapping
-//    public ResponseEntity updateStaff(@RequestBody StaffUpdateRequest staffUpdateRequest){
-//            staffManagement.updateStaff(mapper.mapFromStaffUpdateRequestToUser(staffUpdateRequest));
-//        return ResponseEntity.ok().build();
-//    }
+        @PutMapping("{id}")
+    public ResponseEntity updateStaff(@RequestBody StaffUpdateRequest staffUpdateRequest,@PathVariable int id){
+            System.out.println("hello from update method");
+            staffManagement.updateStaff(mapper.mapFromStaffUpdateRequestToUser(staffUpdateRequest,id));
+        return new ResponseEntity("Staff updated Successfully", HttpStatus.OK);
+    }
+//@PutMapping("{id}")
+//public ResponseEntity updateStaff(@PathVariable int id){
+//    System.out.println("hello from update method");
+//    staffManagement.updateStaff(mapper.mapFromStaffUpdateRequestToUser(id));
+//    return new ResponseEntity("Staff updated Successfully", HttpStatus.OK);
+//}
+
 }

@@ -10,6 +10,6 @@ import java.util.List;
 @AllArgsConstructor
 public class StaffUpdateRequest {
 
-    private String roleId;
+    private String rolename;
     private List<TrackType> tracks;
 }

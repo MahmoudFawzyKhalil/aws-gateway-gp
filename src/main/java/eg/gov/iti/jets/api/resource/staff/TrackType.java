@@ -7,6 +7,6 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrackType {
+    private Integer id;
 
-    private String trackname;
 }
