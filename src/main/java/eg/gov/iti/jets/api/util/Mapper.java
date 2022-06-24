@@ -277,8 +277,6 @@ public class Mapper {
 
     public TrainingProgram mapFromTrainingProgramPutRequestToTrainingProgram( TrainingProgramPutRequest trainingProgramPutRequest, int id ) {
         TrainingProgram trainingProgram = mapperUtilForApi.getTrainingProgramById( id );
-        Branch branch = mapperUtilForApi.getBranchById( trainingProgramPutRequest.getBranchId() );
-        trainingProgram.setBranch( branch );
         trainingProgram.setName( trainingProgramPutRequest.getName() );
 
         return trainingProgram;
