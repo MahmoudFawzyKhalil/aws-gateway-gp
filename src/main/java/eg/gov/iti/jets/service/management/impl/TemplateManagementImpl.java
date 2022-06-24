@@ -12,6 +12,7 @@ import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.persistence.entity.aws.*;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.TemplateManagement;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,10 +64,10 @@ public class TemplateManagementImpl implements TemplateManagement {
                 case "TRACK_SUPERVISOR":
                     return getTemplateResponseList( id );
                 default:
-                    throw new IllegalStateException( "Unexpected value: " + role );
+                    throw new ResourceNotFoundException( "Unexpected value: " + role );
             }
         }else {
-            throw new IllegalStateException( "Unexpected value: " );
+            throw new ResourceNotFoundException( "Unexpected value: " );
         }
     }
 
