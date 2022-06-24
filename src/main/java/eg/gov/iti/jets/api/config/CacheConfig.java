@@ -18,7 +18,7 @@ import java.util.Map;
 public class CacheConfig {
 
     public final static String BLACKLIST_CACHE_NAME = "jwt-black-list";
-    @Value("${auth.jwt.duration}")
+    @Value("${auth.jwt.ttl}")
     private int tokenDuration;
 
     private final Long DAY_TO_MILLISECONDS = 86_400_000L;
