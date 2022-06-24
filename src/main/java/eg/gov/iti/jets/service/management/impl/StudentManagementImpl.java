@@ -80,7 +80,7 @@ public class StudentManagementImpl implements UserDetailsService, StudentManagem
                 userDao.save(user);
             }
             catch (Exception e) {
-                throw new ResourceExistException("There is duplicate in Student [ "+ user.getUsername());
+                throw new ResourceExistException("There is duplicate in Student "+ user.getUsername());
             }
         }
     }

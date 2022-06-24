@@ -24,6 +24,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,6 +49,12 @@ public class UserManagementImpl implements UserManagement {
     }
 
     @Override
+    public User getUserById(int id) {
+        return userDao.findById(id).orElseThrow(() ->
+                new ResourceNotFoundException("User with id " + id + " , not found"));
+    }
+
+    @Override
     public String authenticate(String username, String password){
         try {
             authenticationManager.authenticate(
@@ -57,6 +64,11 @@ public class UserManagementImpl implements UserManagement {
         }
         UserAdapter userDetails = customUserDetailsManager.loadUserByUsername(username);
         return jwtUtil.generateToken(userDetails);
+    }
+
+    @Override
+    public void updateUserPassword(User user) {
+        userDao.update(user);
     }
 
 }

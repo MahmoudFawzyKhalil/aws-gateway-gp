@@ -20,6 +20,8 @@ import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramPutRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
+import eg.gov.iti.jets.api.resource.user.UserPasswordResponse;
+import eg.gov.iti.jets.api.resource.user.UserPutRequest;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
@@ -324,6 +326,18 @@ public class Mapper {
             studentList.add(student);
         }
         return studentList;
+    }
+
+    public User mapFromUserPutRequestToUser(int id, UserPutRequest userPutRequest){
+       User user = mapperUtilForApi.findUserById(id);
+       user.setPassword(userPutRequest.getPassword());
+       return user;
+    }
+
+    public UserPasswordResponse mapFromUserToUserPasswordResponse(User user ) {
+        UserPasswordResponse response = new UserPasswordResponse();
+        response.setOldPassword( user.getPassword() );
+        return response;
     }
 
 }
