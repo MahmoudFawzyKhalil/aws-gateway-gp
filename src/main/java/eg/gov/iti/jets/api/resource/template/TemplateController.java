@@ -30,7 +30,7 @@ public class TemplateController {
         Boolean template = templateManagement.createTemplate( templateMapper.mapFromTemplateRequestToTemplateConfig( templateRequest, creatorId ) );
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
-    @PostMapping("/instructors")
+    @PutMapping
     @PreAuthorize( "hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())" )
     public ResponseEntity<?> assignTemplate(@Valid @RequestBody TemplateAssignRequest templateAssignRequest){
         templateManagement.assignTemplates(templateAssignRequest);
