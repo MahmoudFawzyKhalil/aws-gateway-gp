@@ -382,41 +382,17 @@ public class Mapper {
         return users;
     }
 
-//    public User mapFromStaffUpdateRequestToUser(StaffUpdateRequest staffUpdateRequest,int id) {
-//        User user=new User();
-//        user.setId(id);
-//        user.setUsername("hamadaaaa");
-////        Role role=mapperUtilForApi.getRole(staffUpdateRequest.getRolename());
-////        user.setRole(role);
-//      //  user.setTracks(mapFromTrackTypeToTrack(staffUpdateRequest.getTracks()));
-////        user.setTracks(null);
-//        return user;
-//
-//    }
-public User mapFromStaffUpdateRequestToUser(StaffUpdateRequest staffUpdateRequest,int id) {
-    User user = mapperUtilForApi.findUserById(id);
-   // user.setUsername("hamadaaaa");
+    public User mapFromStaffUpdateRequestToUser(StaffUpdateRequest staffUpdateRequest,int id) {
+        User user = mapperUtilForApi.findUserById(id);
         Role role=mapperUtilForApi.getRole(staffUpdateRequest.getRolename());
         user.setRole(role);
-        List<Track> tracks=new ArrayList<>();
-        for(TrackType trackType:staffUpdateRequest.getTracks()){
-            Track track=mapperUtilForApi.getTrackById(trackType.getId());
-            tracks.add(track);
-        }
-      user.setTracks(tracks);
-    System.out.println("////////////////////////////////");
-   // System.out.println("+++++++++++++++++++"+staffUpdateRequest.getTracks().get(0).getTrackname());
-    System.out.println(user.getTracks().get(0).getName());
-    System.out.println("////////////////////////////////");
-    return user;
+        return user;
+    }
 
-}
     public List<Track> mapFromTrackTypeToTrack(List<TrackType> trackTypes){
         List<Track> tracks=new ArrayList<>();
         for(TrackType trackType:trackTypes){
-            Track track=new Track();
-          //  track.setName(trackType.getTrackname());
-            track.setId(trackType.getId());
+            Track track = mapperUtilForApi.getTrackById(trackType.getId());
             tracks.add(track);
         }
         return tracks;

@@ -1,7 +1,6 @@
 package eg.gov.iti.jets.api.resource.staff;
 
-import eg.gov.iti.jets.api.resource.student.StudentResponse;
-import eg.gov.iti.jets.api.resource.student.StudentResponseList;
+import eg.gov.iti.jets.service.management.TrackManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.User;
@@ -17,9 +16,11 @@ import java.util.List;
 @RequestMapping("/api/staff")
 public class StaffController {
     private final StaffManagement staffManagement;
+    private final TrackManagement trackManagement;
     private final Mapper mapper;
-    public StaffController(StaffManagement staffManagement,Mapper mapper) {
+    public StaffController(StaffManagement staffManagement,TrackManagement trackManagement,Mapper mapper) {
         this.staffManagement = staffManagement;
+        this.trackManagement=trackManagement;
         this.mapper=mapper;
     }
 
@@ -43,17 +44,13 @@ public class StaffController {
         return new ResponseEntity("Staff Inserted Successfully", HttpStatus.CREATED);
     }
 
-        @PutMapping("{id}")
+    @PutMapping("{id}")
     public ResponseEntity updateStaff(@RequestBody StaffUpdateRequest staffUpdateRequest,@PathVariable int id){
-            System.out.println("hello from update method");
-            staffManagement.updateStaff(mapper.mapFromStaffUpdateRequestToUser(staffUpdateRequest,id));
+        System.out.println("controller ============= " + id);
+        System.out.println(staffUpdateRequest.getRolename());
+        trackManagement.updateTracks(mapper.mapFromTrackTypeToTrack(staffUpdateRequest.getTracks()));
+        staffManagement.updateStaff(mapper.mapFromStaffUpdateRequestToUser(staffUpdateRequest,id));
         return new ResponseEntity("Staff updated Successfully", HttpStatus.OK);
     }
-//@PutMapping("{id}")
-//public ResponseEntity updateStaff(@PathVariable int id){
-//    System.out.println("hello from update method");
-//    staffManagement.updateStaff(mapper.mapFromStaffUpdateRequestToUser(id));
-//    return new ResponseEntity("Staff updated Successfully", HttpStatus.OK);
-//}
 
 }

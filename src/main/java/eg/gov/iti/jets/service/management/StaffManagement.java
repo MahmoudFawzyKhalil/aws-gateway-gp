@@ -7,7 +7,6 @@ import java.util.List;
 public interface StaffManagement {
 
     //get all staff
-    //create staff
     //create bulk of staff
     //update
 
