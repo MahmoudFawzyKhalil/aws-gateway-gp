@@ -1,6 +1,6 @@
 package eg.gov.iti.jets.api.util;
 
-import eg.gov.iti.jets.service.model.UserAdapter;
+import eg.gov.iti.jets.service.util.model.UserAdapter;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
