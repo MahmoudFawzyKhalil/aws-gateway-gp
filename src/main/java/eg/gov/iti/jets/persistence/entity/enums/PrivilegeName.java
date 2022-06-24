@@ -15,6 +15,7 @@ public enum PrivilegeName {
     MANAGE_SUPERVISORS,
     MANAGE_TRAINING_MANAGERS,
     MANAGE_BRANCHES,
+    MANAGE_USERS,
 
     MANAGE_ROLES,
     MANAGE_PRIVILEGES,
@@ -32,7 +33,7 @@ public enum PrivilegeName {
     VIEW_BRANCHES,
     VIEW_TRAINING_PROGRAMS,
     VIEW_INTAKES,
-    VIEW_TRACKS
+    VIEW_TRACKS,
 
 
 }

@@ -22,7 +22,9 @@ public class UserController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_USERS.name())")
     public ResponseEntity<UserResponseList> getUsers(){
+        System.out.println("hey");
         List<User> users = userManagement.getAllUsers();
         List<UserResponse> userResponses =  mapper.mapFromListOfUsersToListOfUserResponses(users);
         UserResponseList userResponseList = new UserResponseList();

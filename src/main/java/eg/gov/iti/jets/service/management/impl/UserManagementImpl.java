@@ -46,6 +46,7 @@ public class UserManagementImpl implements UserManagement {
             throw new RuntimeException("Incorrect username or password", e);
         }
         UserAdapter userDetails = customUserDetailsManager.loadUserByUsername(username);
+        System.out.println( userDetails.getAuthorities() );
         return jwtUtil.generateToken(userDetails);
     }
 
