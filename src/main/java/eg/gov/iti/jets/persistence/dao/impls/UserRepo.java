@@ -58,4 +58,7 @@ interface UserRepo extends JpaRepository<User, Integer> {
 
 
     <C> List<C>  findAllByTemplateConfigurations( User user, Class<C> projection);
+
+    @Query("select U from User U join Role r where r.name not LIKE :roleName")
+    List<User> findAllExceptRoleName(String roleName);
 }
