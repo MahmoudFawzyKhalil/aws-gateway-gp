@@ -2,7 +2,7 @@ package eg.gov.iti.jets.api.exceptionhandler;
 
 import eg.gov.iti.jets.service.exception.AwsGatewayException;
 import eg.gov.iti.jets.service.exception.ResourceConstraintsViolationException;
-import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +27,7 @@ public class GlobalExceptionAdvisor {
         return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler({ResourceExistException.class, ResourceConstraintsViolationException.class})
+    @ExceptionHandler({ResourceAlreadyExistException.class, ResourceConstraintsViolationException.class})
     public ResponseEntity<?> handleException(Exception exception) {
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setTimestamp(new Date());
@@ -62,4 +62,14 @@ public class GlobalExceptionAdvisor {
         errorResponse.setError(HttpStatus.BAD_REQUEST.getReasonPhrase());
         return new ResponseEntity<>(errorResponse, HttpStatus.BAD_REQUEST);
     }
+
+//    @ExceptionHandler(AccessDeniedException.class)
+//    public  ResponseEntity<?> handleException(AccessDeniedException e) {
+//        ErrorResponse errorResponse = new ErrorResponse();
+//        errorResponse.setTimestamp(new Date());
+//        errorResponse.setCode(403);
+//        errorResponse.setMsg(e.getMessage());
+//        errorResponse.setError(HttpStatus.FORBIDDEN.getReasonPhrase());
+//        return new ResponseEntity<>(errorResponse, HttpStatus.FORBIDDEN);
+//    }
 }

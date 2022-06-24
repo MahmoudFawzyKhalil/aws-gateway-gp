@@ -33,7 +33,7 @@ public class BranchController {
 
 
     @GetMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INSTRUCTORS())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INSTRUCTORS.name())")
     public ResponseEntity<?> getBranches(){
         List<Branch> branches = branchManagement.getAllBranches();
         List<BranchResponse> branchResponses =  mapper.mapFromListOfBranchToListOfBranchResponses(branches);

@@ -4,13 +4,12 @@ import eg.gov.iti.jets.persistence.dao.RoleDao;
 import eg.gov.iti.jets.persistence.entity.Privilege;
 import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.service.exception.ResourceConstraintsViolationException;
-import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.RoleManagement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -53,7 +52,7 @@ public class RoleManagementImpl implements RoleManagement {
             return roleDao.update(role);
         }catch (Exception e) {
             e.printStackTrace();
-            throw new ResourceExistException("Could not update role with id " + role.getId());
+            throw new ResourceAlreadyExistException("Could not update role with id " + role.getId());
         }
     }
 }

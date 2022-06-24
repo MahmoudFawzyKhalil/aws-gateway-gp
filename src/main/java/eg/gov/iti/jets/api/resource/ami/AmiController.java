@@ -32,10 +32,8 @@ public class AmiController {
 
     @PostMapping()
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
-    public ResponseEntity<?> getAmi( @RequestBody AmiRequest amiRequest){
-        // TODO: 6/17/2022 if bad request
+    public ResponseEntity<?> getAmi(@Valid @RequestBody AmiRequest amiRequest){
         Ami ami = amiAws.describeAmi( amiRequest.getAmiId() );
-        // TODO: 6/17/2022 Error here if Optional return null
         AmiResponse amiResponse = amiMapper.mapFromAmiToAmiResponse( ami );
         return new ResponseEntity<>(amiResponse, HttpStatus.OK);
     }
