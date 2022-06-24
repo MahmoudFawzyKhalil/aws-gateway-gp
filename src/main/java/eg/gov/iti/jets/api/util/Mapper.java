@@ -134,8 +134,6 @@ public class Mapper {
 
     public Intake mapFromIntakePutRequestToIntake( int id, IntakePutRequest intakePutRequest ) {
         Intake intake = mapperUtilForApi.getIntakeById( id );
-        TrainingProgram trainingProgram = mapperUtilForApi.getTrainingProgramById( intakePutRequest.getTrainingProgramId() );
-        intake.setTrainingProgram( trainingProgram );
         intake.setDescription( intakePutRequest.getIntakeDescription() );
         intake.setName( intakePutRequest.getIntakeName() );
         return intake;
