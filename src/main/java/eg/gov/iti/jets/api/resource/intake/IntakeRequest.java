@@ -5,13 +5,17 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 
 public class IntakeRequest {
+    @NotBlank(message = "must not be empty or null")
     private String intakeDescription;
+    @NotBlank(message = "must not be empty or null")
     private String intakeName;
     private Integer trainingProgramId;
 }
