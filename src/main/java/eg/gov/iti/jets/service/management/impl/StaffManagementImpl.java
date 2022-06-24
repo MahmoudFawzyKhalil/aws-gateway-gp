@@ -24,13 +24,11 @@ public class StaffManagementImpl implements StaffManagement {
     @Override
     public void createStaff(List<User> staff){
         for (User user:staff) {
-            try {
+
                 System.out.println("management :: "+user.getUsername());
+                System.out.println();
                 userDao.save(user);
-            }
-            catch (Exception e) {
-                throw new ResourceExistException("There is duplicate in Staff "+ user.getUsername());
-            }
+
         }
     }
 

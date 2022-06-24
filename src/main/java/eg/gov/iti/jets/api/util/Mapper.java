@@ -369,8 +369,7 @@ public class Mapper {
         User manager = new User();
         manager.setId(currentLoggedUserId);
 
-        Role role = new Role();
-        role.setName("INSTRUCTOR");
+        Role role = mapperUtilForApi.getRole("INSTRUCTOR");
 
         List<StaffRequest> requests =staffRequests.getStaffRequests();
         for(StaffRequest staffRequest : requests){
