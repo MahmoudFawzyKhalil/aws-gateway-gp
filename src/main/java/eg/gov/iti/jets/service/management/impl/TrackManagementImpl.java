@@ -1,9 +1,9 @@
 package eg.gov.iti.jets.service.management.impl;
 
-import eg.gov.iti.jets.persistence.dao.IntakeDao;
 import eg.gov.iti.jets.persistence.dao.TrackDao;
+import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.*;
-import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.TrackManagement;
 import lombok.RequiredArgsConstructor;
@@ -20,13 +20,16 @@ public class TrackManagementImpl implements TrackManagement {
     @Autowired
     TrackDao trackDao;
 
+    @Autowired
+    UserDao userDao;
+
+
     @Override
     public Track createTrack(Track track) {
-        try{
+        try {
             return trackDao.save(track);
-        }
-        catch (Exception e) {
-            throw new ResourceExistException("Track" + track.getName() + ", is already exist!");
+        } catch (Exception e) {
+            throw new ResourceAlreadyExistException("Track" + track.getName() + ", is already exist!");
         }
     }
 
@@ -35,8 +38,7 @@ public class TrackManagementImpl implements TrackManagement {
     public Track updateTrack(Track track) {
         try {
             return trackDao.update(track);
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             throw new ResourceNotFoundException("Could not update track with id ");
         }
     }
@@ -49,8 +51,14 @@ public class TrackManagementImpl implements TrackManagement {
 
 
     @Override
-    public Track getTrackById(Integer id ) {
-        return trackDao.findById(id).orElseThrow(()->new ResourceNotFoundException("Track with id " + id + ", is not found"));
+    public Track getTrackById(Integer id) {
+        return trackDao.findById(id).orElseThrow(() -> new ResourceNotFoundException("Track with id " + id + ", is not found"));
+    }
+
+    @Override
+    public List<User> getUsersByTrackId(int trackId) {
+        Optional<Track> track = trackDao.findById(trackId);
+        return userDao.findAllUsersByTrack(track.orElseThrow());
     }
 
 

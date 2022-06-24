@@ -33,7 +33,7 @@ public class BranchController {
 
 
     @GetMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INSTRUCTORS.name())")
     public ResponseEntity<?> getBranches(){
         List<Branch> branches = branchManagement.getAllBranches();
         List<BranchResponse> branchResponses =  mapper.mapFromListOfBranchToListOfBranchResponses(branches);
@@ -55,7 +55,7 @@ public class BranchController {
 //    }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INSTRUCTORS.name())")
     public ResponseEntity<?> getBranchById(@PathVariable("id") int id){
         return new ResponseEntity<>(mapper.mapFromBranchToBranchResponse(branchManagement.getBranchById(id)), HttpStatus.OK);
     }
@@ -87,7 +87,7 @@ public class BranchController {
     }
 
     @GetMapping("{branchId}/trainingPrograms")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INSTRUCTORS.name())")
     public ResponseEntity<?> getTrainingProgramsByBranchId( @PathVariable int branchId){
         List<TrainingProgram> trainingProgramByBranchId = branchManagement.getTrainingProgramByBranchId( branchId );
         List<TrainingProgramResponse> trainingProgramResponse = new ArrayList<>();

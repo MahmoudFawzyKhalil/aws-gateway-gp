@@ -19,18 +19,20 @@ import java.time.LocalDateTime;
 public class InstanceLogs {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
     @ManyToOne
     @JoinColumn(name = "instance_id", nullable = false)
-    Instance instance;
+    private Instance instance;
     @Column(name = "date_time", nullable = false)
-    LocalDateTime dateTime;
+    private LocalDateTime dateTime;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    UserAction action;
+    private UserAction action;
 
     @ManyToOne
     @JoinColumn(name = "action_maker_id", nullable = false)
-    User actionMaker;
+    private User actionMaker;
+
+
 }

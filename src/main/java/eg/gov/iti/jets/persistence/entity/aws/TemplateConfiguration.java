@@ -28,7 +28,7 @@ public class TemplateConfiguration {
     @Column(name = "instance_type", nullable = false)
     private String instanceType;
 
-    @ManyToOne(fetch = FetchType.LAZY )
+    @ManyToOne(fetch = FetchType.EAGER )
     @JoinColumn(name = "creator_id", nullable = false)
     private User creator; // super admin or track supervisor
 

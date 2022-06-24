@@ -5,6 +5,9 @@ import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakePutRequest;
 import eg.gov.iti.jets.api.resource.role.*;
+import eg.gov.iti.jets.api.resource.student.StudentListRequest;
+import eg.gov.iti.jets.api.resource.student.StudentResponse;
+import eg.gov.iti.jets.api.resource.student.StudentRequest;
 import eg.gov.iti.jets.api.resource.subnet.SubnetObjectResponse;
 import eg.gov.iti.jets.api.resource.subnet.SubnetResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakeRequest;
@@ -17,7 +20,6 @@ import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramPutRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
-import eg.gov.iti.jets.api.resource.user.UpdateUserRequest;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
@@ -25,12 +27,12 @@ import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
-import eg.gov.iti.jets.api.resource.user.CreateUserRequest;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Component
@@ -38,6 +40,32 @@ public class Mapper {
     @Autowired
     private MapperUtilForApi mapperUtilForApi;
 
+    public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest, int id ) {
+        try {
+            Branch branch = mapperUtilForApi.getBranchById( id );
+            branch.setAddress( branchPutRequest.getAddress() );
+            branch.setName( branchPutRequest.getName() );
+            if ( branchPutRequest.isBranchStatus() ) {
+                branch.setStatus( BranchStatus.ACTIVE );
+            } else {
+                branch.setStatus( BranchStatus.DE_ACTIVE );
+            }
+            return branch;
+        } catch ( Exception e ) {
+            throw new ResourceNotFoundException( "Could not update branch with id " + id + " because it is not found" );
+        }
+
+    }
+
+    public Branch mapFromBranchPatchRequestToBranch( Boolean branchStatus, int id ) {
+        Branch branch = mapperUtilForApi.getBranchById( id );
+        if ( branchStatus ) {
+            branch.setStatus( BranchStatus.ACTIVE );
+        } else {
+            branch.setStatus( BranchStatus.DE_ACTIVE );
+        }
+        return branch;
+    }
 
     public Branch mapFromBranchRequestToBranch( BranchRequest branchRequest ) {
         Branch branch = new Branch();
@@ -145,6 +173,8 @@ public class Mapper {
         return trackResponses;
     }
 
+
+
     public Track mapFromTrackPutRequestToTrack( TrackPutRequest trackPutRequest, int id ) {
         try {
             Track track = mapperUtilForApi.getTrackById( id );
@@ -193,7 +223,7 @@ public class Mapper {
         return privilege;
     }
 
-    public Role roleRequestToRole( RoleRequest roleRequest ) {
+    public Role roleRequestToRole(RoleRequest roleRequest ) {
         Role role = new Role();
         role.setName( roleRequest.getName() );
         role.setPrivileges(
@@ -231,53 +261,14 @@ public class Mapper {
         return roleResponse;
     }
 
-    public User createUserRequestToUser( CreateUserRequest userRequest ) {
-        User user = new User();
-        user.setEmail( userRequest.getEmail() );
-        user.setUsername( userRequest.getUsername() );
-        user.setPassword( userRequest.getPassword() );
-
-        User manager = new User();
-        manager.setId( userRequest.getManagerId() );
-
-        user.setManager( manager );
-
-        Role role = new Role();
-        role.setId( userRequest.getRole().getId() );
-        role.setName( userRequest.getRole().getName() );
-
-        user.setRole( role );
-        return user;
-    }
-
-    public User updateUserRequestToUser( int id, UpdateUserRequest updateUserRequest ) {
-        User user = new User();
-        user.setId( id );
-        user.setEmail( updateUserRequest.getEmail() );
-        user.setUsername( updateUserRequest.getUsername() );
-        user.setPassword( updateUserRequest.getPassword() );
-
-        User manager = new User();
-        manager.setId( updateUserRequest.getManagerId() );
-
-        user.setManager( manager );
-
-        Role role = new Role();
-        role.setId( updateUserRequest.getRole().getId() );
-        role.setName( updateUserRequest.getRole().getName() );
-
-        user.setRole( role );
-        return user;
-    }
-
     public UserResponse mapFromUserToUserResponse( User user ) {
         UserResponse response = new UserResponse();
         response.setId( user.getId() );
         response.setUsername( user.getUsername() );
         response.setEmail( user.getEmail() );
         response.setRole( user.getRole().getName() );
-        response.setPassword( user.getPassword() );
-        response.setPrivileges( user.getRole().getPrivileges().stream().map( privilege -> privilege.getName().name() ).collect( Collectors.toList() ) );
+        response.setTracks(user.getTracks().stream().map(e -> e.getName()).collect(Collectors.toList()));
+//        response.setPrivileges( user.getRole().getPrivileges().stream().map( privilege -> privilege.getName().name() ).collect( Collectors.toList() ) );
         return response;
     }
 
@@ -295,30 +286,44 @@ public class Mapper {
         return trainingProgram;
     }
 
-    public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest, int id ) {
-        try {
-            Branch branch = mapperUtilForApi.getBranchById( id );
-            branch.setAddress( branchPutRequest.getAddress() );
-            branch.setName( branchPutRequest.getName() );
-            if ( branchPutRequest.isBranchStatus() ) {
-                branch.setStatus( BranchStatus.ACTIVE );
-            } else {
-                branch.setStatus( BranchStatus.DE_ACTIVE );
-            }
-            return branch;
-        } catch ( Exception e ) {
-            throw new ResourceNotFoundException( "Could not update branch with id " + id + " because it is not found" );
-        }
-
+    public List<StudentResponse> mapFromListOfStudentToListOfStudentResponses( List<User> users ) {
+        List<StudentResponse> studentResponses =
+                users.stream().map( e -> this.mapFromStudentToStudentResponse(e) ).collect( Collectors.toList() );
+        return studentResponses;
     }
 
-    public Branch mapFromBranchPatchRequestToBranch( Boolean branchStatus, int id ) {
-        Branch branch = mapperUtilForApi.getBranchById( id );
-        if ( branchStatus ) {
-            branch.setStatus( BranchStatus.ACTIVE );
-        } else {
-            branch.setStatus( BranchStatus.DE_ACTIVE );
-        }
-        return branch;
+    public StudentResponse mapFromStudentToStudentResponse( User user ) {
+        StudentResponse response = new StudentResponse();
+        response.setUserName(user.getUsername());
+        response.setId(user.getId());
+        response.setRole(user.getRole().getName());
+        response.setEmail(user.getEmail());
+        response.setTrack(user.getTracks().get(0).getName());
+        return response;
     }
+
+    public List<User> mapFromStudentListRequestToStudentList(int currentLoggedUserId, StudentListRequest students){
+
+        List<User> studentList = new ArrayList<>();
+        List<Track> tracks =new ArrayList<>();
+        List<StudentRequest> studentsRequests = students.getStudents();
+        System.out.println(studentsRequests);
+        tracks.add(mapperUtilForApi.getTrackById(studentsRequests.get(0).getTrackId()));
+        Role role = mapperUtilForApi.getRole("STUDENT");
+        User manager = new User();
+        manager.setId(currentLoggedUserId);
+
+        for (StudentRequest studentRequest:studentsRequests) {
+            User student = new User();
+            student.setPassword("student");
+            student.setUsername(studentRequest.getUsername());
+            student.setEmail(studentRequest.getEmail());
+            student.setRole(role);
+            student.setTracks(tracks);
+            student.setManager(manager);
+            studentList.add(student);
+        }
+        return studentList;
+    }
+
 }

@@ -3,13 +3,14 @@ package eg.gov.iti.jets.service.management.impl;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.persistence.dao.SecurityGroupDao;
 import eg.gov.iti.jets.persistence.dao.TemplateConfigurationDao;
-import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
-import eg.gov.iti.jets.persistence.entity.aws.Subnet;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
+import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
+import eg.gov.iti.jets.persistence.dao.UserDao;
+import eg.gov.iti.jets.persistence.entity.User;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.TemplateManagement;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,11 +26,14 @@ public class TemplateManagementImpl implements TemplateManagement {
     TemplateConfigurationDao templateConfigurationDao;
     final
     AwsGateway awsGateway;
+    final
+    UserDao userDao;
 
-    public TemplateManagementImpl( TemplateConfigurationDao templateConfigurationDao, AwsGateway awsGateway, SecurityGroupDao securityGroupDao ) {
+    public TemplateManagementImpl( TemplateConfigurationDao templateConfigurationDao, AwsGateway awsGateway, SecurityGroupDao securityGroupDao, UserDao userDao ) {
         this.templateConfigurationDao = templateConfigurationDao;
         this.awsGateway = awsGateway;
         this.securityGroupDao = securityGroupDao;
+        this.userDao = userDao;
     }
 
     public Boolean deleteTemplate( int id ) {
@@ -44,17 +48,43 @@ public class TemplateManagementImpl implements TemplateManagement {
 
     @Override
     public List<TemplateResponse> getTemplateConfigurationById( int id ) {
+        Optional<User> user = userDao.findById( id );
+        if(user.isPresent()){
+            String role = user.get().getRole().getName();
+            switch ( role ){
+                case "INSTRUCTOR":
+                    return getTemplateResponses( id );
+                case "TRACK_SUPERVISOR":
+                    return getTemplateResponseList( id );
+                default:
+                    throw new ResourceNotFoundException( "Unexpected value: " + role );
+            }
+        }else {
+            throw new ResourceNotFoundException( "Unexpected value: " );
+        }
+    }
+
+    private List<TemplateResponse> getTemplateResponses( int id ) {
         List<TemplateResponse> allByInstructor = templateConfigurationDao.findAllByInstructor( id, TemplateResponse.class );
         return allByInstructor;
+    }
+
+    private List<TemplateResponse> getTemplateResponseList( int id ) {
+        List<TemplateResponse> allTemplateCreatedBySuperVisor = templateConfigurationDao.findAllTemplateByCreatorId( id, TemplateResponse.class );
+        return allTemplateCreatedBySuperVisor;
     }
 
     @Transactional
     @Override
     public Boolean createTemplate( TemplateConfiguration templateConfiguration ) {
-        List<SecurityGroup> securityGroups = saveSecurityGroup( templateConfiguration.getSecurityGroups() );
-        templateConfiguration.setSecurityGroups( securityGroups );
-        TemplateConfiguration templateConfigurationAfterSaving = templateConfigurationDao.save( templateConfiguration );
-        return templateConfigurationAfterSaving != null;
+        try {
+            List<SecurityGroup> securityGroups = saveSecurityGroup( templateConfiguration.getSecurityGroups() );
+            templateConfiguration.setSecurityGroups( securityGroups );
+            TemplateConfiguration templateConfigurationAfterSaving = templateConfigurationDao.save( templateConfiguration );
+            return templateConfigurationAfterSaving != null;
+        }catch (Exception e) {
+            throw new ResourceAlreadyExistException("Could not create template!");
+        }
     }
 
     @Transactional
@@ -67,7 +97,6 @@ public class TemplateManagementImpl implements TemplateManagement {
             } else {
                 securityGroupList.add( securityGroupFromDao.get( 0 ) );
             }
-
         }
         return securityGroupList;
     }

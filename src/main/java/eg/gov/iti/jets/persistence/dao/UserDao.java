@@ -29,16 +29,20 @@ public interface UserDao extends GenericCrudDao<User, Integer> {
     //Add the User you want to get all followers bellow it
     List<User> findAllFollowers(User user);
 
-    List<User>getUserByBranchIdAndRoleName(int branchId,String roleName);
+    List<User> getUserByBranchIdAndRoleName(int branchId, String roleName);
 
 
-    List<User>getUserByIntakeIdAndRoleName(int intakeId,String roleName);
+    List<User> getUserByIntakeIdAndRoleName(int intakeId, String roleName);
 
-    List<User>getUserByTrainingIdAndRoleName(int trainingProgramId,String roleName);
+    List<User> getUserByTrainingIdAndRoleName(int trainingProgramId, String roleName);
 
-    Optional<User>getBranchManger(int branchId);
+    Optional<User> getBranchManger(int branchId);
 
 
     <C> List<C> getAllByTrackAndRole(int trackId, String roleName, Class<C> projection);
+
+    <C> List<C> findUsersByRoleName(String userRoll,Class<C> projection);
+
+    Optional<User> findUserByIDAndRoleName(Integer id, String rollName);
 
 }
