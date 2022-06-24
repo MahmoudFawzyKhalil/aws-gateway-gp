@@ -25,7 +25,4 @@ public class TemplateRequest {
     private String instanceType;
     @NotEmpty(message = "must not be null or empty")
     private List<String> securityGroups;
-
-    // TODO: 6/24/2022 mariam 
-    private List<Integer> instructorIds;
 }

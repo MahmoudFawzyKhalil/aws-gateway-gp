@@ -120,6 +120,7 @@ public class App {
                 Role SuperAdmin = roleDao.save(new Role(null, "SUPER_ADMIN", List.of(MANAGE_BRANCHES, MANAGE_TRAINING_MANAGERS, ADD_EDIT_DELETE_BRANCHES, VIEW_BRANCHES, VIEW_TRAINING_PROGRAMS, VIEW_INSTANCE_LOGS)));
 
 
+
                 DummyData.populateStaticDataForSmartBranch(instructorRole, trainingMangerRole, supervisorRole, studentRole, SuperAdmin, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
                 DummyData.populateStaticDataForIsmailiaBranch(instructorRole, trainingMangerRole, supervisorRole, studentRole, SuperAdmin, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao);
                 App.addUserWithAllPriv(roleDao, privilegeDao, userDao);

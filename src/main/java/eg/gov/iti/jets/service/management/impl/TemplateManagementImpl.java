@@ -1,5 +1,6 @@
 package eg.gov.iti.jets.service.management.impl;
 
+import eg.gov.iti.jets.api.resource.template.TemplateAssignRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.persistence.dao.SecurityGroupDao;
 import eg.gov.iti.jets.persistence.dao.TemplateConfigurationDao;
@@ -9,8 +10,8 @@ import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
-import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.TemplateManagement;
+import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,20 +26,29 @@ public class TemplateManagementImpl implements TemplateManagement {
     final
     TemplateConfigurationDao templateConfigurationDao;
     final
-    AwsGateway awsGateway;
-    final
     UserDao userDao;
+    final
+    MapperUtilForApi mapperUtilForApi;
 
-    public TemplateManagementImpl( TemplateConfigurationDao templateConfigurationDao, AwsGateway awsGateway, SecurityGroupDao securityGroupDao, UserDao userDao ) {
-        this.templateConfigurationDao = templateConfigurationDao;
-        this.awsGateway = awsGateway;
+    public TemplateManagementImpl( SecurityGroupDao securityGroupDao, TemplateConfigurationDao templateConfigurationDao, UserDao userDao, MapperUtilForApi mapperUtilForApi ) {
         this.securityGroupDao = securityGroupDao;
+        this.templateConfigurationDao = templateConfigurationDao;
         this.userDao = userDao;
+        this.mapperUtilForApi = mapperUtilForApi;
     }
+
 
     public Boolean deleteTemplate( int id ) {
 
         return null;
+    }
+
+    @Override
+    public void assignTemplates( TemplateAssignRequest templateAssignRequest ) {
+
+        List<TemplateConfiguration> configurations = mapperUtilForApi.getTemplateConfigurationsByIds( templateAssignRequest.getTemplateConfigurationIds() );
+        List<User> instructors = mapperUtilForApi.getUsers( templateAssignRequest.getInstructorIds() );
+        configurations.stream().forEach( c -> {c.setInstructors( instructors ); templateConfigurationDao.update( c );} );
     }
 
 
