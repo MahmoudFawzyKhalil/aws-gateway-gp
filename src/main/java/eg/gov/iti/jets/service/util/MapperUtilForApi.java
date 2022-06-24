@@ -8,6 +8,7 @@ import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class MapperUtilForApi {
     private final KeyPairDao keyPairDao;
     private final TrackDao trackDao;
     private final TemplateConfigurationDao templateConfigurationDao;
+    private final RoleDao roleDao;
 
     public List<SecurityGroup> getSecurityGroups(List<String> ids){
         return  awsGateway.describeSecurityGroupsForIds( ids );
@@ -125,6 +127,7 @@ public class MapperUtilForApi {
 
     }
     public Role getRole(String roleName) {
+
         Optional<Role> role = roleDao.findRoleByName(roleName);
         return role.orElseThrow( ()->new ResourceNotFoundException("Role with name " + roleName + ", is not found") );
     }
