@@ -139,5 +139,10 @@ public class UserDaoImpl implements UserDao {
         return userRepo.findUserByIdAndRole_Name(id, rollName);
     }
 
+    @Override
+    public List<User> findUsersWithoutRoleName(String roleName) {
+        return userRepo.findAllExceptRoleName(roleName);
+    }
+
 
 }
