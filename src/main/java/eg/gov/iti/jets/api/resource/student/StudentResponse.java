@@ -10,9 +10,10 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class StudentResponse {
-   private String track;
+   private Integer id;
    private String userName;
    private String email;
    private String role;
-   private Integer id;
+   private String track;
+
 }

@@ -5,6 +5,10 @@ import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakePutRequest;
 import eg.gov.iti.jets.api.resource.role.*;
+import eg.gov.iti.jets.api.resource.staff.StaffRequest;
+import eg.gov.iti.jets.api.resource.staff.StaffRequestList;
+import eg.gov.iti.jets.api.resource.staff.StaffResponse;
+import eg.gov.iti.jets.api.resource.staff.StaffResponseList;
 import eg.gov.iti.jets.api.resource.student.StudentListRequest;
 import eg.gov.iti.jets.api.resource.student.StudentResponse;
 import eg.gov.iti.jets.api.resource.student.StudentRequest;
@@ -30,6 +34,7 @@ import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -300,7 +305,8 @@ public class Mapper {
         response.setId(user.getId());
         response.setRole(user.getRole().getName());
         response.setEmail(user.getEmail());
-        response.setTrack(user.getTracks().get(0).getName());
+
+        //response.setTrack(user.getTracks().get(0).getName());
         return response;
     }
 
@@ -316,6 +322,8 @@ public class Mapper {
         manager.setId(currentLoggedUserId);
 
         for (StudentRequest studentRequest:studentsRequests) {
+            System.out.println("mapper :: " + studentRequest.getUsername());
+
             User student = new User();
             student.setPassword("student");
             student.setUsername(studentRequest.getUsername());
@@ -340,4 +348,42 @@ public class Mapper {
         return response;
     }
 
+    public List<StaffResponse> mapFromListOfStaffToListOfStaffResponse(List<User> allStaff) {
+        List<StaffResponse> staffList = new ArrayList<>();
+
+        for(User staff : allStaff){
+            StaffResponse response = new StaffResponse();
+            System.out.println(staff.getUsername());
+            response.setId(staff.getId());
+            response.setUsername(staff.getUsername());
+            response.setEmail(staff.getEmail());
+            response.setTracks(staff.getTracks().stream().map(e->e.getName()).collect(Collectors.toList()));
+            staffList.add(response);
+        }
+        return staffList;
+    }
+
+    public List<User> mapFromStaffRequestListToStaffList(int currentLoggedUserId, StaffRequestList staffRequests) {
+        List<User> users = new ArrayList<>();
+
+        User manager = new User();
+        manager.setId(currentLoggedUserId);
+
+        Role role = new Role();
+        role.setName("INSTRUCTOR");
+
+        List<StaffRequest> requests =staffRequests.getStaffRequests();
+        for(StaffRequest staffRequest : requests){
+            System.out.println("mapper :: " + staffRequest.getUsername());
+            User user = new User();
+            user.setUsername(staffRequest.getUsername());
+            user.setEmail(staffRequest.getEmail());
+            user.setPassword("staff");
+            user.setManager(manager);
+            user.setRole(role);
+            users.add(user);
+        }
+
+        return users;
+    }
 }

@@ -13,7 +13,7 @@ public interface StaffManagement {
 
     List<User> getAllStaff();
 
-    User createStaff(User user);
+    void createStaff(List<User> staff);
 
     User getStaffById(int id);
 

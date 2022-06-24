@@ -76,6 +76,7 @@ public class StudentManagementImpl implements UserDetailsService, StudentManagem
 
     public void addStudents(List<User> users){
         for (User user:users) {
+            System.out.println("management :: " + user.getUsername());
             try {
                 userDao.save(user);
             }

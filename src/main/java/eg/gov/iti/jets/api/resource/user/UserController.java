@@ -25,6 +25,7 @@ public class UserController {
     }
 
     @GetMapping
+    //all staff members
     public ResponseEntity<UserResponseList> getUsers(){
         List<User> users = userManagement.getAllUsers();
         List<UserResponse> userResponses =  mapper.mapFromListOfUsersToListOfUserResponses(users);
@@ -37,6 +38,7 @@ public class UserController {
 
 
     @PutMapping
+    //all users
     public ResponseEntity updateUserPassword(@RequestBody UserPutRequest userPutRequest, @AuthenticationPrincipal UserAdapter userAdapter ){
             int currentLoggedUserId = userAdapter.getId();
             userManagement.updateUserPassword(mapper.mapFromUserPutRequestToUser(currentLoggedUserId, userPutRequest));
@@ -44,6 +46,7 @@ public class UserController {
     }
 
     @GetMapping("edit")
+    //all users
     public ResponseEntity<UserPasswordResponse> getUserPassword(@AuthenticationPrincipal UserAdapter userAdapter){
         int currentLoggedUserId = userAdapter.getId();
         User user= userManagement.getUserById(currentLoggedUserId);

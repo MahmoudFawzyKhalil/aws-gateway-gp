@@ -29,6 +29,7 @@ public class StudentController {
     }
 
     @GetMapping
+    //instructor - supervisor
     public ResponseEntity<StudentResponseList> getStudent(){
         List<User> student = studentManagement.getAllStudent();
         List<StudentResponse> studentResponses =  mapper.mapFromListOfStudentToListOfStudentResponses(student);
@@ -41,6 +42,7 @@ public class StudentController {
 
 
     @PostMapping
+    //supervisor - instructor
     public ResponseEntity createStudents( @AuthenticationPrincipal UserAdapter userAdapter ,
                                           @Valid @RequestBody StudentListRequest studentListRequest){
         int currentLoggedUserId = userAdapter.getId();
