@@ -16,7 +16,7 @@ public interface UserManagement  {
 
     List<User> getAllUsers();
 
-//    User getUserById(int id);
+    User getUserById(int id);
 //
 //    List<User> getAllStudentUsers();
 //
@@ -31,4 +31,6 @@ public interface UserManagement  {
     User getUserInfo( Integer userId );
 
 //    List<User> getSupervisorInstructors(User user);
+
+    void updateUserPassword(User user);
 }

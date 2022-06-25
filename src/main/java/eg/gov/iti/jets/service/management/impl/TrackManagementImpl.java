@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -42,6 +43,22 @@ public class TrackManagementImpl implements TrackManagement {
         } catch (Exception e) {
             throw new ResourceNotFoundException("Could not update track with id ");
         }
+    }
+
+    @Override
+    public List<Track> updateTracks(List<Track> tracks) {
+        List<Track> trackList = new ArrayList<>();
+        for(Track track : tracks){
+            System.out.println("track  :: "+ track.getName());
+            try {
+                 trackDao.update(track);
+                 trackList.add(track);
+            } catch (Exception e) {
+                throw new ResourceNotFoundException("Could not assign  track with id [ " + track.getId()
+                                                    + " ] to the user because it's already assigned");
+            }
+        }
+        return trackList;
     }
 
 
