@@ -7,6 +7,7 @@ import eg.gov.iti.jets.api.resource.role.RoleResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.GetTrainingProgramsResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
+import eg.gov.iti.jets.api.resource.user.UserResponseList;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.Branch;
 import eg.gov.iti.jets.persistence.entity.Role;
@@ -79,15 +80,16 @@ public class TrackController {
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INSTRUCTORS.name())")
     public ResponseEntity<?> getUsersByTrackId(@PathVariable int trackId) {
         List<User> usersByTrackId = trackManagement.getUsersByTrackId(trackId);
-        List<UserResponse> trackMembers = usersByTrackId.stream().map(mapper::mapFromUserToUserResponse).collect(Collectors.toList());
-        return new ResponseEntity<>(trackMembers, HttpStatus.OK);
+        List<UserResponse> userResponses = mapper.mapFromListOfUsersToListOfUserResponses( usersByTrackId );
+
+        return new ResponseEntity<>(new UserResponseList(userResponses), HttpStatus.OK);
     }
     @GetMapping("{trackId}/students")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INSTRUCTORS.name())")
     public ResponseEntity<?> getStudentsByTrackId(@PathVariable int trackId) {
         List<User> studentsByTrackId = trackManagement.getStudentsByTrackId(trackId);
-        List<UserResponse> studentsByTrack = studentsByTrackId.stream().map(mapper::mapFromUserToUserResponse).collect(Collectors.toList());
-        return new ResponseEntity<>(studentsByTrack, HttpStatus.OK);
+        List<UserResponse> userResponses = mapper.mapFromListOfUsersToListOfUserResponses( studentsByTrackId );
+        return new ResponseEntity<>(new UserResponseList( userResponses ), HttpStatus.OK);
     }
 
 }
