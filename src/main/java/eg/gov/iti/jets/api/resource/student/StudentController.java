@@ -6,6 +6,7 @@ import eg.gov.iti.jets.service.model.UserAdapter;
 import eg.gov.iti.jets.persistence.entity.User;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +30,7 @@ public class StudentController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INSTRUCTORS.name())")
     public ResponseEntity<StudentResponseList> getStudent(){
         List<User> student = studentManagement.getAllStudent();
         List<StudentResponse> studentResponses =  mapper.mapFromListOfStudentToListOfStudentResponses(student);
@@ -41,6 +43,7 @@ public class StudentController {
 
 
     @PostMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_STUDENTS.name())")
     public ResponseEntity createStudents( @AuthenticationPrincipal UserAdapter userAdapter ,
                                           @Valid @RequestBody StudentListRequest studentListRequest){
         int currentLoggedUserId = userAdapter.getId();
