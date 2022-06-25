@@ -245,14 +245,7 @@ public class Mapper {
         GetRoleResponse getRoleResponse = new GetRoleResponse();
         getRoleResponse.setId( role.getId() );
         getRoleResponse.setName( role.getName() );
-        getRoleResponse.setPrivileges( role.getPrivileges().stream().map(
-                privilege -> {
-                    PrivilegeType privilegeRoleType = new PrivilegeType();
-                    privilegeRoleType.setId( privilege.getId() );
-                    privilegeRoleType.setName( privilege.getName().name() );
-                    return privilegeRoleType;
-                }
-        ).collect( Collectors.toList() ) );
+        getRoleResponse.setPrivileges(  role.getPrivileges().stream().map( (p)-> p.getName() .name()).collect( Collectors.toList() ) );
         return getRoleResponse;
     }
 

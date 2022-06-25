@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import eg.gov.iti.jets.service.model.UserAdapter;
 
 import java.util.List;
 
@@ -25,7 +26,7 @@ public class UserController {
 
     @GetMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_USERS.name())")
-    public ResponseEntity<UserResponseList> getUsers(){
+    public ResponseEntity<?> getUsers(){
         System.out.println("hey");
         List<User> users = userManagement.getAllUsers();
         List<UserResponse> userResponses =  mapper.mapFromListOfUsersToListOfUserResponses(users);
@@ -51,5 +52,13 @@ public class UserController {
         int currentLoggedUserId = userAdapter.getId();
         User user= userManagement.getUserById(currentLoggedUserId);
         return new ResponseEntity<>( mapper.mapFromUserToUserPasswordResponse(user),HttpStatus.OK);
+    }
+
+    @GetMapping("/profile")
+    public  ResponseEntity<?> getUserInfo( @AuthenticationPrincipal UserAdapter userDetails ){
+        Integer userId = userDetails.getId();
+        User user = userManagement.getUserInfo(userId);
+        UserResponse userResponse = mapper.mapFromUserToUserResponse( user );
+        return new ResponseEntity<>(userResponse , HttpStatus.OK);
     }
 }
