@@ -399,4 +399,7 @@ public class Mapper {
         }
         return tracks;
     }
+    public User mapFromUserAdapterToUser(eg.gov.iti.jets.service.model.UserAdapter userAdapter){
+        return mapperUtilForApi.findUserById(userAdapter.getId());
+    }
 }
