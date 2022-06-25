@@ -394,24 +394,18 @@ public class Mapper {
         List<Track> tracks = trackManagementImpl.
                         updateTracks(this.mapFromTrackTypeToTrack(id,staffUpdateRequest.getTracks()));
         user.setTracks(tracks);
-        System.out.println("---------------------"+user.getTracks().get(0).getName());
+
         return user;
     }
 
     public List<Track> mapFromTrackTypeToTrack(int id ,List<TrackType> trackTypes){
         List<Track> tracks=new ArrayList<>();
-        List<User> users = new ArrayList();
         for(TrackType trackType:trackTypes){
             Track track = mapperUtilForApi.getTrackById(trackType.getId());
 
             User user = mapperUtilForApi.getUser(id);
-            users.add(user);
-            users.addAll(track.getUsers());
+            track.getUsers().add(user);
 
-            track.setUsers(users);
-
-            System.out.println("***************"+track.getName());
-            System.out.println("***************"+track.getUsers());
             tracks.add(track);
         }
         return tracks;
