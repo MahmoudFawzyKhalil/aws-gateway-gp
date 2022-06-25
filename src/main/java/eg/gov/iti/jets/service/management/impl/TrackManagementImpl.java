@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -59,6 +60,14 @@ public class TrackManagementImpl implements TrackManagement {
     public List<User> getUsersByTrackId(int trackId) {
         Optional<Track> track = trackDao.findById(trackId);
         return userDao.findAllUsersByTrack(track.orElseThrow());
+    }
+
+    @Override
+    public List<User> getStudentsByTrackId( int trackId ) {
+        Optional<Track> track = trackDao.findById(trackId);
+        List<User> students = userDao.findAllUsersByTrack( track.orElseThrow() ).stream().filter( u -> u.getRole().getName().equals( "STUDENT" ) ).collect( Collectors.toList() );
+
+        return students;
     }
 
 

@@ -21,6 +21,8 @@ public interface TrackManagement {
 
     List<User> getUsersByTrackId(int trackId);
 
+    List<User> getStudentsByTrackId( int trackId );
+
     //Optional<Track> getTrackById(int id);
 
 }
