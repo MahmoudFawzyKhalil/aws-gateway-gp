@@ -16,7 +16,6 @@ import javax.validation.Valid;
 import java.util.Optional;
 
 
-// TODO: 6/17/2022 Ashraf dh ely by3mel el supervisor bs 
 @RestController
 @RequestMapping("/api/ami")
 public class AmiController {

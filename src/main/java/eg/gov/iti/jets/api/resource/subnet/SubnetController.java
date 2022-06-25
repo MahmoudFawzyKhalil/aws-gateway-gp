@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/subnet")
-// TODO: 6/17/2022 ashraf dh el supervisor
 public class SubnetController {
     final
     Mapper mapper;

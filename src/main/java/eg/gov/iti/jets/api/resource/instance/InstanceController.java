@@ -31,7 +31,6 @@ public class InstanceController {
     }
 
 
-    // TODO test to see what gets returned, mahmoud will inform mariem of 200 OK being equivalent to boolean success and that exceptions should get thrown if response is error
     @PostMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_ASSIGN_INSTANCE.name())")
     ResponseEntity<?> createInstance(@Valid @RequestBody InstanceRequest instanceRequest, @AuthenticationPrincipal UserAdapter userDetails) {
