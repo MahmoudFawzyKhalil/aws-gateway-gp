@@ -31,7 +31,7 @@ public class SecurityGroupController {
 
 
     @GetMapping("{vpcId}")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATES.name())")
     ResponseEntity<?> getSecurityGroups( @PathVariable String vpcId){
         List<SecurityGroup> securityGroups= securityGroupAws.describeSecurityGroupsForVpc(vpcId);
         if(securityGroups.isEmpty()){

@@ -30,8 +30,8 @@ public class StudentController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INSTRUCTORS.name())")
-    public ResponseEntity<StudentResponseList> getStudent(){
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_STUDENTS.name())")
+    public ResponseEntity<?> getStudent(){
         List<User> student = studentManagement.getAllStudent();
         List<StudentResponse> studentResponses =  mapper.mapFromListOfStudentToListOfStudentResponses(student);
         StudentResponseList studentResponseList = new StudentResponseList();
@@ -44,11 +44,11 @@ public class StudentController {
 
     @PostMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_STUDENTS.name())")
-    public ResponseEntity createStudents( @AuthenticationPrincipal UserAdapter userAdapter ,
+    public ResponseEntity<?> createStudents( @AuthenticationPrincipal UserAdapter userAdapter ,
                                           @Valid @RequestBody StudentListRequest studentListRequest){
         int currentLoggedUserId = userAdapter.getId();
         studentManagement.addStudents(mapper.mapFromStudentListRequestToStudentList(currentLoggedUserId,studentListRequest));
-        return new ResponseEntity("Students Inserted Successfully",HttpStatus.CREATED);
+        return new ResponseEntity<>("Students Inserted Successfully",HttpStatus.CREATED);
     }
 
 

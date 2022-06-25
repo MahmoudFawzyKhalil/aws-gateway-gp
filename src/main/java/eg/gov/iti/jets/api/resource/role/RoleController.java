@@ -27,7 +27,7 @@ public class RoleController {
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_ROLES.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_ROLES.name())")
     public ResponseEntity<GetAllRolesResponse> getAllRoles() {
         GetAllRolesResponse getRolesResponse = new GetAllRolesResponse();
         getRolesResponse.setRoles(
@@ -39,7 +39,7 @@ public class RoleController {
     }
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_ROLES.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_ROLES.name())")
     public ResponseEntity<GetRoleResponse> getRole(@PathVariable("id") Integer id){
        return new ResponseEntity<>(mapper.roleToGetRoleResponse(roleManagement.getRoleById(id)), HttpStatus.OK);
     }

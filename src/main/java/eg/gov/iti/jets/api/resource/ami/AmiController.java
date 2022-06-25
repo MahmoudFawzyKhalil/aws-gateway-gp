@@ -31,7 +31,7 @@ public class AmiController {
     }
 
     @PostMapping()
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATES.name())")
     public ResponseEntity<?> getAmi(@Valid @RequestBody AmiRequest amiRequest){
         Ami ami = amiAws.describeAmi( amiRequest.getAmiId() );
         AmiResponse amiResponse = amiMapper.mapFromAmiToAmiResponse( ami );

@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/subnet")
-// TODO: 6/17/2022 ashraf dh el supervisor
 public class SubnetController {
     final
     Mapper mapper;
@@ -25,7 +24,7 @@ public class SubnetController {
     }
 
     @GetMapping()
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATES.name())")
     ResponseEntity<?> getAllSubnet(){
         SubnetObjectResponse subnetObjectResponse = mapper.mapFromSubnetToSubnetResponse( subnetAws.getAllSubnets() );
         return new ResponseEntity<>(subnetObjectResponse , HttpStatus.OK) ;

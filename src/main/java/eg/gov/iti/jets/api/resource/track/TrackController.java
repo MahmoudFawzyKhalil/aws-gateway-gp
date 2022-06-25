@@ -40,7 +40,7 @@ public class TrackController {
 
     @GetMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_TRACKS.name())")
-    public ResponseEntity<TrackResponseList> getTracks() {
+    public ResponseEntity<?> getTracks() {
         List<Track> tracks = trackManagement.getAllTracks();
         List<TrackResponse> trackResponses = mapper.mapFromListOfTracksToListOfTrackResponses(tracks);
         TrackResponseList trackResponseList = new TrackResponseList();
@@ -53,13 +53,13 @@ public class TrackController {
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_TRACKS.name())")
-    public ResponseEntity<TrackResponse> getTrackById(@PathVariable("id") int id) {
+    public ResponseEntity<?> getTrackById(@PathVariable("id") int id) {
         return new ResponseEntity<>(mapper.mapFromTrackToTrackResponse(trackManagement.getTrackById(id)), HttpStatus.OK);
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).ADD_EDIT_DELETE_TRACKS.name())")
-    public ResponseEntity<TrackResponse> createTrack(@Valid @RequestBody TrackRequest trackRequest) {
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TRACKS.name())")
+    public ResponseEntity<?> createTrack(@Valid @RequestBody TrackRequest trackRequest) {
         Track track = trackManagement.createTrack(mapper.mapFromTrackRequestToTrack(trackRequest));
 
         TrackResponse trackResponse = mapper.mapFromTrackToTrackResponse(track);
@@ -68,22 +68,23 @@ public class TrackController {
 
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).ADD_EDIT_DELETE_TRACKS.name())")
-    public ResponseEntity<TrackResponse> updateTrack(@PathVariable int id, @Valid @RequestBody TrackPutRequest trackPutRequsert) {
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TRACKS.name())")
+    public ResponseEntity<?> updateTrack(@PathVariable int id, @Valid @RequestBody TrackPutRequest trackPutRequsert) {
         Track track = trackManagement.updateTrack(mapper.mapFromTrackPutRequestToTrack(trackPutRequsert, id));
         TrackResponse trackResponse = mapper.mapFromTrackToTrackResponse(track);
         return new ResponseEntity<>(trackResponse, HttpStatus.OK);
     }
 
     @GetMapping("{trackId}/users")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_TRACKS.name())")
+    // TODO: 6/25/2022 mariam men bystkhdemha
+//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName)..name())")
     public ResponseEntity<?> getUsersByTrackId(@PathVariable int trackId) {
         List<User> usersByTrackId = trackManagement.getUsersByTrackId(trackId);
         List<UserResponse> trackMembers = usersByTrackId.stream().map(mapper::mapFromUserToUserResponse).collect(Collectors.toList());
         return new ResponseEntity<>(trackMembers, HttpStatus.OK);
     }
     @GetMapping("{trackId}/students")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_TRACKS.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_STUDENTS.name())")
     public ResponseEntity<?> getStudentsByTrackId(@PathVariable int trackId) {
         List<User> studentsByTrackId = trackManagement.getStudentsByTrackId(trackId);
         List<UserResponse> studentsByTrack = studentsByTrackId.stream().map(mapper::mapFromUserToUserResponse).collect(Collectors.toList());

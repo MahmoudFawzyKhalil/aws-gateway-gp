@@ -61,7 +61,7 @@ public class BranchController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).ADD_EDIT_DELETE_BRANCHES.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
     public ResponseEntity<?> createBranch(@Valid @RequestBody BranchRequest branchRequest){
         Branch branch = branchManagement.createBranch( mapper.mapFromBranchRequestToBranch( branchRequest ) );
         BranchResponse branchResponse = mapper.mapFromBranchToBranchResponse( branch );
@@ -71,7 +71,7 @@ public class BranchController {
 
 
     @PutMapping("/{id}")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).ADD_EDIT_DELETE_BRANCHES.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
     public ResponseEntity<?> updateBranch (@PathVariable int id , @Valid @RequestBody BranchPutRequest branchPutRequest){
         Branch branch = branchManagement.updateBranch( mapper.mapFromBranchPutRequestToBranch(branchPutRequest , id) );
         BranchResponse branchResponse = mapper.mapFromBranchToBranchResponse( branch );
@@ -79,7 +79,7 @@ public class BranchController {
     }
 
     @PatchMapping  ("/{id}")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).ADD_EDIT_DELETE_BRANCHES.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_BRANCHES.name())")
     public ResponseEntity<?> changeStatus (@PathVariable int id , @RequestParam boolean branchStatus){
         Branch branch = branchManagement.updateBranch( mapper.mapFromBranchPatchRequestToBranch(branchStatus , id) );
         BranchResponse branchResponse = mapper.mapFromBranchToBranchResponse( branch );
@@ -87,7 +87,7 @@ public class BranchController {
     }
 
     @GetMapping("{branchId}/trainingPrograms")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_BRANCHES.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_TRAINING_PROGRAMS.name())")
     public ResponseEntity<?> getTrainingProgramsByBranchId( @PathVariable int branchId){
         List<TrainingProgram> trainingProgramByBranchId = branchManagement.getTrainingProgramByBranchId( branchId );
         List<TrainingProgramResponse> trainingProgramResponse = new ArrayList<>();

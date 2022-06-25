@@ -24,14 +24,14 @@ public class TemplateController {
     }
 
     @PostMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATES.name())")
     public ResponseEntity<?> createTemplate(@Valid @RequestBody TemplateRequest templateRequest, @AuthenticationPrincipal UserAdapter userDetails ) {
         Integer creatorId = userDetails.getId();
         Boolean template = templateManagement.createTemplate( templateMapper.mapFromTemplateRequestToTemplateConfig( templateRequest, creatorId ) );
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
     @PutMapping
-    @PreAuthorize( "hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())" )
+    @PreAuthorize( "hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATES.name())" )
     public ResponseEntity<?> assignTemplate(@Valid @RequestBody TemplateAssignRequest templateAssignRequest){
         templateManagement.assignTemplates(templateAssignRequest);
         return new ResponseEntity<>( HttpStatus.OK );
@@ -39,7 +39,7 @@ public class TemplateController {
 
 
     @GetMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_TEMPLATE.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_TEMPLATES.name())")
     public ResponseEntity<?> getAllTemplates( @AuthenticationPrincipal UserAdapter userDetails ) {
         List<TemplateResponse> templateConfiguration = templateManagement.getTemplateConfigurationById( userDetails.getId() );
         TemplateViewResponse templateViewResponse = new TemplateViewResponse( templateConfiguration );
