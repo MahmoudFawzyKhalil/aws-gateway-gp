@@ -407,7 +407,6 @@ public class Mapper {
             track.setUsers(users);
 
             System.out.println("***************"+track.getName());
-            System.out.println("***************"+track.getUsers());
             tracks.add(track);
         }
         return tracks;
