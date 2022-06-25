@@ -75,13 +75,19 @@ public class TrackController {
         return new ResponseEntity<>(trackResponse, HttpStatus.OK);
     }
 
-    @GetMapping("{trackId}/Users")
+    @GetMapping("{trackId}/users")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INSTRUCTORS.name())")
     public ResponseEntity<?> getUsersByTrackId(@PathVariable int trackId) {
         List<User> usersByTrackId = trackManagement.getUsersByTrackId(trackId);
         List<UserResponse> trackMembers = usersByTrackId.stream().map(mapper::mapFromUserToUserResponse).collect(Collectors.toList());
         return new ResponseEntity<>(trackMembers, HttpStatus.OK);
     }
-
+    @GetMapping("{trackId}/students")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INSTRUCTORS.name())")
+    public ResponseEntity<?> getStudentsByTrackId(@PathVariable int trackId) {
+        List<User> studentsByTrackId = trackManagement.getStudentsByTrackId(trackId);
+        List<UserResponse> studentsByTrack = studentsByTrackId.stream().map(mapper::mapFromUserToUserResponse).collect(Collectors.toList());
+        return new ResponseEntity<>(studentsByTrack, HttpStatus.OK);
+    }
 
 }
