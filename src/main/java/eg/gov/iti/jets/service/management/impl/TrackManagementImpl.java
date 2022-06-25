@@ -54,7 +54,8 @@ public class TrackManagementImpl implements TrackManagement {
                  trackDao.update(track);
                  trackList.add(track);
             } catch (Exception e) {
-                throw new ResourceNotFoundException("Could not update track with id ");
+                throw new ResourceNotFoundException("Could not assign  track with id [ " + track.getId()
+                                                    + " ] to the user because it's already assigned");
             }
         }
         return trackList;
