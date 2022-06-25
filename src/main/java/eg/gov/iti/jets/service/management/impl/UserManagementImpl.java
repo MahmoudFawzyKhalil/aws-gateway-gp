@@ -18,6 +18,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -50,6 +51,12 @@ public class UserManagementImpl implements UserManagement {
         }
         UserAdapter userDetails = customUserDetailsManager.loadUserByUsername(username);
         return jwtUtil.generateToken(userDetails);
+    }
+
+    @Override
+    public User getUserInfo( Integer userId ) {
+        Optional<User> user = userDao.findById( userId );
+        return user.orElseThrow(()-> new ResourceNotFoundException( "This user isn't exist" ));
     }
 
 }

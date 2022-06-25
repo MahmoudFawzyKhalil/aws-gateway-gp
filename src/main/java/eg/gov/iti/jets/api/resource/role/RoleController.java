@@ -52,5 +52,4 @@ public class RoleController {
         role = roleManagement.updateRole(role);
         return new ResponseEntity<>(mapper.roleToRoleResponse(role), HttpStatus.OK);
     }
-
 }
