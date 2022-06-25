@@ -39,7 +39,7 @@ public class TemplateController {
 
 
     @GetMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_TEMPLATES.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_TEMPLATE.name())")
     public ResponseEntity<?> getAllTemplates( @AuthenticationPrincipal UserAdapter userDetails ) {
         List<TemplateResponse> templateConfiguration = templateManagement.getTemplateConfigurationById( userDetails.getId() );
         TemplateViewResponse templateViewResponse = new TemplateViewResponse( templateConfiguration );
