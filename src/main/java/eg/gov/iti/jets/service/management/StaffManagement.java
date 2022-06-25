@@ -18,16 +18,7 @@ public interface StaffManagement {
 
     void updateStaff(User user);
 
-
-
-
-
-
-
-
-
-
-
+    List<User> getAllInstructors(User user);
 
 
     //get by track
