@@ -61,5 +61,13 @@ public class StaffController {
         staffManagement.updateStaff(mapper.mapFromStaffUpdateRequestToUser(staffUpdateRequest, id));
         return new ResponseEntity("Staff updated Successfully", HttpStatus.OK);
     }
+    @GetMapping("/instructors")
+    //just supervisor can access it
+    public ResponseEntity<StaffResponseList> getInstructorsUnderSupervisor(@AuthenticationPrincipal UserAdapter userAdapter){
+
+        List<User> allInstructors = staffManagement.getAllInstructors(mapper.mapFromUserAdapterToUser(userAdapter));
+        List<StaffResponse> staffResponses = mapper.mapFromListOfStaffToListOfStaffResponse(allInstructors);
+        return new ResponseEntity(staffResponses, HttpStatus.OK);
+    }
 
 }
