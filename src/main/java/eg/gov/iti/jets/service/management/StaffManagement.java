@@ -7,28 +7,18 @@ import java.util.List;
 public interface StaffManagement {
 
     //get all staff
-    //create staff
     //create bulk of staff
     //update
 
     List<User> getAllStaff();
 
-    User createStaff(User user);
+    void createStaff(List<User> staff);
 
     User getStaffById(int id);
 
-    User updateStaff(User user);
+    void updateStaff(User user);
 
-
-
-
-
-
-
-
-
-
-
+    List<User> getAllInstructors(User user);
 
 
     //get by track

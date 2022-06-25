@@ -45,4 +45,6 @@ public interface UserDao extends GenericCrudDao<User, Integer> {
 
     Optional<User> findUserByIDAndRoleName(Integer id, String rollName);
 
+    List<User> findUsersWithoutRoleName(String roleName);
+
 }

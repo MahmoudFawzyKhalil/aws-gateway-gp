@@ -14,6 +14,8 @@ public interface TrackManagement {
 
     Track updateTrack( Track track );
 
+    List<Track> updateTracks (List<Track> tracks);
+
     Track getTrackById(Integer id );
 
     List<Track> getAllTracks();

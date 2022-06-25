@@ -140,4 +140,10 @@ public class MapperUtilForApi {
         Optional<Role> role = roleDao.findRoleByName(roleName);
         return role.orElseThrow( ()->new ResourceNotFoundException("Role with name " + roleName + ", is not found") );
     }
+
+    public User findUserById(int id){
+        Optional<User> user =  userDao.findById(id);
+        return user.orElseThrow( ()->new ResourceNotFoundException("User with id " + id + ", is not found") );
+
+    }
 }
