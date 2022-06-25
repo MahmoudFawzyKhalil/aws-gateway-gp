@@ -4,14 +4,18 @@ import eg.gov.iti.jets.api.resource.template.TemplateAssignRequest;
 import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.persistence.dao.SecurityGroupDao;
 import eg.gov.iti.jets.persistence.dao.TemplateConfigurationDao;
+import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
+import eg.gov.iti.jets.service.exception.AwsGatewayException;
 import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
+import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.TemplateManagement;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,6 +33,8 @@ public class TemplateManagementImpl implements TemplateManagement {
     UserDao userDao;
     final
     MapperUtilForApi mapperUtilForApi;
+    @Autowired
+    AwsGateway awsGateway;
 
     public TemplateManagementImpl( SecurityGroupDao securityGroupDao, TemplateConfigurationDao templateConfigurationDao, UserDao userDao, MapperUtilForApi mapperUtilForApi ) {
         this.securityGroupDao = securityGroupDao;
@@ -88,12 +94,13 @@ public class TemplateManagementImpl implements TemplateManagement {
     @Override
     public Boolean createTemplate( TemplateConfiguration templateConfiguration ) {
         try {
+            Optional<Ami> ami = awsGateway.describeAmi( templateConfiguration.getAmiId() );
             List<SecurityGroup> securityGroups = saveSecurityGroup( templateConfiguration.getSecurityGroups() );
             templateConfiguration.setSecurityGroups( securityGroups );
             TemplateConfiguration templateConfigurationAfterSaving = templateConfigurationDao.save( templateConfiguration );
             return templateConfigurationAfterSaving != null;
         }catch (Exception e) {
-            throw new ResourceAlreadyExistException("Could not create template!");
+            throw new AwsGatewayException("There is no AMI-ID like this "+templateConfiguration.getAmiId());
         }
     }
 
