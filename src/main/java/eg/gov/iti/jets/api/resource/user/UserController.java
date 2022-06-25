@@ -61,4 +61,11 @@ public class UserController {
         UserResponse userResponse = mapper.mapFromUserToUserResponse( user );
         return new ResponseEntity<>(userResponse , HttpStatus.OK);
     }
+
+    @GetMapping("/{id}")
+    public  ResponseEntity<?> getUserInfo( @PathVariable int id  ){
+        User user = userManagement.getUserInfo(id);
+        UserResponse userResponse = mapper.mapFromUserToUserResponse( user );
+        return new ResponseEntity<>(userResponse , HttpStatus.OK);
+    }
 }

@@ -23,6 +23,7 @@ import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
 import eg.gov.iti.jets.api.resource.user.UserPasswordResponse;
 import eg.gov.iti.jets.api.resource.user.UserPutRequest;
+import eg.gov.iti.jets.api.resource.user.UserTrackResponse;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
@@ -179,7 +180,6 @@ public class Mapper {
     }
 
 
-
     public Track mapFromTrackPutRequestToTrack( TrackPutRequest trackPutRequest, int id ) {
         try {
             Track track = mapperUtilForApi.getTrackById( id );
@@ -228,7 +228,7 @@ public class Mapper {
         return privilege;
     }
 
-    public Role roleRequestToRole(RoleRequest roleRequest ) {
+    public Role roleRequestToRole( RoleRequest roleRequest ) {
         Role role = new Role();
         role.setName( roleRequest.getName() );
         role.setPrivileges(
@@ -245,7 +245,7 @@ public class Mapper {
         GetRoleResponse getRoleResponse = new GetRoleResponse();
         getRoleResponse.setId( role.getId() );
         getRoleResponse.setName( role.getName() );
-        getRoleResponse.setPrivileges(  role.getPrivileges().stream().map( (p)-> p.getName() .name()).collect( Collectors.toList() ) );
+        getRoleResponse.setPrivileges( role.getPrivileges().stream().map( ( p ) -> p.getName().name() ).collect( Collectors.toList() ) );
         return getRoleResponse;
     }
 
@@ -265,7 +265,13 @@ public class Mapper {
         response.setUsername( user.getUsername() );
         response.setEmail( user.getEmail() );
         response.setRole( user.getRole().getName() );
-        response.setTracks(user.getTracks().stream().map(e -> e.getName()).collect(Collectors.toList()));
+        response.setTracks( user.getTracks().stream().map( t -> {
+                    UserTrackResponse userTrackResponse = new UserTrackResponse();
+                    userTrackResponse.setTrackName( t.getName() );
+                    userTrackResponse.setId( t.getId() );
+                    return userTrackResponse;
+                }
+        ).collect( Collectors.toList() ) );
 //        response.setPrivileges( user.getRole().getPrivileges().stream().map( privilege -> privilege.getName().name() ).collect( Collectors.toList() ) );
         return response;
     }
@@ -284,122 +290,123 @@ public class Mapper {
 
     public List<StudentResponse> mapFromListOfStudentToListOfStudentResponses( List<User> users ) {
         List<StudentResponse> studentResponses =
-                users.stream().map( e -> this.mapFromStudentToStudentResponse(e) ).collect( Collectors.toList() );
+                users.stream().map( e -> this.mapFromStudentToStudentResponse( e ) ).collect( Collectors.toList() );
         return studentResponses;
     }
 
     public StudentResponse mapFromStudentToStudentResponse( User user ) {
         StudentResponse response = new StudentResponse();
-        response.setUserName(user.getUsername());
-        response.setId(user.getId());
-        response.setRole(user.getRole().getName());
-        response.setEmail(user.getEmail());
+        response.setUserName( user.getUsername() );
+        response.setId( user.getId() );
+        response.setRole( user.getRole().getName() );
+        response.setEmail( user.getEmail() );
 
         //response.setTrack(user.getTracks().get(0).getName());
         return response;
     }
 
-    public List<User> mapFromStudentListRequestToStudentList(int currentLoggedUserId, StudentListRequest students){
+    public List<User> mapFromStudentListRequestToStudentList( int currentLoggedUserId, StudentListRequest students ) {
 
         List<User> studentList = new ArrayList<>();
-        List<Track> tracks =new ArrayList<>();
+        List<Track> tracks = new ArrayList<>();
         List<StudentRequest> studentsRequests = students.getStudents();
-        System.out.println(studentsRequests);
-        tracks.add(mapperUtilForApi.getTrackById(studentsRequests.get(0).getTrackId()));
-        Role role = mapperUtilForApi.getRole("STUDENT");
+        System.out.println( studentsRequests );
+        tracks.add( mapperUtilForApi.getTrackById( studentsRequests.get( 0 ).getTrackId() ) );
+        Role role = mapperUtilForApi.getRole( "STUDENT" );
         User manager = new User();
-        manager.setId(currentLoggedUserId);
+        manager.setId( currentLoggedUserId );
 
-        for (StudentRequest studentRequest:studentsRequests) {
-            System.out.println("mapper :: " + studentRequest.getUsername());
+        for ( StudentRequest studentRequest : studentsRequests ) {
+            System.out.println( "mapper :: " + studentRequest.getUsername() );
 
             User student = new User();
-            student.setPassword("student");
-            student.setUsername(studentRequest.getUsername());
-            student.setEmail(studentRequest.getEmail());
-            student.setRole(role);
-            student.setTracks(tracks);
-            student.setManager(manager);
-            studentList.add(student);
+            student.setPassword( "student" );
+            student.setUsername( studentRequest.getUsername() );
+            student.setEmail( studentRequest.getEmail() );
+            student.setRole( role );
+            student.setTracks( tracks );
+            student.setManager( manager );
+            studentList.add( student );
         }
         return studentList;
     }
 
-    public User mapFromUserPutRequestToUser(int id, UserPutRequest userPutRequest){
-       User user = mapperUtilForApi.findUserById(id);
-       user.setPassword(userPutRequest.getPassword());
-       return user;
+    public User mapFromUserPutRequestToUser( int id, UserPutRequest userPutRequest ) {
+        User user = mapperUtilForApi.findUserById( id );
+        user.setPassword( userPutRequest.getPassword() );
+        return user;
     }
 
-    public UserPasswordResponse mapFromUserToUserPasswordResponse(User user ) {
+    public UserPasswordResponse mapFromUserToUserPasswordResponse( User user ) {
         UserPasswordResponse response = new UserPasswordResponse();
         response.setOldPassword( user.getPassword() );
         return response;
     }
 
-    public List<StaffResponse> mapFromListOfStaffToListOfStaffResponse(List<User> allStaff) {
+    public List<StaffResponse> mapFromListOfStaffToListOfStaffResponse( List<User> allStaff ) {
         List<StaffResponse> staffList = new ArrayList<>();
 
-        for(User staff : allStaff){
+        for ( User staff : allStaff ) {
             StaffResponse response = new StaffResponse();
-            System.out.println(staff.getUsername());
-            response.setId(staff.getId());
-            response.setUsername(staff.getUsername());
-            response.setEmail(staff.getEmail());
-            response.setTracks(staff.getTracks().stream().map(e->e.getName()).collect(Collectors.toList()));
-            staffList.add(response);
+            System.out.println( staff.getUsername() );
+            response.setId( staff.getId() );
+            response.setUsername( staff.getUsername() );
+            response.setEmail( staff.getEmail() );
+            response.setTracks( staff.getTracks().stream().map( e -> e.getName() ).collect( Collectors.toList() ) );
+            staffList.add( response );
         }
         return staffList;
     }
 
-    public List<User> mapFromStaffRequestListToStaffList(int currentLoggedUserId, StaffRequestList staffRequests) {
+    public List<User> mapFromStaffRequestListToStaffList( int currentLoggedUserId, StaffRequestList staffRequests ) {
         List<User> users = new ArrayList<>();
 
         User manager = new User();
-        manager.setId(currentLoggedUserId);
+        manager.setId( currentLoggedUserId );
 
-        Role role = mapperUtilForApi.getRole("INSTRUCTOR");
+        Role role = mapperUtilForApi.getRole( "INSTRUCTOR" );
 
-        List<StaffRequest> requests =staffRequests.getStaffRequests();
-        for(StaffRequest staffRequest : requests){
-            System.out.println("mapper :: " + staffRequest.getUsername());
+        List<StaffRequest> requests = staffRequests.getStaffRequests();
+        for ( StaffRequest staffRequest : requests ) {
+            System.out.println( "mapper :: " + staffRequest.getUsername() );
             User user = new User();
-            user.setUsername(staffRequest.getUsername());
-            user.setEmail(staffRequest.getEmail());
-            user.setPassword("staff");
-            user.setManager(manager);
-            user.setRole(role);
-            users.add(user);
+            user.setUsername( staffRequest.getUsername() );
+            user.setEmail( staffRequest.getEmail() );
+            user.setPassword( "staff" );
+            user.setManager( manager );
+            user.setRole( role );
+            users.add( user );
         }
 
         return users;
     }
 
-    public User mapFromStaffUpdateRequestToUser(StaffUpdateRequest staffUpdateRequest,int id) {
-        User user = mapperUtilForApi.findUserById(id);
-        Role role=mapperUtilForApi.getRole(staffUpdateRequest.getRolename());
-        user.setRole(role);
+    public User mapFromStaffUpdateRequestToUser( StaffUpdateRequest staffUpdateRequest, int id ) {
+        User user = mapperUtilForApi.findUserById( id );
+        Role role = mapperUtilForApi.getRole( staffUpdateRequest.getRolename() );
+        user.setRole( role );
 
         List<Track> tracks = trackManagementImpl.
-                        updateTracks(this.mapFromTrackTypeToTrack(id,staffUpdateRequest.getTracks()));
-        user.setTracks(tracks);
+                updateTracks( this.mapFromTrackTypeToTrack( id, staffUpdateRequest.getTracks() ) );
+        user.setTracks( tracks );
 
         return user;
     }
 
-    public List<Track> mapFromTrackTypeToTrack(int id ,List<TrackType> trackTypes){
-        List<Track> tracks=new ArrayList<>();
-        for(TrackType trackType:trackTypes){
-            Track track = mapperUtilForApi.getTrackById(trackType.getId());
+    public List<Track> mapFromTrackTypeToTrack( int id, List<TrackType> trackTypes ) {
+        List<Track> tracks = new ArrayList<>();
+        for ( TrackType trackType : trackTypes ) {
+            Track track = mapperUtilForApi.getTrackById( trackType.getId() );
 
-            User user = mapperUtilForApi.getUser(id);
-            track.getUsers().add(user);
+            User user = mapperUtilForApi.getUser( id );
+            track.getUsers().add( user );
 
-            tracks.add(track);
+            tracks.add( track );
         }
         return tracks;
     }
-    public User mapFromUserAdapterToUser(eg.gov.iti.jets.service.model.UserAdapter userAdapter){
-        return mapperUtilForApi.findUserById(userAdapter.getId());
+
+    public User mapFromUserAdapterToUser( eg.gov.iti.jets.service.model.UserAdapter userAdapter ) {
+        return mapperUtilForApi.findUserById( userAdapter.getId() );
     }
 }
