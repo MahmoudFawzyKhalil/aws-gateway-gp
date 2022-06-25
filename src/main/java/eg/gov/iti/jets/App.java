@@ -26,16 +26,16 @@ public class App {
             Role allRole = roleDao.save( new Role( null, "ALL",
                     List.of( privilegeDao.findByName( PrivilegeName.CREATE_TERMINATE_ASSIGN_INSTANCE ).get(),
                             privilegeDao.findByName( PrivilegeName.MANAGE_TEMPLATE ).get(),
-                            privilegeDao.findByName( PrivilegeName.MANAGE_BRANCHES ).get(),
+//                            privilegeDao.findByName( PrivilegeName.MANAGE_BRANCHES ).get(),
                             privilegeDao.findByName( PrivilegeName.MANAGE_TRAINING_MANAGERS ).get(),
                             privilegeDao.findByName( PrivilegeName.MANAGE_SUPERVISORS ).get(),
-                            privilegeDao.findByName( PrivilegeName.MANAGE_TRACKS ).get(),
-                            privilegeDao.findByName( PrivilegeName.MANAGE_INTAKES ).get(),
-                            privilegeDao.findByName( PrivilegeName.MANAGE_TRAINING_PROGRAMS ).get(),
+//                            privilegeDao.findByName( PrivilegeName.MANAGE_TRACKS ).get(),
+//                            privilegeDao.findByName( PrivilegeName.MANAGE_INTAKES ).get(),
+//                            privilegeDao.findByName( PrivilegeName.MANAGE_TRAINING_PROGRAMS ).get(),
                             privilegeDao.findByName( PrivilegeName.MANAGE_INSTRUCTORS ).get(),
                             privilegeDao.findByName( PrivilegeName.MANAGE_STUDENTS ).get(),
                             privilegeDao.findByName( PrivilegeName.START_STOP_VIEW_INSTANCE ).get(),
-                            privilegeDao.findByName( PrivilegeName.VIEW_TEMPLATES ).get(),
+                            privilegeDao.findByName( PrivilegeName.VIEW_TEMPLATE ).get(),
                             privilegeDao.findByName( PrivilegeName.VIEW_BRANCHES ).get(),
                             privilegeDao.findByName( PrivilegeName.VIEW_INTAKES ).get(),
                             privilegeDao.findByName( PrivilegeName.VIEW_TRACKS ).get(),
@@ -68,47 +68,47 @@ public class App {
 
                 //MANAGE PRIVILEGE
                 Privilege MANAGE_TEMPLATE = new Privilege( null, PrivilegeName.MANAGE_TEMPLATE, null );
-                Privilege MANAGE_BRANCHES = new Privilege( null, PrivilegeName.MANAGE_BRANCHES, null );
-                Privilege MANAGE_TRAINING_MANAGERS = new Privilege( null, PrivilegeName.MANAGE_TRAINING_MANAGERS, null );
-                Privilege MANAGE_SUPERVISORS = new Privilege( null, PrivilegeName.MANAGE_SUPERVISORS, null );
-                Privilege MANAGE_TRACKS = new Privilege( null, PrivilegeName.MANAGE_TRACKS, null );
-                Privilege MANAGE_INTAKES = new Privilege( null, PrivilegeName.MANAGE_INTAKES, null );
-                Privilege MANAGE_TRAINING_PROGRAMS = new Privilege( null, PrivilegeName.MANAGE_TRAINING_PROGRAMS, null );
-                Privilege MANAGE_INSTRUCTORS = new Privilege( null, PrivilegeName.MANAGE_INSTRUCTORS, null );
                 Privilege MANAGE_STUDENTS = new Privilege( null, PrivilegeName.MANAGE_STUDENTS, null );
-
-                Privilege MANAGE_PRIVILEGES = new Privilege( null, PrivilegeName.MANAGE_PRIVILEGES, null );
+                Privilege MANAGE_INSTRUCTORS = new Privilege( null, PrivilegeName.MANAGE_INSTRUCTORS, null );
+                Privilege MANAGE_SUPERVISORS = new Privilege( null, PrivilegeName.MANAGE_SUPERVISORS, null );
+                Privilege MANAGE_TRAINING_MANAGERS = new Privilege( null, PrivilegeName.MANAGE_TRAINING_MANAGERS, null );
+                Privilege MANAGE_USERS = new Privilege( null, PrivilegeName.MANAGE_USERS, null );
                 Privilege MANAGE_ROLES = new Privilege( null, PrivilegeName.MANAGE_ROLES, null );
-
-
-                //VIEW PRIVILEGE
-                Privilege VIEW_TEMPLATES = new Privilege( null, PrivilegeName.VIEW_TEMPLATES, null );
+                Privilege MANAGE_PRIVILEGES = new Privilege( null, PrivilegeName.MANAGE_PRIVILEGES, null );
+                Privilege ADD_EDIT_DELETE_TRAINING_PROGRAMS = new Privilege( null, PrivilegeName.ADD_EDIT_DELETE_TRAINING_PROGRAMS, null );
+                Privilege ADD_EDIT_DELETE_INTAKES = new Privilege( null, PrivilegeName.ADD_EDIT_DELETE_INTAKES, null );
+                Privilege ADD_EDIT_DELETE_TRACKS = new Privilege( null, PrivilegeName.ADD_EDIT_DELETE_TRACKS, null );
+                Privilege ADD_EDIT_DELETE_BRANCHES = new Privilege( null, PrivilegeName.ADD_EDIT_DELETE_BRANCHES, null );
+                Privilege VIEW_TEMPLATES = new Privilege( null, PrivilegeName.VIEW_TEMPLATE, null );
                 Privilege VIEW_BRANCHES = new Privilege( null, PrivilegeName.VIEW_BRANCHES, null );
                 Privilege VIEW_INTAKES = new Privilege( null, PrivilegeName.VIEW_INTAKES, null );
                 Privilege VIEW_TRACKS = new Privilege( null, PrivilegeName.VIEW_TRACKS, null );
                 Privilege VIEW_TRAINING_PROGRAMS = new Privilege( null, PrivilegeName.VIEW_TRAINING_PROGRAMS, null );
 
                 //ADD PRIVILEGE
-                Privilege ADD_EDIT_DELETE_TRAINING_PROGRAMS = new Privilege( null, PrivilegeName.ADD_EDIT_DELETE_TRAINING_PROGRAMS, null );
-                Privilege ADD_EDIT_DELETE_INTAKES = new Privilege( null, PrivilegeName.ADD_EDIT_DELETE_INTAKES, null );
-                Privilege ADD_EDIT_DELETE_TRACKS = new Privilege( null, PrivilegeName.ADD_EDIT_DELETE_TRACKS, null );
-                Privilege ADD_EDIT_DELETE_BRANCHES = new Privilege( null, PrivilegeName.ADD_EDIT_DELETE_BRANCHES, null );
                 Privilege VIEW_INSTANCE_LOGS = new Privilege( null, PrivilegeName.VIEW_INSTANCE_LOGS, null );
+                //Privilege MANAGE_BRANCHES = new Privilege( null, PrivilegeName.MANAGE_BRANCHES, null );
+//                Privilege MANAGE_TRACKS = new Privilege( null, PrivilegeName.MANAGE_TRACKS, null );
+//                Privilege MANAGE_INTAKES = new Privilege( null, PrivilegeName.MANAGE_INTAKES, null );
+//                Privilege MANAGE_TRAINING_PROGRAMS = new Privilege( null, PrivilegeName.MANAGE_TRAINING_PROGRAMS, null );
+
+
+
+                //VIEW PRIVILEGE
 
                 //GET PRIVOLEGE
 
-                Privilege MANAGE_USERS = new Privilege( null, PrivilegeName.MANAGE_USERS, null );
 
 
                 //SAVING PRIVILEGE
                 CREATE_TERMINATE_ASSIGN_INSTANCE = privilegeDao.save( CREATE_TERMINATE_ASSIGN_INSTANCE );
                 MANAGE_TEMPLATE = privilegeDao.save( MANAGE_TEMPLATE );
-                MANAGE_BRANCHES = privilegeDao.save( MANAGE_BRANCHES );
+//                MANAGE_BRANCHES = privilegeDao.save( MANAGE_BRANCHES );
                 MANAGE_TRAINING_MANAGERS = privilegeDao.save( MANAGE_TRAINING_MANAGERS );
                 MANAGE_SUPERVISORS = privilegeDao.save( MANAGE_SUPERVISORS );
-                MANAGE_TRACKS = privilegeDao.save( MANAGE_TRACKS );
-                MANAGE_INTAKES = privilegeDao.save( MANAGE_INTAKES );
-                MANAGE_TRAINING_PROGRAMS = privilegeDao.save( MANAGE_TRAINING_PROGRAMS );
+//                MANAGE_TRACKS = privilegeDao.save( MANAGE_TRACKS );
+//                MANAGE_INTAKES = privilegeDao.save( MANAGE_INTAKES );
+//                MANAGE_TRAINING_PROGRAMS = privilegeDao.save( MANAGE_TRAINING_PROGRAMS );
                 MANAGE_INSTRUCTORS = privilegeDao.save( MANAGE_INSTRUCTORS );
                 MANAGE_STUDENTS = privilegeDao.save( MANAGE_STUDENTS );
                 START_STOP_VIEW_INSTANCE = privilegeDao.save( START_STOP_VIEW_INSTANCE );
@@ -131,8 +131,8 @@ public class App {
                 Role studentRole = roleDao.save( new Role( null, "STUDENT", List.of( START_STOP_VIEW_INSTANCE ) ) );
                 Role supervisorRole = roleDao.save( new Role( null, "TRACK_SUPERVISOR", List.of( CREATE_TERMINATE_ASSIGN_INSTANCE, MANAGE_TEMPLATE, MANAGE_INSTRUCTORS, MANAGE_STUDENTS, START_STOP_VIEW_INSTANCE, VIEW_TEMPLATES, VIEW_BRANCHES, VIEW_TRAINING_PROGRAMS, VIEW_INTAKES, VIEW_TRACKS, VIEW_INSTANCE_LOGS ) ) );
                 Role instructorRole = roleDao.save( new Role( null, "INSTRUCTOR", List.of( CREATE_TERMINATE_ASSIGN_INSTANCE, VIEW_TEMPLATES, START_STOP_VIEW_INSTANCE, VIEW_BRANCHES, VIEW_TRAINING_PROGRAMS, VIEW_INTAKES, VIEW_TRACKS ) ) );
-                Role trainingMangerRole = roleDao.save( new Role( null, "TRAINING_MANAGER", List.of( MANAGE_SUPERVISORS, MANAGE_TRACKS, MANAGE_INTAKES, MANAGE_TRAINING_PROGRAMS, ADD_EDIT_DELETE_TRAINING_PROGRAMS, ADD_EDIT_DELETE_INTAKES, ADD_EDIT_DELETE_TRACKS, VIEW_BRANCHES, VIEW_TRAINING_PROGRAMS, VIEW_INTAKES, VIEW_TRACKS ) ) );
-                Role SuperAdmin = roleDao.save( new Role( null, "SUPER_ADMIN", List.of( MANAGE_BRANCHES, MANAGE_TRAINING_MANAGERS, ADD_EDIT_DELETE_BRANCHES, VIEW_BRANCHES, VIEW_TRAINING_PROGRAMS, VIEW_INSTANCE_LOGS, MANAGE_USERS , MANAGE_PRIVILEGES , MANAGE_ROLES ) ) );
+                Role trainingMangerRole = roleDao.save( new Role( null, "TRAINING_MANAGER", List.of( MANAGE_SUPERVISORS, ADD_EDIT_DELETE_TRAINING_PROGRAMS, ADD_EDIT_DELETE_INTAKES, ADD_EDIT_DELETE_TRACKS, VIEW_BRANCHES, VIEW_TRAINING_PROGRAMS, VIEW_INTAKES, VIEW_TRACKS ) ) );
+                Role SuperAdmin = roleDao.save( new Role( null, "SUPER_ADMIN", List.of( MANAGE_TRAINING_MANAGERS, ADD_EDIT_DELETE_BRANCHES, VIEW_BRANCHES, VIEW_TRAINING_PROGRAMS, VIEW_INSTANCE_LOGS, MANAGE_USERS , MANAGE_PRIVILEGES , MANAGE_ROLES ) ) );
 
 
                 DummyData.populateStaticDataForSmartBranch( instructorRole, trainingMangerRole, supervisorRole, studentRole, SuperAdmin, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao );
