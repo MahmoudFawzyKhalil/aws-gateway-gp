@@ -28,5 +28,7 @@ public interface UserManagement  {
 
     String authenticate(String username, String password);
 
+    User getUserInfo( Integer userId );
+
 //    List<User> getSupervisorInstructors(User user);
 }
