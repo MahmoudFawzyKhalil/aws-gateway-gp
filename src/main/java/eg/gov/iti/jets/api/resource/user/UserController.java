@@ -33,4 +33,21 @@ public class UserController {
         }
         return ResponseEntity.ok(userResponseList);
     }
+
+
+    @PutMapping
+    //all users
+    public ResponseEntity updateUserPassword(@RequestBody UserPutRequest userPutRequest, @AuthenticationPrincipal UserAdapter userAdapter ){
+            int currentLoggedUserId = userAdapter.getId();
+            userManagement.updateUserPassword(mapper.mapFromUserPutRequestToUser(currentLoggedUserId, userPutRequest));
+            return new ResponseEntity("Password updated", HttpStatus.OK);
+    }
+
+    @GetMapping("edit")
+    //all users
+    public ResponseEntity<UserPasswordResponse> getUserPassword(@AuthenticationPrincipal UserAdapter userAdapter){
+        int currentLoggedUserId = userAdapter.getId();
+        User user= userManagement.getUserById(currentLoggedUserId);
+        return new ResponseEntity<>( mapper.mapFromUserToUserPasswordResponse(user),HttpStatus.OK);
+    }
 }
