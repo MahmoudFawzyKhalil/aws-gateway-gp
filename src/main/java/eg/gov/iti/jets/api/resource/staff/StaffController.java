@@ -48,7 +48,6 @@ public class StaffController {
     public ResponseEntity updateStaff(@RequestBody StaffUpdateRequest staffUpdateRequest,@PathVariable int id){
         System.out.println("controller ============= " + id);
         System.out.println(staffUpdateRequest.getRolename());
-        trackManagement.updateTracks(mapper.mapFromTrackTypeToTrack(staffUpdateRequest.getTracks()));
         staffManagement.updateStaff(mapper.mapFromStaffUpdateRequestToUser(staffUpdateRequest,id));
         return new ResponseEntity("Staff updated Successfully", HttpStatus.OK);
     }

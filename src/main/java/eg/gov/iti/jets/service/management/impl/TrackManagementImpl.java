@@ -48,6 +48,7 @@ public class TrackManagementImpl implements TrackManagement {
     public List<Track> updateTracks(List<Track> tracks) {
         List<Track> trackList = new ArrayList<>();
         for(Track track : tracks){
+            System.out.println("track management :: "+ track.getName());
             try {
                  trackDao.update(track);
                  trackList.add(track);
