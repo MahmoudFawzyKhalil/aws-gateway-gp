@@ -5,7 +5,7 @@ import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.User;
-import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.StudentManagement;
 import eg.gov.iti.jets.service.management.UserManagement;
@@ -81,7 +81,7 @@ public class StudentManagementImpl implements UserDetailsService, StudentManagem
                 userDao.save(user);
             }
             catch (Exception e) {
-                throw new ResourceExistException("There is duplicate in Student "+ user.getUsername());
+                throw new ResourceAlreadyExistException("There is duplicate in Student "+ user.getUsername());
             }
         }
     }

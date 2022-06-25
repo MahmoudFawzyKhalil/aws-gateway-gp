@@ -2,7 +2,7 @@ package eg.gov.iti.jets.service.management.impl;
 
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.User;
-import eg.gov.iti.jets.service.exception.ResourceExistException;
+import eg.gov.iti.jets.service.exception.ResourceAlreadyExistException;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.StaffManagement;
 import lombok.RequiredArgsConstructor;
@@ -29,7 +29,7 @@ public class StaffManagementImpl implements StaffManagement {
                 System.out.println();
                 userDao.save(user);
             }catch (Exception e) {
-                throw new ResourceExistException("There is duplicate in Staff "+ user.getUsername());
+                throw new ResourceAlreadyExistException("There is duplicate in Staff "+ user.getUsername());
             }
         }
     }
