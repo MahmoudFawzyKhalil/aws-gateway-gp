@@ -5,6 +5,7 @@ import eg.gov.iti.jets.api.resource.branch.BranchRequest;
 import eg.gov.iti.jets.api.resource.branch.BranchResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakePutRequest;
 import eg.gov.iti.jets.api.resource.role.*;
+import eg.gov.iti.jets.api.resource.staff.*;
 import eg.gov.iti.jets.api.resource.student.StudentListRequest;
 import eg.gov.iti.jets.api.resource.student.StudentResponse;
 import eg.gov.iti.jets.api.resource.student.StudentRequest;
@@ -20,14 +21,18 @@ import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramPutRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramRequest;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
+import eg.gov.iti.jets.api.resource.user.UserPasswordResponse;
+import eg.gov.iti.jets.api.resource.user.UserPutRequest;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
+import eg.gov.iti.jets.service.management.TrackManagement;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -39,6 +44,9 @@ import java.util.stream.Collectors;
 public class Mapper {
     @Autowired
     private MapperUtilForApi mapperUtilForApi;
+
+    @Autowired
+    private TrackManagement trackManagementImpl;
 
     public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest, int id ) {
         try {
@@ -138,7 +146,6 @@ public class Mapper {
         intake.setName( intakePutRequest.getIntakeName() );
         return intake;
     }
-
 
     public List<IntakeResponse> mapFromListOfIntakesToListOfIntakeResponses( List<Intake> intakes ) {
         List<IntakeResponse> intakeResponses =
@@ -287,7 +294,8 @@ public class Mapper {
         response.setId(user.getId());
         response.setRole(user.getRole().getName());
         response.setEmail(user.getEmail());
-        response.setTrack(user.getTracks().get(0).getName());
+
+        //response.setTrack(user.getTracks().get(0).getName());
         return response;
     }
 
@@ -303,6 +311,8 @@ public class Mapper {
         manager.setId(currentLoggedUserId);
 
         for (StudentRequest studentRequest:studentsRequests) {
+            System.out.println("mapper :: " + studentRequest.getUsername());
+
             User student = new User();
             student.setPassword("student");
             student.setUsername(studentRequest.getUsername());
@@ -315,4 +325,78 @@ public class Mapper {
         return studentList;
     }
 
+    public User mapFromUserPutRequestToUser(int id, UserPutRequest userPutRequest){
+       User user = mapperUtilForApi.findUserById(id);
+       user.setPassword(userPutRequest.getPassword());
+       return user;
+    }
+
+    public UserPasswordResponse mapFromUserToUserPasswordResponse(User user ) {
+        UserPasswordResponse response = new UserPasswordResponse();
+        response.setOldPassword( user.getPassword() );
+        return response;
+    }
+
+    public List<StaffResponse> mapFromListOfStaffToListOfStaffResponse(List<User> allStaff) {
+        List<StaffResponse> staffList = new ArrayList<>();
+
+        for(User staff : allStaff){
+            StaffResponse response = new StaffResponse();
+            System.out.println(staff.getUsername());
+            response.setId(staff.getId());
+            response.setUsername(staff.getUsername());
+            response.setEmail(staff.getEmail());
+            response.setTracks(staff.getTracks().stream().map(e->e.getName()).collect(Collectors.toList()));
+            staffList.add(response);
+        }
+        return staffList;
+    }
+
+    public List<User> mapFromStaffRequestListToStaffList(int currentLoggedUserId, StaffRequestList staffRequests) {
+        List<User> users = new ArrayList<>();
+
+        User manager = new User();
+        manager.setId(currentLoggedUserId);
+
+        Role role = mapperUtilForApi.getRole("INSTRUCTOR");
+
+        List<StaffRequest> requests =staffRequests.getStaffRequests();
+        for(StaffRequest staffRequest : requests){
+            System.out.println("mapper :: " + staffRequest.getUsername());
+            User user = new User();
+            user.setUsername(staffRequest.getUsername());
+            user.setEmail(staffRequest.getEmail());
+            user.setPassword("staff");
+            user.setManager(manager);
+            user.setRole(role);
+            users.add(user);
+        }
+
+        return users;
+    }
+
+    public User mapFromStaffUpdateRequestToUser(StaffUpdateRequest staffUpdateRequest,int id) {
+        User user = mapperUtilForApi.findUserById(id);
+        Role role=mapperUtilForApi.getRole(staffUpdateRequest.getRolename());
+        user.setRole(role);
+
+        List<Track> tracks = trackManagementImpl.
+                        updateTracks(this.mapFromTrackTypeToTrack(id,staffUpdateRequest.getTracks()));
+        user.setTracks(tracks);
+
+        return user;
+    }
+
+    public List<Track> mapFromTrackTypeToTrack(int id ,List<TrackType> trackTypes){
+        List<Track> tracks=new ArrayList<>();
+        for(TrackType trackType:trackTypes){
+            Track track = mapperUtilForApi.getTrackById(trackType.getId());
+
+            User user = mapperUtilForApi.getUser(id);
+            track.getUsers().add(user);
+
+            tracks.add(track);
+        }
+        return tracks;
+    }
 }

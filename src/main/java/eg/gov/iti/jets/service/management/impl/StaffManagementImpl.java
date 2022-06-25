@@ -18,15 +18,19 @@ public class StaffManagementImpl implements StaffManagement {
 
     @Override
     public List<User> getAllStaff() {
-        return null;
+        return userDao.findUsersWithoutRoleName("STUDENT");
     }
 
     @Override
-    public User createStaff(User user) {
-        try {
-            return userDao.save(user);
-        }catch (Exception exception) {
-            throw new ResourceAlreadyExistException("Staff with name [ " + user.getUsername() + " ] , already exists !");
+    public void createStaff(List<User> staff){
+        for (User user:staff) {
+            try {
+                System.out.println("management :: "+user.getUsername());
+                System.out.println();
+                userDao.save(user);
+            }catch (Exception e) {
+                throw new ResourceAlreadyExistException("There is duplicate in Staff "+ user.getUsername());
+            }
         }
     }
 
@@ -37,11 +41,12 @@ public class StaffManagementImpl implements StaffManagement {
     }
 
     @Override
-    public User updateStaff(User user) {
-        try{
-            return userDao.update(user);
-        }catch (Exception ex){
-            throw new ResourceNotFoundException("Could not update Staff with id [ " + user.getId() + " ] !!");
-        }
+    public void updateStaff(User user) {
+     //   try{
+
+             userDao.update(user);
+//        }catch (Exception ex){
+//            throw new ResourceNotFoundException("Could not update Staff with id [ " + user.getId() + " ] !!");
+//        }
     }
 }
