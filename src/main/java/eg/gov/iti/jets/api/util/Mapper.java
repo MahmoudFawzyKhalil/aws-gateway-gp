@@ -28,6 +28,7 @@ import eg.gov.iti.jets.persistence.entity.aws.*;
 import eg.gov.iti.jets.persistence.entity.enums.BranchStatus;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
+import eg.gov.iti.jets.service.management.TrackManagement;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import org.springframework.beans.factory.annotation.Autowired;
 import eg.gov.iti.jets.api.resource.user.UserResponse;
@@ -43,6 +44,9 @@ import java.util.stream.Collectors;
 public class Mapper {
     @Autowired
     private MapperUtilForApi mapperUtilForApi;
+
+    @Autowired
+    private TrackManagement trackManagementImpl;
 
     public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest, int id ) {
         try {
@@ -382,13 +386,28 @@ public class Mapper {
         User user = mapperUtilForApi.findUserById(id);
         Role role=mapperUtilForApi.getRole(staffUpdateRequest.getRolename());
         user.setRole(role);
+
+        List<Track> tracks = trackManagementImpl.
+                        updateTracks(this.mapFromTrackTypeToTrack(id,staffUpdateRequest.getTracks()));
+        user.setTracks(tracks);
+        System.out.println("---------------------"+user.getTracks().get(0).getName());
         return user;
     }
 
-    public List<Track> mapFromTrackTypeToTrack(List<TrackType> trackTypes){
+    public List<Track> mapFromTrackTypeToTrack(int id ,List<TrackType> trackTypes){
         List<Track> tracks=new ArrayList<>();
+        List<User> users = new ArrayList();
         for(TrackType trackType:trackTypes){
             Track track = mapperUtilForApi.getTrackById(trackType.getId());
+
+            User user = mapperUtilForApi.getUser(id);
+            users.add(user);
+            users.addAll(track.getUsers());
+
+            track.setUsers(users);
+
+            System.out.println("***************"+track.getName());
+            System.out.println("***************"+track.getUsers());
             tracks.add(track);
         }
         return tracks;
