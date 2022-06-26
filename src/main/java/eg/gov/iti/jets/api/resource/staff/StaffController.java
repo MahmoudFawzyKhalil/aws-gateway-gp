@@ -46,8 +46,6 @@ public class StaffController {
     @PutMapping("{id}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_STAFF.name())")
     public ResponseEntity<?> updateStaff(@RequestBody StaffUpdateRequest staffUpdateRequest, @PathVariable int id) {
-        System.out.println("controller ============= " + id);
-        System.out.println(staffUpdateRequest.getRolename());
         staffManagement.updateStaff(mapper.mapFromStaffUpdateRequestToUser(staffUpdateRequest, id));
         return new ResponseEntity<>("Staff updated Successfully", HttpStatus.OK);
     }

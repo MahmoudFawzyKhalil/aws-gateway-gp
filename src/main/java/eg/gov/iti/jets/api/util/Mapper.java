@@ -46,8 +46,6 @@ public class Mapper {
     @Autowired
     private MapperUtilForApi mapperUtilForApi;
 
-    @Autowired
-    private TrackManagement trackManagementImpl;
 
     public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest, int id ) {
         try {
@@ -381,12 +379,15 @@ public class Mapper {
 
     public User mapFromStaffUpdateRequestToUser( StaffUpdateRequest staffUpdateRequest, int id ) {
         User user = mapperUtilForApi.findUserById( id );
-        Role role = mapperUtilForApi.getRole( staffUpdateRequest.getRolename() );
+        Role role = mapperUtilForApi.getRole( staffUpdateRequest.getRoleName() );
+        List<Track> listOfTrack = new ArrayList<>();
         user.setRole( role );
+        for ( Integer trackId :
+                staffUpdateRequest.getTracksId() ) {
+            listOfTrack.add( mapperUtilForApi.getTrackById( trackId ) );
+        }
 
-        List<Track> tracks = trackManagementImpl.
-                updateTracks( this.mapFromTrackTypeToTrack( id, staffUpdateRequest.getTracks() ) );
-        user.setTracks( tracks );
+        user.setTracks( listOfTrack );
 
         return user;
     }
