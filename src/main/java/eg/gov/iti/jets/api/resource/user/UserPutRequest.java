@@ -11,5 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserPutRequest {
-    String password;
+    String oldPassword;
+    String newPassword;
 }
