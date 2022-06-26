@@ -32,5 +32,5 @@ public interface UserManagement  {
 
 //    List<User> getSupervisorInstructors(User user);
 
-    void updateUserPassword(User user);
+    Boolean updateUserPassword(String oldPassword , String newPassword , int id);
 }

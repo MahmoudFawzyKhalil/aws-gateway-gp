@@ -11,6 +11,7 @@ import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.UserManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
 import lombok.RequiredArgsConstructor;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -67,8 +68,19 @@ public class UserManagementImpl implements UserManagement {
     }
 
     @Override
-    public void updateUserPassword(User user) {
-        userDao.update(user);
+    public Boolean updateUserPassword(String oldPassword , String newPassword , int id) {
+        Optional<User> user = userDao.findById( id );
+        if(user.isPresent()){
+            if(user.get().getPassword().equals( oldPassword )){
+                user.get().setPassword( newPassword );
+                User update = userDao.update( user.get() );
+                return true;
+            }else {
+                return false;
+            }
+        }else {
+            throw new ResourceNotFoundException( "This user doesn't exist" );
+        }
     }
 
     @Override
