@@ -152,6 +152,9 @@ public class App {
             users.forEach( b -> System.out.println( b.getEmail() ) );
 
             System.out.println(branchDao.countAll());
+            System.out.println(instanceDao.countAllByState("asd"));
+            System.out.println(instanceDao.countAllByStateNot("asd"));
+
         };
     }
 

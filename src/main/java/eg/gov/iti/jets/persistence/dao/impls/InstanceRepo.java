@@ -22,4 +22,8 @@ interface InstanceRepo extends JpaRepository<Instance, Integer> {
 
     List<Instance> findAllDistinctByInstanceUsers_manager_id(int userId);
 
+    Long countAllByState(String state);
+
+    Long countAllByStateNot(String state);
+
 }
