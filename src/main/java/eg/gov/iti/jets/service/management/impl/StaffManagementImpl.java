@@ -44,7 +44,9 @@ public class StaffManagementImpl implements StaffManagement {
     @Override
     public void updateStaff(User user) {
         try{
-             userDao.update(user);
+            System.out.println("BEFORE"+user.getTracks());
+            User update = userDao.update( user );
+            System.out.println("AFTER"+update.getTracks());
         }catch (Exception ex){
             throw new ResourceNotFoundException("Could not update Staff with id [ " + user.getId() + " ] !!");
         }

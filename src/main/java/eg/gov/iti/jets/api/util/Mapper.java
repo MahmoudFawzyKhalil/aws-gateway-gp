@@ -45,6 +45,8 @@ import java.util.stream.Collectors;
 public class Mapper {
     @Autowired
     private MapperUtilForApi mapperUtilForApi;
+    @Autowired
+    private TrackManagement trackManagement;
 
 
     public Branch mapFromBranchPutRequestToBranch( BranchPutRequest branchPutRequest, int id ) {
@@ -380,11 +382,18 @@ public class Mapper {
     public User mapFromStaffUpdateRequestToUser( StaffUpdateRequest staffUpdateRequest, int id ) {
         User user = mapperUtilForApi.findUserById( id );
         Role role = mapperUtilForApi.getRole( staffUpdateRequest.getRoleName() );
-        List<Track> listOfTrack = new ArrayList<>();
         user.setRole( role );
+
+        List<Track> tracks = user.getTracks();
+        for ( Track t : tracks ) {
+            trackManagement.removeUserFromTrack( t.getId() , id );
+        }
+        List<Track> listOfTrack = new ArrayList<>();
         for ( Integer trackId :
                 staffUpdateRequest.getTracksId() ) {
-            listOfTrack.add( mapperUtilForApi.getTrackById( trackId ) );
+            Track trackById = mapperUtilForApi.getTrackById( trackId );
+            trackManagement.updateTrack( trackById );
+            trackById.getUsers().add( user );
         }
 
         user.setTracks( listOfTrack );
