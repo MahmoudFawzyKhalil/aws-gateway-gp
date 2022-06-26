@@ -6,6 +6,7 @@ import eg.gov.iti.jets.api.resource.user.UserResponseList;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
+import eg.gov.iti.jets.service.management.TrackManagement;
 import eg.gov.iti.jets.service.management.impl.TrackManagementImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,10 +20,10 @@ import java.util.List;
 @RequestMapping("/api/tracks")
 
 public class TrackController {
-    final TrackManagementImpl trackManagement;
+    final TrackManagement trackManagement;
     final Mapper mapper;
 
-    public TrackController(TrackManagementImpl trackManagement, Mapper mapper) {
+    public TrackController(TrackManagement trackManagement, Mapper mapper) {
         this.trackManagement = trackManagement;
         this.mapper = mapper;
     }

@@ -34,6 +34,7 @@ public class App {
                             privilegeDao.findByName( PrivilegeName.MANAGE_INTAKES ).get(),
                             privilegeDao.findByName( PrivilegeName.MANAGE_TRACKS ).get(),
                             privilegeDao.findByName( PrivilegeName.MANAGE_BRANCHES ).get(),
+                            privilegeDao.findByName( PrivilegeName.MANAGE_PROFILE ).get(),
                             privilegeDao.findByName( PrivilegeName.VIEW_TEMPLATES ).get(),
                             privilegeDao.findByName( PrivilegeName.VIEW_STUDENTS ).get(),
                             privilegeDao.findByName( PrivilegeName.VIEW_USER ).get(),
@@ -46,7 +47,8 @@ public class App {
                             privilegeDao.findByName( PrivilegeName.VIEW_TRACKS ).get(),
                             privilegeDao.findByName( PrivilegeName.VIEW_INSTANCE_LOGS ).get(),
                             privilegeDao.findByName( PrivilegeName.VIEW_STAFF ).get(),
-                            privilegeDao.findByName( PrivilegeName.MANAGE_PROFILE ).get() ) ) );
+                            privilegeDao.findByName( PrivilegeName.VIEW_STATISTICS ).get()
+                    ) ) );
             allRole = roleDao.save( allRole );
 
             User all = userDao.save( new User( null, "all", "all", "all", allRole, null, null, null, null, null, null ) );
@@ -85,6 +87,7 @@ public class App {
                 Privilege VIEW_INTAKES = new Privilege( null, PrivilegeName.VIEW_INTAKES, null );
                 Privilege VIEW_TRACKS = new Privilege( null, PrivilegeName.VIEW_TRACKS, null );
                 Privilege VIEW_INSTANCE_LOGS = new Privilege( null, PrivilegeName.VIEW_INSTANCE_LOGS, null );
+                Privilege VIEW_STATISTICS = new Privilege( null, PrivilegeName.VIEW_STATISTICS, null );
 
 
                 CREATE_TERMINATE_ASSIGN_INSTANCE = privilegeDao.save( CREATE_TERMINATE_ASSIGN_INSTANCE );
@@ -110,12 +113,15 @@ public class App {
                 VIEW_INTAKES = privilegeDao.save( VIEW_INTAKES );
                 VIEW_TRACKS = privilegeDao.save( VIEW_TRACKS );
                 VIEW_INSTANCE_LOGS = privilegeDao.save( VIEW_INSTANCE_LOGS );
+                VIEW_STATISTICS = privilegeDao.save( VIEW_STATISTICS );
 
                 Role studentRole = roleDao.save( new Role( null, "STUDENT", List.of( START_STOP_VIEW_INSTANCE , MANAGE_PROFILE) ) );
                 Role supervisorRole = roleDao.save( new Role( null, "TRACK_SUPERVISOR", List.of( CREATE_TERMINATE_ASSIGN_INSTANCE , START_STOP_VIEW_INSTANCE , MANAGE_TEMPLATES , VIEW_TEMPLATES ,VIEW_STUDENTS ,VIEW_INSTRUCTOR  ,VIEW_BRANCHES ,VIEW_TRAINING_PROGRAMS , VIEW_INTAKES ,VIEW_TRACKS, MANAGE_PROFILE) ) );
                 Role instructorRole = roleDao.save( new Role( null, "INSTRUCTOR", List.of( CREATE_TERMINATE_ASSIGN_INSTANCE , START_STOP_VIEW_INSTANCE , VIEW_TEMPLATES  , VIEW_STUDENTS ,VIEW_BRANCHES ,VIEW_TRAINING_PROGRAMS , VIEW_INTAKES ,VIEW_TRACKS , MANAGE_PROFILE) ) );
                 Role trainingMangerRole = roleDao.save( new Role( null, "TRAINING_MANAGER", List.of( MANAGE_STUDENTS  , MANAGE_TRACKS ,VIEW_BRANCHES ,VIEW_TRAINING_PROGRAMS , VIEW_INTAKES ,VIEW_TRACKS , MANAGE_PROFILE ) ) );
-                Role SuperAdmin = roleDao.save( new Role( null, "SUPER_ADMIN", List.of( MANAGE_STUDENTS , MANAGE_STAFF , MANAGE_ROLES, MANAGE_TRACKS , MANAGE_TRAINING_PROGRAMS , MANAGE_INTAKES ,MANAGE_BRANCHES , VIEW_USER ,VIEW_ROLE , VIEW_PRIVILEGES ,VIEW_BRANCHES ,VIEW_TRAINING_PROGRAMS , VIEW_INTAKES ,VIEW_TRACKS , VIEW_INSTANCE_LOGS ,  VIEW_STAFF , MANAGE_PROFILE) ) );
+                Role SuperAdmin = roleDao.save( new Role( null, "SUPER_ADMIN", List.of( MANAGE_STUDENTS , MANAGE_STAFF , MANAGE_ROLES, MANAGE_TRACKS , MANAGE_TRAINING_PROGRAMS , MANAGE_INTAKES ,MANAGE_BRANCHES , VIEW_USER ,VIEW_ROLE , VIEW_PRIVILEGES ,VIEW_BRANCHES ,VIEW_TRAINING_PROGRAMS , VIEW_INTAKES ,VIEW_TRACKS , VIEW_INSTANCE_LOGS ,  VIEW_STAFF , MANAGE_PROFILE
+                , VIEW_STATISTICS) ) );
+
 
 
                 DummyData.populateStaticDataForSmartBranch( instructorRole, trainingMangerRole, supervisorRole, studentRole, SuperAdmin, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao );
@@ -217,22 +223,8 @@ class DummyData {
         phpTrack = trackDao.save( phpTrack );
 
 
-        var key = keyPairDao.save( new KeyPair( null, "keyPairId", "keyName", "keyMaterial", "keyMaterialType", superVisorUser ) );
-        var ke2 = keyPairDao.save( new KeyPair( null, "keyPairId2", "keyName2", "keyMaterial2", "keyMaterialType2", superVisorUser ) );
-        SecurityGroup securityGroup = new SecurityGroup( null, "secGroupId", "secGroup1", "descriptoon", "vpcId", null, null );
-        securityGroupDao.save( securityGroup );
-        TemplateConfiguration templateConfiguration = new TemplateConfiguration( null, "ami-0022f774911c1d690", "subnetId", "instanceType", superVisorUser, List.of( superVisorUser ), List.of( securityGroup ) );
-//        TemplateConfiguration templateConfiguration2 = new TemplateConfiguration(null, "ami2", "subnetId2", "instanceType2", superVisorUser, null, List.of(securityGroup));
-        templateConfigurationDao.save( templateConfiguration );
-//        templateConfigurationDao.save(templateConfiguration2);
-        Instance instance = instanceDao.save( new Instance( null, "name", "amid", "instanceId", "state", "publicIp", "publicDnsName", "instanceType", "subnetId", "vpcId", "platform", "decryptedPassword", "userName", LocalDateTime.now(), key, superVisorUser, null, templateConfiguration, 60L ) );
-//        Instance instance2 = instanceDao.save(new Instance(null, "name2", "amid2", "instanceId2", "state2", "publicIp2", "publicDnsName2", "instanceType2", "subnetId2", "vpcId2", "platform2", "decryptedPassword2", "userName2", LocalDateTime.now(), key, superVisorUser, null, templateConfiguration2,60L));
 
-        instanceDao.save( instance );
-//        instanceDao.save(instance2);
 
-        Ami ami1 = amiDao.save( new Ami( null, "imageId", "imagwOwnerAlias", "arch", "imageName", "description", "platform" ) );
-        Ami ami2 = amiDao.save( new Ami( null, "imageId2", "imagwOwnerAlias2", "arch2", "imageName2", "description2", "platform2" ) );
 
 
     }
