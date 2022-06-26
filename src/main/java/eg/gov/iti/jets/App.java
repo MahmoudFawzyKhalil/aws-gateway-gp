@@ -34,6 +34,7 @@ public class App {
                             privilegeDao.findByName( PrivilegeName.MANAGE_INTAKES ).get(),
                             privilegeDao.findByName( PrivilegeName.MANAGE_TRACKS ).get(),
                             privilegeDao.findByName( PrivilegeName.MANAGE_BRANCHES ).get(),
+                            privilegeDao.findByName( PrivilegeName.MANAGE_PROFILE ).get(),
                             privilegeDao.findByName( PrivilegeName.VIEW_TEMPLATES ).get(),
                             privilegeDao.findByName( PrivilegeName.VIEW_STUDENTS ).get(),
                             privilegeDao.findByName( PrivilegeName.VIEW_USER ).get(),
@@ -46,7 +47,8 @@ public class App {
                             privilegeDao.findByName( PrivilegeName.VIEW_TRACKS ).get(),
                             privilegeDao.findByName( PrivilegeName.VIEW_INSTANCE_LOGS ).get(),
                             privilegeDao.findByName( PrivilegeName.VIEW_STAFF ).get(),
-                            privilegeDao.findByName( PrivilegeName.MANAGE_PROFILE ).get() ) ) );
+                            privilegeDao.findByName( PrivilegeName.VIEW_STATISTICS ).get()
+                    ) ) );
             allRole = roleDao.save( allRole );
 
             User all = userDao.save( new User( null, "all", "all", "all", allRole, null, null, null, null, null, null ) );
@@ -85,6 +87,7 @@ public class App {
                 Privilege VIEW_INTAKES = new Privilege( null, PrivilegeName.VIEW_INTAKES, null );
                 Privilege VIEW_TRACKS = new Privilege( null, PrivilegeName.VIEW_TRACKS, null );
                 Privilege VIEW_INSTANCE_LOGS = new Privilege( null, PrivilegeName.VIEW_INSTANCE_LOGS, null );
+                Privilege VIEW_STATISTICS = new Privilege( null, PrivilegeName.VIEW_STATISTICS, null );
 
 
                 CREATE_TERMINATE_ASSIGN_INSTANCE = privilegeDao.save( CREATE_TERMINATE_ASSIGN_INSTANCE );
@@ -110,12 +113,15 @@ public class App {
                 VIEW_INTAKES = privilegeDao.save( VIEW_INTAKES );
                 VIEW_TRACKS = privilegeDao.save( VIEW_TRACKS );
                 VIEW_INSTANCE_LOGS = privilegeDao.save( VIEW_INSTANCE_LOGS );
+                VIEW_STATISTICS = privilegeDao.save( VIEW_STATISTICS );
 
                 Role studentRole = roleDao.save( new Role( null, "STUDENT", List.of( START_STOP_VIEW_INSTANCE , MANAGE_PROFILE) ) );
                 Role supervisorRole = roleDao.save( new Role( null, "TRACK_SUPERVISOR", List.of( CREATE_TERMINATE_ASSIGN_INSTANCE , START_STOP_VIEW_INSTANCE , MANAGE_TEMPLATES , VIEW_TEMPLATES ,VIEW_STUDENTS ,VIEW_INSTRUCTOR  ,VIEW_BRANCHES ,VIEW_TRAINING_PROGRAMS , VIEW_INTAKES ,VIEW_TRACKS, MANAGE_PROFILE) ) );
                 Role instructorRole = roleDao.save( new Role( null, "INSTRUCTOR", List.of( CREATE_TERMINATE_ASSIGN_INSTANCE , START_STOP_VIEW_INSTANCE , VIEW_TEMPLATES  , VIEW_STUDENTS ,VIEW_BRANCHES ,VIEW_TRAINING_PROGRAMS , VIEW_INTAKES ,VIEW_TRACKS , MANAGE_PROFILE) ) );
                 Role trainingMangerRole = roleDao.save( new Role( null, "TRAINING_MANAGER", List.of( MANAGE_STUDENTS  , MANAGE_TRACKS ,VIEW_BRANCHES ,VIEW_TRAINING_PROGRAMS , VIEW_INTAKES ,VIEW_TRACKS , MANAGE_PROFILE ) ) );
-                Role SuperAdmin = roleDao.save( new Role( null, "SUPER_ADMIN", List.of( MANAGE_STUDENTS , MANAGE_STAFF , MANAGE_ROLES, MANAGE_TRACKS , MANAGE_TRAINING_PROGRAMS , MANAGE_INTAKES ,MANAGE_BRANCHES , VIEW_USER ,VIEW_ROLE , VIEW_PRIVILEGES ,VIEW_BRANCHES ,VIEW_TRAINING_PROGRAMS , VIEW_INTAKES ,VIEW_TRACKS , VIEW_INSTANCE_LOGS ,  VIEW_STAFF , MANAGE_PROFILE) ) );
+                Role SuperAdmin = roleDao.save( new Role( null, "SUPER_ADMIN", List.of( MANAGE_STUDENTS , MANAGE_STAFF , MANAGE_ROLES, MANAGE_TRACKS , MANAGE_TRAINING_PROGRAMS , MANAGE_INTAKES ,MANAGE_BRANCHES , VIEW_USER ,VIEW_ROLE , VIEW_PRIVILEGES ,VIEW_BRANCHES ,VIEW_TRAINING_PROGRAMS , VIEW_INTAKES ,VIEW_TRACKS , VIEW_INSTANCE_LOGS ,  VIEW_STAFF , MANAGE_PROFILE
+                , VIEW_STATISTICS) ) );
+
 
 
                 DummyData.populateStaticDataForSmartBranch( instructorRole, trainingMangerRole, supervisorRole, studentRole, SuperAdmin, intakeDao, trackDao, trainingProgramDao, branchDao, privilegeDao, securityGroupDao, roleDao, userDao, keyPairDao, instanceDao, amiDao, templateConfigurationDao );
