@@ -66,7 +66,8 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public  ResponseEntity<?> getUserInfo( @PathVariable int id  ){
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_USER.name())")
+    public  ResponseEntity<?> getUserById( @PathVariable int id  ){
         User user = userManagement.getUserInfo(id);
         UserResponse userResponse = mapper.mapFromUserToUserResponse( user );
         return new ResponseEntity<>(userResponse , HttpStatus.OK);
