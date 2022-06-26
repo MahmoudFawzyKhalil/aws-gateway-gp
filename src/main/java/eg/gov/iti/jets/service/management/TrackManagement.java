@@ -25,6 +25,8 @@ public interface TrackManagement {
 
     List<User> getStudentsByTrackId( int trackId );
 
+    void removeUserFromTrack( Integer trackId, Integer userId );
+
     //Optional<Track> getTrackById(int id);
 
 }

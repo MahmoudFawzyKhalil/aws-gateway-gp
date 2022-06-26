@@ -87,5 +87,10 @@ public class TrackManagementImpl implements TrackManagement {
         return students;
     }
 
+    @Override
+    public void removeUserFromTrack( Integer trackId, Integer userId ) {
+        trackDao.removeUserFromTrack( userId , trackId );
+    }
+
 
 }
