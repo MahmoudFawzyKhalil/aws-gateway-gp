@@ -4,13 +4,17 @@ import eg.gov.iti.jets.api.resource.statistics.StatisticsResponse;
 import eg.gov.iti.jets.persistence.dao.*;
 import eg.gov.iti.jets.persistence.entity.Intake;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
+import eg.gov.iti.jets.persistence.entity.aws.Instance;
+import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.management.StatisticsManagement;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
+@Service
 public class StatisticsManagementImpl implements StatisticsManagement {
     private final IntakeDao intakeDao;
     private final TrainingProgramDao trainingProgramDao;
@@ -18,32 +22,39 @@ public class StatisticsManagementImpl implements StatisticsManagement {
 
     private final BranchDao branchDao;
     private final UserDao userDao;
+    private final AwsGateway awsGateway;
     @Override
     public StatisticsResponse getStatistics() {
         StatisticsResponse statisticsResponse = new StatisticsResponse();
-        List<String> intakeNames = getIntakeNames();
-        statisticsResponse.setNameOfIntakes( intakeNames );
+        statisticsResponse.setNameOfIntakes( getIntakeNames() );
+        statisticsResponse.setNameOfTrainingPrograms( getTrainingProgramNames() );
+        statisticsResponse.setNumberOfOnInstance( getRunning() );
+        statisticsResponse.setNumberOfInstance( getAllInstances() );
+        statisticsResponse.setNumberOfBranches( branchDao.countAll() );
+        statisticsResponse.setNumberOfUsers( userDao.countAll() );
 
-        List<String> trainingProgramNames = getTrainingProgramNames();
-        statisticsResponse.setNameOfTrainingPrograms( trainingProgramNames );
+        statisticsResponse.setNumberOfOffInstance( getStopped() );
 
-        Long running = instanceDao.countAllByState( "running" );
-        statisticsResponse.setNumberOfOnInstance( running );
 
-        Long stopped = instanceDao.countAllByState( "stopped" );
-        Long stopping = instanceDao.countAllByState( "stopping" );
-        statisticsResponse.setNumberOfOffInstance( stopped + stopping );
-
-        Long numberOfAllInstances = instanceDao.countAllByStateNot( "terminated" );
-        statisticsResponse.setNumberOfInstance( numberOfAllInstances );
-
-        Long branchCount = branchDao.countAll();
-        statisticsResponse.setNumberOfBranches( branchCount );
-
-        Long countAllUser = userDao.countAll();
-        statisticsResponse.setNumberOfUsers( countAllUser );
 
         return statisticsResponse;
+    }
+
+    private long getRunning() {
+        List<Instance> instances = instanceDao.findAll();
+        awsGateway.updateInstancesInfoFromAws( instances );
+        return instances.stream().filter( instance -> instance.getState().equals( "running" ) ).count();
+    }
+    private long getStopped() {
+        List<Instance> instances = instanceDao.findAll();
+        awsGateway.updateInstancesInfoFromAws( instances );
+        long stopping = instances.stream().filter( instance -> instance.getState().equals( "stopping" ) ).count();
+        long stopped = instances.stream().filter( instance -> instance.getState().equals( "stopped" ) ).count();
+        return stopped+stopping;
+    }
+    private long getAllInstances() {
+        List<Instance> instances = instanceDao.findAll();
+        return instances.stream().filter( instance -> !instance.getState().equals( "terminated" ) ).count();
     }
 
     private List<String> getTrainingProgramNames() {
