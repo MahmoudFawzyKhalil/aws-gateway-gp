@@ -28,6 +28,6 @@ public class InstanceResponse {
     private String keyPair;
     private Long timeToLiveInMinutes;
     private UserInstanceResponse creator;
-    private List<UserInstanceResponse> instanceUsers;
+    private UserInstanceResponse instanceUser;
     private TemplateConfigurationInstanceResponse templateConfiguration;
 }

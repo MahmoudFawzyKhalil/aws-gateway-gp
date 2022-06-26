@@ -46,6 +46,7 @@ public class InstanceMapper {
         instanceResponse.setUsername( instance.getUsername() );
         instanceResponse.setState( instance.getState() );
         instanceResponse.setTimeToLiveInMinutes( instance.getTimeToLiveInMinutes() );
+        instanceResponse.setInstanceUser( mapFromUserToUserResponse( instance.getInstanceUsers() ) );
         return instanceResponse;
     }
 
