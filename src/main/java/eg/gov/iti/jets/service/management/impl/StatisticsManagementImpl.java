@@ -32,12 +32,15 @@ public class StatisticsManagementImpl implements StatisticsManagement {
         statisticsResponse.setNumberOfInstance( getAllInstances() );
         statisticsResponse.setNumberOfBranches( branchDao.countAll() );
         statisticsResponse.setNumberOfUsers( userDao.countAll() );
-
         statisticsResponse.setNumberOfOffInstance( getStopped() );
-
-
-
+        statisticsResponse.setNumberOfPendingInstance( getPending() );
         return statisticsResponse;
+    }
+
+    private long getPending() {
+        List<Instance> instances = instanceDao.findAll();
+        awsGateway.updateInstancesInfoFromAws( instances );
+        return instances.stream().filter( instance -> instance.getState().equals( "pending" ) ).count();
     }
 
     private long getRunning() {

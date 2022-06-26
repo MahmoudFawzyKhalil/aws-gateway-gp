@@ -21,6 +21,8 @@ public class StatisticsResponse {
     @NotNull(message = "this field can't be null")
     private Long numberOfOffInstance;
     @NotNull(message = "this field can't be null")
+    private Long numberOfPendingInstance;
+    @NotNull(message = "this field can't be null")
     private Long numberOfBranches;
     @NotNull(message = "this field can't be null")
     private Long numberOfUsers;
