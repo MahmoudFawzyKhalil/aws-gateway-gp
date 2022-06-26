@@ -55,7 +55,7 @@ public class BranchDaoImpl implements BranchDao {
 
     @Override
     public <C> List<C> findAll(int pageNumber, int pageSize, Class<C> projection) {
-        Page<C> page = branchRepo.findBy(PageRequest.of(pageNumber, pageSize),projection);
+        Page<C> page = branchRepo.findBy(PageRequest.of(pageNumber, pageSize), projection);
         return page.getContent();
     }
 
@@ -68,8 +68,12 @@ public class BranchDaoImpl implements BranchDao {
     @Override
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
-        return branchRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
+        return branchRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher), projection);
     }
 
 
+    @Override
+    public Long countAll() {
+        return branchRepo.countAllBy();
+    }
 }

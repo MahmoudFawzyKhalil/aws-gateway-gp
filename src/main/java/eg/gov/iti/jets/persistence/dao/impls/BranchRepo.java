@@ -17,4 +17,6 @@ interface BranchRepo extends JpaRepository<Branch, Integer> {
     <C> Page<C> findBy(PageRequest pageRequest, Class<C> projection);
 
     <C> List<C> findAllBy(Example<C> example, Class<C> projection);
+
+    Long countAllBy();
 }

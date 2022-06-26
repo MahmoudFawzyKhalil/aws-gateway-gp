@@ -150,6 +150,8 @@ public class App {
             Optional<User> userInstructor = userDao.findById( 5 );
             users = userDao.findAllFollowers( userInstructor.get() );
             users.forEach( b -> System.out.println( b.getEmail() ) );
+
+            System.out.println(branchDao.countAll());
         };
     }
 
