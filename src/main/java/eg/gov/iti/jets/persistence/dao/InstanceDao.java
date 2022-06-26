@@ -8,4 +8,8 @@ public interface InstanceDao extends GenericCrudDao<Instance, Integer> {
     List<Instance> findUserGrantedInstances(int userId);
 
     List<Instance> findFollowersUsersGrantedInstances(int userId);
+
+    Long countAllByState(String state);
+
+    Long countAllByStateNot(String state);
 }
