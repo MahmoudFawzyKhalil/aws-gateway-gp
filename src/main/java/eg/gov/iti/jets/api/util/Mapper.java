@@ -332,9 +332,7 @@ public class Mapper {
     }
 
     public User mapFromUserPutRequestToUser( int id, UserPutRequest userPutRequest ) {
-        User user = mapperUtilForApi.findUserById( id );
-        user.setPassword( userPutRequest.getPassword() );
-        return user;
+        return null;
     }
 
     public UserPasswordResponse mapFromUserToUserPasswordResponse( User user ) {
