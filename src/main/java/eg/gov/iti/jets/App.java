@@ -154,6 +154,7 @@ public class App {
             System.out.println(branchDao.countAll());
             System.out.println(instanceDao.countAllByState("asd"));
             System.out.println(instanceDao.countAllByStateNot("asd"));
+            System.out.println(userDao.countAll());
 
         };
     }

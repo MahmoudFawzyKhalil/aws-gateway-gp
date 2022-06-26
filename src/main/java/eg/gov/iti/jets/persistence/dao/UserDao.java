@@ -47,4 +47,6 @@ public interface UserDao extends GenericCrudDao<User, Integer> {
 
     List<User> findUsersWithoutRoleName(String roleName);
 
+    Long countAll();
+
 }
