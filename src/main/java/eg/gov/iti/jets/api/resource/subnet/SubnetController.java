@@ -2,7 +2,6 @@ package eg.gov.iti.jets.api.resource.subnet;
 
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.service.management.SubnetAws;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

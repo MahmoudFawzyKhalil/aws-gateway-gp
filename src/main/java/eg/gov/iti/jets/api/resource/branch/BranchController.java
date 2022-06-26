@@ -1,6 +1,5 @@
 package eg.gov.iti.jets.api.resource.branch;
 
-import eg.gov.iti.jets.api.resource.track.TrackResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.GetTrainingProgramsResponse;
 import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
 import eg.gov.iti.jets.api.util.Mapper;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/branches")
@@ -44,15 +42,6 @@ public class BranchController {
         return new ResponseEntity<>( branchResponseList , HttpStatus.OK );
     }
 
-//    @GetMapping("/{id}")
-//    public ResponseEntity<BranchResponse> getBranchById(@PathVariable int id){
-//        Optional<Branch> branch = branchManagement.getBranchById(id);
-//        BranchResponse branchResponse = new BranchResponse();
-//        if(branch.isPresent()){
-//            branchResponse = mapper.mapFromBranchToBranchResponse( branch.get() );
-//        }
-//        return new ResponseEntity<>( branchResponse ,HttpStatus.OK );
-//    }
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_BRANCHES.name())")

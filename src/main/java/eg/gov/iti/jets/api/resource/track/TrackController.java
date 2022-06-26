@@ -1,18 +1,10 @@
 package eg.gov.iti.jets.api.resource.track;
 
-import eg.gov.iti.jets.api.resource.branch.BranchResponse;
-import eg.gov.iti.jets.api.resource.role.GetRoleResponse;
-import eg.gov.iti.jets.api.resource.role.RoleResponse;
-//import eg.gov.iti.jets.api.resource.role.UpdateRoleRequest;
-import eg.gov.iti.jets.api.resource.trainingProgram.GetTrainingProgramsResponse;
-import eg.gov.iti.jets.api.resource.trainingProgram.TrainingProgramResponse;
+
 import eg.gov.iti.jets.api.resource.user.UserResponse;
 import eg.gov.iti.jets.api.resource.user.UserResponseList;
 import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.persistence.entity.Branch;
-import eg.gov.iti.jets.persistence.entity.Role;
 import eg.gov.iti.jets.persistence.entity.Track;
-import eg.gov.iti.jets.persistence.entity.TrainingProgram;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.impl.TrackManagementImpl;
 import org.springframework.http.HttpStatus;
@@ -21,10 +13,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/tracks")
@@ -70,15 +59,13 @@ public class TrackController {
 
     @PutMapping("/{id}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TRACKS.name())")
-    public ResponseEntity<?> updateTrack(@PathVariable int id, @Valid @RequestBody TrackPutRequest trackPutRequsert) {
-        Track track = trackManagement.updateTrack(mapper.mapFromTrackPutRequestToTrack(trackPutRequsert, id));
+    public ResponseEntity<?> updateTrack(@PathVariable int id, @Valid @RequestBody TrackPutRequest trackPutRequest) {
+        Track track = trackManagement.updateTrack(mapper.mapFromTrackPutRequestToTrack(trackPutRequest, id));
         TrackResponse trackResponse = mapper.mapFromTrackToTrackResponse(track);
         return new ResponseEntity<>(trackResponse, HttpStatus.OK);
     }
 
     @GetMapping("{trackId}/users")
-    // TODO: 6/25/2022 mariam men bystkhdemha
-//    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName)..name())")
     public ResponseEntity<?> getUsersByTrackId(@PathVariable int trackId) {
         List<User> usersByTrackId = trackManagement.getUsersByTrackId(trackId);
         List<UserResponse> userResponses = mapper.mapFromListOfUsersToListOfUserResponses( usersByTrackId );

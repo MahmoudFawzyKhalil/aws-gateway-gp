@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// TODO: 6/17/2022 Ashraf el supervisor bs
 @RestController
 @RequestMapping("/api/instanceTypes")
 public class InstanceTypeController {

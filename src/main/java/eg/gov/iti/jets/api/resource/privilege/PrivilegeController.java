@@ -29,10 +29,7 @@ public class PrivilegeController {
         return new ResponseEntity<>(getPrivilegesResponse, HttpStatus.OK);
     }
 
-//    @PostMapping
-//    public Boolean addPrivilege(@RequestBody AddPrivilegeRequest addPrivilegeRequest) {
-//      return privilegeManagement.addPrivilege(mapper.addPrivilegeRequestToPrivilege(addPrivilegeRequest));
-//    }
+
 
     @GetMapping("/{id}")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_PRIVILEGES.name())")

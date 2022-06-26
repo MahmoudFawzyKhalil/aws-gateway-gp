@@ -1,7 +1,7 @@
 package eg.gov.iti.jets.api.resource.student;
 
 import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.service.management.impl.StudentManagementImpl;
+import eg.gov.iti.jets.service.management.StudentManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
 import eg.gov.iti.jets.persistence.entity.User;
 import org.springframework.http.HttpStatus;
@@ -21,10 +21,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
-    private final StudentManagementImpl studentManagement;
+    private final StudentManagement studentManagement;
     private final Mapper mapper;
 
-    public StudentController(StudentManagementImpl studentManagement , Mapper mapper){
+    public StudentController(StudentManagement studentManagement , Mapper mapper){
         this.studentManagement = studentManagement;
         this.mapper = mapper;
     }

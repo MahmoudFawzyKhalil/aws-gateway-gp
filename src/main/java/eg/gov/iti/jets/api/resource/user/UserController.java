@@ -3,7 +3,6 @@ package eg.gov.iti.jets.api.resource.user;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.UserManagement;
-import eg.gov.iti.jets.service.management.impl.UserManagementImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -42,12 +41,12 @@ public class UserController {
     @PutMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_PROFILE.name())")
     //all users
-    public ResponseEntity updateUserPassword( @RequestBody UserPutRequest userPutRequest, @AuthenticationPrincipal eg.gov.iti.jets.service.model.UserAdapter userAdapter ) {
+    public ResponseEntity<?> updateUserPassword( @RequestBody UserPutRequest userPutRequest, @AuthenticationPrincipal eg.gov.iti.jets.service.model.UserAdapter userAdapter ) {
         int currentLoggedUserId = userAdapter.getId();
         Boolean isPasswordUpdated = userManagement.updateUserPassword( userPutRequest.oldPassword, userPutRequest.newPassword, currentLoggedUserId );
         if ( isPasswordUpdated ) {
 
-            return new ResponseEntity( "Password updated", HttpStatus.OK );
+            return new ResponseEntity<>( "Password updated", HttpStatus.OK );
         }else{
             return new ResponseEntity<>( "Password isn't updated", HttpStatus.NOT_ACCEPTABLE );
         }

@@ -7,5 +7,7 @@ import java.util.List;
 
 public interface StudentManagement extends UserDetailsService {
 
-    public List<User> getAllStudent();
+    void addStudents( List<User> users );
+
+    List<User> getAllStudent();
 }

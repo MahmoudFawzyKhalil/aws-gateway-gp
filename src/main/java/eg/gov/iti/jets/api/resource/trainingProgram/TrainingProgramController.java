@@ -3,12 +3,9 @@ package eg.gov.iti.jets.api.resource.trainingProgram;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponse;
 import eg.gov.iti.jets.api.resource.intake.IntakeResponseList;
 import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.persistence.dao.BranchDao;
 import eg.gov.iti.jets.persistence.entity.Intake;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
-import eg.gov.iti.jets.service.management.IntakeManagement;
 import eg.gov.iti.jets.service.management.TrainingProgramManagement;
-import eg.gov.iti.jets.service.management.impl.TrainingProgramManagementImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -35,7 +32,6 @@ public class TrainingProgramController {
     @PostMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TRAINING_PROGRAMS.name())")
     public ResponseEntity<?> createTrainingProgram(@Valid @RequestBody TrainingProgramRequest trainingProgramRequest ) {
-
         TrainingProgram trainingProgram = mapper.mapFromTrainingProgramRequestToTrainingProgram( trainingProgramRequest );
         Boolean program = trainingProgramManagement.createTrainingProgram( trainingProgram );
         if ( program ) {
@@ -53,7 +49,6 @@ public class TrainingProgramController {
         return new ResponseEntity<>( trainingProgramResponse, HttpStatus.OK );
     }
 
-//    @
     @GetMapping( "/{id}" )
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_TRAINING_PROGRAMS.name())")
     public ResponseEntity<?> getTrainingProgramById( @PathVariable int id ) {

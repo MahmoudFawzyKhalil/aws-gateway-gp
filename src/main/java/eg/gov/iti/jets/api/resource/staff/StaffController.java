@@ -1,15 +1,11 @@
 package eg.gov.iti.jets.api.resource.staff;
 
-import com.sun.xml.bind.v2.TODO;
-import eg.gov.iti.jets.persistence.dao.TrackDao;
-import eg.gov.iti.jets.persistence.dao.UserDao;
-import eg.gov.iti.jets.persistence.entity.Track;
-import eg.gov.iti.jets.service.management.TrackManagement;
+
 import eg.gov.iti.jets.service.model.UserAdapter;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.StaffManagement;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,25 +16,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/staff")
+@RequiredArgsConstructor
 public class StaffController {
     private final StaffManagement staffManagement;
-    private final TrackManagement trackManagement;
     private final Mapper mapper;
-    private final UserDao userDao;
-    private final TrackDao trackDao;
 
-
-    public StaffController( StaffManagement staffManagement, TrackManagement trackManagement, Mapper mapper, UserDao userDao, TrackDao trackDao ) {
-        this.staffManagement = staffManagement;
-        this.trackManagement = trackManagement;
-        this.mapper = mapper;
-        this.userDao = userDao;
-        this.trackDao = trackDao;
-    }
-
-    // TODO: 6/25/2022 priivilegge view staff
     @GetMapping
-
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_STAFF.name())")
     public ResponseEntity<?> getAllStaff() {
         List<User> allStaff = staffManagement.getAllStaff();
@@ -69,7 +52,6 @@ public class StaffController {
         return new ResponseEntity<>("Staff updated Successfully", HttpStatus.OK);
     }
     @GetMapping("/instructors")
-    //just supervisor can access it
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INSTRUCTOR.name())")
     public ResponseEntity<?> getInstructorsUnderSupervisor(@AuthenticationPrincipal UserAdapter userAdapter){
 

@@ -13,7 +13,7 @@ import java.util.Optional;
 public interface TemplateManagement {
     List<TemplateConfiguration> getTemplateConfiguration();
     List<TemplateResponse> getTemplateConfigurationById( int id);
-    Boolean createTemplate( TemplateConfiguration templateConfiguration);
+    void createTemplate( TemplateConfiguration templateConfiguration);
     Boolean deleteTemplate ( int id );
 
 
