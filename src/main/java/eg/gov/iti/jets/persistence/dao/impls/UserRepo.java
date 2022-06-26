@@ -60,4 +60,6 @@ interface UserRepo extends JpaRepository<User, Integer> {
 
     @Query("select u from User u join u.role t where t.name not LIKE:roleName")
     List<User> findAllExceptRoleName(String roleName);
+
+    Long countAllBy();
 }

@@ -143,4 +143,9 @@ public class UserDaoImpl implements UserDao {
     public List<User> findUsersWithoutRoleName(String roleName) {
         return userRepo.findAllExceptRoleName(roleName);
     }
+
+    @Override
+    public Long countAll() {
+        return userRepo.countAllBy();
+    }
 }

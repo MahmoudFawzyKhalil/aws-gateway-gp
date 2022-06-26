@@ -78,4 +78,14 @@ public class InstanceDaoImpl implements InstanceDao {
     public List<Instance> findFollowersUsersGrantedInstances(int userId) {
         return instanceRepo.findAllDistinctByInstanceUsers_manager_id(userId);
     }
+
+    @Override
+    public Long countAllByState(String state) {
+        return instanceRepo.countAllByState(state);
+    }
+
+    @Override
+    public Long countAllByStateNot(String state) {
+        return instanceRepo.countAllByStateNot(state);
+    }
 }
