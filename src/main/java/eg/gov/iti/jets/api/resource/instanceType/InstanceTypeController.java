@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-// TODO: 6/17/2022 Ashraf el supervisor bs
 @RestController
 @RequestMapping("/api/instanceTypes")
 public class InstanceTypeController {
@@ -23,7 +22,7 @@ public class InstanceTypeController {
 
 
     @GetMapping()
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATE.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATES.name())")
     ResponseEntity<?> getInstanceTypes(){
         InstanceTypeObjectResponse instanceTypeObjectResponse = instanceTypeMapper.mapFromInstanceTypeToObjectResponse( instanceTypeAws.getInstanceTypes() );
         return  new ResponseEntity<>( instanceTypeObjectResponse , HttpStatus.OK );

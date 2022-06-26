@@ -54,7 +54,7 @@ public class TemplateManagementImpl implements TemplateManagement {
 
         List<TemplateConfiguration> configurations = mapperUtilForApi.getTemplateConfigurationsByIds( templateAssignRequest.getTemplateConfigurationIds() );
         List<User> instructors = mapperUtilForApi.getUsers( templateAssignRequest.getInstructorIds() );
-        configurations.stream().forEach( c -> {c.setInstructors( instructors ); templateConfigurationDao.update( c );} );
+        configurations.forEach( c -> {c.setInstructors( instructors ); templateConfigurationDao.update( c );} );
     }
 
 
@@ -81,24 +81,22 @@ public class TemplateManagementImpl implements TemplateManagement {
     }
 
     private List<TemplateResponse> getTemplateResponses( int id ) {
-        List<TemplateResponse> allByInstructor = templateConfigurationDao.findAllByInstructor( id, TemplateResponse.class );
-        return allByInstructor;
+        return templateConfigurationDao.findAllByInstructor( id, TemplateResponse.class );
     }
 
     private List<TemplateResponse> getTemplateResponseList( int id ) {
-        List<TemplateResponse> allTemplateCreatedBySuperVisor = templateConfigurationDao.findAllTemplateByCreatorId( id, TemplateResponse.class );
-        return allTemplateCreatedBySuperVisor;
+        return templateConfigurationDao.findAllTemplateByCreatorId( id, TemplateResponse.class );
     }
 
     @Transactional
     @Override
-    public Boolean createTemplate( TemplateConfiguration templateConfiguration ) {
+    public void createTemplate( TemplateConfiguration templateConfiguration ) {
         try {
             Optional<Ami> ami = awsGateway.describeAmi( templateConfiguration.getAmiId() );
             List<SecurityGroup> securityGroups = saveSecurityGroup( templateConfiguration.getSecurityGroups() );
             templateConfiguration.setSecurityGroups( securityGroups );
             TemplateConfiguration templateConfigurationAfterSaving = templateConfigurationDao.save( templateConfiguration );
-            return templateConfigurationAfterSaving != null;
+
         }catch (Exception e) {
             throw new AwsGatewayException("There is no AMI-ID like this "+templateConfiguration.getAmiId());
         }

@@ -22,14 +22,14 @@ public class InstanceLogController {
     }
 
     @GetMapping
-    public ResponseEntity<ResponseMessage> getAll(@RequestParam(required = false, defaultValue = "1") int pn, @RequestParam(required = false, defaultValue = "30") int ps) {
+    public ResponseEntity<?> getAll(@RequestParam(required = false, defaultValue = "1") int pn, @RequestParam(required = false, defaultValue = "30") int ps) {
         List<InstanceLogProjection> instanceLogProjections = instanceLogsDao.findAll(pn-1, ps, InstanceLogProjection.class);
         ResponseMessage responseMessage = new ResponseMessage(HttpStatus.OK.value(), instanceLogProjections, null);
         return new ResponseEntity<>(responseMessage, HttpStatus.OK);
     }
 
     @GetMapping("user/{id}")
-    public ResponseEntity<ResponseMessage> getAllByUserAndDateTime(@RequestParam(required = false, defaultValue = "1") int pn, @RequestParam(required = false, defaultValue = "30") int ps,
+    public ResponseEntity<?> getAllByUserAndDateTime(@RequestParam(required = false, defaultValue = "1") int pn, @RequestParam(required = false, defaultValue = "30") int ps,
                                                                    @RequestParam(required = false, name = "from") LocalDateTime from,
                                                                    @RequestParam(required = false, name = "to") LocalDateTime to,
                                                                    @PathVariable int id) {

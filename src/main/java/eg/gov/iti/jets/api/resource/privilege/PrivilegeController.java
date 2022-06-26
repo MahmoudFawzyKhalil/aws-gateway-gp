@@ -19,7 +19,7 @@ public class PrivilegeController {
     private final Mapper mapper;
 
     @GetMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_PRIVILEGES.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_PRIVILEGES.name())")
     public ResponseEntity<?> getAllPrivileges(){
         GetAllPrivilegesResponse getPrivilegesResponse = new GetAllPrivilegesResponse();
         List<GetPrivilegeResponse> privileges = privilegeManagement.getAllPrivilege().stream().map(
@@ -29,13 +29,10 @@ public class PrivilegeController {
         return new ResponseEntity<>(getPrivilegesResponse, HttpStatus.OK);
     }
 
-//    @PostMapping
-//    public Boolean addPrivilege(@RequestBody AddPrivilegeRequest addPrivilegeRequest) {
-//      return privilegeManagement.addPrivilege(mapper.addPrivilegeRequestToPrivilege(addPrivilegeRequest));
-//    }
+
 
     @GetMapping("/{id}")
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_PRIVILEGES.name())")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_PRIVILEGES.name())")
     public ResponseEntity<?> getPrivilege(@PathVariable("id") int id) {
         Privilege privilege = privilegeManagement.getPrivilegeById(id);
         return new ResponseEntity<>(mapper.privilegeToGetPrivilegeResponse(privilege), HttpStatus.OK);

@@ -1,7 +1,7 @@
 package eg.gov.iti.jets.api.resource.student;
 
 import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.service.management.impl.StudentManagementImpl;
+import eg.gov.iti.jets.service.management.StudentManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
 import eg.gov.iti.jets.persistence.entity.User;
 import org.springframework.http.HttpStatus;
@@ -21,17 +21,17 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/students")
 public class StudentController {
-    private final StudentManagementImpl studentManagement;
+    private final StudentManagement studentManagement;
     private final Mapper mapper;
 
-    public StudentController(StudentManagementImpl studentManagement , Mapper mapper){
+    public StudentController(StudentManagement studentManagement , Mapper mapper){
         this.studentManagement = studentManagement;
         this.mapper = mapper;
     }
 
     @GetMapping
-    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INSTRUCTORS.name())")
-    public ResponseEntity<StudentResponseList> getStudent(){
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_STUDENTS.name())")
+    public ResponseEntity<?> getStudent(){
         List<User> student = studentManagement.getAllStudent();
         List<StudentResponse> studentResponses =  mapper.mapFromListOfStudentToListOfStudentResponses(student);
         StudentResponseList studentResponseList = new StudentResponseList();
@@ -44,11 +44,11 @@ public class StudentController {
 
     @PostMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_STUDENTS.name())")
-    public ResponseEntity createStudents( @AuthenticationPrincipal UserAdapter userAdapter ,
+    public ResponseEntity<?> createStudents( @AuthenticationPrincipal UserAdapter userAdapter ,
                                           @Valid @RequestBody StudentListRequest studentListRequest){
         int currentLoggedUserId = userAdapter.getId();
         studentManagement.addStudents(mapper.mapFromStudentListRequestToStudentList(currentLoggedUserId,studentListRequest));
-        return new ResponseEntity("Students Inserted Successfully",HttpStatus.CREATED);
+        return new ResponseEntity<>("Students Inserted Successfully",HttpStatus.CREATED);
     }
 
 

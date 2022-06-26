@@ -3,7 +3,6 @@ package eg.gov.iti.jets.api.resource.user;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.UserManagement;
-import eg.gov.iti.jets.service.management.impl.UserManagementImpl;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +14,7 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping( "/api/users" )
+@RequestMapping("/api/users")
 public class UserController {
     private final UserManagement userManagement;
     private final Mapper mapper;
@@ -26,7 +25,7 @@ public class UserController {
     }
 
     @GetMapping
-    @PreAuthorize( "hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_USERS.name())" )
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_USER.name())")
     public ResponseEntity<?> getUsers() {
         System.out.println( "hey" );
         List<User> users = userManagement.getAllUsers();
@@ -40,37 +39,41 @@ public class UserController {
 
 
     @PutMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_PROFILE.name())")
     //all users
-    public ResponseEntity updateUserPassword( @RequestBody UserPutRequest userPutRequest, @AuthenticationPrincipal eg.gov.iti.jets.service.model.UserAdapter userAdapter ) {
+    public ResponseEntity<?> updateUserPassword( @RequestBody UserPutRequest userPutRequest, @AuthenticationPrincipal eg.gov.iti.jets.service.model.UserAdapter userAdapter ) {
         int currentLoggedUserId = userAdapter.getId();
         Boolean isPasswordUpdated = userManagement.updateUserPassword( userPutRequest.oldPassword, userPutRequest.newPassword, currentLoggedUserId );
         if ( isPasswordUpdated ) {
 
-            return new ResponseEntity( "Password updated", HttpStatus.OK );
+            return new ResponseEntity<>( "Password updated", HttpStatus.OK );
         }else{
             return new ResponseEntity<>( "Password isn't updated", HttpStatus.NOT_ACCEPTABLE );
         }
     }
 
-    @GetMapping( "edit" )
+    @GetMapping("edit")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_PROFILE.name())")
     //all users
-    public ResponseEntity<UserPasswordResponse> getUserPassword( @AuthenticationPrincipal eg.gov.iti.jets.service.model.UserAdapter userAdapter ) {
+    public ResponseEntity<?> getUserPassword(@AuthenticationPrincipal eg.gov.iti.jets.service.model.UserAdapter userAdapter){
         int currentLoggedUserId = userAdapter.getId();
         User user = userManagement.getUserById( currentLoggedUserId );
         return new ResponseEntity<>( mapper.mapFromUserToUserPasswordResponse( user ), HttpStatus.OK );
     }
 
-    @GetMapping( "/profile" )
-    public ResponseEntity<?> getUserInfo( @AuthenticationPrincipal UserAdapter userDetails ) {
+    @GetMapping("/profile")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_PROFILE.name())")
+    public  ResponseEntity<?> getUserInfo( @AuthenticationPrincipal UserAdapter userDetails ){
         Integer userId = userDetails.getId();
         User user = userManagement.getUserInfo( userId );
         UserResponse userResponse = mapper.mapFromUserToUserResponse( user );
         return new ResponseEntity<>( userResponse, HttpStatus.OK );
     }
 
-    @GetMapping( "/{id}" )
-    public ResponseEntity<?> getUserInfo( @PathVariable int id ) {
-        User user = userManagement.getUserInfo( id );
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_USER.name())")
+    public  ResponseEntity<?> getUserById( @PathVariable int id  ){
+        User user = userManagement.getUserInfo(id);
         UserResponse userResponse = mapper.mapFromUserToUserResponse( user );
         return new ResponseEntity<>( userResponse, HttpStatus.OK );
     }

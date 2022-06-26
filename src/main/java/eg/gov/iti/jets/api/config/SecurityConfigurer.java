@@ -52,7 +52,7 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //.mvcMatchers( "/**"  ).permitAll()
                 .mvcMatchers(HttpMethod.POST,"/api/instances").hasAuthority( PrivilegeName.CREATE_TERMINATE_ASSIGN_INSTANCE.name())
-                .mvcMatchers("/api/ami","/api/instnacetype","/api/subnet").hasAuthority(PrivilegeName.MANAGE_TEMPLATE.name())
+                .mvcMatchers("/api/ami","/api/instnacetype","/api/subnet").hasAuthority(PrivilegeName.MANAGE_TEMPLATES.name())
                 .mvcMatchers("/api/login").permitAll()
                 .mvcMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .anyRequest()

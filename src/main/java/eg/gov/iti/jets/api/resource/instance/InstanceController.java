@@ -1,12 +1,9 @@
 package eg.gov.iti.jets.api.resource.instance;
 
 
-import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import eg.gov.iti.jets.service.management.InstanceManagement;
 import eg.gov.iti.jets.service.model.UserAdapter;
-import eg.gov.iti.jets.service.util.MapperUtilForApi;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,8 +11,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
@@ -31,7 +26,6 @@ public class InstanceController {
     }
 
 
-    // TODO test to see what gets returned, mahmoud will inform mariem of 200 OK being equivalent to boolean success and that exceptions should get thrown if response is error
     @PostMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).CREATE_TERMINATE_ASSIGN_INSTANCE.name())")
     ResponseEntity<?> createInstance(@Valid @RequestBody InstanceRequest instanceRequest, @AuthenticationPrincipal UserAdapter userDetails) {
