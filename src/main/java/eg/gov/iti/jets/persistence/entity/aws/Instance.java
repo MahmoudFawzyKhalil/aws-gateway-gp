@@ -46,6 +46,10 @@ public class Instance {
     private String username;
     @Column(name = "creation_date_time")
     private LocalDateTime creationDateTime;
+
+    @Column(name = "last_started_date_time")
+    private LocalDateTime lastStartedDateTime;
+
     @OneToOne
     @JoinColumn(name = "key_pair_id")
     private KeyPair keyPair;

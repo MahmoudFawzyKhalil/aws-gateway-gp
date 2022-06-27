@@ -47,6 +47,7 @@ public class InstanceManagementImpl implements InstanceManagement {
             createdInstance.setCreator( instanceToCreate.getCreator() );
             createdInstance.setTemplateConfiguration( instanceToCreate.getTemplateConfiguration() );
             createdInstance.setCreationDateTime( LocalDateTime.now() );
+            createdInstance.setLastStartedDateTime( LocalDateTime.now() );
             return instanceDao.save( createdInstance );
         }catch (Exception e) {
             throw new ResourceAlreadyExistException("Instance with id " + instanceToCreate.getInstanceId() + ", is already exist!");
@@ -71,6 +72,7 @@ public class InstanceManagementImpl implements InstanceManagement {
         Instance instance = result.get( 0 );
         String instanceState = awsGateway.startInstance( instance );
         instance.setState( instanceState );
+        instance.setLastStartedDateTime( LocalDateTime.now() );
         instanceDao.update( instance );
         return instanceState;
     }
