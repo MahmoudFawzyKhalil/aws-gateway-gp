@@ -155,9 +155,13 @@ public class InstanceManagementImpl implements InstanceManagement {
         List<Instance> all = Stream.concat( allSupervisorInstance.stream(),
                         studentsInstructorsInstancesFlatten.stream() )
                 .collect( Collectors.toList() );
-        all = all.stream().filter( i -> !i.getState().equals( "terminated" ) ).collect( Collectors.toList() );
 
         awsGateway.updateInstancesInfoFromAws( all );
+
+        all = all.stream()
+                .filter( i -> !i.getState().equalsIgnoreCase( "terminated" ) )
+                .collect( Collectors.toList() );
+
         return all;
     }
 
@@ -166,17 +170,17 @@ public class InstanceManagementImpl implements InstanceManagement {
         List<Instance> studentsInstructorInstances = instanceDao.findFollowersUsersGrantedInstances( id );
         List<Instance> allInstructorInstance = Stream.concat( instructorInstances.stream(), studentsInstructorInstances.stream() )
                 .collect( Collectors.toList() );
-        allInstructorInstance = allInstructorInstance.stream().filter( i -> !i.getState().equals( "terminated" ) ).collect( Collectors.toList() );
-
         awsGateway.updateInstancesInfoFromAws( allInstructorInstance );
+        allInstructorInstance = allInstructorInstance.stream().filter( i -> !i.getState().equalsIgnoreCase( "terminated" ) ).collect( Collectors.toList() );
+
         return allInstructorInstance;
     }
 
     private List<Instance> getStudentInstances( Integer id ) {
         List<Instance> studentInstance = instanceDao.findUserGrantedInstances( id );
 
-        studentInstance = studentInstance.stream().filter( i -> !i.getState().equals( "terminated" ) ).collect( Collectors.toList() );
         awsGateway.updateInstancesInfoFromAws( studentInstance );
+        studentInstance = studentInstance.stream().filter( i -> !i.getState().equalsIgnoreCase( "terminated" ) ).collect( Collectors.toList() );
         return studentInstance;
     }
 

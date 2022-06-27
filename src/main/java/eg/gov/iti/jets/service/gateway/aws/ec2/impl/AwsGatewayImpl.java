@@ -370,7 +370,7 @@ class AwsGatewayImpl implements AwsGateway {
                     .instanceIds(instanceIds)
                     .build();
             var describeInstancesResponse = ec2Client.describeInstances(describeInstancesRequest);
-//        var awsInstances = describeInstancesResponse.reservations().get(0).instances();
+
             var awsInstances = describeInstancesResponse
                     .reservations()
                     .stream()
@@ -379,7 +379,9 @@ class AwsGatewayImpl implements AwsGateway {
 
             for (int i = 0; i < instances.size(); i++) {
                 updateInstanceAttributes(instances.get(i), awsInstances.get(i));
+                System.out.println(instances.get( i ).getInstanceId() + ": " + awsInstances.get( i ).instanceId());
             }
+
         }catch (Exception e) {
             throw new AwsGatewayException(e.getMessage());
         }
