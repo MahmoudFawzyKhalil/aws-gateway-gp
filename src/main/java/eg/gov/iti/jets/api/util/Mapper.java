@@ -384,19 +384,14 @@ public class Mapper {
         Role role = mapperUtilForApi.getRole( staffUpdateRequest.getRoleName() );
         user.setRole( role );
 
-        List<Track> tracks = user.getTracks();
-        for ( Track t : tracks ) {
-            trackManagement.removeUserFromTrack( t.getId() , id );
-        }
-        List<Track> listOfTrack = new ArrayList<>();
-        for ( Integer trackId :
-                staffUpdateRequest.getTracksId() ) {
-            Track trackById = mapperUtilForApi.getTrackById( trackId );
-            trackManagement.updateTrack( trackById );
-            trackById.getUsers().add( user );
-        }
+        user.getTracks().forEach( track -> trackManagement.removeUserFromTrack( track.getId(),id ) );
 
-        user.setTracks( listOfTrack );
+        staffUpdateRequest.getTracksId().forEach( trackId -> {
+            Track track = mapperUtilForApi.getTrackById( trackId );
+            track.getUsers().add( user );
+            trackManagement.updateTrack( track );
+        } );
+
 
         return user;
     }
