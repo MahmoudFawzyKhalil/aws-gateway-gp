@@ -1,5 +1,7 @@
 package eg.gov.iti.jets.service.management;
 
+import eg.gov.iti.jets.api.resource.template.TemplateAssignRequest;
+import eg.gov.iti.jets.api.resource.template.TemplateResponse;
 import eg.gov.iti.jets.persistence.entity.aws.Ami;
 import eg.gov.iti.jets.persistence.entity.aws.SecurityGroup;
 import eg.gov.iti.jets.persistence.entity.aws.Subnet;
@@ -10,10 +12,10 @@ import java.util.Optional;
 
 public interface TemplateManagement {
     List<TemplateConfiguration> getTemplateConfiguration();
-    Boolean createTemplate( TemplateConfiguration templateConfiguration);
+    List<TemplateResponse> getTemplateConfigurationById( int id);
+    void createTemplate( TemplateConfiguration templateConfiguration);
     Boolean deleteTemplate ( int id );
 
 
-
-
+    void assignTemplates( TemplateAssignRequest templateAssignRequest );
 }

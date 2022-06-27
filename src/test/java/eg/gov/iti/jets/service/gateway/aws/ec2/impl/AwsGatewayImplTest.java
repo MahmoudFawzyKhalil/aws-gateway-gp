@@ -76,7 +76,7 @@ public class AwsGatewayImplTest {
     }
 
     @Test
-//    @Disabled
+    @Disabled
     void createInstance() {
 //        List<String> securityGroupNames = new ArrayList<>();
 //        securityGroupNames.add( "sg-03dcd9906dcb0a772" );
@@ -92,8 +92,8 @@ public class AwsGatewayImplTest {
 
         KeyPair keyPair = new KeyPair();
         keyPair.setKeyName( "key1" );
-        Instance instance = awsGateway.createInstance( templateConfiguration, "fawzy" , keyPair ,1l);
-        assertNotEquals( null , instance );
+//        Instance instance = awsGateway.createInstance( templateConfiguration, "fawzy" , keyPair ,1l);
+  //      assertNotEquals( null , instance );
 
     }
 

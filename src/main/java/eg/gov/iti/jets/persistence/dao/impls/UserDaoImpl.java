@@ -77,6 +77,11 @@ public class UserDaoImpl implements UserDao {
         return userRepo.findByUsernameAndPassword(userName, password);
     }
 
+    @Override
+    public Optional<User> findByUsername(String userName) {
+        return userRepo.findByUsername(userName);
+    }
+
 
     @Override
     public List<User> findAllUsersByTrackAndRole(Track track, Role role) {
@@ -124,5 +129,23 @@ public class UserDaoImpl implements UserDao {
         return userRepo.findAllByTracks_idAndRole_NameLike(trackId, roleName, projection);
     }
 
+    @Override
+    public <C> List<C> findUsersByRoleName(String userRoll, Class<C> projection) {
+        return userRepo.findUserByRole_Name(userRoll, projection);
+    }
 
+    @Override
+    public Optional<User> findUserByIDAndRoleName(Integer id, String rollName) {
+        return userRepo.findUserByIdAndRole_Name(id, rollName);
+    }
+
+    @Override
+    public List<User> findUsersWithoutRoleName(String roleName) {
+        return userRepo.findAllExceptRoleName(roleName);
+    }
+
+    @Override
+    public Long countAll() {
+        return userRepo.countAllBy();
+    }
 }

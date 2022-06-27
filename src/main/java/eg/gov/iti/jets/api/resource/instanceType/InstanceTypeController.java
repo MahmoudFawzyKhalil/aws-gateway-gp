@@ -1,22 +1,30 @@
 package eg.gov.iti.jets.api.resource.instanceType;
 
-import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.service.management.InstanceTypeAws;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/instnacetype")
+@RequestMapping("/api/instanceTypes")
 public class InstanceTypeController {
-    @Autowired
+    private final
     InstanceTypeAws instanceTypeAws;
-    @Autowired
-    Mapper mapper;
+    private final InstanceTypeMapper instanceTypeMapper;
+
+    public InstanceTypeController( InstanceTypeAws instanceTypeAws, InstanceTypeMapper instanceTypeMapper ) {
+        this.instanceTypeAws = instanceTypeAws;
+        this.instanceTypeMapper = instanceTypeMapper;
+    }
+
 
     @GetMapping()
-    InstanceTypeObjectResponse getInstanceTypes(){
-        return  mapper.mapFromInstanceTypeToObjectResponse( instanceTypeAws.getInstanceTypes() );
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_TEMPLATES.name())")
+    ResponseEntity<?> getInstanceTypes(){
+        InstanceTypeObjectResponse instanceTypeObjectResponse = instanceTypeMapper.mapFromInstanceTypeToObjectResponse( instanceTypeAws.getInstanceTypes() );
+        return  new ResponseEntity<>( instanceTypeObjectResponse , HttpStatus.OK );
     }
 }

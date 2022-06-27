@@ -7,6 +7,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,7 +18,8 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class TrainingProgramRequest {
+    @NotBlank(message = "must not be empty or null")
     private String name;
+    @NotNull(message = "must not be empty or null")
     private Integer branchId;
-    private List<Integer> intakeIds;
 }

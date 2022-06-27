@@ -1,119 +1,80 @@
 package eg.gov.iti.jets.api.resource.user;
 
 import eg.gov.iti.jets.api.util.Mapper;
-import eg.gov.iti.jets.persistence.entity.Track;
 import eg.gov.iti.jets.persistence.entity.User;
-import eg.gov.iti.jets.service.management.impl.UserManagementImpl;
+import eg.gov.iti.jets.service.management.UserManagement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import eg.gov.iti.jets.service.model.UserAdapter;
+
 import java.util.List;
-import java.util.stream.Collectors;
+
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/users")
 public class UserController {
-    private final UserManagementImpl userManagement;
+    private final UserManagement userManagement;
     private final Mapper mapper;
 
-    public UserController(UserManagementImpl userManagement , Mapper mapper ){
+    public UserController( UserManagement userManagement, Mapper mapper ) {
         this.userManagement = userManagement;
         this.mapper = mapper;
     }
 
-    @PostMapping("/users")
-    public ResponseEntity<UserResponse> createUser(@RequestBody CreateUserRequest userRequest){
-        User user = mapper.createUserRequestToUser(userRequest);
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(mapper.mapFromUserToUserResponse(userManagement.createUser(user)));
-
-    }
-
-    @GetMapping("/users/{id}")
-    public ResponseEntity<UserResponse> getUserById(@PathVariable int id){
-        User user = userManagement.getUserById(id);
-        UserResponse response = mapper.mapFromUserToUserResponse(user);
-        return ResponseEntity.ok(response);
-    }
-
-    @PutMapping("/users")
-    public ResponseEntity<UserResponse> updateUser (@RequestBody UpdateUserRequest userRequest){
-        User user = mapper.updateUserRequestToUser(userRequest);
-        return ResponseEntity.ok(mapper.mapFromUserToUserResponse(userManagement.updateUser(user)));
-    }
-
-    @GetMapping("/students")
-    public ResponseEntity<UserResponseList> getStudents(){
-        List<User> users = userManagement.getAllStudentUsers();
-        List<UserResponse> userResponses =  mapper.mapFromListOfUsersToListOfUserResponses(users);
-        UserResponseList userResponseList = new UserResponseList();
-        for(UserResponse response : userResponses){
-            userResponseList.getUserResponsesList().add(response);
-        }
-        return ResponseEntity.ok(userResponseList);
-    }
-
-    @GetMapping("/users")
-    public ResponseEntity<UserResponseList> getUsers(){
+    @GetMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_USER.name())")
+    public ResponseEntity<?> getUsers() {
+        System.out.println( "hey" );
         List<User> users = userManagement.getAllUsers();
-        List<UserResponse> userResponses =  mapper.mapFromListOfUsersToListOfUserResponses(users);
+        List<UserResponse> userResponses = mapper.mapFromListOfUsersToListOfUserResponses( users );
         UserResponseList userResponseList = new UserResponseList();
-        for(UserResponse response : userResponses){
-            userResponseList.getUserResponsesList().add(response);
+        for ( UserResponse response : userResponses ) {
+            userResponseList.getUserResponsesList().add( response );
         }
-        return ResponseEntity.ok(userResponseList);
+        return ResponseEntity.ok( userResponseList );
     }
 
-    @DeleteMapping("/users/{id}")
-    public String deleteUser( @PathVariable int id){
-        return userManagement.deleteUser( id );
+
+    @PutMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_PROFILE.name())")
+    //all users
+    public ResponseEntity<?> updateUserPassword( @RequestBody UserPutRequest userPutRequest, @AuthenticationPrincipal eg.gov.iti.jets.service.model.UserAdapter userAdapter ) {
+        int currentLoggedUserId = userAdapter.getId();
+        Boolean isPasswordUpdated = userManagement.updateUserPassword( userPutRequest.oldPassword, userPutRequest.newPassword, currentLoggedUserId );
+        if ( isPasswordUpdated ) {
+
+            return new ResponseEntity<>( "Password updated", HttpStatus.OK );
+        }else{
+            return new ResponseEntity<>( "Password isn't updated", HttpStatus.NOT_ACCEPTABLE );
+        }
     }
 
-    @GetMapping("/tracks/{id}/students")
-    public ResponseEntity<UserResponseList> getUserStudents(@PathVariable Integer id) {
-        Track track = new Track();
-        track.setId(id);
-        UserResponseList userResponseList = new UserResponseList();
-        userResponseList.setUserResponsesList(
-                userManagement.getTrackStudents(track)
-                        .stream().map(mapper::mapFromUserToUserResponse)
-                        .collect(Collectors.toList())
-        );
-        return ResponseEntity.ok(userResponseList);
+    @GetMapping("edit")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_PROFILE.name())")
+    //all users
+    public ResponseEntity<?> getUserPassword(@AuthenticationPrincipal eg.gov.iti.jets.service.model.UserAdapter userAdapter){
+        int currentLoggedUserId = userAdapter.getId();
+        User user = userManagement.getUserById( currentLoggedUserId );
+        return new ResponseEntity<>( mapper.mapFromUserToUserPasswordResponse( user ), HttpStatus.OK );
     }
 
-//    @GetMapping("/users/{id}/instructors")
-//    public UserResponseList getSupervisorInstructors(@PathVariable Integer id) {
-//        User user = new User();
-//        user.setId(id);
-//        UserResponseList userResponseList = new UserResponseList();
-//        userResponseList.setUserResponsesList(        userManagement.getSupervisorInstructors(user)
-//                .stream().map(mapper::mapFromUserToUserResponse)
-//                .collect(Collectors.toList()));
-//        return userResponseList;
-//    }
+    @GetMapping("/profile")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_PROFILE.name())")
+    public  ResponseEntity<?> getUserInfo( @AuthenticationPrincipal UserAdapter userDetails ){
+        Integer userId = userDetails.getId();
+        User user = userManagement.getUserInfo( userId );
+        UserResponse userResponse = mapper.mapFromUserToUserResponse( user );
+        return new ResponseEntity<>( userResponse, HttpStatus.OK );
+    }
 
-    /**
-     * todo
-     * assign privilege to user
-     */
-
-//    @GetMapping("/users/{id}/followers")
-//    public UserResponseList getAllUserFollowers(@PathVariable Integer id) {
-//        User user = new User();
-//        user.setId(id);
-//        UserResponseList userResponseList = new UserResponseList();
-//        userResponseList.setUserResponsesList(
-//                userManagement.getAllUserFollowers(user)
-//                .stream().map(mapper::mapFromUserToUserResponse)
-//                        .collect(Collectors.toList())
-//        );
-//        return userResponseList;
-//    }
-
-//    @GetMapping("/{name}")
-//    public UserResponse getUserByName(@PathVariable String username){
-//        return mapper.mapFromUserToUserResponse( userManagement.getUserByName( username ) );
-//    }
-//
+    @GetMapping("/{id}")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_USER.name())")
+    public  ResponseEntity<?> getUserById( @PathVariable int id  ){
+        User user = userManagement.getUserInfo(id);
+        UserResponse userResponse = mapper.mapFromUserToUserResponse( user );
+        return new ResponseEntity<>( userResponse, HttpStatus.OK );
+    }
 }

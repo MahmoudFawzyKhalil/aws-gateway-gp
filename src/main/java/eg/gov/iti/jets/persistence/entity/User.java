@@ -2,6 +2,7 @@ package eg.gov.iti.jets.persistence.entity;
 
 
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
+import eg.gov.iti.jets.persistence.entity.aws.TemplateConfiguration;
 import lombok.*;
 
 import javax.persistence.*;
@@ -40,7 +41,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "track_id"),
             uniqueConstraints = @UniqueConstraint(columnNames = {"user_id", "track_id"}))*/
     @ManyToMany(mappedBy = "users" )
-
     private List<Track> tracks;
 
 
@@ -48,13 +48,20 @@ public class User {
     private List<Instance> createdInstances = new ArrayList<>();
 
 //    @ManyToMany(mappedBy = "instanceUsers")
-    @OneToOne(mappedBy = "instanceUsers")
-    private Instance grantedInstances ;
+//    @OneToOne(mappedBy = "instanceUsers")
+
+    @OneToMany(mappedBy = "instanceUsers")
+    private List<Instance> grantedInstances ;
 
     @ManyToOne
     private User manager;
 
     @OneToMany(mappedBy="manager")
     private List<User> followers;
+
+
+    //HASHEM CREATED THIS
+    @OneToMany(mappedBy = "creator")
+    private List<TemplateConfiguration> templateConfigurations = new ArrayList<>();
 
 }

@@ -8,4 +8,7 @@ public interface TemplateConfigurationDao extends GenericCrudDao<TemplateConfigu
     <T> List<T> findAllByInstructor(int id, Class<T> projection);
 
     <T> List<T> findAllByInstructor(String userName, Class<T> projection);
+
+    <T> List<T> findAllTemplateByCreatorId(int id,Class<T> projection);
+
 }

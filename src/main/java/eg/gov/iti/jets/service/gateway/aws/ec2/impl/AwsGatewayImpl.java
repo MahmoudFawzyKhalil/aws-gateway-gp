@@ -9,6 +9,7 @@ import eg.gov.iti.jets.service.exception.AwsGatewayException;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import software.amazon.awssdk.core.exception.SdkClientException;
 import software.amazon.awssdk.services.ec2.Ec2AsyncClient;
 import software.amazon.awssdk.services.ec2.Ec2Client;
 import software.amazon.awssdk.services.ec2.model.*;
@@ -35,9 +36,13 @@ class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public List<Vpc> describeVpcs() {
-        DescribeVpcsResponse describeVpcsResponse = ec2Client.describeVpcs();
-        var awsVpcs = describeVpcsResponse.vpcs();
-        return awsVpcs.stream().map(this::mapAwsVpcToModel).collect(toList());
+        try {
+            DescribeVpcsResponse describeVpcsResponse = ec2Client.describeVpcs();
+            var awsVpcs = describeVpcsResponse.vpcs();
+            return awsVpcs.stream().map(this::mapAwsVpcToModel).collect(toList());
+        }catch (Exception e) {
+            throw new AwsGatewayException(e.getMessage());
+        }
     }
 
     private Vpc mapAwsVpcToModel(software.amazon.awssdk.services.ec2.model.Vpc awsVpc) {
@@ -63,20 +68,27 @@ class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public List<Subnet> describeAllSubnets() {
-        var awsSubnets = ec2Client.describeSubnets();
-        return awsSubnets.subnets().stream().map(this::mapAwsSubnetToModel).collect(toList());
-
+        try {
+            var awsSubnets = ec2Client.describeSubnets();
+            return awsSubnets.subnets().stream().map(this::mapAwsSubnetToModel).collect(toList());
+        }catch (Exception e) {
+            throw new AwsGatewayException(e.getMessage());
+        }
     }
 
     @Override
     public KeyPair createKeyPair(String keyName) {
-        var createKeyPairRequest = CreateKeyPairRequest.builder().keyName(keyName).build();
-        var keyPairResponse = ec2Client.createKeyPair(createKeyPairRequest);
-        KeyPair keyPair = new KeyPair();
-        keyPair.setKeyPairId(keyPairResponse.keyPairId());
-        keyPair.setKeyName(keyPairResponse.keyName());
-        keyPair.setKeyMaterial(keyPairResponse.keyMaterial());
-        return keyPair;
+        try {
+            var createKeyPairRequest = CreateKeyPairRequest.builder().keyName(keyName).build();
+            var keyPairResponse = ec2Client.createKeyPair(createKeyPairRequest);
+            KeyPair keyPair = new KeyPair();
+            keyPair.setKeyPairId(keyPairResponse.keyPairId());
+            keyPair.setKeyName(keyPairResponse.keyName());
+            keyPair.setKeyMaterial(keyPairResponse.keyMaterial());
+            return keyPair;
+        }catch (Exception e) {
+            throw new AwsGatewayException(e.getMessage());
+        }
     }
 
 //    @Override
@@ -140,53 +152,81 @@ class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public List<SecurityGroup> describeSecurityGroupsForVpc(String vpcId) {
-        DescribeSecurityGroupsRequest build = DescribeSecurityGroupsRequest.builder().filters(Filter.builder().name("vpc-id").values(vpcId).build()).build();
-        var securityGroupsResponse = ec2Client.describeSecurityGroups(build);
-        return securityGroupsResponse.securityGroups().stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
+        try {
+            DescribeSecurityGroupsRequest build = DescribeSecurityGroupsRequest.builder().filters(Filter.builder().name("vpc-id").values(vpcId).build()).build();
+            var securityGroupsResponse = ec2Client.describeSecurityGroups(build);
+            return securityGroupsResponse.securityGroups().stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
+        }catch ( Exception sdkClientException) {
+            throw new AwsGatewayException(sdkClientException.getMessage());
+        }
     }
 
     @Override
     public List<SecurityGroup> describeSecurityGroupsForIds(List<String> securityGroupIds) {
-        DescribeSecurityGroupsRequest build = DescribeSecurityGroupsRequest.builder().groupIds(securityGroupIds).build();
-        var securityGroupsResponse = ec2Client.describeSecurityGroups(build);
-        return securityGroupsResponse.securityGroups().stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
+        DescribeSecurityGroupsRequest build = DescribeSecurityGroupsRequest.builder()
+                .groupIds(securityGroupIds)
+                .build();
+        try {
+            var securityGroupsResponse = ec2Client.describeSecurityGroups(build);
+            return securityGroupsResponse.securityGroups().stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
+        }catch (Exception e) {
+            throw new AwsGatewayException(e.getMessage());
+        }
     }
 
     @Override
     public List<SecurityGroup> describeSecurityGroupsForNames(List<String> securityGroupNames) {
-        DescribeSecurityGroupsRequest build = DescribeSecurityGroupsRequest.builder().groupNames(securityGroupNames).build();
-        var securityGroupsResponse = ec2Client.describeSecurityGroups(build);
-        return securityGroupsResponse.securityGroups().stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
+        DescribeSecurityGroupsRequest build = DescribeSecurityGroupsRequest.builder()
+                .groupNames(securityGroupNames)
+                .build();
+        try {
+            var securityGroupsResponse = ec2Client.describeSecurityGroups(build);
+            return securityGroupsResponse.securityGroups().stream().map(this::mapAwsSecurityGroupToModel).collect(toList());
+        }catch (Exception s) {
+            throw new AwsGatewayException(s.getMessage());
+        }
     }
 
     @Override
     public String startInstance(Instance instance) {
         StartInstancesRequest request = StartInstancesRequest.builder().instanceIds(instance.getInstanceId()).build();
-
-        StartInstancesResponse startInstancesResponse = ec2Client.startInstances(request);
-        return startInstancesResponse.startingInstances().get(0).currentState().nameAsString();
+        try {
+            StartInstancesResponse startInstancesResponse = ec2Client.startInstances(request);
+            return startInstancesResponse.startingInstances().get(0).currentState().nameAsString();
+        }catch (Exception e) {
+            throw new AwsGatewayException(e.getMessage());
+        }
     }
 
     @Override
     public String stopInstance(String instanceId) {
-
         StopInstancesRequest stopInstancesRequest = StopInstancesRequest.builder().instanceIds(instanceId).build();
-        StopInstancesResponse stopInstancesResponse = ec2Client.stopInstances(stopInstancesRequest);
-        return stopInstancesResponse.stoppingInstances().get(0).currentState().nameAsString();
+        try {
+            StopInstancesResponse stopInstancesResponse = ec2Client.stopInstances(stopInstancesRequest);
+            return stopInstancesResponse.stoppingInstances().get(0).currentState().nameAsString();
+        }catch (Exception e) {
+            throw new AwsGatewayException(e.getMessage());
+        }
     }
 
     public void stopInstanceAsync(String instanceId) {
-
         StopInstancesRequest stopInstancesRequest = StopInstancesRequest.builder().instanceIds(instanceId).build();
-        CompletableFuture<StopInstancesResponse> stopInstancesResponse = ec2AsyncClient.stopInstances(stopInstancesRequest);
+        try {
+            CompletableFuture<StopInstancesResponse> stopInstancesResponse = ec2AsyncClient.stopInstances(stopInstancesRequest);
+        }catch (Exception e) {
+            throw new AwsGatewayException(e.getMessage());
+        }
     }
 
     @Override
     public String terminateInstance(String instanceId) {
-
         TerminateInstancesRequest terminateInstancesRequest = TerminateInstancesRequest.builder().instanceIds(instanceId).build();
-        TerminateInstancesResponse terminateInstancesResponse = ec2Client.terminateInstances(terminateInstancesRequest);
-        return terminateInstancesResponse.terminatingInstances().get(0).currentState().nameAsString();
+        try {
+            TerminateInstancesResponse terminateInstancesResponse = ec2Client.terminateInstances(terminateInstancesRequest);
+            return terminateInstancesResponse.terminatingInstances().get(0).currentState().nameAsString();
+        }catch (Exception e) {
+            throw new AwsGatewayException(e.getMessage());
+        }
     }
 
 
@@ -207,29 +247,51 @@ class AwsGatewayImpl implements AwsGateway {
         return instance;
     }
 
+    // need to handle exception here
     @Override
-    public Instance createInstance(TemplateConfiguration template, String instanceName, KeyPair keyPair, Long timeToLiveInMinutes) {
-        Tag tag = Tag.builder().key("Name").value(instanceName).build();
-        TagSpecification tagSpecification = TagSpecification.builder().tags(tag).resourceType(ResourceType.INSTANCE).build();
-        var runInstancesRequest = RunInstancesRequest.builder().imageId(template.getAmiId()).tagSpecifications(tagSpecification).keyName(keyPair.getKeyName()).instanceType(template.getInstanceType()).subnetId(template.getSubnetId()).maxCount(1).minCount(1).build();
-        var runInstancesResponse = ec2Client.runInstances(runInstancesRequest);
-        Instance instance = mapCreateInstanceProperties(runInstancesResponse, keyPair, tag);
-        if (!runInstancesResponse.hasInstances()) throw new AwsGatewayException("Failed to create instance.");
+    public Instance createInstance(TemplateConfiguration template, String instanceName, KeyPair keyPair ,Long timeToLiveInMinutes ) {
+        Tag tag = Tag.builder()
+                .key("Name")
+                .value(instanceName)
+                .build();
+        TagSpecification tagSpecification = TagSpecification.builder()
+                .tags(tag)
+                .resourceType(ResourceType.INSTANCE)
+                .build();
+        var runInstancesRequest = RunInstancesRequest
+                .builder()
+                .imageId(template.getAmiId())
+                .tagSpecifications(tagSpecification)
+                .keyName(keyPair.getKeyName())
+                .instanceType(template.getInstanceType())
+                .subnetId(template.getSubnetId())
+                .maxCount(1).minCount(1).build();
+            var runInstancesResponse = ec2Client.runInstances(runInstancesRequest);
+            Instance instance = mapCreateInstanceProperties(runInstancesResponse, keyPair, tag);
+            if (!runInstancesResponse.hasInstances())
+                throw new AwsGatewayException("Failed to create instance.");
 
-        ModifyInstanceAttributeRequest build = ModifyInstanceAttributeRequest.builder().groups(template.getSecurityGroups().stream().map(SecurityGroup::getSecurityGroupId).collect(toList())).instanceId(instance.getInstanceId()).build();
-        ModifyInstanceAttributeResponse modifyInstanceAttributeResponse = ec2Client.modifyInstanceAttribute(build);
-        instance.setTimeToLiveInMinutes(timeToLiveInMinutes);
-        return instance;
+            ModifyInstanceAttributeRequest build = ModifyInstanceAttributeRequest.builder()
+                    .groups(template.getSecurityGroups().stream().map(SecurityGroup::getSecurityGroupId).collect(toList()))
+                    .instanceId(instance.getInstanceId())
+                    .build();
+            ModifyInstanceAttributeResponse modifyInstanceAttributeResponse = ec2Client.modifyInstanceAttribute(build);
+            instance.setTimeToLiveInMinutes( timeToLiveInMinutes );
+            return instance;
+
     }
 
     @Override
     public Optional<Instance> describeInstance(String instanceId) {
-        var request = DescribeInstancesRequest.builder().instanceIds(instanceId).build();
-        var response = ec2Client.describeInstances(request);
-        if (response.hasReservations() && response.reservations().get(0).hasInstances()) {
-
-            var awsInstance = response.reservations().get(0).instances().get(0);
-            return Optional.of(mapDescribeInstanceProperties(awsInstance));
+        try {
+            var request = DescribeInstancesRequest.builder().instanceIds(instanceId).build();
+            var response = ec2Client.describeInstances(request);
+            if (response.hasReservations() && response.reservations().get(0).hasInstances()) {
+                var awsInstance = response.reservations().get(0).instances().get(0);
+                return Optional.of(mapDescribeInstanceProperties(awsInstance));
+            }
+        }catch (Exception e) {
+            throw new AwsGatewayException(e.getMessage());
         }
         return Optional.empty();
     }
@@ -246,9 +308,13 @@ class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public List<Instance> describeInstances(List<String> instanceIds) {
-        var describeInstancesRequest = DescribeInstancesRequest.builder().instanceIds(instanceIds).build();
-        var describeInstancesResponse = this.ec2Client.describeInstances(describeInstancesRequest);
-        return describeInstancesResponse.hasReservations() && describeInstancesResponse.reservations().get(0).hasInstances() ? getMappedInstances(describeInstancesResponse) : new ArrayList<>();
+        try {
+            var describeInstancesRequest = DescribeInstancesRequest.builder().instanceIds(instanceIds).build();
+            var describeInstancesResponse = this.ec2Client.describeInstances(describeInstancesRequest);
+            return describeInstancesResponse.hasReservations() && describeInstancesResponse.reservations().get(0).hasInstances() ? getMappedInstances(describeInstancesResponse) : new ArrayList<>();
+        }catch (Exception e) {
+            throw new AwsGatewayException(e.getMessage());
+        }
     }
 
     @Override
@@ -258,8 +324,12 @@ class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public Optional<Ami> describeAmi(String amiId) {
-        var describeImagesResponse = ec2Client.describeImages(DescribeImagesRequest.builder().imageIds(amiId).build());
-        return describeImagesResponse.hasImages() ? mapToCustomAmi(describeImagesResponse.images().get(0)) : Optional.empty();
+        try {
+            var describeImagesResponse = ec2Client.describeImages(DescribeImagesRequest.builder().imageIds(amiId).build());
+            return describeImagesResponse.hasImages() ? mapToCustomAmi(describeImagesResponse.images().get(0)) : Optional.empty();
+        }catch (Exception e){
+            throw new AwsGatewayException(e.getMessage());
+        }
     }
 
     private Optional<Ami> mapToCustomAmi(Image image) {
@@ -276,10 +346,15 @@ class AwsGatewayImpl implements AwsGateway {
 
     @Override
     public void updateInstanceInfoFromAws(Instance instance) {
-        var describeInstancesRequest = DescribeInstancesRequest.builder().instanceIds(instance.getInstanceId()).build();
-        var describeInstancesResponse = ec2Client.describeInstances(describeInstancesRequest);
-        var awsInstance = describeInstancesResponse.reservations().get(0).instances().get(0);
-        updateInstanceAttributes(instance, awsInstance);
+        try {
+            var describeInstancesRequest = DescribeInstancesRequest.builder().instanceIds(instance.getInstanceId()).build();
+            var describeInstancesResponse = ec2Client.describeInstances(describeInstancesRequest);
+            var awsInstance = describeInstancesResponse.reservations().get(0).instances().get(0);
+            updateInstanceAttributes(instance, awsInstance);
+        }catch (Exception e) {
+            throw new AwsGatewayException(e.getMessage());
+        }
+
     }
 
     @Override
@@ -288,22 +363,29 @@ class AwsGatewayImpl implements AwsGateway {
         if (instances.isEmpty())
             return;
 
-        List<String> instanceIds = instances.stream().map(Instance::getInstanceId).collect(toList());
+        try {
+            List<String> instanceIds = instances.stream().map(Instance::getInstanceId).collect(toList());
 
-        var describeInstancesRequest = DescribeInstancesRequest.builder()
-                .instanceIds(instanceIds)
-                .build();
-        var describeInstancesResponse = ec2Client.describeInstances(describeInstancesRequest);
-//        var awsInstances = describeInstancesResponse.reservations().get(0).instances();
-        var awsInstances = describeInstancesResponse
-                .reservations()
-                .stream()
-                .flatMap( r -> r.instances().stream() )
-                .collect( toList() );
+            var describeInstancesRequest = DescribeInstancesRequest.builder()
+                    .instanceIds(instanceIds)
+                    .build();
+            var describeInstancesResponse = ec2Client.describeInstances(describeInstancesRequest);
 
-        for (int i = 0; i < instances.size(); i++) {
-            updateInstanceAttributes(instances.get(i), awsInstances.get(i));
+            var awsInstances = describeInstancesResponse
+                    .reservations()
+                    .stream()
+                    .flatMap( r -> r.instances().stream() )
+                    .collect( toList() );
+
+            for (int i = 0; i < instances.size(); i++) {
+                updateInstanceAttributes(instances.get(i), awsInstances.get(i));
+                System.out.println(instances.get( i ).getInstanceId() + ": " + awsInstances.get( i ).instanceId());
+            }
+
+        }catch (Exception e) {
+            throw new AwsGatewayException(e.getMessage());
         }
+
     }
 
     private void updateInstanceAttributes(Instance instance, software.amazon.awssdk.services.ec2.model.Instance awsInstance) {

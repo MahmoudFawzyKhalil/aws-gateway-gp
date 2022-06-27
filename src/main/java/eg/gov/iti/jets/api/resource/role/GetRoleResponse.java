@@ -12,5 +12,5 @@ import java.util.List;
 public class GetRoleResponse {
     private Integer id;
     private String name;
-    private List<PrivilegeType> privileges;
+    private List<String> privileges;
 }

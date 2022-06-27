@@ -1,16 +1,15 @@
 package eg.gov.iti.jets.api.resource.user;
 
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
-@Data
+@Setter
+@Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class UpdateUserRequest {
+public class UserTrackResponse {
     private Integer id;
-    private String username;
-    private String email;
-    private String password;
-    private RoleType role;
+    private String trackName;
 }

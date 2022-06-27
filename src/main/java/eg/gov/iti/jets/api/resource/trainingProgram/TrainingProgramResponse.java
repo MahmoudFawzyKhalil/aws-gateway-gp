@@ -18,5 +18,4 @@ public class TrainingProgramResponse {
     private Integer id;
     private String name;
     private String branchName;
-    private List<String> intakeNames;
 }

@@ -9,7 +9,6 @@ public class UserResponse {
     private Integer id;
     private String username;
     private String email;
-    private String password;
     private String role;
-    private List<String> privileges;
+    private List<UserTrackResponse> tracks;
 }

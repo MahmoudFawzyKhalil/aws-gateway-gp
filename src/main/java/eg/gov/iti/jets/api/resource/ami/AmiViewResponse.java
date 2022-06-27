@@ -11,6 +11,5 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AmiViewResponse {
-    private Boolean success;
     private AmiResponse amiResponse;
 }

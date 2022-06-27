@@ -6,6 +6,7 @@ import eg.gov.iti.jets.persistence.dao.TrainingProgramDao;
 import eg.gov.iti.jets.persistence.entity.Branch;
 import eg.gov.iti.jets.persistence.entity.Intake;
 import eg.gov.iti.jets.persistence.entity.TrainingProgram;
+import eg.gov.iti.jets.service.exception.ResourceNotFoundException;
 import eg.gov.iti.jets.service.management.TrainingProgramManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -34,7 +35,8 @@ public class TrainingProgramManagementImpl implements TrainingProgramManagement 
 
     @Override
     public TrainingProgram updateTrainingProgram(TrainingProgram trainingProgram) {
-        return trainingProgramDao.update(trainingProgram);
+        return trainingProgramDao.findById(trainingProgram.getId()).map(trainingProgram1 -> trainingProgramDao.update(trainingProgram1)).orElseThrow(()->new ResourceNotFoundException("TrainingProgram with id " + trainingProgram.getId() + ", is not found"));
+
     }
 
     @Override
@@ -51,16 +53,13 @@ public class TrainingProgramManagementImpl implements TrainingProgramManagement 
     @Override
     public TrainingProgram getTrainingProgramById(int id) {
         Optional<TrainingProgram> trainingProgram = trainingProgramDao.findById(id);
-        return trainingProgram.orElse(null);
+        return trainingProgram.orElseThrow(()->new ResourceNotFoundException("TrainingProgram with id " + id + ", is not found"));
     }
 
     @Override
     public List<Intake> getIntakeByProgramId( int programId ) {
         Optional<TrainingProgram> trainingProgram = trainingProgramDao.findById( programId );
-        Intake intakeExample = new Intake();
-        trainingProgram.ifPresent( intakeExample::setTrainingProgram );
-        List<Intake> intakes = intakeDao.findAllByExample( intakeExample );
-        return intakes;
+       return trainingProgram.map(trainingProgram1 -> trainingProgram1.getIntakes()).orElseThrow(()->new ResourceNotFoundException("TrainingProgram with id " + programId + ", is not found"));
     }
 }
 

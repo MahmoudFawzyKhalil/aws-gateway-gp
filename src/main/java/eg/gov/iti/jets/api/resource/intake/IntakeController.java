@@ -6,28 +6,30 @@ import eg.gov.iti.jets.api.resource.track.TrackResponseList;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.Intake;
 import eg.gov.iti.jets.persistence.entity.Track;
-import eg.gov.iti.jets.service.management.impl.IntakeManagementImpl;
+import eg.gov.iti.jets.service.management.IntakeManagement;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/intakes")
 public class IntakeController {
-    final IntakeManagementImpl intakeManagement;
+    final IntakeManagement intakeManagement;
     final Mapper mapper;
 
 
-    public IntakeController( IntakeManagementImpl intakeManagement , Mapper mapper){
+    public IntakeController( IntakeManagement intakeManagement , Mapper mapper){
         this.intakeManagement=intakeManagement ;
         this.mapper=mapper;
     }
 
     @GetMapping
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INTAKES.name())")
     public ResponseEntity<?> getIntakes(){
         List<Intake> intakes = intakeManagement.getAllIntakes();
         List<IntakeResponse> intakeResponses =  mapper.mapFromListOfIntakesToListOfIntakeResponses(intakes);
@@ -40,34 +42,39 @@ public class IntakeController {
 
 
     @GetMapping("/{id}")
-    public IntakeViewResponse getIntakeById(@PathVariable int id){
-        Optional<Intake> intake = intakeManagement.getIntakeById(id);
-        return intake.map( value -> new IntakeViewResponse( true, mapper.mapFromIntakeToIntakeResponse(value))).orElseGet( () -> new IntakeViewResponse( false, null ) );
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_INTAKES.name())")
+    public ResponseEntity<?> getIntakeById(@PathVariable int id){
+        Intake intake = intakeManagement.getIntakeById(id);
+        return new ResponseEntity<>(mapper.mapFromIntakeToIntakeResponse(intake),HttpStatus.OK);
     }
 
 
     @PostMapping
-    public IntakeResponse createIntake( @RequestBody IntakeRequest intakeRequest){
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INTAKES.name())")
+    public ResponseEntity<?> createIntake( @Valid @RequestBody IntakeRequest intakeRequest){
         Intake intake = intakeManagement.createIntake( mapper.mapFromIntakeRequestToIntake( intakeRequest )  );
-        return mapper.mapFromIntakeToIntakeResponse(intake);
+        return new ResponseEntity<>(mapper.mapFromIntakeToIntakeResponse(intake),HttpStatus.CREATED);
     }
 
 
-    @PutMapping
-    public IntakeResponse updateIntake (@RequestBody IntakeRequest intakeRequest){
-        Intake intake = intakeManagement.updateIntake( mapper.mapFromIntakeRequestToIntake( intakeRequest ) );
-        return mapper.mapFromIntakeToIntakeResponse( intake );
+    @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_INTAKES.name())")
+    public ResponseEntity<?> updateIntake (@PathVariable int id , @Valid @RequestBody IntakePutRequest intakeRequest){
+        Intake intake = intakeManagement.updateIntake( mapper.mapFromIntakePutRequestToIntake( id, intakeRequest ) );
+        return new ResponseEntity<>(mapper.mapFromIntakeToIntakeResponse( intake ),HttpStatus.OK);
     }
 
 
 
     @GetMapping("{intakeId}/tracks")
-    public ResponseEntity<TrackResponseList> getTrackByIntakeId( @PathVariable int intakeId){
+    @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).VIEW_TRACKS.name())")
+    public ResponseEntity<?> getTrackByIntakeId( @PathVariable int intakeId){
         List<Track> tracks = intakeManagement.getTrackByIntakeId( intakeId );
         List<TrackResponse> tracksResponse = new ArrayList<>();
         tracks.forEach( track -> tracksResponse.add( mapper.mapFromTrackToTrackResponse( track ) ) );
         TrackResponseList trackResponseList = new TrackResponseList( tracksResponse );
         return new ResponseEntity<>(  trackResponseList  , HttpStatus.OK);
     }
+
 
 }

@@ -2,6 +2,7 @@ package eg.gov.iti.jets.persistence.dao.impls;
 
 import eg.gov.iti.jets.persistence.dao.PrivilegeDao;
 import eg.gov.iti.jets.persistence.entity.Privilege;
+import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import org.springframework.data.domain.Example;
 import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.data.domain.Page;
@@ -69,5 +70,10 @@ public class PrivilegeDaoImpl implements PrivilegeDao {
     public <C> List<C> findAllByExample(C example, Class<C> projection) {
         ExampleMatcher caseInsensitiveExampleMatcher = ExampleMatcher.matchingAll().withIgnoreCase();
         return privilegeRepo.findAllBy(Example.of(example, caseInsensitiveExampleMatcher),projection);
+    }
+
+    @Override
+    public Optional<Privilege> findByName(PrivilegeName privilegeName) {
+        return privilegeRepo.findByName(privilegeName);
     }
 }

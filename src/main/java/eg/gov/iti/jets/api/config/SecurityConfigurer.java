@@ -1,7 +1,7 @@
 package eg.gov.iti.jets.api.config;
 
-import eg.gov.iti.jets.api.filters.JwtFilter;
 import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
+import eg.gov.iti.jets.service.dao.filters.JwtFilter;
 import eg.gov.iti.jets.service.management.UserManagement;
 import eg.gov.iti.jets.service.management.impl.UserManagementImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,17 +29,17 @@ import java.util.List;
 @EnableWebSecurity
 @EnableMethodSecurity(securedEnabled = true)
 public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
-    private final UserManagement userService;
+    private final CustomUserDetailsManager customUserDetailsManager;
     private final JwtFilter jwtFilter;
 
-    public SecurityConfigurer( UserManagement userService, JwtFilter jwtFilter ) {
-        this.userService = userService;
+    public SecurityConfigurer( CustomUserDetailsManager customUserDetailsManager, JwtFilter jwtFilter ) {
+        this.customUserDetailsManager = customUserDetailsManager;
         this.jwtFilter = jwtFilter;
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-       auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+       auth.userDetailsService(customUserDetailsManager).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -50,11 +50,9 @@ public class SecurityConfigurer extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .authorizeRequests()
-                .mvcMatchers( "/**"  ).permitAll()
+                //.mvcMatchers( "/**"  ).permitAll()
                 .mvcMatchers(HttpMethod.POST,"/api/instances").hasAuthority( PrivilegeName.CREATE_TERMINATE_ASSIGN_INSTANCE.name())
-                .mvcMatchers("/api/ami","/api/instnacetype","/api/subnet").hasAuthority(PrivilegeName.MANAGE_TEMPLATE.name())
-                .mvcMatchers("/api/hello").hasAuthority("READ")
-                .mvcMatchers("/api/users").hasAnyAuthority("WRITE","READ")
+                .mvcMatchers("/api/ami","/api/instnacetype","/api/subnet").hasAuthority(PrivilegeName.MANAGE_TEMPLATES.name())
                 .mvcMatchers("/api/login").permitAll()
                 .mvcMatchers(HttpMethod.OPTIONS,"/**").permitAll()
                 .anyRequest()

@@ -4,9 +4,11 @@ package eg.gov.iti.jets.service.aop;
 import eg.gov.iti.jets.persistence.entity.aws.Instance;
 import eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway;
 import eg.gov.iti.jets.service.gateway.aws.ec2.scheduler.RunningTasks;
+import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 
@@ -22,54 +24,53 @@ public class StartingTtlCountDownScheduler {
     @Autowired
     ThreadPoolTaskScheduler threadPoolTaskScheduler;
 
-    @Around("execution(* eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway.createInstance(..))")
-    public Object aroundCreateInstance(ProceedingJoinPoint invocation) throws Throwable {
+    @Around( "execution(* eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway.createInstance(..))" )
+    public Object aroundCreateInstance( ProceedingJoinPoint invocation ) throws Throwable {
+        System.out.println("INSIDE AROUND CREATE INSTANCE HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEELP");
         Object[] arguments = invocation.getArgs();
         Long timeToLiveInMinutes = (Long) arguments[3];
         Object result = invocation.proceed();
         Instance instance = (Instance) result;
         String instanceId = instance.getInstanceId();
-        Date date = new Date(System.currentTimeMillis() + timeToLiveInMinutes * 60_000);
-        ScheduledFuture<?> future = threadPoolTaskScheduler.schedule(() -> {
-                    timerProxy.stopInstance(instanceId);
-                    System.out.println("====================aroundCreateInstance===================");
+        Date date = new Date( System.currentTimeMillis() + timeToLiveInMinutes * 60_000 );
+        ScheduledFuture<?> future = threadPoolTaskScheduler.schedule( () -> {
+                    timerProxy.stopInstanceAsync( instanceId );
+                    System.out.println( "====================aroundCreateInstance===================" );
                 }
-                , date);
+                , date );
 
-        RunningTasks.INSTANCE.addTask(instanceId, future);
+        RunningTasks.INSTANCE.addTask( instanceId, future );
 
         return result;
     }
 
-    @Around("execution(* eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway.startInstance(..))")
-    public Object aroundStartInstance(ProceedingJoinPoint invocation) throws Throwable {
+    @Around( "execution(* eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway.startInstance(..))" )
+    public Object aroundStartInstance( ProceedingJoinPoint invocation ) throws Throwable {
         Object[] arguments = invocation.getArgs();
         Instance instance = (Instance) arguments[0];
 
         Object result = invocation.proceed();
 
-        Date date = new Date(System.currentTimeMillis() + instance.getTimeToLiveInMinutes() * 60_000);
-        ScheduledFuture<?> future = threadPoolTaskScheduler.schedule(() -> {
-            timerProxy.stopInstanceAsync(instance.getInstanceId());
-            RunningTasks.INSTANCE.removeTask(instance.getInstanceId());
-        }, date);
-        RunningTasks.INSTANCE.addTask(instance.getInstanceId(), future);
+        Date date = new Date( System.currentTimeMillis() + instance.getTimeToLiveInMinutes() * 60_000 );
+        ScheduledFuture<?> future = threadPoolTaskScheduler.schedule( () -> {
+            timerProxy.stopInstanceAsync( instance.getInstanceId() );
+            RunningTasks.INSTANCE.removeTask( instance.getInstanceId() );
+        }, date );
+        RunningTasks.INSTANCE.addTask( instance.getInstanceId(), future );
 
         return result;
     }
 
-    @Around("execution(* eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway.stopInstance(..))")
-    public Object aroundStopInstance(ProceedingJoinPoint invocation) throws Throwable {
-        String instanceId = (String) invocation.getArgs()[0];
-        RunningTasks.INSTANCE.removeAndCancelTask(instanceId);
-        return invocation.proceed();
+    @Before( "execution(* eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway.stopInstance(..))" )
+    public void aroundStopInstance( JoinPoint joinPoint ) throws Throwable {
+        String instanceId = (String) joinPoint.getArgs()[0];
+        RunningTasks.INSTANCE.removeAndCancelTask( instanceId );
     }
 
-    @Around("execution(* eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway.terminateInstance(..))")
-    public Object aroundTerminateInstance(ProceedingJoinPoint invocation) throws Throwable {
-        String instanceId = (String) invocation.getArgs()[0];
-        RunningTasks.INSTANCE.removeAndCancelTask(instanceId);
-        return invocation.proceed();
+    @Before( "execution(* eg.gov.iti.jets.service.gateway.aws.ec2.AwsGateway.terminateInstance(..))" )
+    public void aroundTerminateInstance( JoinPoint joinPoint ) throws Throwable {
+        String instanceId = (String) joinPoint.getArgs()[0];
+        RunningTasks.INSTANCE.removeAndCancelTask( instanceId );
     }
 
 
