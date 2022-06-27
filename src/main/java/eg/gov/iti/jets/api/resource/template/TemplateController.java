@@ -1,7 +1,7 @@
 package eg.gov.iti.jets.api.resource.template;
 
 import eg.gov.iti.jets.service.management.TemplateManagement;
-import eg.gov.iti.jets.service.model.UserAdapter;
+import eg.gov.iti.jets.service.util.model.UserAdapter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

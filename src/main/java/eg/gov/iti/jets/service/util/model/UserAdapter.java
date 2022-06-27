@@ -1,4 +1,4 @@
-package eg.gov.iti.jets.service.model;
+package eg.gov.iti.jets.service.util.model;
 
 import eg.gov.iti.jets.persistence.entity.Privilege;
 import eg.gov.iti.jets.persistence.entity.User;
@@ -20,6 +20,10 @@ public class UserAdapter implements UserDetails , Serializable {
     private static final long serialVersionUID = SpringSecurityCoreVersion.SERIAL_VERSION_UID;
 
     private final User user;
+
+    private String jwt;
+
+
 
     private Set<GrantedAuthority> authorities; // todo let it be final
 
@@ -108,5 +112,13 @@ public class UserAdapter implements UserDetails , Serializable {
             sortedAuthorities.add(grantedAuthority);
         }
         return sortedAuthorities;
+    }
+
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
     }
 }

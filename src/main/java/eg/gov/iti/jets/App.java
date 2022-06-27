@@ -1,5 +1,6 @@
 package eg.gov.iti.jets;
 
+import eg.gov.iti.jets.api.config.CacheConfig;
 import eg.gov.iti.jets.persistence.dao.*;
 import eg.gov.iti.jets.persistence.entity.*;
 import eg.gov.iti.jets.persistence.entity.aws.*;
@@ -8,13 +9,17 @@ import eg.gov.iti.jets.persistence.entity.enums.PrivilegeName;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Import;
 
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
 @SpringBootApplication
+@Import(CacheConfig.class)
+@EnableCaching
 public class App {
     public static void main( String[] args ) {
 

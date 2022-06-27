@@ -2,6 +2,7 @@ package eg.gov.iti.jets.api.config;
 
 import eg.gov.iti.jets.persistence.dao.UserDao;
 import eg.gov.iti.jets.persistence.entity.User;
+import eg.gov.iti.jets.service.util.model.UserAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,14 +22,14 @@ public class CustomUserDetailsManager implements UserDetailsService {
 
     @Transactional //(readOnly = true)
     @Override
-    public eg.gov.iti.jets.service.model.UserAdapter loadUserByUsername(String username) throws UsernameNotFoundException {
+    public UserAdapter loadUserByUsername(String username) throws UsernameNotFoundException {
 
         eg.gov.iti.jets.persistence.entity.User user = new eg.gov.iti.jets.persistence.entity.User();
         user.setUsername(username);
         List<User> resultList = userDao.findAllByExample(user);
         user = resultList == null ? null : resultList.get(0);
 
-        return user == null ? null : new eg.gov.iti.jets.service.model.UserAdapter(user, user.getRole()
+        return user == null ? null : new UserAdapter(user, user.getRole()
                 .getPrivileges()
                 .stream().map(privilege -> privilege.getName().name())
                 .map(SimpleGrantedAuthority::new)

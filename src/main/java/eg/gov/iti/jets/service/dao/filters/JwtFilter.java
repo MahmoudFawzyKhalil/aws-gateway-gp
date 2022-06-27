@@ -1,9 +1,10 @@
 package eg.gov.iti.jets.service.dao.filters;
 
+import eg.gov.iti.jets.api.config.BlackListingService;
 import eg.gov.iti.jets.api.util.JwtUtil;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.UserManagement;
-import eg.gov.iti.jets.service.model.UserAdapter;
+import eg.gov.iti.jets.service.util.model.UserAdapter;
 import io.jsonwebtoken.ExpiredJwtException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -27,6 +28,9 @@ public class JwtFilter extends OncePerRequestFilter {
     @Autowired
     private JwtUtil jwtUtil;
 
+    @Autowired
+    private BlackListingService blackListingService;
+
     @Value("${auth.jwt.prefix}")
     private String prefix;
 
@@ -39,12 +43,18 @@ public class JwtFilter extends OncePerRequestFilter {
         String jwt = null;
         if (authorizationHeader != null && authorizationHeader.startsWith(prefix + " ")) {
             jwt = authorizationHeader.substring(prefix.length() + 1).trim();
-//            jwt = authorizationHeader.split(" ")[1].trim(); // 
+//            jwt = authorizationHeader.split(" ")[1].trim(); //
+            String blackListedToken = blackListingService.getJwtBlackList(jwt);
+            logger.info("JwtFilter"+ blackListedToken);
+            if (blackListedToken != null) {
+                logger.error("JwtFilter: Token is blacklisted");
+                response.sendError(401);
+            }
             try {
 
                 userName = jwtUtil.extractUsername(jwt);
                 roles = jwtUtil.extractRoles(jwt);
-                userId =  (Integer) jwtUtil.extractClaim(jwt,claims -> claims.get("id")); // todo cast to integer after type edit above
+                userId =  (Integer) jwtUtil.extractClaim(jwt,claims -> claims.get("id"));
             } catch (IllegalArgumentException e) {
                 logger.error("Unable to get JWT Token");
             } catch (ExpiredJwtException e) {
@@ -64,8 +74,9 @@ public class JwtFilter extends OncePerRequestFilter {
             userEntity.setId(userId); // todo set userId
             userEntity.setPassword(null);
             UserAdapter userDetails = new UserAdapter(userEntity, AuthorityUtils.createAuthorityList(rolesArray));
+            userDetails.setJwt(jwt);
             logger.warn("authorities : "+userDetails.getAuthorities());
-            logger.warn("authorities : "+userDetails.getId());
+            logger.warn("id : "+userDetails.getId());
             /**
              * extract user privileges from JWT instead of loading user from db
              */
