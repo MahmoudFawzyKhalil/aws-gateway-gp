@@ -187,14 +187,14 @@ class DummyData {
                                                          TemplateConfigurationDao templateConfigurationDao ) {
 
 
-        User smartBranchMangerUser = userDao.save( new User( null, "smartBranchManger", "smartBranchManger", "smartBranchManger", branchMangerRole, null, null, null, null, null, null ) );
-        User trainingMangerUser = userDao.save( new User( null, "trainingManger", "trainingManger", "trainingManger", trainingMangerRole, null, null, null, smartBranchMangerUser, null, null ) );
-        User superVisorUser = userDao.save( new User( null, "supervisor", "supervisor", "supervisor", supervisorRole, null, null, null, trainingMangerUser, null, null ) );
+        User smartBranchMangerUser = userDao.save( new User( null, "superAdmin", "superadmin@iti.gov.eg", "12345678", branchMangerRole, null, null, null, null, null, null ) );
+        User trainingMangerUser = userDao.save( new User( null, "trainingManager", "trainingmanager@iti.gov.eg", "12345678", trainingMangerRole, null, null, null, smartBranchMangerUser, null, null ) );
+        User superVisorUser = userDao.save( new User( null, "supervisor", "supervisor@iti.gov.eg", "12345678", supervisorRole, null, null, null, trainingMangerUser, null, null ) );
 
-        User instructorUserForJava = userDao.save( new User( null, "instructorJava", "instructorJava", "instructorJava", instructorRole, null, null, null, superVisorUser, null, null ) );
-        User instructorUserForPHP = userDao.save( new User( null, "instructorPHP", "instructorPHP", "instructorPHP", instructorRole, null, null, null, superVisorUser, null, null ) );
+        User instructorUserForJava = userDao.save( new User( null, "instructorJava", "javainstructor@iti.gov.eg", "12345678", instructorRole, null, null, null, superVisorUser, null, null ) );
+        User instructorUserForPHP = userDao.save( new User( null, "instructorPHP", "phpinstructor@iti.gov.eg", "12345678", instructorRole, null, null, null, superVisorUser, null, null ) );
 
-        User studentUser = userDao.save( new User( null, "student", "student", "student", studentRole, null, null, null, instructorUserForJava, null, null ) );
+        User studentUser = userDao.save( new User( null, "student", "student@iti.gov.eg", "12345678", studentRole, null, null, null, instructorUserForJava, null, null ) );
         User studentUser1 = userDao.save( new User( null, "student1", "student1", "student1", studentRole, null, null, null, instructorUserForJava, null, null ) );
         User studentUser2 = userDao.save( new User( null, "student2", "student2", "student2", studentRole, null, null, null, instructorUserForJava, null, null ) );
         User studentUser3 = userDao.save( new User( null, "student3", "student3", "student3", studentRole, null, null, null, instructorUserForPHP, null, null ) );
