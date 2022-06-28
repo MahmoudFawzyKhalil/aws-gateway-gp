@@ -8,7 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
-import eg.gov.iti.jets.service.model.UserAdapter;
+import eg.gov.iti.jets.service.util.model.UserAdapter;
 
 import java.util.List;
 
@@ -41,7 +41,7 @@ public class UserController {
     @PutMapping
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_PROFILE.name())")
     //all users
-    public ResponseEntity<?> updateUserPassword( @RequestBody UserPutRequest userPutRequest, @AuthenticationPrincipal eg.gov.iti.jets.service.model.UserAdapter userAdapter ) {
+    public ResponseEntity<?> updateUserPassword( @RequestBody UserPutRequest userPutRequest, @AuthenticationPrincipal eg.gov.iti.jets.service.util.model.UserAdapter userAdapter ) {
         int currentLoggedUserId = userAdapter.getId();
         Boolean isPasswordUpdated = userManagement.updateUserPassword( userPutRequest.oldPassword, userPutRequest.newPassword, currentLoggedUserId );
         if ( isPasswordUpdated ) {
@@ -55,7 +55,7 @@ public class UserController {
     @GetMapping("edit")
     @PreAuthorize("hasAuthority(T(eg.gov.iti.jets.persistence.entity.enums.PrivilegeName).MANAGE_PROFILE.name())")
     //all users
-    public ResponseEntity<?> getUserPassword(@AuthenticationPrincipal eg.gov.iti.jets.service.model.UserAdapter userAdapter){
+    public ResponseEntity<?> getUserPassword(@AuthenticationPrincipal eg.gov.iti.jets.service.util.model.UserAdapter userAdapter){
         int currentLoggedUserId = userAdapter.getId();
         User user = userManagement.getUserById( currentLoggedUserId );
         return new ResponseEntity<>( mapper.mapFromUserToUserPasswordResponse( user ), HttpStatus.OK );

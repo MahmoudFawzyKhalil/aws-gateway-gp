@@ -7,7 +7,6 @@ import eg.gov.iti.jets.service.management.InstanceManagement;
 import eg.gov.iti.jets.service.util.MapperUtilForApi;
 import eg.gov.iti.jets.service.util.model.UserAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
-import eg.gov.iti.jets.service.model.UserAdapter;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;

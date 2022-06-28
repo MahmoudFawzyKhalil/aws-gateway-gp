@@ -1,10 +1,10 @@
 package eg.gov.iti.jets.api.resource.staff;
 
 
-import eg.gov.iti.jets.service.model.UserAdapter;
 import eg.gov.iti.jets.api.util.Mapper;
 import eg.gov.iti.jets.persistence.entity.User;
 import eg.gov.iti.jets.service.management.StaffManagement;
+import eg.gov.iti.jets.service.util.model.UserAdapter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
